@@ -1,0 +1,101 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator erd {
+  provider = "prisma-erd-generator"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 String               @id @default(uuid())
+  createdAt          DateTime             @default(now())
+  email              String               @unique
+  firstName          String
+  lastName           String
+  emailVerified      Boolean
+  OrganizationMember OrganizationMember[]
+}
+
+enum OrganizationType {
+  PERSONAL
+  SHARED
+}
+
+model Organization {
+  id                 String               @id @default(uuid())
+  createdAt          DateTime             @default(now())
+  name               String               @unique
+  slug               String               @unique
+  type               OrganizationType
+  Application        Application[]
+  OrganizationMember OrganizationMember[]
+  OrganizationInvite OrganizationInvite[]
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model OrganizationMember {
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  userId         String
+  user           User         @relation(fields: [userId], references: [id])
+  role           Role
+  joinedAt       DateTime
+
+  @@id([organizationId, userId])
+}
+
+model OrganizationInvite {
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  createdAt      DateTime     @default(now())
+  email          String
+  acceptedAt     DateTime?
+
+  @@id([organizationId, email])
+}
+
+model Application {
+  id             String       @id @default(uuid())
+  createdAt      DateTime     @default(now())
+  name           String       @unique
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  Deployment     Deployment[]
+}
+
+model Chain {
+  name       String       @id
+  label      String       @unique
+  testnet    Boolean
+  Deployment Deployment[]
+}
+
+enum DeploymentStatus {
+  STARTING
+  READY
+  FAILED
+}
+
+model Deployment {
+  id              String           @id @default(uuid())
+  createdAt       DateTime         @default(now())
+  applicationId   String
+  application     Application      @relation(fields: [applicationId], references: [id])
+  chainName       String
+  chain           Chain            @relation(fields: [chainName], references: [name])
+  contractAddress String
+  machineSnapshot String
+  status          DeploymentStatus
+}

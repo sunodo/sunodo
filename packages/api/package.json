@@ -1,0 +1,18 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Danilo Tuler",
+  "license": "MIT",
+  "devDependencies": {
+    "@mermaid-js/mermaid-cli": "^9.3.0",
+    "@types/node": "^18.11.18",
+    "prisma": "^4.8.1",
+    "prisma-erd-generator": "^1.2.5",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.8.1"
+  }
+}
