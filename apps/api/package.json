@@ -12,9 +12,9 @@
     "@serverless/typescript": "^3.0.0",
     "@types/aws-lambda": "^8.10.71",
     "@types/node": "^18.11.18",
-    "esbuild": "^0.17.0",
+    "esbuild": "^0.17.3",
     "json-schema-to-ts": "^2.6.2",
-    "prisma": "^4.8.1",
+    "prisma": "^4.9.0",
     "prisma-erd-generator": "^1.2.5",
     "serverless": "^3.0.0",
     "serverless-esbuild": "^1.23.3",
@@ -25,6 +25,6 @@
   "dependencies": {
     "@middy/core": "^4.1.0",
     "@middy/http-json-body-parser": "^4.1.0",
-    "@prisma/client": "^4.8.1"
+    "@prisma/client": "^4.9.0"
   }
 }
