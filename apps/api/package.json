@@ -1,30 +1,36 @@
 {
-  "name": "api",
-  "version": "1.0.0",
-  "main": "index.js",
-  "author": "Danilo Tuler",
-  "license": "MIT",
-  "engines": {
-    "node": ">=14.15.0"
-  },
-  "devDependencies": {
-    "@mermaid-js/mermaid-cli": "^9.3.0",
-    "@serverless/typescript": "^3.0.0",
-    "@types/aws-lambda": "^8.10.71",
-    "@types/node": "^18.11.18",
-    "esbuild": "^0.17.3",
-    "json-schema-to-ts": "^2.6.2",
-    "prisma": "^4.9.0",
-    "prisma-erd-generator": "^1.2.5",
-    "serverless": "^3.0.0",
-    "serverless-esbuild": "^1.23.3",
-    "ts-node": "^10.9.1",
-    "tsconfig-paths": "^4.1.2",
-    "typescript": "^4.9.4"
-  },
-  "dependencies": {
-    "@middy/core": "^4.1.0",
-    "@middy/http-json-body-parser": "^4.1.0",
-    "@prisma/client": "^4.9.0"
-  }
+    "name": "api",
+    "version": "1.0.0",
+    "main": "index.js",
+    "author": "Danilo Tuler",
+    "license": "MIT",
+    "engines": {
+        "node": ">=14.15.0"
+    },
+    "devDependencies": {
+        "@mermaid-js/mermaid-cli": "^9.3.0",
+        "@serverless/typescript": "^3.0.0",
+        "@types/aws-lambda": "^8.10.71",
+        "@types/node": "^18.11.18",
+        "esbuild": "0.16.16",
+        "json-schema-to-ts": "^2.6.2",
+        "prisma": "^4.9.0",
+        "prisma-erd-generator": "^1.2.5",
+        "serverless": "^3.0.0",
+        "serverless-esbuild": "^1.23.3",
+        "serverless-offline": "^12.0.4",
+        "ts-node": "^10.9.1",
+        "tsconfig-paths": "^4.1.2",
+        "typescript": "^4.9.4"
+    },
+    "dependencies": {
+        "@middy/core": "^4.1.0",
+        "@middy/http-error-handler": "^4.1.0",
+        "@middy/http-header-normalizer": "^4.1.0",
+        "@middy/http-json-body-parser": "^4.1.0",
+        "@middy/validator": "^4.1.0",
+        "@prisma/client": "^4.9.0",
+        "http-errors": "^2.0.0",
+        "middy-middleware-jwt-auth": "^5.1.1"
+    }
 }

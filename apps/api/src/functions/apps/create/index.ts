@@ -1,5 +1,5 @@
-import schema from "./schema";
 import { handlerPath } from "@libs/handler-resolver";
+import schema from "./schema";
 
 const config = {
     handler: `${handlerPath(__dirname)}/handler.main`,
@@ -7,7 +7,7 @@ const config = {
         {
             http: {
                 method: "post",
-                path: "hello",
+                path: "apps",
                 request: {
                     schemas: {
                         "application/json": schema,
