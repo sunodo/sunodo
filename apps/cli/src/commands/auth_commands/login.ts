@@ -18,7 +18,7 @@ export const handler = async () => {
 
     // Device Authorization Request - https://tools.ietf.org/html/rfc8628#section-3.1
     const handle = await client.deviceAuthorization({
-        scope: "email offline_access openid",
+        scope: "email offline_access openid profile",
         audience: "https://api.sunodo.io",
     });
 
