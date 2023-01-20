@@ -31,6 +31,7 @@
         "@middy/validator": "^4.1.0",
         "@prisma/client": "^4.9.0",
         "http-errors": "^2.0.0",
-        "middy-middleware-jwt-auth": "^5.1.1"
+        "middy-middleware-jwt-auth": "^5.1.1",
+        "unique-names-generator": "^4.7.1"
     }
 }
