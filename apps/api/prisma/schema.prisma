@@ -18,6 +18,7 @@ model User {
   id                 String               @id @default(uuid())
   createdAt          DateTime             @default(now())
   email              String               @unique
+  sub                String               @unique
   firstName          String
   lastName           String
   emailVerified      Boolean
@@ -76,9 +77,11 @@ model Application {
 }
 
 model Chain {
-  name       String       @id
+  id         Int          @id
+  name       String
   label      String       @unique
   testnet    Boolean
+  enabled    Boolean
   Deployment Deployment[]
 }
 
@@ -93,8 +96,8 @@ model Deployment {
   createdAt       DateTime         @default(now())
   applicationId   String
   application     Application      @relation(fields: [applicationId], references: [id])
-  chainName       String
-  chain           Chain            @relation(fields: [chainName], references: [name])
+  chainId         Int
+  chain           Chain            @relation(fields: [chainId], references: [id])
   contractAddress String
   machineSnapshot String
   status          DeploymentStatus
