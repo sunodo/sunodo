@@ -5,8 +5,8 @@ import netrc from "netrc-parser";
 import colors from "colors";
 colors.enable();
 
-const domain = "dev-0y8qxgon5zsrd7s1.us.auth0.com";
-const clientId = "vUR2kchV4dqerbIUP3CRuAIgurTPsrJN";
+const domain = process.env.AUTH_DOMAIN!;
+const clientId = process.env.AUTH_CLIENT_ID!;
 
 export const handler = async () => {
     // fetches the .well-known endpoint for endpoints, issuer value etc.
@@ -44,7 +44,7 @@ export const handler = async () => {
 
     // Device Access Token Request - https://tools.ietf.org/html/rfc8628#section-3.4
     // Device Access Token Response - https://tools.ietf.org/html/rfc8628#section-3.5
-    let tokens: TokenSet | undefined = undefined;
+    let tokens: TokenSet | undefined;
     try {
         tokens = await handle.poll();
     } catch (err: any) {

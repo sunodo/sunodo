@@ -1,16 +1,16 @@
 {
-  "$schema": "https://turbo.build/schema.json",
-  "globalEnv": ["NODE_ENV"],
-  "pipeline": {
-    "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**"]
-    },
-    "lint": {
-      "outputs": []
-    },
-    "dev": {
-      "cache": false
+    "$schema": "https://turbo.build/schema.json",
+    "globalEnv": ["NODE_ENV", "AUTH_DOMAIN", "AUTH_CLIENT_ID"],
+    "pipeline": {
+        "build": {
+            "dependsOn": ["^build"],
+            "outputs": ["dist/**", ".next/**"]
+        },
+        "lint": {
+            "outputs": []
+        },
+        "dev": {
+            "cache": false
+        }
     }
-  }
 }
