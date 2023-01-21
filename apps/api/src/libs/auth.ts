@@ -11,8 +11,6 @@ import { ValidatedAPIGatewayProxyEvent } from "./api-gateway";
 const pem = readFileSync("./dev-0y8qxgon5zsrd7s1.pem");
 
 export interface ITokenPayload {
-    email: string;
-    email_verified: boolean;
     iss: string;
     sub: string;
     aud: string;
@@ -23,8 +21,6 @@ export interface ITokenPayload {
 function isTokenPayload(token: any): token is ITokenPayload {
     return (
         token != null &&
-        token.email &&
-        token.email_verified &&
         token.iss &&
         token.sub &&
         token.aud &&

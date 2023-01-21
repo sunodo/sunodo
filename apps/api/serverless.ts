@@ -3,6 +3,7 @@ import type { AWS } from "@serverless/typescript";
 import hello from "@functions/hello";
 import me from "@functions/me";
 import createApp from "@functions/apps/create";
+import login from "@functions/auth/login";
 
 const serverlessConfiguration: AWS = {
     service: "api",
@@ -22,7 +23,7 @@ const serverlessConfiguration: AWS = {
         },
     },
     // import the function via paths
-    functions: { hello, me, createApp },
+    functions: { hello, me, createApp, login },
     package: {
         individually: true,
         patterns: [

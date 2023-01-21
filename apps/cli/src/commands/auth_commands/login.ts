@@ -3,6 +3,8 @@ import { Issuer, errors, TokenSet } from "openid-client";
 import prompts from "prompts";
 import netrc from "netrc-parser";
 import colors from "colors";
+import axios from "axios";
+import { createClient } from "../../client";
 colors.enable();
 
 const domain = process.env.AUTH_DOMAIN!;
@@ -66,14 +68,20 @@ export const handler = async () => {
         }
     }
 
-    if (tokens && tokens.id_token) {
-        const { email } = tokens.claims();
+    if (tokens && tokens.access_token) {
+        // call api login
+        const client = createClient();
+        const session = await client.login(
+            tokens.access_token,
+            tokens.refresh_token
+        );
+
         await netrc.load();
         netrc.machines["api.sunodo.io"] = {
-            login: email,
-            password: tokens.id_token,
+            login: session.email,
+            password: session.session,
         };
         await netrc.save();
-        console.log(`logged in as '${email}'`.gray);
+        console.log(`logged in as '${session.email}'`.gray);
     }
 };

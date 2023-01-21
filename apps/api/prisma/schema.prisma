@@ -19,6 +19,16 @@ model User {
   createdAt     DateTime             @default(now())
   name          String
   organizations OrganizationMember[]
+  sessions      Session[]
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  createdAt    DateTime @default(now())
+  accessToken  String
+  refreshToken String
 }
 
 model Organization {

@@ -1,6 +1,12 @@
 {
     "$schema": "https://turbo.build/schema.json",
-    "globalEnv": ["NODE_ENV", "AUTH_DOMAIN", "AUTH_CLIENT_ID"],
+    "globalEnv": [
+        "NODE_ENV",
+        "AUTH_DOMAIN",
+        "AUTH_CLIENT_ID",
+        "AUTH_CLIENT_SECRET",
+        "DEFAULT_API_URL"
+    ],
     "pipeline": {
         "build": {
             "dependsOn": ["^build"],

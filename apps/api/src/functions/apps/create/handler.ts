@@ -34,7 +34,7 @@ const loadOrganization = async (
     // load user
     const user = await prisma.user.findUnique({
         where: {
-            email: token.email,
+            email: "",
         },
     });
 

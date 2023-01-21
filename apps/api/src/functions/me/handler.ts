@@ -6,7 +6,7 @@ import httpHeaderNormalizer from "@middy/http-header-normalizer";
 import middyJsonBodyParser from "@middy/http-json-body-parser";
 
 const me: AuthorizedHandler<{}> = async (event) => {
-    return formatJSONResponse({ email: event.auth.payload.email });
+    return formatJSONResponse({ email: event.auth.payload });
 };
 
 export const main = middy(me)
