@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "auth0": "^3.1.1",
+    "colors": "^1.4.0",
     "dotenv": "^16.0.3",
+    "netrc-parser": "^3.1.6",
     "open": "^8.4.0",
     "openid-client": "^5.3.1",
     "prompts": "^2.4.2",

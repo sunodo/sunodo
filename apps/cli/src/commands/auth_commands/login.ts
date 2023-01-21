@@ -1,6 +1,9 @@
 import open from "open";
 import { Issuer, errors, TokenSet } from "openid-client";
 import prompts from "prompts";
+import netrc from "netrc-parser";
+import colors from "colors";
+colors.enable();
 
 const domain = "dev-0y8qxgon5zsrd7s1.us.auth0.com";
 const clientId = "vUR2kchV4dqerbIUP3CRuAIgurTPsrJN";
@@ -63,24 +66,14 @@ export const handler = async () => {
         }
     }
 
-    if (tokens) {
-        console.log("\n\nresult tokens", { ...tokens });
-
-        // requests without openid scope will not contain an id_token
-        if (tokens.id_token) {
-            const claims = tokens.claims();
-            console.log("\n\nID Token Claims", claims);
-            console.log(`logged in as ${claims.email}`);
-        }
-
-        // try-catching this since resource may have been used and the access token may
-        // not be eligible for accessing the UserInfo Response
-        try {
-            const userInfo = await client.userinfo(tokens);
-            console.log("\n\nUserInfo response", userInfo);
-            console.log(`logged in as ${userInfo.email}`);
-        } catch (err) {
-            //
-        }
+    if (tokens && tokens.id_token) {
+        const { email } = tokens.claims();
+        await netrc.load();
+        netrc.machines["api.sunodo.io"] = {
+            login: email,
+            password: tokens.id_token,
+        };
+        await netrc.save();
+        console.log(`logged in as '${email}'`.gray);
     }
 };
