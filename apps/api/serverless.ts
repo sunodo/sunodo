@@ -8,6 +8,7 @@ const serverlessConfiguration: AWS = {
     service: "api",
     frameworkVersion: "3",
     plugins: ["serverless-esbuild", "serverless-offline"],
+    useDotenv: true,
     provider: {
         name: "aws",
         runtime: "nodejs14.x",
@@ -25,6 +26,7 @@ const serverlessConfiguration: AWS = {
     package: {
         individually: true,
         patterns: [
+            ".env",
             "src/generated/client/schema.prisma",
             "!src/generated/client/libquery_engine-*",
             "src/generated/client/libquery_engine-rhel-*",
