@@ -13,6 +13,19 @@ const config = {
                         "application/json": schema,
                     },
                 },
+                documentation: {
+                    summary: "Login or signup to sunodo",
+                    description:
+                        "Login or signup to sunodo through email or oauth authentication",
+                    methodResponses: [
+                        {
+                            statusCode: 200,
+                            responseBody: {
+                                description: "Session",
+                            },
+                        },
+                    ],
+                },
             },
         },
     ],

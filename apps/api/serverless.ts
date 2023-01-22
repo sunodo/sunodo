@@ -1,6 +1,5 @@
 import type { AWS } from "@serverless/typescript";
 
-import hello from "@functions/hello";
 import me from "@functions/me";
 import createApp from "@functions/apps/create";
 import login from "@functions/auth/login";
@@ -8,7 +7,11 @@ import login from "@functions/auth/login";
 const serverlessConfiguration: AWS = {
     service: "api",
     frameworkVersion: "3",
-    plugins: ["serverless-esbuild", "serverless-offline"],
+    plugins: [
+        "serverless-esbuild",
+        "serverless-offline",
+        "serverless-openapi-documenter",
+    ],
     useDotenv: true,
     provider: {
         name: "aws",
@@ -23,7 +26,7 @@ const serverlessConfiguration: AWS = {
         },
     },
     // import the function via paths
-    functions: { hello, me, createApp, login },
+    functions: { createApp, login, me },
     package: {
         individually: true,
         patterns: [
@@ -45,6 +48,16 @@ const serverlessConfiguration: AWS = {
             define: { "require.resolve": undefined },
             platform: "node",
             concurrency: 10,
+        },
+        documentation: {
+            title: "Sunodo API",
+            description: "Sunodo API for managing deployment of Cartesi DApps",
+            version: "0.1.0",
+            contact: {
+                email: "admin@sunodo.io",
+            },
+            license: "MIT",
+            models: [],
         },
     },
 };

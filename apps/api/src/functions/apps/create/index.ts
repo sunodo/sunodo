@@ -13,6 +13,24 @@ const config = {
                         "application/json": schema,
                     },
                 },
+                documentation: {
+                    summary: "Create application",
+                    description: "Creates a new Cartesi application",
+                    methodResponses: [
+                        {
+                            statusCode: 201,
+                            responseBody: {
+                                description: "Application",
+                            },
+                        },
+                        {
+                            statusCode: 401,
+                            responseBody: {
+                                description: "Unauthorized",
+                            },
+                        },
+                    ],
+                },
             },
         },
     ],
