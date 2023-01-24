@@ -1,14 +1,15 @@
+import os from "os";
+import path from "path";
 import open from "open";
+import fs from "fs-extra";
 import { Issuer, errors, TokenSet } from "openid-client";
 import prompts from "prompts";
-import netrc from "netrc-parser";
 import colors from "colors";
-import axios from "axios";
-import { createClient } from "../../client";
 colors.enable();
 
 const domain = process.env.AUTH_DOMAIN!;
 const clientId = process.env.AUTH_CLIENT_ID!;
+const authPath = path.join(os.homedir(), ".sunodo", "auth.json");
 
 export const handler = async () => {
     // fetches the .well-known endpoint for endpoints, issuer value etc.
@@ -69,19 +70,11 @@ export const handler = async () => {
     }
 
     if (tokens && tokens.access_token) {
-        // call api login
-        const client = createClient();
-        const session = await client.login(
-            tokens.access_token,
-            tokens.refresh_token
-        );
+        await fs.outputJson(authPath, tokens, {
+            spaces: 4,
+        });
 
-        await netrc.load();
-        netrc.machines["api.sunodo.io"] = {
-            login: session.email,
-            password: session.session,
-        };
-        await netrc.save();
-        console.log(`logged in as '${session.email}'`.gray);
+        // XXX: call /auth/login
+        console.log(`logged in`.gray);
     }
 };

@@ -1,19 +1,13 @@
-import netrc from "netrc-parser";
 import colors from "colors";
 colors.enable();
 
 export const handler = async () => {
-    await netrc.load();
-    if (!netrc.machines["api.sunodo.io"]) {
-        console.error(`not logged in`.yellow);
-        return;
-    }
+    // TODO: revoke refresh_token
+    // https://auth0.com/docs/api/authentication#revoke-refresh-token
 
-    const login = netrc.machines["api.sunodo.io"].login;
+    // TODO: delete local credentials
 
-    // delete information from netrc
-    delete netrc.machines["api.sunodo.io"];
-    await netrc.save();
+    // TODO: call logout api
 
-    console.log(`logged out '${login}'`.gray);
+    console.log(`logged out`.gray);
 };
