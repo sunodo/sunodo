@@ -1,12 +1,31 @@
-import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from "aws-lambda";
+import { APIGatewayProxyHandlerV2WithJWTAuthorizer } from "aws-lambda";
+import prisma from "./prisma";
 
-export async function handler(
-    event: APIGatewayProxyEventV2
-): Promise<APIGatewayProxyResultV2> {
-    console.log("event 👉", event);
+export type MeResponse = {
+    email: string;
+    name: string;
+};
+
+export const handler: APIGatewayProxyHandlerV2WithJWTAuthorizer<
+    MeResponse
+> = async (event) => {
+    const sub = event.requestContext.authorizer.jwt.claims["sub"] as string;
+    const user = await prisma.user.findFirst({
+        where: {
+            subs: {
+                has: sub,
+            },
+        },
+    });
+
+    if (!user) {
+        return {
+            statusCode: 401,
+        };
+    }
 
     return {
-        body: JSON.stringify({ message: "Successful lambda invocation" }),
-        statusCode: 200,
+        email: user.email,
+        name: user.name,
     };
-}
+};

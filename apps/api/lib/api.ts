@@ -1,6 +1,7 @@
 import * as cdk from "aws-cdk-lib";
 import { Architecture, Runtime } from "aws-cdk-lib/aws-lambda";
 import {
+    BundlingOptions,
     NodejsFunction,
     NodejsFunctionProps,
 } from "aws-cdk-lib/aws-lambda-nodejs";
@@ -33,13 +34,36 @@ export class Api extends cdk.Stack {
             defaultAuthorizationScopes: ["openid profile email offline_access"],
         });
 
+        const prismaBundling: BundlingOptions = {
+            nodeModules: ["@prisma/client", "prisma"],
+            commandHooks: {
+                beforeBundling(inputDir: string, outputDir: string): string[] {
+                    return [];
+                },
+                beforeInstall(inputDir: string, outputDir: string) {
+                    return [`cp -R ${inputDir}/apps/api/prisma ${outputDir}/`];
+                },
+                afterBundling(inputDir: string, outputDir: string): string[] {
+                    return [
+                        `cd ${outputDir}`,
+                        `yarn prisma generate`,
+                        `rm -rf node_modules/@prisma/engines`,
+                        `rm -rf node_modules/@prisma/client/node_modules node_modules/.bin node_modules/prisma`,
+                    ];
+                },
+            },
+        };
+
         // default configuration for functions
         const defaults: NodejsFunctionProps = {
             architecture,
             runtime,
         };
 
-        const me = new NodejsFunction(this, "me", defaults);
+        const me = new NodejsFunction(this, "me", {
+            ...defaults,
+            bundling: prismaBundling,
+        });
         const login = new NodejsFunction(this, "auth.login");
 
         httpApi.addRoutes({

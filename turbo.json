@@ -5,6 +5,7 @@
         "AUTH_DOMAIN",
         "AUTH_CLIENT_ID",
         "AUTH_CLIENT_SECRET",
+        "DATABASE_URL",
         "DEFAULT_API_URL"
     ],
     "pipeline": {
