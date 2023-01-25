@@ -4,8 +4,13 @@ import {
     NodejsFunction,
     NodejsFunctionProps,
 } from "aws-cdk-lib/aws-lambda-nodejs";
-import { HttpApi, HttpMethod } from "@aws-cdk/aws-apigatewayv2-alpha";
+import {
+    HttpApi,
+    HttpMethod,
+    HttpNoneAuthorizer,
+} from "@aws-cdk/aws-apigatewayv2-alpha";
 import { HttpLambdaIntegration } from "@aws-cdk/aws-apigatewayv2-integrations-alpha";
+import { HttpJwtAuthorizer } from "@aws-cdk/aws-apigatewayv2-authorizers-alpha";
 
 import { Construct } from "constructs";
 
@@ -13,11 +18,20 @@ import { Construct } from "constructs";
 const architecture = Architecture.ARM_64;
 const runtime = Runtime.NODEJS_18_X;
 
+const jwtIssuer = "https://dev-0y8qxgon5zsrd7s1.us.auth0.com";
+
 export class Api extends cdk.Stack {
     constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 
-        const httpApi = new HttpApi(this, "HttpApi");
+        const authorizer = new HttpJwtAuthorizer("authorizer", jwtIssuer, {
+            jwtAudience: ["https://api.sunodo.io", `${jwtIssuer}/userinfo`],
+        });
+
+        const httpApi = new HttpApi(this, "HttpApi", {
+            defaultAuthorizer: authorizer,
+            defaultAuthorizationScopes: ["openid profile email offline_access"],
+        });
 
         // default configuration for functions
         const defaults: NodejsFunctionProps = {
@@ -26,11 +40,19 @@ export class Api extends cdk.Stack {
         };
 
         const me = new NodejsFunction(this, "me", defaults);
+        const login = new NodejsFunction(this, "auth.login");
 
         httpApi.addRoutes({
             path: "/me",
             methods: [HttpMethod.GET],
             integration: new HttpLambdaIntegration("me", me),
+        });
+
+        httpApi.addRoutes({
+            path: "/auth/login",
+            methods: [HttpMethod.POST],
+            integration: new HttpLambdaIntegration("login", login),
+            authorizer: new HttpNoneAuthorizer(),
         });
     }
 }
