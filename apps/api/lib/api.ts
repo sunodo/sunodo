@@ -6,12 +6,13 @@ import {
 } from "@aws-cdk/aws-apigatewayv2-alpha";
 import { HttpLambdaIntegration } from "@aws-cdk/aws-apigatewayv2-integrations-alpha";
 import { HttpJwtAuthorizer } from "@aws-cdk/aws-apigatewayv2-authorizers-alpha";
-import { Construct } from "constructs";
-
 import {
     NodejsFunction,
     NodejsFunctionProps,
 } from "aws-cdk-lib/aws-lambda-nodejs";
+import { Construct } from "constructs";
+
+import { AuthProps } from "./auth";
 
 // we need to say arm64 for local testing in Apple Silicon
 const architecture = Architecture.ARM_64;
@@ -26,17 +27,17 @@ export interface DatabaseConnectionProps {
 }
 
 interface Props {
-    jwtIssuer: string;
+    auth: AuthProps;
     database: DatabaseConnectionProps;
 }
 
 export class Api extends Construct {
     constructor(scope: Construct, id: string, props: Props) {
         super(scope, id);
-        const { database, jwtIssuer } = props;
+        const { auth, database } = props;
 
-        const authorizer = new HttpJwtAuthorizer("authorizer", jwtIssuer, {
-            jwtAudience: ["https://api.sunodo.io", `${jwtIssuer}/userinfo`],
+        const authorizer = new HttpJwtAuthorizer("authorizer", auth.issuer, {
+            jwtAudience: ["https://api.sunodo.io", `${auth.issuer}/userinfo`],
         });
 
         const httpApi = new HttpApi(this, "HttpApi", {
@@ -84,6 +85,11 @@ export class Api extends Construct {
         const login = new NodejsFunction(this, "auth.login", {
             ...defaults,
             ...prismaProps,
+            environment: {
+                AUTH_ISSUER: auth.issuer,
+                AUTH_CLIENT_ID: auth.clientId,
+                AUTH_CLIENT_SECRET: auth.clientSecret,
+            },
         });
 
         httpApi.addRoutes({

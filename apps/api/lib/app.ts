@@ -7,15 +7,16 @@ import {
     ServerlessCluster,
 } from "aws-cdk-lib/aws-rds";
 import { Api } from "./api";
+import { AuthProps } from "./auth";
 
 interface Props extends StackProps {
-    jwtIssuer: string;
+    auth: AuthProps;
 }
 
 export class App extends Stack {
     constructor(scope: Construct, id: string, props: Props) {
         super(scope, id);
-        const { jwtIssuer } = props;
+        const { auth } = props;
 
         const vpc = new Vpc(this, "vpc", {
             natGateways: 1,
@@ -42,7 +43,7 @@ export class App extends Stack {
 
         // REST API
         new Api(this, "api", {
-            jwtIssuer,
+            auth,
             database: {
                 host: database.clusterEndpoint.hostname,
                 port: Token.asString(database.clusterEndpoint.port),

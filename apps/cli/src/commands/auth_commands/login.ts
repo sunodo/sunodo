@@ -7,13 +7,13 @@ import prompts from "prompts";
 import colors from "colors";
 colors.enable();
 
-const domain = process.env.AUTH_DOMAIN!;
+const issuer = process.env.AUTH_ISSUER!;
 const clientId = process.env.AUTH_CLIENT_ID!;
 const authPath = path.join(os.homedir(), ".sunodo", "auth.json");
 
 export const handler = async () => {
     // fetches the .well-known endpoint for endpoints, issuer value etc.
-    const auth0 = await Issuer.discover(`https://${domain}`);
+    const auth0 = await Issuer.discover(issuer);
 
     // instantiates a client
     const client = new auth0.Client({
