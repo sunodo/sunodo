@@ -2,23 +2,18 @@
     "name": "api",
     "version": "0.1.0",
     "license": "MIT",
-    "bin": {
-        "api": "bin/api.js"
-    },
     "scripts": {
         "build": "tsc",
-        "dev": "sam local start-api -t ./cdk.out/Api.template.json",
+        "dev": "ts-node src/app.ts",
         "watch": "tsc -w",
-        "test": "vitest",
-        "cdk": "cdk"
+        "test": "vitest"
     },
     "devDependencies": {
-        "@aws-sdk/client-secrets-manager": "^3.259.0",
         "@mermaid-js/mermaid-cli": "^9.3.0",
-        "@types/aws-lambda": "^8.10.109",
         "@types/node": "18.11.18",
-        "aws-cdk": "2.61.1",
+        "fast-jwt": "^2.1.0",
         "json-schema-to-ts": "^2.6.2",
+        "nock": "^13.3.0",
         "prisma": "^4.9.0",
         "prisma-erd-generator": "^1.2.5",
         "ts-node": "^10.9.1",
@@ -27,19 +22,14 @@
         "vitest-mock-extended": "^1.0.8"
     },
     "dependencies": {
-        "@aws-cdk/aws-apigatewayv2-alpha": "^2.61.1-alpha.0",
-        "@aws-cdk/aws-apigatewayv2-authorizers-alpha": "^2.61.1-alpha.0",
-        "@aws-cdk/aws-apigatewayv2-integrations-alpha": "^2.61.1-alpha.0",
-        "@middy/core": "^4.2.1",
-        "@middy/http-error-handler": "^4.2.1",
-        "@middy/http-header-normalizer": "^4.2.1",
-        "@middy/http-json-body-parser": "^4.2.1",
-        "@middy/secrets-manager": "^4.2.1",
-        "@middy/validator": "^4.2.1",
+        "@fastify/type-provider-typebox": "^2.4.0",
         "@prisma/client": "^4.9.0",
-        "aws-cdk-lib": "2.61.1",
-        "constructs": "^10.0.0",
+        "@sinclair/typebox": "^0.25.21",
+        "dotenv": "^16.0.3",
+        "fastify": "^4.12.0",
+        "fastify-auth0-verify": "^1.0.0",
         "openid-client": "^5.3.2",
+        "slugify": "^1.6.5",
         "source-map-support": "^0.5.21",
         "unique-names-generator": "^4.7.1"
     }

@@ -1,10 +1,9 @@
 import { beforeEach } from "vitest";
 import { mock, mockReset } from "vitest-mock-extended";
-import { AuthService } from "../auth";
+import { AuthService } from "../auth.services";
 
 beforeEach(() => {
     mockReset(authService);
 });
 
-const authService = mock<AuthService>();
-export default authService;
+export const authService = mock<AuthService>();

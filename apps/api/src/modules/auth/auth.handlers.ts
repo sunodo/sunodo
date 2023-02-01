@@ -1,13 +1,12 @@
-import { APIGatewayProxyHandlerV2WithJWTAuthorizer } from "aws-lambda";
-import prisma from "./prisma";
-import authService, { UserInfo } from "./auth";
+import { randomUUID } from "crypto";
+import { RouteHandlerMethod } from "fastify";
 import { OrganizationType, Role } from "@prisma/client";
 
-export const handler: APIGatewayProxyHandlerV2WithJWTAuthorizer<
-    UserInfo
-> = async (event) => {
-    // read sub claim from JWT
-    const sub = event.requestContext.authorizer.jwt.claims["sub"] as string;
+import { authService } from "./auth.services";
+import prisma from "../../utils/prisma";
+
+export const loginHandler: RouteHandlerMethod = async (request, reply) => {
+    const sub = request.user.sub;
 
     // search for the user with that sub
     let user = await prisma.user.findFirst({
@@ -19,18 +18,23 @@ export const handler: APIGatewayProxyHandlerV2WithJWTAuthorizer<
     });
 
     if (!user) {
+        // user with that sub (subject) not found
+        // create one (or update if there is already one with the same email)
+
         // XXX: this is ugly, what is a prettier way?
-        const accessToken = event.headers["Authorization"]?.split(" ")[1]!;
+        const accessToken = request.headers["authorization"]?.split(" ")[1];
 
         // get id token for user, to get additional information (email and name)
-        const userInfo = await authService.getUserInfo(accessToken);
+        const userInfo = await authService.getUserInfo(accessToken!);
         const { email, name } = userInfo;
 
         if (!email || !name) {
             // id token don't have email and name, does not allow to log in
-            return {
-                statusCode: 401,
-            };
+            return reply.code(401).send({
+                error: "Unauthorized",
+                message:
+                    "User did not provide access to email and name properties",
+            });
         }
 
         // search again for user using email
@@ -55,8 +59,11 @@ export const handler: APIGatewayProxyHandlerV2WithJWTAuthorizer<
             });
         } else {
             // could not find user, create it, and also create personal organization
+            // use the same id for user and organization
+            const id = randomUUID();
             user = await prisma.user.create({
                 data: {
+                    id,
                     email,
                     name,
                     subs: [sub],
@@ -66,6 +73,7 @@ export const handler: APIGatewayProxyHandlerV2WithJWTAuthorizer<
                             role: Role.ADMIN,
                             organization: {
                                 create: {
+                                    id,
                                     name,
                                     type: OrganizationType.PERSONAL,
                                 },
@@ -77,5 +85,5 @@ export const handler: APIGatewayProxyHandlerV2WithJWTAuthorizer<
         }
     }
 
-    return user;
+    return reply.code(200).send(user);
 };

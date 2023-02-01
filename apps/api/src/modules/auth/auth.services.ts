@@ -1,42 +1,15 @@
-import { User } from "@prisma/client";
-import {
-    APIGatewayEventRequestContextJWTAuthorizer,
-    APIGatewayEventRequestContextV2WithAuthorizer,
-    APIGatewayProxyEventV2WithRequestContext,
-    APIGatewayProxyResultV2,
-    Handler,
-} from "aws-lambda";
 import { Issuer } from "openid-client";
 
-/**
- * User Payload
- */
-export interface APIGatewayEventRequestContextUser
-    extends APIGatewayEventRequestContextV2WithAuthorizer<APIGatewayEventRequestContextJWTAuthorizer> {
-    user: User | null;
-}
-
-export type APIGatewayProxyEventV2WithUser =
-    APIGatewayProxyEventV2WithRequestContext<
-        APIGatewayEventRequestContextV2WithAuthorizer<APIGatewayEventRequestContextJWTAuthorizer> &
-            APIGatewayEventRequestContextUser
-    >;
-
-export type APIGatewayProxyHandlerV2WithUser<T = never> = Handler<
-    APIGatewayProxyEventV2WithUser,
-    APIGatewayProxyResultV2<T>
->;
+export type UserInfo = {
+    email?: string;
+    name?: string;
+};
 
 export interface AuthProps {
     issuer: string;
     clientId: string;
     clientSecret: string;
 }
-
-export type UserInfo = {
-    email: string;
-    name: string;
-};
 
 export interface AuthService {
     getUserInfo(accessToken: string): UserInfo | Promise<UserInfo>;
@@ -63,10 +36,8 @@ export class JWSAuthService implements AuthService {
     }
 }
 
-const authService = new JWSAuthService({
+export const authService = new JWSAuthService({
     issuer: process.env.AUTH_ISSUER!,
     clientId: process.env.AUTH_CLIENT_ID!,
     clientSecret: process.env.AUTH_CLIENT_SECRET!,
 });
-
-export default authService;

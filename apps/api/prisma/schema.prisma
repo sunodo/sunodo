@@ -32,21 +32,21 @@ model Session {
 }
 
 model Organization {
-  id          String               @id @default(uuid())
-  name        String               @unique
-  slug        String?              @unique
-  createdAt   DateTime             @default(now())
-  type        OrganizationType
-  application Application[]
-  invites     OrganizationInvite[]
-  members     OrganizationMember[]
+  id           String               @id @default(uuid())
+  name         String               @unique
+  slug         String?              @unique
+  createdAt    DateTime             @default(now())
+  type         OrganizationType
+  applications Application[]
+  invites      OrganizationInvite[]
+  members      OrganizationMember[]
 }
 
 model OrganizationMember {
   organizationId String
   userId         String
   role           Role
-  joinedAt       DateTime
+  joinedAt       DateTime     @default(now())
   organization   Organization @relation(fields: [organizationId], references: [id])
   user           User         @relation(fields: [userId], references: [id])
 
