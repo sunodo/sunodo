@@ -1,4 +1,31 @@
+import { User } from "@prisma/client";
+import {
+    APIGatewayEventRequestContextJWTAuthorizer,
+    APIGatewayEventRequestContextV2WithAuthorizer,
+    APIGatewayProxyEventV2WithRequestContext,
+    APIGatewayProxyResultV2,
+    Handler,
+} from "aws-lambda";
 import { Issuer } from "openid-client";
+
+/**
+ * User Payload
+ */
+export interface APIGatewayEventRequestContextUser
+    extends APIGatewayEventRequestContextV2WithAuthorizer<APIGatewayEventRequestContextJWTAuthorizer> {
+    user: User | null;
+}
+
+export type APIGatewayProxyEventV2WithUser =
+    APIGatewayProxyEventV2WithRequestContext<
+        APIGatewayEventRequestContextV2WithAuthorizer<APIGatewayEventRequestContextJWTAuthorizer> &
+            APIGatewayEventRequestContextUser
+    >;
+
+export type APIGatewayProxyHandlerV2WithUser<T = never> = Handler<
+    APIGatewayProxyEventV2WithUser,
+    APIGatewayProxyResultV2<T>
+>;
 
 export interface AuthProps {
     issuer: string;

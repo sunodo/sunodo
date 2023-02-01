@@ -13,6 +13,7 @@ import {
 import { Construct } from "constructs";
 
 import { AuthProps } from "./auth";
+import { ISecret } from "aws-cdk-lib/aws-secretsmanager";
 
 // we need to say arm64 for local testing in Apple Silicon
 const architecture = Architecture.ARM_64;
@@ -21,9 +22,7 @@ const runtime = Runtime.NODEJS_18_X;
 export interface DatabaseConnectionProps {
     host: string;
     port: string;
-    engine: string;
-    username: string;
-    password: string;
+    credentials: ISecret;
 }
 
 interface Props {
@@ -55,9 +54,7 @@ export class Api extends Construct {
             environment: {
                 DATABASE_HOST: database.host,
                 DATABASE_PORT: database.port,
-                DATABASE_ENGINE: database.engine,
-                DATABASE_USER: database.username,
-                DATABASE_PASSWORD: database.password,
+                DATABASE_CREDENTIALS_ARN: database.credentials.secretArn,
             },
             bundling: {
                 nodeModules: ["@prisma/client", "prisma"],
@@ -78,10 +75,6 @@ export class Api extends Construct {
             },
         };
 
-        const me = new NodejsFunction(this, "me", {
-            ...defaults,
-            ...prismaProps,
-        });
         const login = new NodejsFunction(this, "auth.login", {
             ...defaults,
             ...prismaProps,
@@ -91,11 +84,13 @@ export class Api extends Construct {
                 AUTH_CLIENT_SECRET: auth.clientSecret,
             },
         });
-
-        httpApi.addRoutes({
-            path: "/me",
-            methods: [HttpMethod.GET],
-            integration: new HttpLambdaIntegration("me", me),
+        const me = new NodejsFunction(this, "me", {
+            ...defaults,
+            ...prismaProps,
+        });
+        const createApp = new NodejsFunction(this, "apps.create", {
+            ...defaults,
+            ...prismaProps,
         });
 
         httpApi.addRoutes({
@@ -104,5 +99,22 @@ export class Api extends Construct {
             integration: new HttpLambdaIntegration("login", login),
             authorizer: new HttpNoneAuthorizer(),
         });
+
+        httpApi.addRoutes({
+            path: "/me",
+            methods: [HttpMethod.GET],
+            integration: new HttpLambdaIntegration("me", me),
+        });
+
+        httpApi.addRoutes({
+            path: "/apps",
+            methods: [HttpMethod.POST],
+            integration: new HttpLambdaIntegration("createApp", createApp),
+        });
+
+        // allow lambdas to read database credentials
+        database.credentials.grantRead(login);
+        database.credentials.grantRead(me);
+        database.credentials.grantRead(createApp);
     }
 }

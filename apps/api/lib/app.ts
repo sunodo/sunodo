@@ -3,6 +3,7 @@ import { Stack, StackProps, Token } from "aws-cdk-lib";
 import { BastionHostLinux, Port, Vpc } from "aws-cdk-lib/aws-ec2";
 import {
     AuroraPostgresEngineVersion,
+    Credentials,
     DatabaseClusterEngine,
     ServerlessCluster,
 } from "aws-cdk-lib/aws-rds";
@@ -27,12 +28,15 @@ export class App extends Stack {
             vpc,
         });
 
+        const databaseCredentials = Credentials.fromGeneratedSecret("admin");
+
         // serverless postgres database
         const database = new ServerlessCluster(this, "databaseCluster", {
+            vpc,
             engine: DatabaseClusterEngine.auroraPostgres({
                 version: AuroraPostgresEngineVersion.VER_14_5,
             }),
-            vpc,
+            credentials: databaseCredentials,
         });
 
         // allow connection to database from bastion host
@@ -47,15 +51,7 @@ export class App extends Stack {
             database: {
                 host: database.clusterEndpoint.hostname,
                 port: Token.asString(database.clusterEndpoint.port),
-                engine: database.secret
-                    ?.secretValueFromJson("engine")
-                    .unsafeUnwrap()!,
-                username: database.secret
-                    ?.secretValueFromJson("username")
-                    .unsafeUnwrap()!,
-                password: database.secret
-                    ?.secretValueFromJson("password")
-                    .unsafeUnwrap()!,
+                credentials: databaseCredentials.secret!,
             },
         });
     }

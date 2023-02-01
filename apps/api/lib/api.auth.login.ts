@@ -1,6 +1,7 @@
 import { APIGatewayProxyHandlerV2WithJWTAuthorizer } from "aws-lambda";
 import prisma from "./prisma";
 import authService, { UserInfo } from "./auth";
+import { OrganizationType, Role } from "@prisma/client";
 
 export const handler: APIGatewayProxyHandlerV2WithJWTAuthorizer<
     UserInfo
@@ -53,12 +54,24 @@ export const handler: APIGatewayProxyHandlerV2WithJWTAuthorizer<
                 },
             });
         } else {
-            // could not find user, create it
+            // could not find user, create it, and also create personal organization
             user = await prisma.user.create({
                 data: {
                     email,
                     name,
                     subs: [sub],
+                    organizations: {
+                        create: {
+                            joinedAt: new Date(),
+                            role: Role.ADMIN,
+                            organization: {
+                                create: {
+                                    name,
+                                    type: OrganizationType.PERSONAL,
+                                },
+                            },
+                        },
+                    },
                 },
             });
         }
