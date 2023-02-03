@@ -10,6 +10,7 @@ import {
 import appsRoutes from "./modules/apps/apps.routes";
 import authRoutes from "./modules/auth/auth.routes";
 import orgsRoutes from "./modules/orgs/orgs.routes";
+import platformRoutes from "./modules/platform/platform.routes";
 import { FastifyTypebox } from "./types";
 
 const issuer = process.env.AUTH_ISSUER; // https://dev-0y8qxgon5zsrd7s1.us.auth0.com
@@ -72,7 +73,6 @@ const buildServer = (): FastifyTypebox => {
     server.register(swaggerUi, {
         routePrefix: "/docs",
         uiConfig: {
-            docExpansion: "full",
             deepLinking: false,
         },
     });
@@ -81,6 +81,7 @@ const buildServer = (): FastifyTypebox => {
     server.register(appsRoutes, { prefix: "apps" });
     server.register(authRoutes, { prefix: "auth" });
     server.register(orgsRoutes, { prefix: "orgs" });
+    server.register(platformRoutes, { prefix: "platform" });
 
     return server;
 };

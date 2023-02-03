@@ -20,3 +20,16 @@ export const CreateOrgSchema = {
         400: ErrorSchema,
     },
 };
+
+const ListOrgResponseSchema = Type.Array(
+    Type.Object({
+        name: Type.String(),
+        slug: Type.String(),
+    })
+);
+
+export const ListOrgSchema = {
+    response: {
+        200: ListOrgResponseSchema,
+    },
+};

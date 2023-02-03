@@ -1,25 +1,16 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { FastifyTypebox } from "../../types";
-import { createHandler, listHandler } from "./orgs.handlers";
-import { CreateOrgSchema, ListOrgSchema } from "./orgs.schemas";
+import { createHandler } from "./deployments.handlers";
+import { CreateDeploymentSchema } from "./deployments.schemas";
 
 const routes: FastifyPluginAsyncTypebox = async (server: FastifyTypebox) => {
     server.post(
         "/",
         {
-            schema: CreateOrgSchema,
+            schema: CreateDeploymentSchema,
             preValidation: server.authenticate,
         },
         createHandler
-    );
-
-    server.get(
-        "/",
-        {
-            schema: ListOrgSchema,
-            preValidation: server.authenticate,
-        },
-        listHandler
     );
 };
 

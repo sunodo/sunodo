@@ -8,7 +8,7 @@ import {
 
 import { RouteHandlerMethodTypebox } from "../../types";
 import prisma from "../../utils/prisma";
-import { CreateAppSchema } from "./apps.schemas";
+import { CreateAppSchema, GetAppSchema } from "./apps.schemas";
 
 /**
  * Name generator, generate names like `lazy-pig-345`
@@ -77,5 +77,50 @@ export const createHandler: RouteHandlerMethodTypebox<
 
     return reply.code(200).send({
         name: app.name,
+    });
+};
+
+export const getHandler: RouteHandlerMethodTypebox<
+    typeof GetAppSchema
+> = async (request, reply) => {
+    const user = await prisma.user.findFirst({
+        where: {
+            subs: {
+                has: request.user.sub,
+            },
+        },
+    });
+
+    // logged in user
+    if (!user) {
+        return reply.code(401);
+    }
+
+    // search by name of application, where user must be member of application organization
+    const dapp = await prisma.application.findUnique({
+        where: {
+            name: request.params.name,
+        },
+        include: {
+            organization: {
+                include: {
+                    members: {
+                        where: {
+                            userId: user.id,
+                        },
+                    },
+                },
+            },
+        },
+    });
+
+    if (!dapp) {
+        return reply.code(404);
+    }
+
+    // XXX: check authorization (user must be organization member)
+
+    return reply.code(200).send({
+        name: dapp.name,
     });
 };

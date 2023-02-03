@@ -3,7 +3,7 @@ import slugify from "slugify";
 
 import { RouteHandlerMethodTypebox } from "../../types";
 import prisma from "../../utils/prisma";
-import { CreateOrgSchema } from "./orgs.schemas";
+import { CreateOrgSchema, ListOrgSchema } from "./orgs.schemas";
 
 export const createHandler: RouteHandlerMethodTypebox<
     typeof CreateOrgSchema
@@ -56,4 +56,39 @@ export const createHandler: RouteHandlerMethodTypebox<
             }
         }
     }
+};
+
+export const listHandler: RouteHandlerMethodTypebox<
+    typeof ListOrgSchema
+> = async (request, reply) => {
+    const user = await prisma.user.findFirst({
+        where: {
+            subs: {
+                has: request.user.sub,
+            },
+        },
+    });
+
+    // logged in user
+    if (!user) {
+        return reply.code(401);
+    }
+
+    // list organizations of authenticated
+    const organizations = await prisma.organization.findMany({
+        where: {
+            members: {
+                some: {
+                    userId: user.id,
+                },
+            },
+        },
+    });
+
+    return reply.code(200).send(
+        organizations.map((o) => ({
+            name: o.name,
+            slug: o.slug!,
+        }))
+    );
 };

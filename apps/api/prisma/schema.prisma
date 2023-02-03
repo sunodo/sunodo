@@ -19,16 +19,6 @@ model User {
   subs          String[]
   name          String
   organizations OrganizationMember[]
-  sessions      Session[]
-}
-
-model Session {
-  id           String   @id @default(uuid())
-  userId       String
-  user         User     @relation(fields: [userId], references: [id])
-  createdAt    DateTime @default(now())
-  accessToken  String
-  refreshToken String
 }
 
 model Organization {
@@ -74,23 +64,44 @@ model Application {
 
 model Chain {
   id          Int          @id
-  name        String
+  name        String       @unique
   label       String       @unique
   testnet     Boolean
   enabled     Boolean
   deployments Deployment[]
 }
 
+model Region {
+  id               String       @id @default(uuid())
+  name             String       @unique
+  kubeConfigSecret String
+  deployments      Deployment[]
+  default          Boolean      @unique
+}
+
+model Runtime {
+  id         String       @id @default(uuid())
+  name       String       @unique
+  default    Boolean
+  Deployment Deployment[]
+}
+
 model Deployment {
   id              String           @id @default(uuid())
-  createdAt       DateTime         @default(now())
+  application     Application      @relation(fields: [applicationId], references: [id])
   applicationId   String
-  chainId         Int
+  createdAt       DateTime         @default(now())
   contractAddress String
   machineSnapshot String
   status          DeploymentStatus
-  application     Application      @relation(fields: [applicationId], references: [id])
   chain           Chain            @relation(fields: [chainId], references: [id])
+  chainId         Int
+  region          Region           @relation(fields: [regionId], references: [id])
+  regionId        String
+  runtime         Runtime          @relation(fields: [runtimeId], references: [id])
+  runtimeId       String
+
+  @@unique([applicationId, chainId])
 }
 
 enum OrganizationType {
