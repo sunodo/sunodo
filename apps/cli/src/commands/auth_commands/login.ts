@@ -1,26 +1,13 @@
-import os from "os";
-import path from "path";
 import open from "open";
 import fs from "fs-extra";
 import { Issuer, errors, TokenSet } from "openid-client";
 import prompts from "prompts";
 import colors from "colors";
+import { authClient, authPath } from "../auth";
 colors.enable();
 
-const issuer = process.env.AUTH_ISSUER!;
-const clientId = process.env.AUTH_CLIENT_ID!;
-const authPath = path.join(os.homedir(), ".sunodo", "auth.json");
-
 export const handler = async () => {
-    // fetches the .well-known endpoint for endpoints, issuer value etc.
-    const auth0 = await Issuer.discover(issuer);
-
-    // instantiates a client
-    const client = new auth0.Client({
-        client_id: clientId,
-        token_endpoint_auth_method: "none",
-        id_token_signed_response_alg: "RS256",
-    });
+    const client = await authClient();
 
     // Device Authorization Request - https://tools.ietf.org/html/rfc8628#section-3.1
     const handle = await client.deviceAuthorization({
@@ -71,7 +58,8 @@ export const handler = async () => {
 
     if (tokens && tokens.access_token) {
         await fs.outputJson(authPath, tokens, {
-            spaces: 4,
+            spaces: 4, // pretty print
+            mode: 0o600, // rw only for user
         });
 
         // XXX: call /auth/login
