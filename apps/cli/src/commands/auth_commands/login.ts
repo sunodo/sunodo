@@ -1,6 +1,6 @@
 import open from "open";
 import fs from "fs-extra";
-import { Issuer, errors, TokenSet } from "openid-client";
+import { errors, TokenSet } from "openid-client";
 import prompts from "prompts";
 import colors from "colors";
 import { authClient, authPath } from "../auth";
