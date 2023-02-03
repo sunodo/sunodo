@@ -57,6 +57,8 @@ export const createHandler: RouteHandlerMethodTypebox<
           });
     if (!organization) {
         return reply.code(400).send({
+            statusCode: 400,
+            name: "Error",
             message: `Invalid organization '${name}'`,
         });
     }

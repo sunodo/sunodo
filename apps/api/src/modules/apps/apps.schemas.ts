@@ -1,4 +1,5 @@
 import { Static, Type } from "@sinclair/typebox";
+import { ErrorSchema } from "../../schemas";
 
 export const CreateAppRequestSchema = Type.Object({
     name: Type.Optional(Type.String()),
@@ -15,8 +16,6 @@ export const CreateAppSchema = {
     body: CreateAppRequestSchema,
     response: {
         201: CreateAppResponseSchema,
-        400: Type.Object({
-            message: Type.String(),
-        }),
+        400: ErrorSchema,
     },
 };

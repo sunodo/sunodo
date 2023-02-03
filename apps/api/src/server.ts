@@ -1,5 +1,7 @@
 import Fastify from "fastify";
 import jwt from "fastify-auth0-verify";
+import swagger from "@fastify/swagger";
+import swaggerUi from "@fastify/swagger-ui";
 import {
     TypeBoxTypeProvider,
     TypeBoxValidatorCompiler,
@@ -56,6 +58,24 @@ const buildServer = (): FastifyTypebox => {
 
     // register schemas
     // server.addSchema(createSchema);
+
+    // swagger
+    server.register(swagger, {
+        openapi: {
+            info: {
+                title: "Sunodo API",
+                description: "Sunodo = Cartesi DApp management API",
+                version: "v1",
+            },
+        },
+    });
+    server.register(swaggerUi, {
+        routePrefix: "/docs",
+        uiConfig: {
+            docExpansion: "full",
+            deepLinking: false,
+        },
+    });
 
     // register application routes
     server.register(appsRoutes, { prefix: "apps" });
