@@ -1,27 +1,34 @@
 {
-  "name": "web",
-  "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "next": "^13.1.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "ui": "*"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.0.0",
-    "@types/node": "^18.11.18",
-    "@types/react": "^18.0.22",
-    "@types/react-dom": "^18.0.7",
-    "eslint": "8.32.0",
-    "eslint-config-custom": "*",
-    "tsconfig": "*",
-    "typescript": "^4.5.3"
-  }
+    "name": "web",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint"
+    },
+    "dependencies": {
+        "@emotion/react": "^11.10.5",
+        "@emotion/server": "^11.10.0",
+        "@mantine/core": "^5.10.3",
+        "@mantine/hooks": "^5.10.3",
+        "@mantine/next": "^5.10.3",
+        "@nitric/react-animated-term": "^1.1.0",
+        "next": "^13.1.6",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "tss-react": "^4.6.0",
+        "ui": "*"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.0.0",
+        "@types/node": "^18.11.19",
+        "@types/react": "^18.0.27",
+        "@types/react-dom": "^18.0.7",
+        "eslint": "8.33.0",
+        "eslint-config-custom": "*",
+        "tsconfig": "*",
+        "typescript": "^4.9.5"
+    }
 }
