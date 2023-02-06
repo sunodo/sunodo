@@ -1,25 +1,15 @@
-import { Command, Flags } from "@oclif/core";
 import open from "open";
-import fs from "fs-extra";
 import { errors, TokenSet } from "openid-client";
 import prompts from "prompts";
-import { authClient, authPath } from "../../services/auth";
+import { authClient } from "../../services/auth";
+import { SunodoCommand } from "../../sunodoCommand";
 
-export default class AuthLogin extends Command {
+export default class AuthLogin extends SunodoCommand {
     static description = "Login or Signup to Sunodo";
 
     static examples = ["<%= config.bin %> <%= command.id %>"];
 
-    static flags = {
-        // flag with a value (-n, --name=VALUE)
-        name: Flags.string({ char: "n", description: "name to print" }),
-        // flag with no value (-f, --force)
-        force: Flags.boolean({ char: "f" }),
-    };
-
     public async run(): Promise<void> {
-        const { args, flags } = await this.parse(AuthLogin);
-
         const client = await authClient();
 
         // Device Authorization Request - https://tools.ietf.org/html/rfc8628#section-3.1
@@ -69,10 +59,7 @@ export default class AuthLogin extends Command {
         }
 
         if (tokens && tokens.access_token) {
-            await fs.outputJson(authPath, tokens, {
-                spaces: 4, // pretty print
-                mode: 0o600, // rw only for user
-            });
+            this.saveToken(tokens);
 
             // XXX: call /auth/login
             this.log(`logged in`);

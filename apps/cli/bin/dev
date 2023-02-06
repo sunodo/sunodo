@@ -7,7 +7,7 @@ const project = path.join(__dirname, "..", "tsconfig.json");
 
 // In dev mode -> use ts-node and dev plugins
 process.env.NODE_ENV = "development";
-process.env.DEFAULT_API_URL = "http://localhost:3000/dev";
+process.env.DEFAULT_API_URL = "http://127.0.0.1:3000";
 process.env.AUTH_ISSUER = "https://dev-0y8qxgon5zsrd7s1.us.auth0.com";
 process.env.AUTH_CLIENT_ID = "vUR2kchV4dqerbIUP3CRuAIgurTPsrJN";
 

@@ -9,13 +9,13 @@ import {
 
 import appsRoutes from "./modules/apps/apps.routes";
 import authRoutes from "./modules/auth/auth.routes";
+import chainsRoutes from "./modules/chains/chains.routes";
 import orgsRoutes from "./modules/orgs/orgs.routes";
-import platformRoutes from "./modules/platform/platform.routes";
+import regionsRoutes from "./modules/regions/regions.routes";
+import runtimesRoutes from "./modules/runtimes/runtimes.routes";
 import { FastifyTypebox } from "./types";
 
-const issuer = process.env.AUTH_ISSUER; // https://dev-0y8qxgon5zsrd7s1.us.auth0.com
-const clientId = process.env.AUTH_CLIENT_ID; // vUR2kchV4dqerbIUP3CRuAIgurTPsrJN
-const clientSecret = process.env.AUTH_CLIENT_SECRET; // 0tPrtmcPIeP3qG10kgUnB9_gmxQSifIdU7PiVAuYfZ4MGK7UebDDAnc4AGNl2-qC
+const issuer = process.env.AUTH_ISSUER;
 
 declare module "@fastify/jwt" {
     interface FastifyJWT {
@@ -80,8 +80,10 @@ const buildServer = (): FastifyTypebox => {
     // register application routes
     server.register(appsRoutes, { prefix: "apps" });
     server.register(authRoutes, { prefix: "auth" });
+    server.register(chainsRoutes, { prefix: "chains" });
     server.register(orgsRoutes, { prefix: "orgs" });
-    server.register(platformRoutes, { prefix: "platform" });
+    server.register(regionsRoutes, { prefix: "regions" });
+    server.register(runtimesRoutes, { prefix: "runtimes" });
 
     return server;
 };

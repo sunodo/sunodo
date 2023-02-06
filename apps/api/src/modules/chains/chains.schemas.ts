@@ -4,6 +4,7 @@ export const ListChainsSchema = {
     response: {
         200: Type.Array(
             Type.Object({
+                id: Type.Integer(),
                 name: Type.String(),
                 label: Type.String(),
                 testnet: Type.Boolean(),
