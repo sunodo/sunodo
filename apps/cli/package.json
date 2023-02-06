@@ -1,35 +1,86 @@
 {
-    "name": "cli",
-    "version": "1.0.0",
-    "main": "src/index.ts",
-    "author": "Danilo Tuler",
-    "license": "MIT",
-    "scripts": {
-        "lint": "eslint",
-        "openapi": "openapi --input ../api/openapi.json --output src/generated/api --client node --name SunodoClient"
+    "name": "@sunodo/cli",
+    "version": "0.0.0",
+    "description": "Sunodo CLI",
+    "author": "Danilo Tuler <danilo.tuler@cartesi.io>",
+    "bin": {
+        "sunodoctl": "./bin/run"
     },
+    "homepage": "https://github.com/cartesi/sunodo",
+    "license": "MIT",
+    "main": "dist/index.js",
+    "repository": "cartesi/sunodo",
+    "files": [
+        "/bin",
+        "/dist",
+        "/npm-shrinkwrap.json",
+        "/oclif.manifest.json"
+    ],
     "dependencies": {
-        "auth0": "^3.1.1",
-        "axios": "^1.2.3",
-        "colors": "^1.4.0",
+        "@oclif/core": "^2",
+        "@oclif/plugin-help": "^5",
+        "@oclif/plugin-plugins": "^2.3.0",
+        "auth0": "^3.1.2",
+        "axios": "^1.3.2",
         "dotenv": "^16.0.3",
         "fs-extra": "^11.1.0",
         "open": "^8.4.0",
-        "openid-client": "^5.3.1",
-        "prompts": "^2.4.2",
-        "yargs": "^17.6.2"
+        "openid-client": "^5.4.0",
+        "ora": "^6.1.2",
+        "prompts": "^2.4.2"
     },
     "devDependencies": {
+        "@oclif/test": "^2.3.4",
         "@types/auth0": "^2.35.9",
+        "@types/chai": "^4",
         "@types/fs-extra": "^11.0.1",
-        "@types/node-fetch": "^2.6.2",
+        "@types/mocha": "^10.0.1",
+        "@types/node": "^18.11.19",
         "@types/prompts": "^2.4.2",
-        "@types/yargs": "^17.0.19",
-        "esbuild": "^0.17.3",
+        "chai": "^4",
+        "eslint": "^8.33.0",
         "eslint-config-custom": "*",
-        "openapi-typescript-codegen": "^0.23.0",
-        "pkg": "^5.8.0",
+        "eslint-config-oclif": "^4",
+        "eslint-config-oclif-typescript": "^1.0.3",
+        "mocha": "^10.2.0",
+        "oclif": "^3",
+        "shx": "^0.3.3",
         "ts-node": "^10.9.1",
-        "typescript": "^4.9.4"
-    }
+        "tsconfig": "*",
+        "tslib": "^2.5.0",
+        "turbo": "1.7.3",
+        "typescript": "^4.9.5"
+    },
+    "oclif": {
+        "bin": "sunodoctl",
+        "dirname": "sunodoctl",
+        "commands": "./dist/commands",
+        "plugins": [
+            "@oclif/plugin-help",
+            "@oclif/plugin-plugins"
+        ],
+        "topicSeparator": " ",
+        "topics": {
+            "auth": {
+                "description": "authentication related commands"
+            }
+        }
+    },
+    "scripts": {
+        "build": "shx rm -rf dist && tsc -b",
+        "lint": "eslint . --ext .ts --config .eslintrc",
+        "postpack": "shx rm -f oclif.manifest.json",
+        "posttest": "yarn lint",
+        "prepack": "yarn build && oclif manifest && oclif readme",
+        "test": "mocha --forbid-only \"test/**/*.test.ts\"",
+        "version": "oclif readme && git add README.md"
+    },
+    "engines": {
+        "node": ">=12.0.0"
+    },
+    "bugs": "https://github.com/cartesi/sunodo/issues",
+    "keywords": [
+        "oclif"
+    ],
+    "types": "dist/index.d.ts"
 }

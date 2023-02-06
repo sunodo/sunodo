@@ -1,14 +1,11 @@
 import os from "os";
 import path from "path";
-import { Argv } from "yargs";
 import { Issuer, BaseClient } from "openid-client";
 
 export const issuer = process.env.AUTH_ISSUER!;
 export const clientId = process.env.AUTH_CLIENT_ID!;
 
 export const authPath = path.join(os.homedir(), ".sunodo", "auth.json");
-export const command = "auth <command>";
-export const desc = "Authentication and Signup";
 
 export const authClient = async (): Promise<BaseClient> => {
     // fetches the .well-known endpoint for endpoints, issuer value etc.
@@ -23,8 +20,3 @@ export const authClient = async (): Promise<BaseClient> => {
 
     return client;
 };
-
-export const builder = (yargs: Argv) =>
-    yargs.commandDir("auth_commands", { extensions: ["js", "ts"] });
-
-export const handler = () => {};
