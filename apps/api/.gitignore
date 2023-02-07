@@ -1,4 +1,4 @@
-.env
+.env*
 *.js
 !jest.config.js
 *.d.ts
