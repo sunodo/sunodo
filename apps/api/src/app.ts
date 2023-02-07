@@ -8,7 +8,7 @@ const main = async () => {
     try {
         const path = await server.listen({
             host: "0.0.0.0",
-            port: 3000,
+            port: 3001,
         });
         console.log(`Server ready at ${path}`);
     } catch (e) {

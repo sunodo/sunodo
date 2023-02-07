@@ -62,7 +62,6 @@
         "commands": "./dist/commands",
         "plugins": [
             "@oclif/plugin-help",
-            "@oclif/plugin-plugins",
             "@oclif/plugin-update"
         ],
         "topicSeparator": " ",
@@ -80,7 +79,7 @@
     },
     "scripts": {
         "build": "shx rm -rf dist && yarn codegen && tsc -b",
-        "codegen": "openapi-typescript http://127.0.0.1:3000/docs/json --output src/services/sunodo.d.ts",
+        "codegen": "openapi-typescript http://127.0.0.1:3001/docs/json --output src/services/sunodo.d.ts",
         "lint": "eslint . --ext .ts --config .eslintrc",
         "postpack": "shx rm -f oclif.manifest.json",
         "posttest": "yarn lint",
