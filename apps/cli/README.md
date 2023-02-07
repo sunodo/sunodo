@@ -32,6 +32,9 @@ USAGE
 * [`sunodoctl auth login`](#sunodoctl-auth-login)
 * [`sunodoctl auth logout`](#sunodoctl-auth-logout)
 * [`sunodoctl help [COMMANDS]`](#sunodoctl-help-commands)
+* [`sunodoctl platform chains`](#sunodoctl-platform-chains)
+* [`sunodoctl platform regions`](#sunodoctl-platform-regions)
+* [`sunodoctl platform runtimes`](#sunodoctl-platform-runtimes)
 * [`sunodoctl plugins`](#sunodoctl-plugins)
 * [`sunodoctl plugins:install PLUGIN...`](#sunodoctl-pluginsinstall-plugin)
 * [`sunodoctl plugins:inspect PLUGIN...`](#sunodoctl-pluginsinspect-plugin)
@@ -41,6 +44,7 @@ USAGE
 * [`sunodoctl plugins:uninstall PLUGIN...`](#sunodoctl-pluginsuninstall-plugin-1)
 * [`sunodoctl plugins:uninstall PLUGIN...`](#sunodoctl-pluginsuninstall-plugin-2)
 * [`sunodoctl plugins update`](#sunodoctl-plugins-update)
+* [`sunodoctl update [CHANNEL]`](#sunodoctl-update-channel)
 
 ## `sunodoctl auth login`
 
@@ -48,11 +52,7 @@ Login or Signup to Sunodo
 
 ```
 USAGE
-  $ sunodoctl auth login [-n <value>] [-f]
-
-FLAGS
-  -f, --force
-  -n, --name=<value>  name to print
+  $ sunodoctl auth login
 
 DESCRIPTION
   Login or Signup to Sunodo
@@ -95,6 +95,90 @@ DESCRIPTION
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.2.4/src/commands/help.ts)_
+
+## `sunodoctl platform chains`
+
+list chains supported by the platform
+
+```
+USAGE
+  $ sunodoctl platform chains [--columns <value> | -x] [--sort <value>] [--filter <value>] [--output csv|json|yaml | 
+    | [--csv | --no-truncate]] [--no-header | ] [--live <value>]
+
+FLAGS
+  -x, --extended     show extra columns
+  --columns=<value>  only show provided columns (comma-separated)
+  --csv              output is csv format [alias: --output=csv]
+  --filter=<value>   filter property by partial string matching, ex: name=foo
+  --live=<value>     include only live production chains
+  --no-header        hide table header from output
+  --no-truncate      do not truncate output to fit screen
+  --output=<option>  output in a more machine friendly format
+                     <options: csv|json|yaml>
+  --sort=<value>     property to sort by (prepend '-' for descending)
+
+DESCRIPTION
+  list chains supported by the platform
+
+EXAMPLES
+  $ sunodoctl platform chains
+```
+
+## `sunodoctl platform regions`
+
+list regions supported by the platform
+
+```
+USAGE
+  $ sunodoctl platform regions [--columns <value> | -x] [--sort <value>] [--filter <value>] [--output csv|json|yaml | 
+    | [--csv | --no-truncate]] [--no-header | ] [--live <value>]
+
+FLAGS
+  -x, --extended     show extra columns
+  --columns=<value>  only show provided columns (comma-separated)
+  --csv              output is csv format [alias: --output=csv]
+  --filter=<value>   filter property by partial string matching, ex: name=foo
+  --live=<value>     include only live production chains
+  --no-header        hide table header from output
+  --no-truncate      do not truncate output to fit screen
+  --output=<option>  output in a more machine friendly format
+                     <options: csv|json|yaml>
+  --sort=<value>     property to sort by (prepend '-' for descending)
+
+DESCRIPTION
+  list regions supported by the platform
+
+EXAMPLES
+  $ sunodoctl platform regions
+```
+
+## `sunodoctl platform runtimes`
+
+list runtimes supported by the platform
+
+```
+USAGE
+  $ sunodoctl platform runtimes [--columns <value> | -x] [--sort <value>] [--filter <value>] [--output csv|json|yaml | 
+    | [--csv | --no-truncate]] [--no-header | ] [--live <value>]
+
+FLAGS
+  -x, --extended     show extra columns
+  --columns=<value>  only show provided columns (comma-separated)
+  --csv              output is csv format [alias: --output=csv]
+  --filter=<value>   filter property by partial string matching, ex: name=foo
+  --live=<value>     include only live production chains
+  --no-header        hide table header from output
+  --no-truncate      do not truncate output to fit screen
+  --output=<option>  output in a more machine friendly format
+                     <options: csv|json|yaml>
+  --sort=<value>     property to sort by (prepend '-' for descending)
+
+DESCRIPTION
+  list runtimes supported by the platform
+
+EXAMPLES
+  $ sunodoctl platform runtimes
+```
 
 ## `sunodoctl plugins`
 
@@ -328,4 +412,41 @@ FLAGS
 DESCRIPTION
   Update installed plugins.
 ```
+
+## `sunodoctl update [CHANNEL]`
+
+update the sunodoctl CLI
+
+```
+USAGE
+  $ sunodoctl update [CHANNEL] [-a] [-v <value> | -i] [--force]
+
+FLAGS
+  -a, --available        Install a specific version.
+  -i, --interactive      Interactively select version to install. This is ignored if a channel is provided.
+  -v, --version=<value>  Install a specific version.
+  --force                Force a re-download of the requested version.
+
+DESCRIPTION
+  update the sunodoctl CLI
+
+EXAMPLES
+  Update to the stable channel:
+
+    $ sunodoctl update stable
+
+  Update to a specific version:
+
+    $ sunodoctl update --version 1.0.0
+
+  Interactively select version:
+
+    $ sunodoctl update --interactive
+
+  See available versions:
+
+    $ sunodoctl update --available
+```
+
+_See code: [@oclif/plugin-update](https://github.com/oclif/plugin-update/blob/v3.1.3/src/commands/update.ts)_
 <!-- commandsstop -->
