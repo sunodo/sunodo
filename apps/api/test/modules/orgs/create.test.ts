@@ -3,7 +3,7 @@ import { Error } from "../../../src/schemas";
 import buildServer from "../../../src/server";
 import { token } from "../../auth";
 import prisma from "../../../src/utils/__mocks__/prisma";
-import { OrganizationType, Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { CreateOrgResponse } from "../../../src/modules/orgs/orgs.schemas";
 
 vi.mock("../../../src/utils/prisma");
@@ -43,7 +43,6 @@ describe("orgs", () => {
             id: "1",
             name: "My Organization",
             slug: "my-organization",
-            type: OrganizationType.SHARED,
             createdAt: new Date(),
         });
 

@@ -1,4 +1,4 @@
-import { OrganizationType, Prisma, Role } from "@prisma/client";
+import { Prisma, Role } from "@prisma/client";
 import slugify from "slugify";
 
 import { RouteHandlerMethodTypebox } from "../../types";
@@ -36,7 +36,6 @@ export const createHandler: RouteHandlerMethodTypebox<
             data: {
                 name,
                 slug,
-                type: OrganizationType.SHARED,
                 members: {
                     create: {
                         userId: user.id,
@@ -66,31 +65,37 @@ export const createHandler: RouteHandlerMethodTypebox<
 export const getHandler: RouteHandlerMethodTypebox<
     typeof GetOrgSchema
 > = async (request, reply) => {
-    const user = await prisma.user.findFirst({
-        where: {
-            subs: {
-                has: request.user.sub,
-            },
-        },
-    });
-
-    // logged in user
-    if (!user) {
-        return reply.code(401);
-    }
-
     // list organizations of authenticated
     const om = await prisma.organizationMember.findFirst({
         where: {
             organization: {
                 slug: request.params.slug,
             },
-            userId: user.id,
+            user: {
+                subs: {
+                    has: request.user.sub,
+                },
+            },
         },
         include: {
             organization: true,
         },
     });
+
+    /*
+    const org = await prisma.organization.findFirst({
+        where: {
+            members: {
+                some: {
+                    user: {
+                        subs: {
+                            has: request.user.sub,
+                        },
+                    },
+                },
+            },
+        },
+    });*/
 
     if (!om) {
         return reply.code(404);
@@ -145,25 +150,16 @@ export const deleteHandler: RouteHandlerMethodTypebox<
 export const listHandler: RouteHandlerMethodTypebox<
     typeof ListOrgSchema
 > = async (request, reply) => {
-    const user = await prisma.user.findFirst({
-        where: {
-            subs: {
-                has: request.user.sub,
-            },
-        },
-    });
-
-    // logged in user
-    if (!user) {
-        return reply.code(401);
-    }
-
     // list organizations of authenticated
     const organizations = await prisma.organization.findMany({
         where: {
             members: {
                 some: {
-                    userId: user.id,
+                    user: {
+                        subs: {
+                            has: request.user.sub,
+                        },
+                    },
                 },
             },
         },

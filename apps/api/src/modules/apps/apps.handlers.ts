@@ -40,24 +40,25 @@ export const createHandler: RouteHandlerMethodTypebox<
 
     // XXX: validate with pattern /^[a-z][a-z0-9-]{1,28}[a-z0-9]$/
 
-    // find organization by slug (user must be member), or use user personal organization
+    // find organization by slug
     const organization = request.body.org
         ? await prisma.organization.findFirst({
               where: {
                   slug: request.body.org,
                   members: {
                       some: {
-                          userId: user.id,
+                          user: {
+                              subs: {
+                                  has: request.user.sub,
+                              },
+                          },
                       },
                   },
               },
           })
-        : await prisma.organization.findUnique({
-              where: {
-                  id: user.id,
-              },
-          });
-    if (!organization) {
+        : undefined;
+
+    if (organization === null) {
         return reply.code(400).send({
             statusCode: 400,
             error: "Error",
@@ -69,11 +70,8 @@ export const createHandler: RouteHandlerMethodTypebox<
     const app = await prisma.application.create({
         data: {
             name,
-            organization: {
-                connect: {
-                    id: organization.id,
-                },
-            },
+            creatorId: user.id,
+            organizationId: organization?.id,
         },
     });
 
@@ -85,72 +83,58 @@ export const createHandler: RouteHandlerMethodTypebox<
 export const listHandler: RouteHandlerMethodTypebox<
     typeof ListAppSchema
 > = async (request, reply) => {
-    // get authenticated user
-    const user = await prisma.user.findFirst({
-        where: {
-            subs: {
-                has: request.user.sub,
-            },
-        },
-    });
-
-    // logged in user
-    if (!user) {
-        return reply.code(401);
-    }
-
-    const org = request.query.org
-        ? await prisma.organization.findUnique({
+    const apps = request.query.org
+        ? await prisma.application.findMany({
               where: {
-                  slug: request.query.org,
-                  // XXX: check if user is member
-              },
-              include: {
-                  applications: true,
+                  organization: {
+                      slug: request.query.org,
+                      members: {
+                          some: {
+                              user: {
+                                  subs: {
+                                      has: request.user.sub,
+                                  },
+                              },
+                          },
+                      },
+                  },
               },
           })
-        : await prisma.organization.findUnique({
+        : await prisma.application.findMany({
               where: {
-                  id: user.id,
-              },
-              include: {
-                  applications: true,
+                  creator: {
+                      subs: {
+                          has: request.user.sub,
+                      },
+                  },
+                  organizationId: null,
               },
           });
-
-    const apps = org ? org.applications : [];
     return reply.code(200).send(apps);
 };
 
 export const getHandler: RouteHandlerMethodTypebox<
     typeof GetAppSchema
 > = async (request, reply) => {
-    // get authenticated user
-    const user = await prisma.user.findFirst({
-        where: {
-            subs: {
-                has: request.user.sub,
-            },
-        },
-    });
-
-    // logged in user
-    if (!user) {
-        return reply.code(401);
-    }
-
-    // search by name of application, where user must be member of application organization
-    const dapp = await prisma.application.findUnique({
+    // search by name of application, where user must be creator or member of application organization
+    const dapp = await prisma.application.findFirst({
         where: {
             name: request.params.name,
-        },
-        include: {
-            organization: {
-                include: {
+            OR: {
+                organization: {
                     members: {
-                        where: {
-                            userId: user.id,
+                        some: {
+                            user: {
+                                subs: {
+                                    has: request.user.sub,
+                                },
+                            },
                         },
+                    },
+                },
+                creator: {
+                    subs: {
+                        has: request.user.sub,
                     },
                 },
             },
@@ -160,10 +144,5 @@ export const getHandler: RouteHandlerMethodTypebox<
     if (!dapp) {
         return reply.code(404);
     }
-
-    // XXX: check authorization (user must be organization member)
-
-    return reply.code(200).send({
-        name: dapp.name,
-    });
+    return reply.code(200).send(dapp);
 };

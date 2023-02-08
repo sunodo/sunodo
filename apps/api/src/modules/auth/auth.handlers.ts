@@ -1,6 +1,4 @@
-import { randomUUID } from "crypto";
 import { RouteHandlerMethod } from "fastify";
-import { OrganizationType, Role } from "@prisma/client";
 
 import { authService } from "./auth.services";
 import prisma from "../../utils/prisma";
@@ -58,28 +56,12 @@ export const loginHandler: RouteHandlerMethod = async (request, reply) => {
                 },
             });
         } else {
-            // could not find user, create it, and also create personal organization
-            // use the same id for user and organization
-            const id = randomUUID();
+            // could not find user, create it
             user = await prisma.user.create({
                 data: {
-                    id,
                     email,
                     name,
                     subs: [sub],
-                    organizations: {
-                        create: {
-                            joinedAt: new Date(),
-                            role: Role.ADMIN,
-                            organization: {
-                                create: {
-                                    id,
-                                    name,
-                                    type: OrganizationType.PERSONAL,
-                                },
-                            },
-                        },
-                    },
                 },
             });
         }

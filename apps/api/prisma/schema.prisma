@@ -19,14 +19,14 @@ model User {
   subs          String[]
   name          String
   organizations OrganizationMember[]
+  Application   Application[]
 }
 
 model Organization {
   id           String               @id @default(uuid())
   name         String               @unique
-  slug         String?              @unique
+  slug         String               @unique
   createdAt    DateTime             @default(now())
-  type         OrganizationType
   applications Application[]
   invites      OrganizationInvite[]
   members      OrganizationMember[]
@@ -54,11 +54,13 @@ model OrganizationInvite {
 }
 
 model Application {
-  id             String       @id @default(uuid())
-  name           String       @unique
-  organizationId String
-  createdAt      DateTime     @default(now())
-  organization   Organization @relation(fields: [organizationId], references: [id])
+  id             String        @id @default(uuid())
+  name           String        @unique
+  creatorId      String
+  creator        User          @relation(fields: [creatorId], references: [id])
+  createdAt      DateTime      @default(now())
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id])
   deployments    Deployment[]
 }
 
@@ -102,11 +104,6 @@ model Deployment {
   runtimeId       String
 
   @@unique([applicationId, chainId])
-}
-
-enum OrganizationType {
-  PERSONAL
-  SHARED
 }
 
 enum Role {
