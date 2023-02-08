@@ -1,36 +1,52 @@
-import { Static, Type } from "@sinclair/typebox";
+import { Type } from "@sinclair/typebox";
 import { ErrorSchema } from "../../schemas";
 
+const AppSchema = Type.Object({
+    name: Type.String({
+        description:
+            "Name of application, default to generated name if not defined",
+        examples: ["echo-python"],
+    }),
+});
+
 export const CreateAppRequestSchema = Type.Object({
-    name: Type.Optional(
-        Type.String({
-            description:
-                "Name of application, default to generated name if not defined",
-            examples: "echo-python",
-        })
-    ),
+    name: Type.Optional(AppSchema.properties.name),
     org: Type.Optional(Type.String()),
 });
-export type CreateAppRequest = Static<typeof CreateAppRequestSchema>;
 
-export const CreateAppResponseSchema = Type.Object({
-    name: Type.String(),
-});
-export type CreateAppResponse = Static<typeof CreateAppResponseSchema>;
+export const CreateAppResponseSchema = AppSchema;
 
 export const CreateAppSchema = {
+    summary: "Create application",
     body: CreateAppRequestSchema,
     response: {
         201: CreateAppResponseSchema,
         400: ErrorSchema,
+        401: ErrorSchema,
+    },
+    security: [{ openId: [] }],
+};
+
+export const ListAppSchema = {
+    summary: "List applications",
+    querystring: Type.Object({
+        org: Type.Optional(
+            Type.String({
+                description: "organization filter",
+                examples: ["sunodo"],
+            })
+        ),
+    }),
+    response: {
+        200: Type.Array(AppSchema),
     },
 };
 
 export const GetAppSchema = {
+    summary: "Get application",
     response: {
-        200: Type.Object({
-            name: Type.String(),
-        }),
+        200: AppSchema,
+        401: ErrorSchema,
         404: ErrorSchema,
     },
     params: Type.Object({

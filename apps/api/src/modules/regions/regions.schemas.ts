@@ -1,5 +1,8 @@
 import { Type } from "@sinclair/typebox";
 
+const RegionSchema = Type.Object({ name: Type.String() });
+
 export const ListRegionsSchema = {
-    response: { 200: Type.Array(Type.Object({ name: Type.String() })) },
+    summary: "List supported regions",
+    response: { 200: Type.Array(RegionSchema) },
 };

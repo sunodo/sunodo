@@ -8,7 +8,7 @@ import {
 
 import { RouteHandlerMethodTypebox } from "../../types";
 import prisma from "../../utils/prisma";
-import { CreateAppSchema, GetAppSchema } from "./apps.schemas";
+import { CreateAppSchema, GetAppSchema, ListAppSchema } from "./apps.schemas";
 
 /**
  * Name generator, generate names like `lazy-pig-345`
@@ -37,6 +37,8 @@ export const createHandler: RouteHandlerMethodTypebox<
 
     // name of application
     const name = request.body.name ?? uniqueNamesGenerator(nameGeneratorConfig);
+
+    // XXX: validate with pattern /^[a-z][a-z0-9-]{1,28}[a-z0-9]$/
 
     // find organization by slug (user must be member), or use user personal organization
     const organization = request.body.org
@@ -80,9 +82,50 @@ export const createHandler: RouteHandlerMethodTypebox<
     });
 };
 
+export const listHandler: RouteHandlerMethodTypebox<
+    typeof ListAppSchema
+> = async (request, reply) => {
+    // get authenticated user
+    const user = await prisma.user.findFirst({
+        where: {
+            subs: {
+                has: request.user.sub,
+            },
+        },
+    });
+
+    // logged in user
+    if (!user) {
+        return reply.code(401);
+    }
+
+    const org = request.query.org
+        ? await prisma.organization.findUnique({
+              where: {
+                  slug: request.query.org,
+                  // XXX: check if user is member
+              },
+              include: {
+                  applications: true,
+              },
+          })
+        : await prisma.organization.findUnique({
+              where: {
+                  id: user.id,
+              },
+              include: {
+                  applications: true,
+              },
+          });
+
+    const apps = org ? org.applications : [];
+    return reply.code(200).send(apps);
+};
+
 export const getHandler: RouteHandlerMethodTypebox<
     typeof GetAppSchema
 > = async (request, reply) => {
+    // get authenticated user
     const user = await prisma.user.findFirst({
         where: {
             subs: {

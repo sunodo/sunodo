@@ -68,12 +68,24 @@ const buildServer = (): FastifyTypebox => {
                 description: "Sunodo = Cartesi DApp management API",
                 version: "v1",
             },
+            components: {
+                securitySchemes: {
+                    openId: {
+                        type: "openIdConnect",
+                        openIdConnectUrl: `${issuer}.well-known/openid-configuration`,
+                    },
+                },
+            },
         },
     });
     server.register(swaggerUi, {
         routePrefix: "/docs",
         uiConfig: {
             deepLinking: false,
+        },
+        initOAuth: {
+            clientId: process.env.AUTH_OPEN_API_CLIENT_ID,
+            scopes: ["email", "openid", "profile"],
         },
     });
 
