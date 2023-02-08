@@ -3,7 +3,12 @@ import slugify from "slugify";
 
 import { RouteHandlerMethodTypebox } from "../../types";
 import prisma from "../../utils/prisma";
-import { CreateOrgSchema, GetOrgSchema, ListOrgSchema } from "./orgs.schemas";
+import {
+    CreateOrgSchema,
+    DeleteOrgSchema,
+    GetOrgSchema,
+    ListOrgSchema,
+} from "./orgs.schemas";
 
 export const createHandler: RouteHandlerMethodTypebox<
     typeof CreateOrgSchema
@@ -92,6 +97,49 @@ export const getHandler: RouteHandlerMethodTypebox<
     }
 
     return reply.code(200).send(om.organization);
+};
+
+export const deleteHandler: RouteHandlerMethodTypebox<
+    typeof DeleteOrgSchema
+> = async (request, reply) => {
+    // find the organization
+    const om = await prisma.organizationMember.findFirst({
+        where: {
+            organization: {
+                slug: request.params.slug,
+            },
+            user: {
+                subs: {
+                    has: request.user.sub,
+                },
+            },
+        },
+        include: {
+            organization: true,
+        },
+    });
+    if (!om) {
+        return reply.code(404);
+    }
+
+    // delete invites, members and the org itself
+    const deleteInvites = prisma.organizationInvite.deleteMany({
+        where: {
+            organizationId: om.organizationId,
+        },
+    });
+    const deleteMembers = prisma.organizationMember.deleteMany({
+        where: {
+            organizationId: om.organizationId,
+        },
+    });
+    const deleteOrg = prisma.organization.delete({
+        where: {
+            id: om.organizationId,
+        },
+    });
+    await prisma.$transaction([deleteInvites, deleteMembers, deleteOrg]);
+    return reply.code(204);
 };
 
 export const listHandler: RouteHandlerMethodTypebox<

@@ -46,3 +46,16 @@ export const GetOrgSchema = {
         slug: Type.String(),
     }),
 };
+
+export const DeleteOrgSchema = {
+    summary: "Delete organization",
+    response: {
+        204: Type.Object({}),
+        400: ErrorSchema,
+        401: ErrorSchema,
+        404: ErrorSchema,
+    },
+    params: Type.Object({
+        slug: Type.String(),
+    }),
+};
