@@ -35,5 +35,8 @@
         "slugify": "^1.6.5",
         "source-map-support": "^0.5.21",
         "unique-names-generator": "^4.7.1"
+    },
+    "prisma": {
+        "seed": "ts-node prisma/seed.ts"
     }
 }
