@@ -32,7 +32,7 @@ export const createHandler: RouteHandlerMethodTypebox<
 
     // logged in user
     if (!user) {
-        return reply.code(401);
+        return reply.code(401).send();
     }
 
     // name of application

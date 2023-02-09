@@ -22,8 +22,8 @@ export const createHandler: RouteHandlerMethodTypebox<
     });
 
     // logged in user
-    if (!user) {
-        return reply.code(401);
+    if (user === null) {
+        return reply.code(401).send();
     }
 
     // slug of organization, use one provided, or create one from the name
@@ -52,10 +52,14 @@ export const createHandler: RouteHandlerMethodTypebox<
     } catch (e) {
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
             if (e.code === "P2002") {
+                const fields = e.meta?.target as string[];
+                const message = `Organization with same ${fields
+                    .map((f) => `'${f}'`)
+                    .join(" and ")} already exists`;
                 return reply.code(400).send({
                     statusCode: 400,
                     error: e.code,
-                    message: e.message,
+                    message: message,
                 });
             }
         }

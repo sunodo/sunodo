@@ -5,12 +5,15 @@
     "scripts": {
         "build": "tsc",
         "dev": "ts-node src/app.ts",
+        "docker:up": "docker-compose up -d",
+        "docker:down": "docker-compose down",
         "watch": "tsc -w",
-        "test": "vitest"
+        "test": "yarn docker:up && dotenv -e .env.test -- yarn prisma db push && dotenv -e .env.test -- vitest --no-threads"
     },
     "devDependencies": {
         "@mermaid-js/mermaid-cli": "^9.3.0",
         "@types/node": "18.11.18",
+        "dotenv-cli": "^7.0.0",
         "fast-jwt": "^2.1.0",
         "json-schema-to-ts": "^2.6.2",
         "nock": "^13.3.0",

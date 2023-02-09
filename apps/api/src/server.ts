@@ -34,7 +34,7 @@ declare module "@fastify/jwt" {
 
 const buildServer = (): FastifyTypebox => {
     const server = Fastify({
-        logger: true,
+        logger: process.env.NODE_ENV === "production",
         ajv: {
             customOptions: {
                 allErrors: true,
