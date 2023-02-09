@@ -5,9 +5,10 @@ import prisma from "../../../src/utils/prisma";
 import { token } from "../../auth";
 import { CreateOrgResponse } from "../../../src/modules/orgs/orgs.schemas";
 
-describe("orgs", () => {
+describe("orgs:create", () => {
     beforeEach(async () => {
         await prisma.$transaction([
+            prisma.application.deleteMany(),
             prisma.organizationMember.deleteMany(),
             prisma.organization.deleteMany(),
             prisma.user.deleteMany(),

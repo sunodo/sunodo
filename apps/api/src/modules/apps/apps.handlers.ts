@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import {
     uniqueNamesGenerator,
     adjectives,
@@ -66,18 +67,34 @@ export const createHandler: RouteHandlerMethodTypebox<
         });
     }
 
-    // create application, connected to organization
-    const app = await prisma.application.create({
-        data: {
-            name,
-            creatorId: user.id,
-            organizationId: organization?.id,
-        },
-    });
+    try {
+        // create application, connected to organization
+        const app = await prisma.application.create({
+            data: {
+                name,
+                creatorId: user.id,
+                organizationId: organization?.id,
+            },
+        });
 
-    return reply.code(200).send({
-        name: app.name,
-    });
+        return reply.code(200).send({
+            name: app.name,
+        });
+    } catch (e) {
+        if (e instanceof Prisma.PrismaClientKnownRequestError) {
+            if (e.code === "P2002") {
+                const fields = e.meta?.target as string[];
+                const message = `Application with same ${fields
+                    .map((f) => `'${f}'`)
+                    .join(" and ")} already exists`;
+                return reply.code(400).send({
+                    statusCode: 400,
+                    error: e.code,
+                    message: message,
+                });
+            }
+        }
+    }
 };
 
 export const listHandler: RouteHandlerMethodTypebox<

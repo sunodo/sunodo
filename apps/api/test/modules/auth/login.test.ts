@@ -12,7 +12,10 @@ import { token } from "../../auth";
 
 describe("login", () => {
     beforeEach(async () => {
-        await prisma.$transaction([prisma.user.deleteMany()]);
+        await prisma.$transaction([
+            prisma.application.deleteMany(),
+            prisma.user.deleteMany(),
+        ]);
     });
 
     test("existing user", async () => {

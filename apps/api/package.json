@@ -8,7 +8,7 @@
         "docker:up": "docker-compose up -d",
         "docker:down": "docker-compose down",
         "watch": "tsc -w",
-        "test": "yarn docker:up && dotenv -e .env.test -- yarn prisma db push && dotenv -e .env.test -- vitest --no-threads"
+        "test": "yarn docker:up && dotenv -e .env.test -- yarn prisma db push && dotenv -e .env.test -- vitest --threads=false"
     },
     "devDependencies": {
         "@mermaid-js/mermaid-cli": "^9.3.0",
