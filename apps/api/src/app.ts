@@ -1,14 +1,23 @@
 import { PrismaClient } from "@prisma/client";
 import * as dotenv from "dotenv";
+import Stripe from "stripe";
+import { StripeBillingManager } from "./billing";
 dotenv.config();
 import buildServer from "./server";
 
 // connect to process.env.DATABASE_URL by default
 const prisma = new PrismaClient();
 
+// use key from .env
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    apiVersion: "2022-11-15",
+});
+const billing = new StripeBillingManager(stripe);
+
 const server = buildServer({
     logger: true,
     prisma,
+    billing,
 });
 
 const main = async () => {

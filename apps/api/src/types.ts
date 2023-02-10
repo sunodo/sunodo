@@ -15,6 +15,7 @@ import {
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import { ResolveFastifyReplyType } from "fastify/types/type-provider";
 import { PrismaClient } from "@prisma/client";
+import { BillingManager } from "./billing";
 
 declare module "fastify" {
     interface FastifyRequest {
@@ -22,6 +23,7 @@ declare module "fastify" {
     }
     interface FastifyInstance {
         prisma: PrismaClient;
+        billing: BillingManager;
     }
 }
 

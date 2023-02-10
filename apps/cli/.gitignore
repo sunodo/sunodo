@@ -7,4 +7,4 @@
 /tmp
 node_modules
 oclif.manifest.json
-src/services/sunodo.d.ts
+src/services/sunodo.ts

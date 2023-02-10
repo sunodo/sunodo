@@ -1,7 +1,6 @@
 import { Flags, ux } from "@oclif/core";
-import { Fetcher } from "openapi-typescript-fetch";
-import { paths } from "../../services/sunodo";
-import { SunodoCommand } from "../../sunodoCommand";
+import { getRegions } from "../../services/sunodo.js";
+import { SunodoCommand } from "../../sunodoCommand.js";
 
 export default class PlatformRegions extends SunodoCommand {
     static description = "list regions supported by the platform";
@@ -17,11 +16,8 @@ export default class PlatformRegions extends SunodoCommand {
 
     public async run(): Promise<void> {
         const { flags } = await this.parse(PlatformRegions);
+        const { data } = await getRegions(this.fetchConfig);
 
-        const fetcher = Fetcher.for<paths>();
-        fetcher.configure(this.fetchConfig);
-        const getChains = fetcher.path("/regions/").method("get").create();
-        const { data } = await getChains({});
         ux.table(
             data,
             {

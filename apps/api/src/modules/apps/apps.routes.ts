@@ -33,7 +33,7 @@ const routes: FastifyPluginAsyncTypebox = async (server: FastifyTypebox) => {
     );
 
     server.register(deploymentsRoutes, {
-        prefix: "/:name/deployments",
+        prefix: "/:app/deployments",
     });
 };
 

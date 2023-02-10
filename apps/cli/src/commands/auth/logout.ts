@@ -1,6 +1,6 @@
 import open from "open";
-import { authClient, clientId, issuer } from "../../services/auth";
-import { SunodoCommand } from "../../sunodoCommand";
+import { authClient, clientId, issuer } from "../../services/auth.js";
+import { SunodoCommand } from "../../sunodoCommand.js";
 
 export default class AuthLogout extends SunodoCommand {
     static description =

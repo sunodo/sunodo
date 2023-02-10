@@ -3,10 +3,13 @@
     "include": ["src/**/*.ts"],
     "exclude": ["node_modules"],
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "ES2020",
         "importHelpers": true,
         "outDir": "dist",
         "rootDir": "src",
         "target": "es2019"
+    },
+    "ts-node": {
+        "esm": true
     }
 }

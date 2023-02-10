@@ -4,11 +4,12 @@
     "description": "Sunodo CLI",
     "author": "Danilo Tuler <danilo.tuler@cartesi.io>",
     "bin": {
-        "sunodoctl": "./bin/run"
+        "sunodoctl": "./bin/run.js"
     },
+    "type": "module",
     "homepage": "https://github.com/cartesi/sunodo",
     "license": "MIT",
-    "main": "dist/index.js",
+    "exports": "./dist/index.js",
     "repository": "cartesi/sunodo",
     "files": [
         "/bin",
@@ -21,17 +22,19 @@
         "@oclif/plugin-help": "^5",
         "@oclif/plugin-plugins": "^2.3.0",
         "@oclif/plugin-update": "^3.1.3",
+        "ansi-colors": "^4.1.3",
         "auth0": "^3.1.2",
         "axios": "^1.3.2",
         "dotenv": "^16.0.3",
+        "enquirer": "^2.3.6",
         "fs-extra": "^11.1.0",
         "node-fetch": "2",
+        "oazapfts": "^4.5.2",
         "open": "^8.4.0",
         "openapi-typescript": "^6.1.0",
         "openapi-typescript-fetch": "^1.1.3",
         "openid-client": "^5.4.0",
-        "ora": "^6.1.2",
-        "prompts": "^2.4.2"
+        "ora": "^6.1.2"
     },
     "devDependencies": {
         "@oclif/test": "^2.3.4",
@@ -47,6 +50,7 @@
         "eslint-config-custom": "*",
         "eslint-config-oclif": "^4",
         "eslint-config-oclif-typescript": "^1.0.3",
+        "fix-esm-import-path": "^1.3.1",
         "mocha": "^10.2.0",
         "oclif": "^3.6.3",
         "shx": "^0.3.3",
@@ -79,7 +83,8 @@
     },
     "scripts": {
         "build": "shx rm -rf dist && yarn codegen && tsc -b",
-        "codegen": "openapi-typescript http://127.0.0.1:3001/docs/json --output src/services/sunodo.d.ts",
+        "codegen:openapi": "openapi-typescript http://127.0.0.1:3001/docs/json --output src/services/sunodo.d.ts",
+        "codegen": "oazapfts http://127.0.0.1:3001/docs/json src/services/sunodo.ts && fix-esm-import-path src/services/sunodo.ts",
         "lint": "eslint . --ext .ts --config .eslintrc",
         "postpack": "shx rm -f oclif.manifest.json",
         "posttest": "yarn lint",
@@ -88,7 +93,7 @@
         "version": "oclif readme && git add README.md"
     },
     "engines": {
-        "node": ">=12.0.0"
+        "node": ">=14.0.0"
     },
     "bugs": "https://github.com/cartesi/sunodo/issues",
     "keywords": [

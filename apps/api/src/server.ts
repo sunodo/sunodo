@@ -1,5 +1,6 @@
 import Fastify from "fastify";
 import jwt from "fastify-auth0-verify";
+import stripe from "fastify-stripe";
 import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
 import {
@@ -8,6 +9,7 @@ import {
 } from "@fastify/type-provider-typebox";
 import { PrismaClient } from "@prisma/client";
 
+import billingPlugin, { BillingManager } from "./billing";
 import appsRoutes from "./modules/apps/apps.routes";
 import authRoutes from "./modules/auth/auth.routes";
 import chainsRoutes from "./modules/chains/chains.routes";
@@ -17,6 +19,7 @@ import runtimesRoutes from "./modules/runtimes/runtimes.routes";
 import { FastifyTypebox } from "./types";
 
 const issuer = process.env.AUTH_ISSUER;
+const stripeApiKey = process.env.STRIPE_SECRET_KEY!;
 
 declare module "@fastify/jwt" {
     interface FastifyJWT {
@@ -35,6 +38,7 @@ declare module "@fastify/jwt" {
 
 export interface ServerOptions {
     prisma: PrismaClient;
+    billing: BillingManager;
     logger: boolean;
 }
 
@@ -72,6 +76,18 @@ const buildServer = (options: ServerOptions): FastifyTypebox => {
     server.register(jwt, {
         domain: issuer,
         audience: ["https://api.sunodo.io", `${issuer}userinfo`],
+    });
+
+    // stripe plugin
+    server.register(stripe, {
+        apiKey: stripeApiKey,
+        apiVersion: "2022-11-15",
+        typescript: true,
+    });
+
+    // billing manager plugin
+    server.register(billingPlugin, {
+        billing: options.billing,
     });
 
     // register schemas

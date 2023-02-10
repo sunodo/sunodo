@@ -6,18 +6,35 @@ import {
     expect,
     test,
 } from "vitest";
+import { AccountType } from "@prisma/client";
+
 import { Error } from "../../../src/schemas";
 import { token } from "../../auth";
 import { CreateOrgResponse } from "../../../src/modules/orgs/orgs.schemas";
 import buildServer from "../../utils/server";
 import { FastifyContext } from "../../types";
+import { createTestUser } from "../../utils/user";
+import { createTestOrganization } from "../../utils/organization";
 
 describe("orgs:create", () => {
     beforeAll(buildServer);
+    beforeAll(async (ctx) => {
+        // create personal plan
+        const prisma = ctx.meta.prisma;
+        const plan = await prisma.plan.create({
+            data: {
+                default: true,
+                accountTypes: [AccountType.ORGANIZATION],
+                name: "business",
+                label: "Business Plan",
+                stripePriceId: "price_1Ma2ZjHytG4GeYTNxFTYvRbP",
+            },
+        });
+        ctx.meta.plan = plan;
+    });
 
     beforeEach<FastifyContext>(async (ctx) => {
-        ctx.prisma = ctx.meta.suite.meta?.prisma;
-        ctx.server = ctx.meta.suite.meta?.server;
+        ctx.plan = ctx.meta.suite.meta?.plan;
     });
 
     afterEach<FastifyContext>(async (ctx) => {
@@ -49,12 +66,10 @@ describe("orgs:create", () => {
     });
 
     test<FastifyContext>("success", async (ctx) => {
-        const user = await ctx.server.prisma.user.create({
-            data: {
-                name: "John Doe",
-                email: "john.doe@sunodo.io",
-                subs: "1234567890",
-            },
+        const user = await createTestUser(ctx, {
+            name: "John Doe",
+            email: "john.doe@sunodo.io",
+            subs: ["1234567890"],
         });
 
         const response = await ctx.server.inject({
@@ -86,20 +101,17 @@ describe("orgs:create", () => {
 
     test<FastifyContext>("existing name", async (ctx) => {
         // XXX: remove this from here
-        await ctx.server.prisma.user.create({
-            data: {
-                name: "John Doe",
-                email: "john.doe@sunodo.io",
-                subs: "1234567890",
-            },
+        const admin = await createTestUser(ctx, {
+            name: "John Doe",
+            email: "john.doe@sunodo.io",
+            subs: ["1234567890"],
         });
 
         // create organization with same name
-        await ctx.server.prisma.organization.create({
-            data: {
-                name: "My Organization",
-                slug: "different-slug",
-            },
+        await createTestOrganization(ctx, {
+            name: "My Organization",
+            slug: "different-slug",
+            admin,
         });
 
         const response = await ctx.server.inject({
@@ -124,20 +136,17 @@ describe("orgs:create", () => {
 
     test<FastifyContext>("existing slug", async (ctx) => {
         // XXX: remove this from here
-        await ctx.server.prisma.user.create({
-            data: {
-                name: "John Doe",
-                email: "john.doe@sunodo.io",
-                subs: "1234567890",
-            },
+        const admin = await createTestUser(ctx, {
+            name: "John Doe",
+            email: "john.doe@sunodo.io",
+            subs: ["1234567890"],
         });
 
         // create organization with same slug
-        await ctx.server.prisma.organization.create({
-            data: {
-                name: "Different Name",
-                slug: "my-organization",
-            },
+        await createTestOrganization(ctx, {
+            name: "Different Name",
+            slug: "my-organization",
+            admin,
         });
 
         const response = await ctx.server.inject({

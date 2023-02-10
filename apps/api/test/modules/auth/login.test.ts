@@ -1,4 +1,5 @@
 import {
+    afterAll,
     afterEach,
     beforeAll,
     beforeEach,
@@ -7,37 +8,64 @@ import {
     test,
     vi,
 } from "vitest";
-import { User } from "@prisma/client";
+import { AccountType, PrismaClient } from "@prisma/client";
 
 import { authService } from "../../../src/modules/auth/__mocks__/auth.services";
 
 vi.mock("../../../src/modules/auth/auth.services");
 
-import { UserInfo } from "../../../src/modules/auth/auth.services";
+import { type LoginResponseBodySchema } from "../../../src/modules/auth/auth.schemas";
 import { token } from "../../auth";
 import buildServer from "../../utils/server";
 import { FastifyContext } from "../../types";
+import { createTestUser } from "../../utils/user";
 
 describe("login", () => {
     beforeAll(buildServer);
+    beforeAll(async (ctx) => {
+        // create personal plan
+        const prisma = ctx.meta.prisma;
+        const plan = await prisma.plan.create({
+            data: {
+                default: true,
+                accountTypes: [AccountType.USER],
+                name: "personal",
+                label: "Personal Plan",
+                stripePriceId: "price_1MZzQqHytG4GeYTNTUrZstr3",
+            },
+        });
+        ctx.meta.plan = plan;
+    });
+    afterAll(async (ctx) => {
+        // create personal plan
+        const prisma: PrismaClient = ctx.meta.prisma;
+        await prisma.plan.deleteMany();
+    });
 
     beforeEach<FastifyContext>(async (ctx) => {
-        ctx.prisma = ctx.meta.suite.meta?.prisma;
-        ctx.server = ctx.meta.suite.meta?.server;
+        // copy suite context to test context
+        ctx.plan = ctx.meta.suite.meta?.plan;
     });
 
     afterEach<FastifyContext>(async (ctx) => {
+        // delete created customers from stripe
+        const customers = await ctx.stripe.customers.search({
+            query: `metadata["test_id"]:"${ctx.meta.id}"`,
+        });
+        await Promise.all(
+            customers.data.map(({ id }) => ctx.stripe.customers.del(id))
+        );
+
         await ctx.prisma.user.deleteMany();
+        await ctx.prisma.account.deleteMany();
     });
 
     test<FastifyContext>("existing user", async (ctx) => {
-        await ctx.prisma.user.create({
-            data: {
-                email: "admin@sunodo.io",
-                name: "Sunodo Administrator",
-                createdAt: new Date(),
-                subs: ["1234567890"],
-            },
+        // create test user
+        await createTestUser(ctx, {
+            email: "admin@sunodo.io",
+            name: "Sunodo Administrator",
+            subs: ["1234567890"],
         });
 
         // just a fake token with the payload { "sub": "1234567890", "iat": 1516239022 }}
@@ -51,9 +79,8 @@ describe("login", () => {
         });
 
         expect(response.statusCode).toEqual(200);
-        const user = JSON.parse(response.body) as UserInfo;
+        const user = JSON.parse(response.body) as LoginResponseBodySchema;
         expect(user.email).toBe("admin@sunodo.io");
-        expect(user.name).toBe("Sunodo Administrator");
     });
 
     test<FastifyContext>("unexisting sub, email not provided", async (ctx) => {
@@ -92,13 +119,10 @@ describe("login", () => {
 
     test<FastifyContext>("unexisting sub, existing user", async (ctx) => {
         // but the user (by email) exists, possibly from different sub
-        await ctx.prisma.user.create({
-            data: {
-                email: "admin@sunodo.io",
-                name: "Sunodo Administrator",
-                createdAt: new Date(),
-                subs: ["github|1234567890"],
-            },
+        await createTestUser(ctx, {
+            email: "admin@sunodo.io",
+            name: "Sunodo Administrator",
+            subs: ["github|1234567890"],
         });
 
         // mock resolution of id token from access token (done by identity provider)
@@ -116,10 +140,8 @@ describe("login", () => {
         });
 
         expect(response.statusCode).toEqual(200);
-        const user = JSON.parse(response.body) as User;
+        const user = JSON.parse(response.body) as LoginResponseBodySchema;
         expect(user.email).toBe("admin@sunodo.io");
-        expect(user.subs).contains("github|1234567890");
-        expect(user.subs).contains("1234567890");
     });
 
     test<FastifyContext>("unexisting sub, create user", async (ctx) => {
@@ -138,8 +160,7 @@ describe("login", () => {
         });
 
         expect(response.statusCode).toEqual(200);
-        const user = JSON.parse(response.body) as User;
+        const user = JSON.parse(response.body) as LoginResponseBodySchema;
         expect(user.email).toBe("admin@sunodo.io");
-        expect(user.subs).contains("1234567890");
     });
 });

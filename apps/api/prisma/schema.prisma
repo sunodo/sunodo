@@ -13,28 +13,33 @@ datasource db {
 }
 
 model User {
-  id            String               @id @default(uuid())
-  email         String               @unique
-  createdAt     DateTime             @default(now())
-  subs          String[]
-  name          String
-  organizations OrganizationMember[]
-  Application   Application[]
-  Account       Account[]
+  id                String               @id @default(uuid())
+  createdAt         DateTime             @default(now())
+  email             String               @unique
+  subs              String[]
+  name              String
+  organizations     OrganizationMember[]
+  applications      Application[]
+  account           Account              @relation(fields: [accountId], references: [id])
+  accountId         String               @unique
+  billingCustomerId String               @unique
 }
 
 model Organization {
-  id           String               @id @default(uuid())
-  name         String               @unique
-  slug         String               @unique
-  createdAt    DateTime             @default(now())
-  applications Application[]
-  invites      OrganizationInvite[]
-  members      OrganizationMember[]
-  Account      Account[]
+  id                String               @id @default(uuid())
+  createdAt         DateTime             @default(now())
+  name              String               @unique
+  slug              String               @unique
+  applications      Application[]
+  invites           OrganizationInvite[]
+  members           OrganizationMember[]
+  account           Account              @relation(fields: [accountId], references: [id])
+  accountId         String               @unique
+  billingCustomerId String               @unique
 }
 
 model OrganizationMember {
+  createdAt      DateTime     @default(now())
   organizationId String
   userId         String
   role           Role
@@ -46,8 +51,8 @@ model OrganizationMember {
 }
 
 model OrganizationInvite {
-  organizationId String
   createdAt      DateTime     @default(now())
+  organizationId String
   email          String
   acceptedAt     DateTime?
   organization   Organization @relation(fields: [organizationId], references: [id])
@@ -57,31 +62,41 @@ model OrganizationInvite {
 
 model Application {
   id             String        @id @default(uuid())
+  createdAt      DateTime      @default(now())
   name           String        @unique
   creatorId      String
   creator        User          @relation(fields: [creatorId], references: [id])
-  createdAt      DateTime      @default(now())
   organizationId String?
   organization   Organization? @relation(fields: [organizationId], references: [id])
   deployments    Deployment[]
 }
 
-model Account {
-  id             String        @id @default(uuid())
-  user           User?         @relation(fields: [userId], references: [id])
-  organization   Organization? @relation(fields: [organizationId], references: [id])
-  userId         String?
-  organizationId String?
+model Plan {
+  id            String        @id @default(uuid())
+  createdAt     DateTime      @default(now())
+  name          String
+  label         String
+  accountTypes  AccountType[]
+  default       Boolean
+  active        Boolean       @default(true)
+  stripePriceId String
+  accounts      Account[]
 }
 
-model Plan {
-  id          String @id @default(uuid())
-  name        String @unique
-  description String
+model Account {
+  id                    String        @id @default(uuid())
+  createdAt             DateTime      @default(now())
+  type                  AccountType
+  plan                  Plan          @relation(fields: [planId], references: [id])
+  planId                String
+  billingSubscriptionId String?
+  User                  User?
+  Organization          Organization?
 }
 
 model Chain {
   id          Int          @id
+  createdAt   DateTime     @default(now())
   name        String       @unique
   label       String       @unique
   testnet     Boolean
@@ -91,6 +106,7 @@ model Chain {
 
 model Region {
   id               String       @id @default(uuid())
+  createdAt        DateTime     @default(now())
   name             String       @unique
   kubeConfigSecret String
   deployments      Deployment[]
@@ -99,6 +115,7 @@ model Region {
 
 model Runtime {
   id         String       @id @default(uuid())
+  createdAt  DateTime     @default(now())
   name       String       @unique
   default    Boolean
   Deployment Deployment[]
@@ -106,9 +123,9 @@ model Runtime {
 
 model Deployment {
   id              String           @id @default(uuid())
+  createdAt       DateTime         @default(now())
   application     Application      @relation(fields: [applicationId], references: [id])
   applicationId   String
-  createdAt       DateTime         @default(now())
   contractAddress String
   machineSnapshot String
   status          DeploymentStatus
@@ -131,4 +148,9 @@ enum DeploymentStatus {
   STARTING
   READY
   FAILED
+}
+
+enum AccountType {
+  USER
+  ORGANIZATION
 }

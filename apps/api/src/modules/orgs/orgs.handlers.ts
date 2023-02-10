@@ -1,4 +1,5 @@
-import { Prisma, Role } from "@prisma/client";
+import { AccountType, Prisma, Role } from "@prisma/client";
+import { randomUUID } from "crypto";
 import slugify from "slugify";
 
 import { RouteHandlerMethodTypebox } from "../../types";
@@ -31,16 +32,39 @@ export const createHandler: RouteHandlerMethodTypebox<
 
     // create organization with authenticated user as administrator
     try {
+        // get default plan of organizations
+        const plan = await request.prisma.plan.findFirstOrThrow({
+            where: {
+                accountTypes: { has: AccountType.ORGANIZATION },
+                default: true,
+            },
+        });
+
+        // explicit id
+        const id = randomUUID();
+
+        // create stripe customer
+        const customerId = await request.server.billing.createCustomer({
+            name,
+            description: name,
+            metadata: { external_id: id },
+        });
+
+        // create organization, and account connected to default plan
         const organization = await request.prisma.organization.create({
             data: {
+                id,
                 name,
                 slug,
-                members: {
+                members: { create: { userId: user.id, role: Role.ADMIN } },
+                account: {
                     create: {
-                        userId: user.id,
-                        role: Role.ADMIN,
+                        id,
+                        type: AccountType.ORGANIZATION,
+                        plan: { connect: { id: plan.id } },
                     },
                 },
+                billingCustomerId: customerId,
             },
         });
 

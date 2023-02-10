@@ -1,7 +1,6 @@
 import { Flags, ux } from "@oclif/core";
-import { Fetcher } from "openapi-typescript-fetch";
-import { paths } from "../../services/sunodo";
-import { SunodoCommand } from "../../sunodoCommand";
+import { getRuntimes } from "../../services/sunodo.js";
+import { SunodoCommand } from "../../sunodoCommand.js";
 
 export default class PlatformRuntimes extends SunodoCommand {
     static description = "list runtimes supported by the platform";
@@ -17,11 +16,7 @@ export default class PlatformRuntimes extends SunodoCommand {
 
     public async run(): Promise<void> {
         const { flags } = await this.parse(PlatformRuntimes);
-
-        const fetcher = Fetcher.for<paths>();
-        fetcher.configure(this.fetchConfig);
-        const getChains = fetcher.path("/runtimes/").method("get").create();
-        const { data } = await getChains({});
+        const { data } = await getRuntimes(this.fetchConfig);
         ux.table(
             data,
             {

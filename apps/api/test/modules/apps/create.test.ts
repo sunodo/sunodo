@@ -1,4 +1,4 @@
-import { PrismaClient, User } from "@prisma/client";
+import { AccountType, PrismaClient, User } from "@prisma/client";
 import { Static } from "@sinclair/typebox";
 import {
     beforeAll,
@@ -15,31 +15,44 @@ import { Error } from "../../../src/schemas";
 import { token } from "../../auth";
 import { FastifyContext } from "../../types";
 import buildServer from "../../utils/server";
+import { createTestUser } from "../../utils/user";
 
 describe("apps:create", () => {
     let creator: User;
 
     beforeAll(buildServer);
-    beforeEach<FastifyContext>(async (ctx) => {
-        ctx.prisma = ctx.meta.suite.meta?.prisma;
-        ctx.server = ctx.meta.suite.meta?.server;
-    });
     beforeAll(async (ctx) => {
-        const prisma: PrismaClient = ctx.meta.prisma;
-
-        // create user which is creator of app
-        creator = await prisma.user.create({
+        // create personal plan
+        const prisma = ctx.meta.prisma;
+        const plan = await prisma.plan.create({
             data: {
-                email: "admin@sunodo.io",
-                name: "Sunodo Administrator",
-                createdAt: new Date(),
-                subs: ["1234567890"],
+                default: true,
+                accountTypes: [AccountType.USER],
+                name: "personal",
+                label: "Personal Plan",
+                stripePriceId: "price_1MZzQqHytG4GeYTNTUrZstr3",
             },
+        });
+        ctx.meta.plan = plan;
+    });
+
+    beforeEach<FastifyContext>(async (ctx) => {
+        ctx.plan = ctx.meta.suite.meta?.plan;
+    });
+
+    beforeEach<FastifyContext>(async (ctx) => {
+        // create user which is creator of app
+        creator = await createTestUser(ctx, {
+            email: "admin@sunodo.io",
+            name: "Sunodo Administrator",
+            subs: ["1234567890"],
         });
     });
 
     afterEach<FastifyContext>(async (ctx) => {
         await ctx.prisma.application.deleteMany();
+        await ctx.prisma.user.deleteMany();
+        await ctx.prisma.account.deleteMany();
     });
 
     afterAll(async (ctx) => {

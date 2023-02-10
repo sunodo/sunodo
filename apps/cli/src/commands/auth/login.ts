@@ -1,8 +1,12 @@
 import open from "open";
 import { errors, TokenSet } from "openid-client";
-import prompts from "prompts";
-import { authClient } from "../../services/auth";
-import { SunodoCommand } from "../../sunodoCommand";
+import enquirer from "enquirer";
+import ora from "ora";
+import c from "ansi-colors";
+
+import { authClient } from "../../services/auth.js";
+import { SunodoCommand } from "../../sunodoCommand.js";
+import { login } from "../../services/sunodo.js";
 
 export default class AuthLogin extends SunodoCommand {
     static description = "Login or Signup to Sunodo";
@@ -22,18 +26,18 @@ export default class AuthLogin extends SunodoCommand {
         const { verification_uri_complete, user_code, expires_in } = handle;
 
         // User Interaction - https://tools.ietf.org/html/rfc8628#section-3.3
-        await prompts({
-            name: "open",
-            type: "invisible",
-            message: `Press any key to open up the browser to login or press ctrl-c to abort. You should see the following code: ${user_code}. It expires in ${
-                expires_in % 60 === 0
-                    ? `${expires_in / 60} minutes`
-                    : `${expires_in} seconds`
-            }.`,
+        // XXX: use expires_in to show a countdown?
+        const { url } = await enquirer.prompt<{ url: string }>({
+            name: "url",
+            message: `Verify code ${user_code} <press enter>`,
+            type: "input",
+            initial: verification_uri_complete,
         });
 
         // opens the verification_uri_complete URL using the system-register handler for web links (browser)
-        open(verification_uri_complete);
+        open(url);
+
+        const spinner = ora("Waiting for device confirmation...").start();
 
         // Device Access Token Request - https://tools.ietf.org/html/rfc8628#section-3.4
         // Device Access Token Response - https://tools.ietf.org/html/rfc8628#section-3.5
@@ -43,13 +47,14 @@ export default class AuthLogin extends SunodoCommand {
         } catch (err: any) {
             switch (err.error) {
                 case "access_denied": // end-user declined the device confirmation prompt, consent or rules failed
-                    this.error("auth canceled");
+                    spinner.fail("Authentication canceled");
+                    break;
                 case "expired_token": // end-user did not complete the interaction in time
-                    this.error("auth expired");
+                    spinner.fail("Authentication expired");
                     break;
                 default:
                     if (err instanceof errors.OPError) {
-                        this.error(
+                        spinner.fail(
                             `error = ${err.error}; error_description = ${err.error_description}`
                         );
                     } else {
@@ -59,10 +64,29 @@ export default class AuthLogin extends SunodoCommand {
         }
 
         if (tokens && tokens.access_token) {
-            this.saveToken(tokens);
+            // call API /auth/login
+            const response = await login(this.fetchConfig);
 
-            // XXX: call /auth/login
-            this.log(`logged in`);
+            if (response.status != 200) {
+                spinner.fail(`Authentication failed: ${response.data.message}`);
+            } else {
+                const email = response.data.email;
+                spinner.succeed(`Logged in as ${c.cyan(email)}`);
+
+                // save tokens locally
+                this.saveToken(tokens);
+
+                // open subscription page if needs to subscribe
+                if (response.data.subscription?.url) {
+                    await enquirer.prompt({
+                        name: "subscribe",
+                        message: `<press enter> to subscribe`,
+                        type: "input",
+                        initial: response.data.subscription.url,
+                    });
+                    open(response.data.subscription.url);
+                }
+            }
         }
     }
 }

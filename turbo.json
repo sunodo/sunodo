@@ -8,7 +8,10 @@
         "AUTH_OPEN_API_CLIENT_ID",
         "DATABASE_URL",
         "DEFAULT_API_URL",
-        "TS_NODE_PROJECT"
+        "TS_NODE_PROJECT",
+        "STRIPE_PUBLIC_KEY",
+        "STRIPE_SECRET_KEY",
+        "WEBSITE_URL"
     ],
     "pipeline": {
         "build": {

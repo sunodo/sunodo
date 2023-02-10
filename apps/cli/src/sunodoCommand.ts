@@ -1,11 +1,11 @@
 import fs from "fs-extra";
 import path from "path";
 import { Command, Config } from "@oclif/core";
-import { FetchConfig } from "openapi-typescript-fetch/dist/cjs/types";
 import { TokenSet } from "openid-client";
+import { RequestOpts } from "oazapfts/lib/runtime/index.js";
 
 export abstract class SunodoCommand extends Command {
-    protected fetchConfig: FetchConfig;
+    protected fetchConfig: RequestOpts;
 
     private authPath: string;
 
@@ -40,16 +40,14 @@ export abstract class SunodoCommand extends Command {
         const tokens = this.loadToken();
 
         // setup authentication header
-        const headers: HeadersInit = tokens
+        const headers = tokens
             ? { Authorization: `Bearer ${tokens.access_token}` }
             : {};
 
         // setup FetchConfig
         this.fetchConfig = {
             baseUrl,
-            init: {
-                headers,
-            },
+            headers,
         };
     }
 }

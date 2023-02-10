@@ -1,4 +1,4 @@
-import { afterEach, beforeAll, beforeEach } from "vitest";
+import { afterEach, beforeEach } from "vitest";
 import { createSigner, PrivateKey, SignerOptions } from "fast-jwt";
 import { readFileSync } from "fs";
 import { EOL } from "os";
@@ -63,6 +63,7 @@ export const token = generateToken(
 
 beforeEach(() => {
     nock.disableNetConnect();
+    nock.enableNetConnect(/api.stripe.com/);
     nock(issuer).get("/.well-known/jwks.json").reply(200, jwks);
 });
 
