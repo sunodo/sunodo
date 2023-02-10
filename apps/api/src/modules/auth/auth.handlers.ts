@@ -1,13 +1,12 @@
 import { RouteHandlerMethod } from "fastify";
 
 import { authService } from "./auth.services";
-import prisma from "../../utils/prisma";
 
 export const loginHandler: RouteHandlerMethod = async (request, reply) => {
     const sub = request.user.sub;
 
     // search for the user with that sub
-    let user = await prisma.user.findFirst({
+    let user = await request.prisma.user.findFirst({
         where: {
             subs: {
                 has: sub,
@@ -36,7 +35,7 @@ export const loginHandler: RouteHandlerMethod = async (request, reply) => {
         }
 
         // search again for user using email
-        user = await prisma.user.findUnique({
+        user = await request.prisma.user.findUnique({
             where: {
                 email,
             },
@@ -44,7 +43,7 @@ export const loginHandler: RouteHandlerMethod = async (request, reply) => {
 
         if (user) {
             // found user by email, just add the sub to that
-            user = await prisma.user.update({
+            user = await request.prisma.user.update({
                 where: {
                     email,
                 },
@@ -57,7 +56,7 @@ export const loginHandler: RouteHandlerMethod = async (request, reply) => {
             });
         } else {
             // could not find user, create it
-            user = await prisma.user.create({
+            user = await request.prisma.user.create({
                 data: {
                     email,
                     name,

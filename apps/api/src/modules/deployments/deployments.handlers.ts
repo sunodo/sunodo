@@ -2,7 +2,6 @@ import k8s from "@kubernetes/client-node";
 import { Deployment, DeploymentStatus, Prisma, Region } from "@prisma/client";
 import { RouteHandlerMethodTypebox } from "../../types";
 import { CreateDeploymentSchema } from "./deployments.schemas";
-import prisma from "../../utils/prisma";
 
 const deploy = async (deployment: Deployment, region: Region) => {
     const kc = new k8s.KubeConfig();
@@ -16,7 +15,7 @@ const deploy = async (deployment: Deployment, region: Region) => {
 export const createHandler: RouteHandlerMethodTypebox<
     typeof CreateDeploymentSchema
 > = async (request, reply) => {
-    const user = await prisma.user.findFirst({
+    const user = await request.prisma.user.findFirst({
         where: {
             subs: {
                 has: request.user.sub,
@@ -30,7 +29,7 @@ export const createHandler: RouteHandlerMethodTypebox<
     }
 
     // search by name of application
-    const application = await prisma.application.findUnique({
+    const application = await request.prisma.application.findUnique({
         where: {
             name: request.params.app,
         },
@@ -54,7 +53,7 @@ export const createHandler: RouteHandlerMethodTypebox<
     // XXX: check authorization (user must be organization member)
 
     // get selected chain
-    const chain = await prisma.chain.findUnique({
+    const chain = await request.prisma.chain.findUnique({
         where: {
             name: request.body.chain,
         },
@@ -68,7 +67,7 @@ export const createHandler: RouteHandlerMethodTypebox<
     }
 
     // get selected region
-    const region = await prisma.region.findUnique({
+    const region = await request.prisma.region.findUnique({
         where: {
             name: request.body.region,
         },
@@ -82,7 +81,7 @@ export const createHandler: RouteHandlerMethodTypebox<
     }
 
     // get selected runtime
-    const runtime = await prisma.runtime.findUnique({
+    const runtime = await request.prisma.runtime.findUnique({
         where: {
             name: request.body.runtime,
         },
@@ -97,7 +96,7 @@ export const createHandler: RouteHandlerMethodTypebox<
 
     try {
         // create deployment
-        const deployment = await prisma.deployment.create({
+        const deployment = await request.prisma.deployment.create({
             data: {
                 applicationId: application.id,
                 chainId: chain.id,

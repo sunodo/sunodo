@@ -1,8 +1,15 @@
+import { PrismaClient } from "@prisma/client";
 import * as dotenv from "dotenv";
 dotenv.config();
 import buildServer from "./server";
 
-const server = buildServer();
+// connect to process.env.DATABASE_URL by default
+const prisma = new PrismaClient();
+
+const server = buildServer({
+    logger: true,
+    prisma,
+});
 
 const main = async () => {
     try {

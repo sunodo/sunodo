@@ -14,6 +14,16 @@ import {
 } from "fastify";
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import { ResolveFastifyReplyType } from "fastify/types/type-provider";
+import { PrismaClient } from "@prisma/client";
+
+declare module "fastify" {
+    interface FastifyRequest {
+        prisma: PrismaClient;
+    }
+    interface FastifyInstance {
+        prisma: PrismaClient;
+    }
+}
 
 export type FastifyTypebox = FastifyInstance<
     RawServerDefault,

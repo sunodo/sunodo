@@ -2,7 +2,6 @@ import { Prisma, Role } from "@prisma/client";
 import slugify from "slugify";
 
 import { RouteHandlerMethodTypebox } from "../../types";
-import prisma from "../../utils/prisma";
 import {
     CreateOrgSchema,
     DeleteOrgSchema,
@@ -13,7 +12,7 @@ import {
 export const createHandler: RouteHandlerMethodTypebox<
     typeof CreateOrgSchema
 > = async (request, reply) => {
-    const user = await prisma.user.findFirst({
+    const user = await request.prisma.user.findFirst({
         where: {
             subs: {
                 has: request.user.sub,
@@ -32,7 +31,7 @@ export const createHandler: RouteHandlerMethodTypebox<
 
     // create organization with authenticated user as administrator
     try {
-        const organization = await prisma.organization.create({
+        const organization = await request.prisma.organization.create({
             data: {
                 name,
                 slug,
@@ -70,7 +69,7 @@ export const getHandler: RouteHandlerMethodTypebox<
     typeof GetOrgSchema
 > = async (request, reply) => {
     // list organizations of authenticated
-    const om = await prisma.organizationMember.findFirst({
+    const om = await request.prisma.organizationMember.findFirst({
         where: {
             organization: {
                 slug: request.params.slug,
@@ -112,7 +111,7 @@ export const deleteHandler: RouteHandlerMethodTypebox<
     typeof DeleteOrgSchema
 > = async (request, reply) => {
     // find the organization
-    const om = await prisma.organizationMember.findFirst({
+    const om = await request.prisma.organizationMember.findFirst({
         where: {
             organization: {
                 slug: request.params.slug,
@@ -132,22 +131,26 @@ export const deleteHandler: RouteHandlerMethodTypebox<
     }
 
     // delete invites, members and the org itself
-    const deleteInvites = prisma.organizationInvite.deleteMany({
+    const deleteInvites = request.prisma.organizationInvite.deleteMany({
         where: {
             organizationId: om.organizationId,
         },
     });
-    const deleteMembers = prisma.organizationMember.deleteMany({
+    const deleteMembers = request.prisma.organizationMember.deleteMany({
         where: {
             organizationId: om.organizationId,
         },
     });
-    const deleteOrg = prisma.organization.delete({
+    const deleteOrg = request.prisma.organization.delete({
         where: {
             id: om.organizationId,
         },
     });
-    await prisma.$transaction([deleteInvites, deleteMembers, deleteOrg]);
+    await request.prisma.$transaction([
+        deleteInvites,
+        deleteMembers,
+        deleteOrg,
+    ]);
     return reply.code(204);
 };
 
@@ -155,7 +158,7 @@ export const listHandler: RouteHandlerMethodTypebox<
     typeof ListOrgSchema
 > = async (request, reply) => {
     // list organizations of authenticated
-    const organizations = await prisma.organization.findMany({
+    const organizations = await request.prisma.organization.findMany({
         where: {
             members: {
                 some: {

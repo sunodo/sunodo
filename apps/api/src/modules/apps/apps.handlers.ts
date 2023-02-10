@@ -8,7 +8,6 @@ import {
 } from "unique-names-generator";
 
 import { RouteHandlerMethodTypebox } from "../../types";
-import prisma from "../../utils/prisma";
 import { CreateAppSchema, GetAppSchema, ListAppSchema } from "./apps.schemas";
 
 /**
@@ -23,7 +22,7 @@ const nameGeneratorConfig: Config = {
 export const createHandler: RouteHandlerMethodTypebox<
     typeof CreateAppSchema
 > = async (request, reply) => {
-    const user = await prisma.user.findFirst({
+    const user = await request.prisma.user.findFirst({
         where: {
             subs: {
                 has: request.user.sub,
@@ -43,7 +42,7 @@ export const createHandler: RouteHandlerMethodTypebox<
 
     // find organization by slug
     const organization = request.body.org
-        ? await prisma.organization.findFirst({
+        ? await request.prisma.organization.findFirst({
               where: {
                   slug: request.body.org,
                   members: {
@@ -69,7 +68,7 @@ export const createHandler: RouteHandlerMethodTypebox<
 
     try {
         // create application, connected to organization
-        const app = await prisma.application.create({
+        const app = await request.prisma.application.create({
             data: {
                 name,
                 creatorId: user.id,
@@ -101,7 +100,7 @@ export const listHandler: RouteHandlerMethodTypebox<
     typeof ListAppSchema
 > = async (request, reply) => {
     const apps = request.query.org
-        ? await prisma.application.findMany({
+        ? await request.prisma.application.findMany({
               where: {
                   organization: {
                       slug: request.query.org,
@@ -117,7 +116,7 @@ export const listHandler: RouteHandlerMethodTypebox<
                   },
               },
           })
-        : await prisma.application.findMany({
+        : await request.prisma.application.findMany({
               where: {
                   creator: {
                       subs: {
@@ -134,7 +133,7 @@ export const getHandler: RouteHandlerMethodTypebox<
     typeof GetAppSchema
 > = async (request, reply) => {
     // search by name of application, where user must be creator or member of application organization
-    const dapp = await prisma.application.findFirst({
+    const dapp = await request.prisma.application.findFirst({
         where: {
             name: request.params.name,
             OR: {

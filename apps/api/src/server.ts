@@ -6,6 +6,7 @@ import {
     TypeBoxTypeProvider,
     TypeBoxValidatorCompiler,
 } from "@fastify/type-provider-typebox";
+import { PrismaClient } from "@prisma/client";
 
 import appsRoutes from "./modules/apps/apps.routes";
 import authRoutes from "./modules/auth/auth.routes";
@@ -32,9 +33,14 @@ declare module "@fastify/jwt" {
     }
 }
 
-const buildServer = (): FastifyTypebox => {
-    const server = Fastify({
-        logger: process.env.NODE_ENV === "production",
+export interface ServerOptions {
+    prisma: PrismaClient;
+    logger: boolean;
+}
+
+const buildServer = (options: ServerOptions): FastifyTypebox => {
+    const server: FastifyTypebox = Fastify({
+        logger: options.logger,
         ajv: {
             customOptions: {
                 allErrors: true,
@@ -50,6 +56,17 @@ const buildServer = (): FastifyTypebox => {
             status: "OK",
         };
     });
+
+    // make PrismaClient available through the fastify server instance and server request
+    server
+        .decorate<PrismaClient>("prisma", options.prisma)
+        .addHook("onRequest", async (request, reply) => {
+            request.prisma = options.prisma;
+        })
+        .addHook("onClose", async (server: FastifyTypebox) => {
+            // disconnect here
+            await server.prisma?.$disconnect();
+        });
 
     // setup JWT validator using Auth0
     server.register(jwt, {

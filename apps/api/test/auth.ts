@@ -1,4 +1,4 @@
-import { afterEach, beforeEach } from "vitest";
+import { afterEach, beforeAll, beforeEach } from "vitest";
 import { createSigner, PrivateKey, SignerOptions } from "fast-jwt";
 import { readFileSync } from "fs";
 import { EOL } from "os";

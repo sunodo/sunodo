@@ -1,23 +1,36 @@
-import { beforeEach, describe, expect, test } from "vitest";
+import {
+    afterEach,
+    beforeAll,
+    beforeEach,
+    describe,
+    expect,
+    test,
+} from "vitest";
 import { Error } from "../../../src/schemas";
-import buildServer from "../../../src/server";
-import prisma from "../../../src/utils/prisma";
 import { token } from "../../auth";
 import { CreateOrgResponse } from "../../../src/modules/orgs/orgs.schemas";
+import buildServer from "../../utils/server";
+import { FastifyContext } from "../../types";
 
 describe("orgs:create", () => {
-    beforeEach(async () => {
-        await prisma.$transaction([
-            prisma.application.deleteMany(),
-            prisma.organizationMember.deleteMany(),
-            prisma.organization.deleteMany(),
-            prisma.user.deleteMany(),
+    beforeAll(buildServer);
+
+    beforeEach<FastifyContext>(async (ctx) => {
+        ctx.prisma = ctx.meta.suite.meta?.prisma;
+        ctx.server = ctx.meta.suite.meta?.server;
+    });
+
+    afterEach<FastifyContext>(async (ctx) => {
+        await ctx.prisma.$transaction([
+            ctx.prisma.application.deleteMany(),
+            ctx.prisma.organizationMember.deleteMany(),
+            ctx.prisma.organization.deleteMany(),
+            ctx.prisma.user.deleteMany(),
         ]);
     });
 
-    test("no name and slug", async () => {
-        const server = buildServer();
-        const response = await server.inject({
+    test<FastifyContext>("no name and slug", async (ctx) => {
+        const response = await ctx.server.inject({
             method: "POST",
             url: "/orgs",
             payload: {},
@@ -35,9 +48,8 @@ describe("orgs:create", () => {
         });
     });
 
-    test("success", async () => {
-        const server = buildServer();
-        const user = await prisma.user.create({
+    test<FastifyContext>("success", async (ctx) => {
+        const user = await ctx.server.prisma.user.create({
             data: {
                 name: "John Doe",
                 email: "john.doe@sunodo.io",
@@ -45,7 +57,7 @@ describe("orgs:create", () => {
             },
         });
 
-        const response = await server.inject({
+        const response = await ctx.server.inject({
             method: "POST",
             url: "/orgs",
             payload: {
@@ -63,7 +75,7 @@ describe("orgs:create", () => {
             slug: "my-organization",
         });
 
-        const created = await prisma.organization.findUnique({
+        const created = await ctx.server.prisma.organization.findUnique({
             where: {
                 name: "My Organization",
             },
@@ -72,9 +84,9 @@ describe("orgs:create", () => {
         expect(created?.slug).toEqual("my-organization");
     });
 
-    test("existing name", async () => {
+    test<FastifyContext>("existing name", async (ctx) => {
         // XXX: remove this from here
-        await prisma.user.create({
+        await ctx.server.prisma.user.create({
             data: {
                 name: "John Doe",
                 email: "john.doe@sunodo.io",
@@ -83,15 +95,14 @@ describe("orgs:create", () => {
         });
 
         // create organization with same name
-        await prisma.organization.create({
+        await ctx.server.prisma.organization.create({
             data: {
                 name: "My Organization",
                 slug: "different-slug",
             },
         });
 
-        const server = buildServer();
-        const response = await server.inject({
+        const response = await ctx.server.inject({
             method: "POST",
             url: "/orgs",
             payload: {
@@ -111,9 +122,9 @@ describe("orgs:create", () => {
         });
     });
 
-    test("existing slug", async () => {
+    test<FastifyContext>("existing slug", async (ctx) => {
         // XXX: remove this from here
-        await prisma.user.create({
+        await ctx.server.prisma.user.create({
             data: {
                 name: "John Doe",
                 email: "john.doe@sunodo.io",
@@ -122,15 +133,14 @@ describe("orgs:create", () => {
         });
 
         // create organization with same slug
-        await prisma.organization.create({
+        await ctx.server.prisma.organization.create({
             data: {
                 name: "Different Name",
                 slug: "my-organization",
             },
         });
 
-        const server = buildServer();
-        const response = await server.inject({
+        const response = await ctx.server.inject({
             method: "POST",
             url: "/orgs",
             payload: {
