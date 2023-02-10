@@ -20,6 +20,7 @@ model User {
   name          String
   organizations OrganizationMember[]
   Application   Application[]
+  Account       Account[]
 }
 
 model Organization {
@@ -30,6 +31,7 @@ model Organization {
   applications Application[]
   invites      OrganizationInvite[]
   members      OrganizationMember[]
+  Account      Account[]
 }
 
 model OrganizationMember {
@@ -62,6 +64,20 @@ model Application {
   organizationId String?
   organization   Organization? @relation(fields: [organizationId], references: [id])
   deployments    Deployment[]
+}
+
+model Account {
+  id             String        @id @default(uuid())
+  user           User?         @relation(fields: [userId], references: [id])
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  userId         String?
+  organizationId String?
+}
+
+model Plan {
+  id          String @id @default(uuid())
+  name        String @unique
+  description String
 }
 
 model Chain {
