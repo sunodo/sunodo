@@ -95,7 +95,7 @@ describe("apps:create", () => {
         const app = await ctx.prisma.application.create({
             data: {
                 name: ctx.meta.id,
-                creatorId: creator.id,
+                account: { connect: { id: creator.accountId } },
             },
         });
 

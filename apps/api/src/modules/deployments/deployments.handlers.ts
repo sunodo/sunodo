@@ -1,5 +1,6 @@
 import k8s from "@kubernetes/client-node";
 import { Deployment, DeploymentStatus, Prisma, Region } from "@prisma/client";
+import { NotFoundError } from "@prisma/client/runtime";
 import { RouteHandlerMethodTypebox } from "../../types";
 import { CreateDeploymentSchema } from "./deployments.schemas";
 
@@ -29,19 +30,22 @@ export const createHandler: RouteHandlerMethodTypebox<
     }
 
     // search by name of application
-    const application = await request.prisma.application.findUnique({
+    const application = await request.prisma.application.findFirst({
         where: {
             name: request.params.app,
-        },
-        include: {
-            organization: {
-                include: {
-                    members: {
-                        where: {
-                            userId: user.id,
+            account: {
+                OR: [
+                    { user: { subs: { has: request.user.sub } } },
+                    {
+                        organization: {
+                            members: {
+                                some: {
+                                    user: { subs: { has: request.user.sub } },
+                                },
+                            },
                         },
                     },
-                },
+                ],
             },
         },
     });
@@ -50,9 +54,9 @@ export const createHandler: RouteHandlerMethodTypebox<
         return reply.code(404);
     }
 
-    // XXX: check authorization (user must be organization member)
-
+    // XXX: use findFirstOrThrow and handle PrismaClientKnownRequestError with P2025
     // get selected chain
+    request.prisma.chain.findFirstOrThrow({});
     const chain = await request.prisma.chain.findUnique({
         where: {
             name: request.body.chain,

@@ -37,42 +37,37 @@ export const createHandler: RouteHandlerMethodTypebox<
 
     // name of application
     const name = request.body.name ?? uniqueNamesGenerator(nameGeneratorConfig);
-
     // XXX: validate with pattern /^[a-z][a-z0-9-]{1,28}[a-z0-9]$/
 
-    // find organization by slug
-    const organization = request.body.org
-        ? await request.prisma.organization.findFirst({
-              where: {
-                  slug: request.body.org,
-                  members: {
-                      some: {
-                          user: {
-                              subs: {
-                                  has: request.user.sub,
-                              },
+    const account = await request.prisma.account.findFirst({
+        where: request.body.org
+            ? {
+                  organization: {
+                      slug: request.body.org,
+                      members: {
+                          some: {
+                              user: { subs: { has: request.user.sub } },
                           },
                       },
                   },
-              },
-          })
-        : undefined;
+              }
+            : { user: { subs: { has: request.user.sub } } },
+    });
 
-    if (organization === null) {
+    if (account === null) {
         return reply.code(400).send({
             statusCode: 400,
             error: "Error",
-            message: `Invalid organization '${name}'`,
+            message: `Invalid organization '${request.body.org}'`,
         });
     }
 
     try {
-        // create application, connected to organization
+        // create application, connected to account
         const app = await request.prisma.application.create({
             data: {
                 name,
-                creatorId: user.id,
-                organizationId: organization?.id,
+                accountId: account.id,
             },
         });
 
@@ -99,60 +94,48 @@ export const createHandler: RouteHandlerMethodTypebox<
 export const listHandler: RouteHandlerMethodTypebox<
     typeof ListAppSchema
 > = async (request, reply) => {
-    const apps = request.query.org
-        ? await request.prisma.application.findMany({
-              where: {
-                  organization: {
-                      slug: request.query.org,
-                      members: {
-                          some: {
-                              user: {
-                                  subs: {
-                                      has: request.user.sub,
-                                  },
+    // if org is defined, search for applications owned by organization account
+    // otherwise search for applications owned by user account
+    const apps = await request.prisma.application.findMany({
+        where: {
+            account: request.query.org
+                ? {
+                      organization: {
+                          slug: request.query.org,
+                          members: {
+                              some: {
+                                  user: { subs: { has: request.user.sub } },
                               },
                           },
                       },
-                  },
-              },
-          })
-        : await request.prisma.application.findMany({
-              where: {
-                  creator: {
-                      subs: {
-                          has: request.user.sub,
-                      },
-                  },
-                  organizationId: null,
-              },
-          });
+                  }
+                : { user: { subs: { has: request.user.sub } } },
+        },
+    });
     return reply.code(200).send(apps);
 };
 
 export const getHandler: RouteHandlerMethodTypebox<
     typeof GetAppSchema
 > = async (request, reply) => {
-    // search by name of application, where user must be creator or member of application organization
+    // search by name of application
+    // also must belong to user account or organization account where user is a member
     const dapp = await request.prisma.application.findFirst({
         where: {
             name: request.params.name,
-            OR: {
-                organization: {
-                    members: {
-                        some: {
-                            user: {
-                                subs: {
-                                    has: request.user.sub,
+            account: {
+                OR: [
+                    { user: { subs: { has: request.user.sub } } },
+                    {
+                        organization: {
+                            members: {
+                                some: {
+                                    user: { subs: { has: request.user.sub } },
                                 },
                             },
                         },
                     },
-                },
-                creator: {
-                    subs: {
-                        has: request.user.sub,
-                    },
-                },
+                ],
             },
         },
     });

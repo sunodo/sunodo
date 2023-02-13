@@ -19,7 +19,6 @@ model User {
   subs              String[]
   name              String
   organizations     OrganizationMember[]
-  applications      Application[]
   account           Account              @relation(fields: [accountId], references: [id])
   accountId         String               @unique
   billingCustomerId String               @unique
@@ -30,7 +29,6 @@ model Organization {
   createdAt         DateTime             @default(now())
   name              String               @unique
   slug              String               @unique
-  applications      Application[]
   invites           OrganizationInvite[]
   members           OrganizationMember[]
   account           Account              @relation(fields: [accountId], references: [id])
@@ -61,14 +59,12 @@ model OrganizationInvite {
 }
 
 model Application {
-  id             String        @id @default(uuid())
-  createdAt      DateTime      @default(now())
-  name           String        @unique
-  creatorId      String
-  creator        User          @relation(fields: [creatorId], references: [id])
-  organizationId String?
-  organization   Organization? @relation(fields: [organizationId], references: [id])
-  deployments    Deployment[]
+  id          String       @id @default(uuid())
+  createdAt   DateTime     @default(now())
+  name        String       @unique
+  accountId   String
+  account     Account      @relation(fields: [accountId], references: [id])
+  deployments Deployment[]
 }
 
 model Plan {
@@ -89,9 +85,10 @@ model Account {
   type                  AccountType
   plan                  Plan          @relation(fields: [planId], references: [id])
   planId                String
+  applications          Application[]
   billingSubscriptionId String?
-  User                  User?
-  Organization          Organization?
+  user                  User?
+  organization          Organization?
 }
 
 model Chain {
