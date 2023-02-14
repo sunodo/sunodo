@@ -1,17 +1,13 @@
 import { AccountType, Role, User } from "@prisma/client";
 import { randomUUID } from "crypto";
-import { TestContext } from "vitest";
 import { FastifyContext } from "../types";
 
 export const createTestOrganization = async (
-    ctx: TestContext & FastifyContext,
+    ctx: FastifyContext,
     args: { name: string; slug: string; admin: User }
 ) => {
     const id = randomUUID();
-    const customerId = await ctx.billing.createCustomer({
-        name: args.name,
-        metadata: { external_id: id, test_id: ctx.meta.id },
-    });
+    const customerId = await ctx.billing.createCustomer({ name: args.name });
 
     // create user
     return ctx.prisma.organization.create({

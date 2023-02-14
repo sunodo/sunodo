@@ -1,15 +1,11 @@
 import { AccountType } from "@prisma/client";
-import { TestContext } from "vitest";
 import { FastifyContext } from "../types";
 
 export const createTestUser = async (
-    ctx: TestContext & FastifyContext,
+    ctx: FastifyContext,
     args: { email: string; name: string; subs: string[] }
 ) => {
-    const customerId = await ctx.billing.createCustomer({
-        email: args.email,
-        metadata: { test_id: ctx.meta.id },
-    });
+    const customerId = await ctx.billing.createCustomer({ email: args.email });
 
     // create user
     return ctx.prisma.user.create({
@@ -25,5 +21,6 @@ export const createTestUser = async (
             },
             billingCustomerId: customerId,
         },
+        include: { account: true },
     });
 };
