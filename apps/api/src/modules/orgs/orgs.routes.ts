@@ -12,43 +12,34 @@ import {
     GetOrgSchema,
     ListOrgSchema,
 } from "./orgs.schemas";
+import invitesRoutes from "../invites/invites.routes";
 
 const routes: FastifyPluginAsyncTypebox = async (server: FastifyTypebox) => {
     server.post(
         "/",
-        {
-            schema: CreateOrgSchema,
-            preValidation: server.authenticate,
-        },
+        { schema: CreateOrgSchema, preValidation: server.authenticate },
         createHandler
     );
 
     server.get(
         "/",
-        {
-            schema: ListOrgSchema,
-            preValidation: server.authenticate,
-        },
+        { schema: ListOrgSchema, preValidation: server.authenticate },
         listHandler
     );
 
     server.get(
         "/:slug",
-        {
-            schema: GetOrgSchema,
-            preValidation: server.authenticate,
-        },
+        { schema: GetOrgSchema, preValidation: server.authenticate },
         getHandler
     );
 
     server.delete(
         "/:slug",
-        {
-            schema: DeleteOrgSchema,
-            preValidation: server.authenticate,
-        },
+        { schema: DeleteOrgSchema, preValidation: server.authenticate },
         deleteHandler
     );
+
+    server.register(invitesRoutes, { prefix: "/:slug/invites" });
 };
 
 export default routes;

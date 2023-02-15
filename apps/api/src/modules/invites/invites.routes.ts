@@ -5,36 +5,36 @@ import {
     deleteHandler,
     getHandler,
     listHandler,
-} from "./deployments.handlers";
+} from "./invites.handlers";
 import {
-    CreateDeploymentSchema,
-    DeleteDeploymentSchema,
-    GetDeploymentSchema,
-    ListDeploymentSchema,
-} from "./deployments.schemas";
+    CreateInviteSchema,
+    DeleteInviteSchema,
+    GetInviteSchema,
+    ListInviteSchema,
+} from "./invites.schemas";
 
 const routes: FastifyPluginAsyncTypebox = async (server: FastifyTypebox) => {
     server.post(
         "/",
-        { schema: CreateDeploymentSchema, preValidation: server.authenticate },
+        { schema: CreateInviteSchema, preValidation: server.authenticate },
         createHandler
     );
 
     server.get(
         "/",
-        { schema: ListDeploymentSchema, preValidation: server.authenticate },
+        { schema: ListInviteSchema, preValidation: server.authenticate },
         listHandler
     );
 
     server.get(
-        "/:chain",
-        { schema: GetDeploymentSchema, preValidation: server.authenticate },
+        "/:email",
+        { schema: GetInviteSchema, preValidation: server.authenticate },
         getHandler
     );
 
     server.delete(
-        "/:chain",
-        { schema: DeleteDeploymentSchema, preValidation: server.authenticate },
+        "/:email",
+        { schema: DeleteInviteSchema, preValidation: server.authenticate },
         deleteHandler
     );
 };

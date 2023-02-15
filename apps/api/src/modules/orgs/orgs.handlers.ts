@@ -92,48 +92,25 @@ export const createHandler: RouteHandlerMethodTypebox<
 export const getHandler: RouteHandlerMethodTypebox<
     typeof GetOrgSchema
 > = async (request, reply) => {
-    // list organizations of authenticated
-    const om = await request.prisma.organizationMember.findFirst({
+    const organization = await request.prisma.organization.findFirst({
         where: {
-            organization: {
-                slug: request.params.slug,
-            },
-            user: {
-                subs: {
-                    has: request.user.sub,
-                },
-            },
-        },
-        include: {
-            organization: true,
+            slug: request.params.slug,
+            members: { some: { user: { subs: { has: request.user.sub } } } },
         },
     });
-
-    /*
-    const org = await prisma.organization.findFirst({
-        where: {
-            members: {
-                some: {
-                    user: {
-                        subs: {
-                            has: request.user.sub,
-                        },
-                    },
-                },
-            },
-        },
-    });*/
-
-    if (!om) {
-        return reply.code(404).send();
-    }
-
-    return reply.code(200).send(om.organization);
+    return organization
+        ? reply.code(200).send(organization)
+        : reply.code(404).send();
 };
 
 export const deleteHandler: RouteHandlerMethodTypebox<
     typeof DeleteOrgSchema
 > = async (request, reply) => {
+    // logger user is member filter
+    const member: Prisma.OrganizationMemberListRelationFilter = {
+        some: { user: { subs: { has: request.user.sub } } },
+    };
+
     // find the organization
     const om = await request.prisma.organizationMember.findFirst({
         where: {
@@ -157,6 +134,7 @@ export const deleteHandler: RouteHandlerMethodTypebox<
     // delete invites, members and the org itself
     const deleteInvites = request.prisma.organizationInvite.deleteMany({
         where: {
+            organization: { slug: request.params.slug },
             organizationId: om.organizationId,
         },
     });
