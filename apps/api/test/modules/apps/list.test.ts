@@ -1,17 +1,10 @@
-import {
-    afterAll,
-    beforeAll,
-    beforeEach,
-    describe,
-    expect,
-    test,
-} from "vitest";
+import { beforeAll, beforeEach, describe, expect, test } from "vitest";
 import { Static } from "@sinclair/typebox";
 import { FastifyContext } from "../../types";
 import buildServer from "../../utils/server";
 import { ListAppSchema } from "../../../src/modules/apps/apps.schemas";
 import { createTestUser } from "../../utils/user";
-import { AccountType, Organization, User } from "@prisma/client";
+import { AccountType, PrismaClient } from "@prisma/client";
 import { token } from "../../auth";
 import { createTestApplication } from "../../utils/application";
 import { createTestOrganization } from "../../utils/organization";
@@ -20,7 +13,7 @@ describe("apps:list", () => {
     beforeAll(buildServer);
     beforeAll(async (ctx) => {
         // create personal plan
-        const prisma = ctx.meta.prisma;
+        const prisma: PrismaClient = ctx.meta.prisma;
         const plan = await prisma.plan.create({
             data: {
                 default: true,
