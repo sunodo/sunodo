@@ -1,8 +1,12 @@
 import k8s from "@kubernetes/client-node";
 import { Deployment, DeploymentStatus, Prisma, Region } from "@prisma/client";
-import { NotFoundError } from "@prisma/client/runtime";
 import { RouteHandlerMethodTypebox } from "../../types";
-import { CreateDeploymentSchema } from "./deployments.schemas";
+import {
+    CreateDeploymentSchema,
+    DeleteDeploymentSchema,
+    GetDeploymentSchema,
+    ListDeploymentSchema,
+} from "./deployments.schemas";
 
 const deploy = async (deployment: Deployment, region: Region) => {
     const kc = new k8s.KubeConfig();
@@ -133,6 +137,133 @@ export const createHandler: RouteHandlerMethodTypebox<
                     message: e.message,
                 });
             }
+        }
+    }
+};
+
+export const listHandler: RouteHandlerMethodTypebox<
+    typeof ListDeploymentSchema
+> = async (request, reply) => {
+    // filter of logged on user
+    const account: Prisma.AccountWhereInput = {
+        OR: [
+            { user: { subs: { has: request.user.sub } } },
+            {
+                organization: {
+                    members: {
+                        some: { user: { subs: { has: request.user.sub } } },
+                    },
+                },
+            },
+        ],
+    };
+
+    const deployments = await request.prisma.deployment.findMany({
+        where: { application: { name: request.params.app, account } },
+        include: {
+            application: true,
+            chain: true,
+            region: true,
+            runtime: true,
+        },
+    });
+
+    return reply.code(200).send(
+        deployments.map((d) => ({
+            app: d.application.name,
+            chain: d.chain.name,
+            contractAddress: d.contractAddress,
+            machineSnapshot: d.machineSnapshot,
+            region: d.region.name,
+            runtime: d.runtime.name,
+            status: d.status,
+        }))
+    );
+};
+
+export const getHandler: RouteHandlerMethodTypebox<
+    typeof GetDeploymentSchema
+> = async (request, reply) => {
+    // filter of logged on user
+    const account: Prisma.AccountWhereInput = {
+        OR: [
+            { user: { subs: { has: request.user.sub } } },
+            {
+                organization: {
+                    members: {
+                        some: { user: { subs: { has: request.user.sub } } },
+                    },
+                },
+            },
+        ],
+    };
+
+    const deployment = await request.prisma.deployment.findFirst({
+        where: { application: { name: request.params.app, account } },
+        include: {
+            application: true,
+            chain: true,
+            region: true,
+            runtime: true,
+        },
+    });
+
+    return deployment
+        ? reply.code(200).send({
+              app: deployment.application.name,
+              chain: deployment.chain.name,
+              contractAddress: deployment.contractAddress,
+              machineSnapshot: deployment.machineSnapshot,
+              region: deployment.region.name,
+              runtime: deployment.runtime.name,
+              status: deployment.status,
+          })
+        : reply.code(404).send();
+};
+
+export const deleteHandler: RouteHandlerMethodTypebox<
+    typeof DeleteDeploymentSchema
+> = async (request, reply) => {
+    // filter of logged on user
+    const account: Prisma.AccountWhereInput = {
+        OR: [
+            { user: { subs: { has: request.user.sub } } },
+            {
+                organization: {
+                    members: {
+                        some: { user: { subs: { has: request.user.sub } } },
+                    },
+                },
+            },
+        ],
+    };
+
+    try {
+        const deleted = await request.prisma.deployment.deleteMany({
+            where: { application: { name: request.params.app, account } },
+        });
+        return deleted.count > 0
+            ? reply.code(204).send()
+            : reply.code(404).send();
+    } catch (e) {
+        if (e instanceof Prisma.PrismaClientKnownRequestError) {
+            if (e.code == "P2003") {
+                return reply.code(400).send({
+                    statusCode: 400,
+                    error: "Bad input",
+                    message: "Cannot delete deployment that has related data",
+                });
+            }
+            return reply.code(400).send({
+                statusCode: 400,
+                error: e.code,
+                message: e.message,
+            });
+        } else {
+            return reply.code(500).send({
+                statusCode: 400,
+                message: "Unknown error",
+            });
         }
     }
 };
