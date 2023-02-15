@@ -27,6 +27,17 @@ export const CreateAppSchema = {
     security: [{ openId: [] }],
 };
 
+export const DeleteAppSchema = {
+    summary: "Delete application",
+    response: {
+        204: Type.Object({}),
+        400: ErrorSchema,
+        401: ErrorSchema,
+        404: ErrorSchema,
+    },
+    params: Type.Object({ name: Type.String() }),
+};
+
 export const ListAppSchema = {
     summary: "List applications",
     querystring: Type.Object({
@@ -37,9 +48,7 @@ export const ListAppSchema = {
             })
         ),
     }),
-    response: {
-        200: Type.Array(AppSchema),
-    },
+    response: { 200: Type.Array(AppSchema) },
 };
 
 export const GetAppSchema = {
@@ -49,7 +58,5 @@ export const GetAppSchema = {
         401: ErrorSchema,
         404: ErrorSchema,
     },
-    params: Type.Object({
-        name: Type.String(),
-    }),
+    params: Type.Object({ name: Type.String() }),
 };

@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Prisma, Account } from "@prisma/client";
 import {
     uniqueNamesGenerator,
     adjectives,
@@ -7,8 +7,13 @@ import {
     Config,
 } from "unique-names-generator";
 
+import {
+    CreateAppSchema,
+    DeleteAppSchema,
+    GetAppSchema,
+    ListAppSchema,
+} from "./apps.schemas";
 import { RouteHandlerMethodTypebox } from "../../types";
-import { CreateAppSchema, GetAppSchema, ListAppSchema } from "./apps.schemas";
 
 /**
  * Name generator, generate names like `lazy-pig-345`
@@ -115,6 +120,55 @@ export const listHandler: RouteHandlerMethodTypebox<
     return reply.code(200).send(apps);
 };
 
+export const deleteHandler: RouteHandlerMethodTypebox<
+    typeof DeleteAppSchema
+> = async (request, reply) => {
+    try {
+        // either app belong to user account or to organization account where user is a member, use an OR
+        const account: Prisma.AccountWhereInput = {
+            OR: [
+                { user: { subs: { has: request.user.sub } } },
+                {
+                    organization: {
+                        members: {
+                            some: { user: { subs: { has: request.user.sub } } },
+                        },
+                    },
+                },
+            ],
+        };
+        const deleted = await request.prisma.application.deleteMany({
+            where: {
+                name: request.params.name,
+                account,
+            },
+        });
+        return deleted.count > 0
+            ? reply.code(204).send()
+            : reply.code(404).send();
+    } catch (e) {
+        if (e instanceof Prisma.PrismaClientKnownRequestError) {
+            if (e.code == "P2003") {
+                return reply.code(400).send({
+                    statusCode: 400,
+                    error: "Bad input",
+                    message: "Cannot delete application that has related data",
+                });
+            }
+            return reply.code(400).send({
+                statusCode: 400,
+                error: e.code,
+                message: e.message,
+            });
+        } else {
+            return reply.code(500).send({
+                statusCode: 400,
+                message: "Unknown error",
+            });
+        }
+    }
+};
+
 export const getHandler: RouteHandlerMethodTypebox<
     typeof GetAppSchema
 > = async (request, reply) => {
@@ -140,8 +194,5 @@ export const getHandler: RouteHandlerMethodTypebox<
         },
     });
 
-    if (!dapp) {
-        return reply.code(404);
-    }
-    return reply.code(200).send(dapp);
+    return dapp ? reply.code(200).send(dapp) : reply.code(404).send();
 };
