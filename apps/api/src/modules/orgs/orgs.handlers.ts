@@ -125,7 +125,7 @@ export const getHandler: RouteHandlerMethodTypebox<
     });*/
 
     if (!om) {
-        return reply.code(404);
+        return reply.code(404).send();
     }
 
     return reply.code(200).send(om.organization);
@@ -151,7 +151,7 @@ export const deleteHandler: RouteHandlerMethodTypebox<
         },
     });
     if (!om) {
-        return reply.code(404);
+        return reply.code(404).send();
     }
 
     // delete invites, members and the org itself
@@ -175,7 +175,7 @@ export const deleteHandler: RouteHandlerMethodTypebox<
         deleteMembers,
         deleteOrg,
     ]);
-    return reply.code(204);
+    return reply.code(204).send();
 };
 
 export const listHandler: RouteHandlerMethodTypebox<

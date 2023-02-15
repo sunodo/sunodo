@@ -51,7 +51,7 @@ export const createHandler: RouteHandlerMethodTypebox<
     });
 
     if (!application) {
-        return reply.code(404);
+        return reply.code(404).send();
     }
 
     // XXX: use findFirstOrThrow and handle PrismaClientKnownRequestError with P2025
