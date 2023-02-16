@@ -69,7 +69,7 @@ describe("apps:create", () => {
                 authorization: `Bearer ${token}`,
             },
         });
-        expect(response.statusCode).toEqual(200);
+        expect(response.statusCode).toEqual(201);
         const app = response.json<Static<typeof CreateAppResponseSchema>>();
         expect(app.name).toBeDefined();
     });
@@ -85,7 +85,7 @@ describe("apps:create", () => {
                 authorization: `Bearer ${token}`,
             },
         });
-        expect(response.statusCode).toEqual(200);
+        expect(response.statusCode).toEqual(201);
         const app = response.json<Static<typeof CreateAppResponseSchema>>();
         expect(app.name).toEqual(ctx.meta.id);
     });

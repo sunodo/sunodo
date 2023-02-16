@@ -27,19 +27,6 @@ const nameGeneratorConfig: Config = {
 export const createHandler: RouteHandlerMethodTypebox<
     typeof CreateAppSchema
 > = async (request, reply) => {
-    const user = await request.prisma.user.findFirst({
-        where: {
-            subs: {
-                has: request.user.sub,
-            },
-        },
-    });
-
-    // logged in user
-    if (!user) {
-        return reply.code(401).send();
-    }
-
     // name of application
     const name = request.body.name ?? uniqueNamesGenerator(nameGeneratorConfig);
     // XXX: validate with pattern /^[a-z][a-z0-9-]{1,28}[a-z0-9]$/
@@ -70,15 +57,10 @@ export const createHandler: RouteHandlerMethodTypebox<
     try {
         // create application, connected to account
         const app = await request.prisma.application.create({
-            data: {
-                name,
-                accountId: account.id,
-            },
+            data: { name, accountId: account.id },
         });
 
-        return reply.code(200).send({
-            name: app.name,
-        });
+        return reply.code(201).send({ name: app.name });
     } catch (e) {
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
             if (e.code === "P2002") {

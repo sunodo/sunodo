@@ -30,13 +30,82 @@ USAGE
 # Commands
 
 <!-- commands -->
+* [`sunodoctl apps create [NAME]`](#sunodoctl-apps-create-name)
+* [`sunodoctl apps delete NAME`](#sunodoctl-apps-delete-name)
+* [`sunodoctl apps list`](#sunodoctl-apps-list)
 * [`sunodoctl auth login`](#sunodoctl-auth-login)
 * [`sunodoctl auth logout`](#sunodoctl-auth-logout)
 * [`sunodoctl help [COMMANDS]`](#sunodoctl-help-commands)
+* [`sunodoctl login`](#sunodoctl-login)
+* [`sunodoctl logout`](#sunodoctl-logout)
+* [`sunodoctl orgs create NAME`](#sunodoctl-orgs-create-name)
+* [`sunodoctl orgs delete NAME`](#sunodoctl-orgs-delete-name)
+* [`sunodoctl orgs list`](#sunodoctl-orgs-list)
 * [`sunodoctl platform chains`](#sunodoctl-platform-chains)
 * [`sunodoctl platform regions`](#sunodoctl-platform-regions)
 * [`sunodoctl platform runtimes`](#sunodoctl-platform-runtimes)
 * [`sunodoctl update [CHANNEL]`](#sunodoctl-update-channel)
+
+## `sunodoctl apps create [NAME]`
+
+Create application
+
+```
+USAGE
+  $ sunodoctl apps create [NAME] [--org <value>]
+
+FLAGS
+  --org=<value>  organization slug of the application
+
+DESCRIPTION
+  Create application
+
+EXAMPLES
+  $ sunodoctl apps create
+```
+
+## `sunodoctl apps delete NAME`
+
+Delete application
+
+```
+USAGE
+  $ sunodoctl apps delete [NAME]
+
+DESCRIPTION
+  Delete application
+
+EXAMPLES
+  $ sunodoctl apps delete
+```
+
+## `sunodoctl apps list`
+
+List applications
+
+```
+USAGE
+  $ sunodoctl apps list [--columns <value> | -x] [--sort <value>] [--filter <value>] [--output csv|json|yaml | 
+    | [--csv | --no-truncate]] [--no-header | ] [--org <value>]
+
+FLAGS
+  -x, --extended     show extra columns
+  --columns=<value>  only show provided columns (comma-separated)
+  --csv              output is csv format [alias: --output=csv]
+  --filter=<value>   filter property by partial string matching, ex: name=foo
+  --no-header        hide table header from output
+  --no-truncate      do not truncate output to fit screen
+  --org=<value>      organization slug of the applications
+  --output=<option>  output in a more machine friendly format
+                     <options: csv|json|yaml>
+  --sort=<value>     property to sort by (prepend '-' for descending)
+
+DESCRIPTION
+  List applications
+
+EXAMPLES
+  $ sunodoctl apps list
+```
 
 ## `sunodoctl auth login`
 
@@ -48,6 +117,9 @@ USAGE
 
 DESCRIPTION
   Login or Signup to Sunodo
+
+ALIASES
+  $ sunodoctl login
 
 EXAMPLES
   $ sunodoctl auth login
@@ -63,6 +135,9 @@ USAGE
 
 DESCRIPTION
   clears local login credentials and invalidates API session
+
+ALIASES
+  $ sunodoctl logout
 
 EXAMPLES
   $ sunodoctl auth logout
@@ -87,6 +162,102 @@ DESCRIPTION
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.2.4/src/commands/help.ts)_
+
+## `sunodoctl login`
+
+Login or Signup to Sunodo
+
+```
+USAGE
+  $ sunodoctl login
+
+DESCRIPTION
+  Login or Signup to Sunodo
+
+ALIASES
+  $ sunodoctl login
+
+EXAMPLES
+  $ sunodoctl login
+```
+
+## `sunodoctl logout`
+
+clears local login credentials and invalidates API session
+
+```
+USAGE
+  $ sunodoctl logout
+
+DESCRIPTION
+  clears local login credentials and invalidates API session
+
+ALIASES
+  $ sunodoctl logout
+
+EXAMPLES
+  $ sunodoctl logout
+```
+
+## `sunodoctl orgs create NAME`
+
+Create organization
+
+```
+USAGE
+  $ sunodoctl orgs create [NAME] --slug <value>
+
+FLAGS
+  --slug=<value>  (required) slug of the organization
+
+DESCRIPTION
+  Create organization
+
+EXAMPLES
+  $ sunodoctl orgs create
+```
+
+## `sunodoctl orgs delete NAME`
+
+Delete organization
+
+```
+USAGE
+  $ sunodoctl orgs delete [NAME]
+
+DESCRIPTION
+  Delete organization
+
+EXAMPLES
+  $ sunodoctl orgs delete
+```
+
+## `sunodoctl orgs list`
+
+List organizations
+
+```
+USAGE
+  $ sunodoctl orgs list [--columns <value> | -x] [--sort <value>] [--filter <value>] [--output csv|json|yaml | 
+    | [--csv | --no-truncate]] [--no-header | ]
+
+FLAGS
+  -x, --extended     show extra columns
+  --columns=<value>  only show provided columns (comma-separated)
+  --csv              output is csv format [alias: --output=csv]
+  --filter=<value>   filter property by partial string matching, ex: name=foo
+  --no-header        hide table header from output
+  --no-truncate      do not truncate output to fit screen
+  --output=<option>  output in a more machine friendly format
+                     <options: csv|json|yaml>
+  --sort=<value>     property to sort by (prepend '-' for descending)
+
+DESCRIPTION
+  List organizations
+
+EXAMPLES
+  $ sunodoctl orgs list
+```
 
 ## `sunodoctl platform chains`
 

@@ -17,6 +17,7 @@ export type CreateOrgResponse = Static<typeof CreateOrgResponseSchema>;
 
 export const CreateOrgSchema = {
     summary: "Create organization",
+    operationId: "createOrganization",
     body: CreateOrgRequestSchema,
     response: {
         201: CreateOrgResponseSchema,
@@ -29,6 +30,7 @@ const ListOrgResponseSchema = Type.Array(OrgSchema);
 
 export const ListOrgSchema = {
     summary: "List organizations",
+    operationId: "listOrganizations",
     response: {
         200: ListOrgResponseSchema,
         401: ErrorSchema,
@@ -37,25 +39,23 @@ export const ListOrgSchema = {
 
 export const GetOrgSchema = {
     summary: "Get organization",
+    operationId: "getOrganization",
     response: {
         200: OrgSchema,
         401: ErrorSchema,
         404: ErrorSchema,
     },
-    params: Type.Object({
-        slug: Type.String(),
-    }),
+    params: Type.Object({ slug: Type.String() }),
 };
 
 export const DeleteOrgSchema = {
     summary: "Delete organization",
+    operationId: "deleteOrganization",
     response: {
         204: Type.Object({}),
         400: ErrorSchema,
         401: ErrorSchema,
         404: ErrorSchema,
     },
-    params: Type.Object({
-        slug: Type.String(),
-    }),
+    params: Type.Object({ slug: Type.String() }),
 };

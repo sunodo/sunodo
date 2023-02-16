@@ -9,6 +9,8 @@ import { SunodoCommand } from "../../sunodoCommand.js";
 import { login } from "../../services/sunodo.js";
 
 export default class AuthLogin extends SunodoCommand {
+    static aliases = ["login"];
+
     static description = "Login or Signup to Sunodo";
 
     static examples = ["<%= config.bin %> <%= command.id %>"];
@@ -65,7 +67,10 @@ export default class AuthLogin extends SunodoCommand {
 
         if (tokens && tokens.access_token) {
             // call API /auth/login
-            const response = await login(this.fetchConfig);
+            const response = await login({
+                ...this.fetchConfig,
+                headers: { Authorization: `Bearer ${tokens.access_token}` },
+            });
 
             if (response.status != 200) {
                 spinner.fail(`Authentication failed: ${response.data.message}`);

@@ -3,6 +3,8 @@ import { authClient, clientId, issuer } from "../../services/auth.js";
 import { SunodoCommand } from "../../sunodoCommand.js";
 
 export default class AuthLogout extends SunodoCommand {
+    static aliases = ["logout"];
+
     static description =
         "clears local login credentials and invalidates API session";
 

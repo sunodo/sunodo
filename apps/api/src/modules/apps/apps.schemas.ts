@@ -18,6 +18,7 @@ export const CreateAppResponseSchema = AppSchema;
 
 export const CreateAppSchema = {
     summary: "Create application",
+    operationId: "createApplication",
     body: CreateAppRequestSchema,
     response: {
         201: CreateAppResponseSchema,
@@ -29,6 +30,7 @@ export const CreateAppSchema = {
 
 export const DeleteAppSchema = {
     summary: "Delete application",
+    operationId: "deleteApplication",
     response: {
         204: Type.Object({}),
         400: ErrorSchema,
@@ -40,6 +42,7 @@ export const DeleteAppSchema = {
 
 export const ListAppSchema = {
     summary: "List applications",
+    operationId: "listApplications",
     querystring: Type.Object({
         org: Type.Optional(
             Type.String({
@@ -48,11 +51,12 @@ export const ListAppSchema = {
             })
         ),
     }),
-    response: { 200: Type.Array(AppSchema) },
+    response: { 200: Type.Array(AppSchema), 401: ErrorSchema },
 };
 
 export const GetAppSchema = {
     summary: "Get application",
+    operationId: "getApplication",
     response: {
         200: AppSchema,
         401: ErrorSchema,
