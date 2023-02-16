@@ -59,12 +59,12 @@ model OrganizationInvite {
 }
 
 model Application {
-  id          String       @id @default(uuid())
-  createdAt   DateTime     @default(now())
-  name        String       @unique
-  accountId   String
-  account     Account      @relation(fields: [accountId], references: [id])
-  deployments Deployment[]
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  name      String   @unique
+  accountId String
+  account   Account  @relation(fields: [accountId], references: [id])
+  nodes     Node[]
 }
 
 model Plan {
@@ -102,38 +102,69 @@ model Chain {
 }
 
 model Region {
-  id               String       @id @default(uuid())
-  createdAt        DateTime     @default(now())
-  name             String       @unique
+  id               String   @id @default(uuid())
+  createdAt        DateTime @default(now())
+  name             String   @unique
   kubeConfigSecret String
-  deployments      Deployment[]
-  default          Boolean      @unique
+  default          Boolean  @unique
+  nodes            Node[]
 }
 
 model Runtime {
-  id         String       @id @default(uuid())
-  createdAt  DateTime     @default(now())
-  name       String       @unique
-  default    Boolean
-  Deployment Deployment[]
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  name      String   @unique
+  default   Boolean
+  nodes     Node[]
 }
 
 model Deployment {
-  id              String           @id @default(uuid())
-  createdAt       DateTime         @default(now())
-  application     Application      @relation(fields: [applicationId], references: [id])
-  applicationId   String
+  id              String    @id @default(uuid())
   contractAddress String
-  machineSnapshot String
-  status          DeploymentStatus
-  chain           Chain            @relation(fields: [chainId], references: [id])
+  createdAt       DateTime  @default(now())
+  machineSnapshot String?
+  consensus       Consensus @relation(fields: [consensusId], references: [id])
+  consensusId     String
+  chain           Chain     @relation(fields: [chainId], references: [id])
   chainId         Int
-  region          Region           @relation(fields: [regionId], references: [id])
-  regionId        String
-  runtime         Runtime          @relation(fields: [runtimeId], references: [id])
-  runtimeId       String
+  nodes           Node[]
 
-  @@unique([applicationId, chainId])
+  @@unique([contractAddress, chainId])
+}
+
+model Node {
+  id            String      @id @default(uuid())
+  createdAt     DateTime    @default(now())
+  deployment    Deployment  @relation(fields: [deploymentId], references: [id])
+  deploymentId  String
+  application   Application @relation(fields: [applicationId], references: [id])
+  applicationId String
+  region        Region      @relation(fields: [regionId], references: [id])
+  regionId      String
+  runtime       Runtime     @relation(fields: [runtimeId], references: [id])
+  runtimeId     String
+  status        NodeStatus
+}
+
+model Validator {
+  id        String      @id @default(uuid())
+  address   String      @unique
+  keyRef    String?
+  consensus Consensus[]
+}
+
+model Consensus {
+  id          String        @id @default(uuid())
+  type        ConsensusType
+  validators  Validator[]
+  deployments Deployment[]
+}
+
+enum ConsensusType {
+  AUTHORITY
+  MULTISIG
+  QUORUM
+  UNPERMISSIONED
 }
 
 enum Role {
@@ -141,7 +172,7 @@ enum Role {
   ADMIN
 }
 
-enum DeploymentStatus {
+enum NodeStatus {
   STARTING
   READY
   FAILED

@@ -1,4 +1,4 @@
-import { AccountType, PrismaClient } from "@prisma/client";
+import { AccountType, ConsensusType, PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
@@ -72,6 +72,30 @@ async function main() {
             stripePriceId: "price_1Ma2ZjHytG4GeYTNxFTYvRbP",
         },
         update: {},
+    });
+
+    // sunodo validator
+    const validator = await prisma.validator.upsert({
+        where: { id: "a85afef5-7bf7-49ba-a043-d22afab0f800" },
+        create: {
+            id: "a85afef5-7bf7-49ba-a043-d22afab0f800",
+            address: "0xDD21AE38D6215479F3364D3Cf7d9D27aD209BD89",
+            keyRef: "aee74f4a-ed99-4276-8bf8-faf45f5d625e", // AWS KEY ID
+        },
+        update: {
+            address: "0xDD21AE38D6215479F3364D3Cf7d9D27aD209BD89",
+            keyRef: "aee74f4a-ed99-4276-8bf8-faf45f5d625e", // AWS KEY ID
+        },
+    });
+    // sunodo authority consensus
+    await prisma.consensus.upsert({
+        where: { id: "19054807-08c5-49e2-9416-130e38b1cbce" },
+        create: {
+            id: "19054807-08c5-49e2-9416-130e38b1cbce",
+            type: ConsensusType.AUTHORITY,
+            validators: { connect: validator },
+        },
+        update: { validators: { connect: validator } },
     });
 }
 main()

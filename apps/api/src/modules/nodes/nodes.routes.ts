@@ -5,36 +5,36 @@ import {
     deleteHandler,
     getHandler,
     listHandler,
-} from "./deployments.handlers";
+} from "./nodes.handlers";
 import {
-    CreateDeploymentSchema,
-    DeleteDeploymentSchema,
-    GetDeploymentSchema,
-    ListDeploymentSchema,
-} from "./deployments.schemas";
+    CreateNodeSchema,
+    DeleteNodeSchema,
+    GetNodeSchema,
+    ListNodeSchema,
+} from "./nodes.schemas";
 
 const routes: FastifyPluginAsyncTypebox = async (server: FastifyTypebox) => {
     server.post(
         "/",
-        { schema: CreateDeploymentSchema, preValidation: server.authenticate },
+        { schema: CreateNodeSchema, preValidation: server.authenticate },
         createHandler
     );
 
     server.get(
         "/",
-        { schema: ListDeploymentSchema, preValidation: server.authenticate },
+        { schema: ListNodeSchema, preValidation: server.authenticate },
         listHandler
     );
 
     server.get(
         "/:chain",
-        { schema: GetDeploymentSchema, preValidation: server.authenticate },
+        { schema: GetNodeSchema, preValidation: server.authenticate },
         getHandler
     );
 
     server.delete(
         "/:chain",
-        { schema: DeleteDeploymentSchema, preValidation: server.authenticate },
+        { schema: DeleteNodeSchema, preValidation: server.authenticate },
         deleteHandler
     );
 };

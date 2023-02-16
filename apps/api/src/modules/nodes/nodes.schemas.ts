@@ -1,24 +1,24 @@
 import { Type } from "@sinclair/typebox";
-import { DeploymentStatus } from "@prisma/client";
+import { NodeStatus } from "@prisma/client";
 import { ErrorSchema } from "../../schemas";
 
-const DeploymentSchema = Type.Object({
+const NodeSchema = Type.Object({
     app: Type.String(),
     chain: Type.String(),
     contractAddress: Type.String(),
     machineSnapshot: Type.String(),
     status: Type.Enum({
-        STARTING: DeploymentStatus.STARTING,
-        READY: DeploymentStatus.READY,
-        FAILED: DeploymentStatus.FAILED,
+        STARTING: NodeStatus.STARTING,
+        READY: NodeStatus.READY,
+        FAILED: NodeStatus.FAILED,
     }),
     region: Type.String(),
     runtime: Type.String(),
 });
 
-export const CreateDeploymentResponseSchema = DeploymentSchema;
+export const CreateNodeResponseSchema = NodeSchema;
 
-export const CreateDeploymentRequestSchema = Type.Pick(DeploymentSchema, [
+export const CreateNodeRequestSchema = Type.Pick(NodeSchema, [
     "chain",
     "contractAddress",
     "machineSnapshot",
@@ -26,11 +26,11 @@ export const CreateDeploymentRequestSchema = Type.Pick(DeploymentSchema, [
     "runtime",
 ]);
 
-export const CreateDeploymentSchema = {
-    summary: "Create deployment",
-    body: CreateDeploymentRequestSchema,
+export const CreateNodeSchema = {
+    summary: "Create node",
+    body: CreateNodeRequestSchema,
     response: {
-        201: CreateDeploymentResponseSchema,
+        201: CreateNodeResponseSchema,
         400: ErrorSchema,
         401: ErrorSchema,
     },
@@ -39,10 +39,10 @@ export const CreateDeploymentSchema = {
     }),
 };
 
-export const ListDeploymentSchema = {
-    summary: "List deployments",
+export const ListNodeSchema = {
+    summary: "List nodes",
     response: {
-        200: Type.Array(DeploymentSchema),
+        200: Type.Array(NodeSchema),
         401: ErrorSchema,
     },
     params: Type.Object({
@@ -50,10 +50,10 @@ export const ListDeploymentSchema = {
     }),
 };
 
-export const GetDeploymentSchema = {
-    summary: "Get deployment",
+export const GetNodeSchema = {
+    summary: "Get node",
     response: {
-        200: DeploymentSchema,
+        200: NodeSchema,
         401: ErrorSchema,
         404: ErrorSchema,
     },
@@ -63,8 +63,8 @@ export const GetDeploymentSchema = {
     }),
 };
 
-export const DeleteDeploymentSchema = {
-    summary: "Delete deployment",
+export const DeleteNodeSchema = {
+    summary: "Delete node",
     response: {
         204: Type.Object({}),
         401: ErrorSchema,

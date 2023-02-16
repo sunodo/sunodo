@@ -1,3 +1,3 @@
 import { describe } from "vitest";
 
-describe.todo("deployments:list");
+describe.todo("nodes:list");

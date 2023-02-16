@@ -12,7 +12,7 @@ import {
     GetAppSchema,
     ListAppSchema,
 } from "./apps.schemas";
-import deploymentsRoutes from "../deployments/deployments.routes";
+import nodesRoutes from "../nodes/nodes.routes";
 
 const routes: FastifyPluginAsyncTypebox = async (server: FastifyTypebox) => {
     server.post(
@@ -39,7 +39,7 @@ const routes: FastifyPluginAsyncTypebox = async (server: FastifyTypebox) => {
         deleteHandler
     );
 
-    server.register(deploymentsRoutes, { prefix: "/:app/deployments" });
+    server.register(nodesRoutes, { prefix: "/:app/nodes" });
 };
 
 export default routes;

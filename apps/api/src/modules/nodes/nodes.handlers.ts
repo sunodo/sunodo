@@ -1,14 +1,14 @@
 import k8s from "@kubernetes/client-node";
-import { Deployment, DeploymentStatus, Prisma, Region } from "@prisma/client";
+import { Node, NodeStatus, Prisma, Region } from "@prisma/client";
 import { RouteHandlerMethodTypebox } from "../../types";
 import {
-    CreateDeploymentSchema,
-    DeleteDeploymentSchema,
-    GetDeploymentSchema,
-    ListDeploymentSchema,
-} from "./deployments.schemas";
+    CreateNodeSchema,
+    DeleteNodeSchema,
+    GetNodeSchema,
+    ListNodeSchema,
+} from "./nodes.schemas";
 
-const deploy = async (deployment: Deployment, region: Region) => {
+const deploy = async (node: Node, region: Region) => {
     const kc = new k8s.KubeConfig();
     kc.loadFromString(region.kubeConfigSecret);
 
@@ -18,21 +18,8 @@ const deploy = async (deployment: Deployment, region: Region) => {
 };
 
 export const createHandler: RouteHandlerMethodTypebox<
-    typeof CreateDeploymentSchema
+    typeof CreateNodeSchema
 > = async (request, reply) => {
-    const user = await request.prisma.user.findFirst({
-        where: {
-            subs: {
-                has: request.user.sub,
-            },
-        },
-    });
-
-    // logged in user
-    if (!user) {
-        return reply.code(401).send();
-    }
-
     // search by name of application
     const application = await request.prisma.application.findFirst({
         where: {
@@ -60,11 +47,11 @@ export const createHandler: RouteHandlerMethodTypebox<
 
     // XXX: use findFirstOrThrow and handle PrismaClientKnownRequestError with P2025
     // get selected chain
-    request.prisma.chain.findFirstOrThrow({});
-    const chain = await request.prisma.chain.findUnique({
-        where: {
-            name: request.body.chain,
-        },
+    const chainId = parseInt(request.body.chain); // try to parse by id (number)
+    const chainCriteria: Prisma.ChainWhereInput =
+        chainId > 0 ? { id: chainId } : { name: request.body.chain };
+    const chain = await request.prisma.chain.findFirst({
+        where: chainCriteria,
     });
     if (!chain) {
         return reply.code(400).send({
@@ -103,30 +90,57 @@ export const createHandler: RouteHandlerMethodTypebox<
     }
 
     try {
-        // create deployment
-        const deployment = await request.prisma.deployment.create({
-            data: {
-                applicationId: application.id,
-                chainId: chain.id,
-                regionId: region.id,
-                runtimeId: runtime.id,
+        // get the first consensus which have a key defined
+        // TODO: change this
+        const authority = await request.prisma.consensus.findFirstOrThrow({
+            where: { validators: { some: { keyRef: { not: null } } } },
+        });
+
+        // create deployment if doesn't exist
+        const deployment = await request.prisma.deployment.upsert({
+            // search by chain and address (pair is unique)
+            where: {
+                contractAddress_chainId: {
+                    chainId: chain.id,
+                    contractAddress: request.body.contractAddress,
+                },
+            },
+            // if found, update the machine snapshot
+            // XXX: should we do that blindly, or run the machine to verify the hash
+            update: { machineSnapshot: request.body.machineSnapshot },
+            // if doesn't exist, create one, with authority
+            // XXX: should we do that blindly, or query the contract
+            create: {
                 contractAddress: request.body.contractAddress,
+                chain: { connect: chain },
+                consensus: { connect: authority },
                 machineSnapshot: request.body.machineSnapshot,
-                status: DeploymentStatus.STARTING,
             },
         });
 
+        // create application node
+        const node = await request.prisma.node.create({
+            data: {
+                status: NodeStatus.STARTING,
+                application: { connect: application },
+                region: { connect: region },
+                runtime: { connect: runtime },
+                deployment: { connect: deployment },
+            },
+            include: { deployment: true },
+        });
+
         // deploy to k8s
-        await deploy(deployment, region);
+        await deploy(node, region);
 
         return reply.code(200).send({
             app: application.name,
             chain: chain.name,
-            contractAddress: deployment.contractAddress,
-            machineSnapshot: deployment.machineSnapshot,
+            contractAddress: node.deployment.contractAddress,
+            machineSnapshot: node.deployment.machineSnapshot!, // at this point we must have a machine snapshot
             region: region.name,
             runtime: runtime.name,
-            status: deployment.status,
+            status: node.status,
         });
     } catch (e) {
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -142,7 +156,7 @@ export const createHandler: RouteHandlerMethodTypebox<
 };
 
 export const listHandler: RouteHandlerMethodTypebox<
-    typeof ListDeploymentSchema
+    typeof ListNodeSchema
 > = async (request, reply) => {
     // filter of logged on user
     const account: Prisma.AccountWhereInput = {
@@ -158,22 +172,22 @@ export const listHandler: RouteHandlerMethodTypebox<
         ],
     };
 
-    const deployments = await request.prisma.deployment.findMany({
+    const nodes = await request.prisma.node.findMany({
         where: { application: { name: request.params.app, account } },
         include: {
             application: true,
-            chain: true,
             region: true,
             runtime: true,
+            deployment: { include: { chain: true } },
         },
     });
 
     return reply.code(200).send(
-        deployments.map((d) => ({
+        nodes.map((d) => ({
             app: d.application.name,
-            chain: d.chain.name,
-            contractAddress: d.contractAddress,
-            machineSnapshot: d.machineSnapshot,
+            chain: d.deployment.chain.name,
+            contractAddress: d.deployment.contractAddress,
+            machineSnapshot: d.deployment.machineSnapshot!,
             region: d.region.name,
             runtime: d.runtime.name,
             status: d.status,
@@ -182,7 +196,7 @@ export const listHandler: RouteHandlerMethodTypebox<
 };
 
 export const getHandler: RouteHandlerMethodTypebox<
-    typeof GetDeploymentSchema
+    typeof GetNodeSchema
 > = async (request, reply) => {
     // filter of logged on user
     const account: Prisma.AccountWhereInput = {
@@ -198,31 +212,31 @@ export const getHandler: RouteHandlerMethodTypebox<
         ],
     };
 
-    const deployment = await request.prisma.deployment.findFirst({
+    const node = await request.prisma.node.findFirst({
         where: { application: { name: request.params.app, account } },
         include: {
             application: true,
-            chain: true,
+            deployment: { include: { chain: true } },
             region: true,
             runtime: true,
         },
     });
 
-    return deployment
+    return node
         ? reply.code(200).send({
-              app: deployment.application.name,
-              chain: deployment.chain.name,
-              contractAddress: deployment.contractAddress,
-              machineSnapshot: deployment.machineSnapshot,
-              region: deployment.region.name,
-              runtime: deployment.runtime.name,
-              status: deployment.status,
+              app: node.application.name,
+              chain: node.deployment.chain.name,
+              contractAddress: node.deployment.contractAddress,
+              machineSnapshot: node.deployment.machineSnapshot!,
+              region: node.region.name,
+              runtime: node.runtime.name,
+              status: node.status,
           })
         : reply.code(404).send();
 };
 
 export const deleteHandler: RouteHandlerMethodTypebox<
-    typeof DeleteDeploymentSchema
+    typeof DeleteNodeSchema
 > = async (request, reply) => {
     // filter of logged on user
     const account: Prisma.AccountWhereInput = {
@@ -239,7 +253,7 @@ export const deleteHandler: RouteHandlerMethodTypebox<
     };
 
     try {
-        const deleted = await request.prisma.deployment.deleteMany({
+        const deleted = await request.prisma.node.deleteMany({
             where: { application: { name: request.params.app, account } },
         });
         return deleted.count > 0
@@ -251,7 +265,7 @@ export const deleteHandler: RouteHandlerMethodTypebox<
                 return reply.code(400).send({
                     statusCode: 400,
                     error: "Bad input",
-                    message: "Cannot delete deployment that has related data",
+                    message: "Cannot delete node that has related data",
                 });
             }
             return reply.code(400).send({

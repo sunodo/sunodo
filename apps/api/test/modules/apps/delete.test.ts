@@ -2,7 +2,7 @@ import { beforeAll, beforeEach, describe, expect, test } from "vitest";
 import { FastifyContext } from "../../types";
 import buildServer from "../../utils/server";
 import { createTestUser } from "../../utils/user";
-import { AccountType, DeploymentStatus, PrismaClient } from "@prisma/client";
+import { AccountType, NodeStatus, PrismaClient } from "@prisma/client";
 import { token } from "../../auth";
 import { createTestApplication } from "../../utils/application";
 import { createTestOrganization } from "../../utils/organization";
@@ -76,22 +76,32 @@ describe("apps:delete", () => {
             accountId: org2.accountId,
         });
 
-        // create deployment for app-2
-        await prisma.deployment.create({
+        // create node for app-2
+        await prisma.node.create({
             data: {
-                contractAddress: "0x0",
-                machineSnapshot: "docker.io/my-org/my-app",
-                status: DeploymentStatus.READY,
-                application: { connect: { id: app2.id } },
-                chain: {
+                deployment: {
                     create: {
-                        id: 5,
-                        name: "goerli",
-                        label: "Goerli",
-                        enabled: true,
-                        testnet: true,
+                        contractAddress: "0x0",
+                        machineSnapshot: "docker.io/my-org/my-app",
+                        consensus: {
+                            create: {
+                                type: "AUTHORITY",
+                                validators: { create: { address: "0x0" } },
+                            },
+                        },
+                        chain: {
+                            create: {
+                                id: 5,
+                                name: "goerli",
+                                label: "Goerli",
+                                enabled: true,
+                                testnet: true,
+                            },
+                        },
                     },
                 },
+                status: NodeStatus.READY,
+                application: { connect: { id: app2.id } },
                 region: {
                     create: { name: "us", default: true, kubeConfigSecret: "" },
                 },
@@ -104,6 +114,7 @@ describe("apps:delete", () => {
         });
         return async () => {
             await prisma.$transaction([
+                prisma.node.deleteMany(),
                 prisma.deployment.deleteMany(),
                 prisma.application.deleteMany(),
                 prisma.organizationMember.deleteMany(),
