@@ -4,24 +4,40 @@ const prisma = new PrismaClient();
 async function main() {
     await prisma.chain.upsert({
         where: { id: 5 },
-        update: {},
+        update: {
+            name: "goerli",
+            label: "Goerli",
+            enabled: true,
+            providerUrl:
+                "https://goerli.infura.io/v3/16a65d316dd947099c0672328c1279d0", // tuler dev account
+        },
         create: {
             id: 5,
             name: "goerli",
             label: "Goerli",
             testnet: true,
             enabled: true,
+            providerUrl:
+                "https://goerli.infura.io/v3/16a65d316dd947099c0672328c1279d0", // tuler dev account
         },
     });
     await prisma.chain.upsert({
         where: { id: 420 },
-        update: {},
+        update: {
+            name: "optimism-goerli",
+            label: "Optimism Goerli",
+            enabled: true,
+            providerUrl:
+                "https://optimism-goerli.infura.io/v3/16a65d316dd947099c0672328c1279d0", // tuler dev account
+        },
         create: {
             id: 420,
             name: "optimism-goerli",
             label: "Optimism Goerli",
             testnet: true,
             enabled: true,
+            providerUrl:
+                "https://optimism-goerli.infura.io/v3/16a65d316dd947099c0672328c1279d0", // tuler dev account
         },
     });
     await prisma.region.upsert({

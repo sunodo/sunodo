@@ -96,6 +96,7 @@ describe("apps:delete", () => {
                                 label: "Goerli",
                                 enabled: true,
                                 testnet: true,
+                                providerUrl: "",
                             },
                         },
                     },

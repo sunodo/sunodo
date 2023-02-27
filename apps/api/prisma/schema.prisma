@@ -98,6 +98,7 @@ model Chain {
   label       String       @unique
   testnet     Boolean
   enabled     Boolean
+  providerUrl String
   deployments Deployment[]
 }
 

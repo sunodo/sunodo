@@ -13,6 +13,7 @@ import billingPlugin, { BillingManager } from "./billing";
 import appsRoutes from "./modules/apps/apps.routes";
 import authRoutes from "./modules/auth/auth.routes";
 import chainsRoutes from "./modules/chains/chains.routes";
+import deploymentsRoutes from "./modules/deployments/deployments.routes";
 import orgsRoutes from "./modules/orgs/orgs.routes";
 import regionsRoutes from "./modules/regions/regions.routes";
 import runtimesRoutes from "./modules/runtimes/runtimes.routes";
@@ -126,6 +127,7 @@ const buildServer = (options: ServerOptions): FastifyTypebox => {
     server.register(appsRoutes, { prefix: "apps" });
     server.register(authRoutes, { prefix: "auth" });
     server.register(chainsRoutes, { prefix: "chains" });
+    server.register(deploymentsRoutes, { prefix: "deployments" });
     server.register(orgsRoutes, { prefix: "orgs" });
     server.register(regionsRoutes, { prefix: "regions" });
     server.register(runtimesRoutes, { prefix: "runtimes" });
