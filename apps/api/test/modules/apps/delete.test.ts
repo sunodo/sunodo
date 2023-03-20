@@ -79,10 +79,10 @@ describe("apps:delete", () => {
         // create node for app-2
         await prisma.node.create({
             data: {
-                deployment: {
+                contract: {
                     create: {
-                        contractAddress: "0x0",
-                        machineSnapshot: "docker.io/my-org/my-app",
+                        address: "0x0",
+                        templateHash: "0xdeadbeef",
                         consensus: {
                             create: {
                                 type: "AUTHORITY",
@@ -101,6 +101,12 @@ describe("apps:delete", () => {
                         },
                     },
                 },
+                machine: {
+                    create: {
+                        hash: "0xdeadbeef",
+                        url: "docker.io/my-org/my-app",
+                    },
+                },
                 status: NodeStatus.READY,
                 application: { connect: { id: app2.id } },
                 region: {
@@ -116,7 +122,8 @@ describe("apps:delete", () => {
         return async () => {
             await prisma.$transaction([
                 prisma.node.deleteMany(),
-                prisma.deployment.deleteMany(),
+                prisma.contract.deleteMany(),
+                prisma.machine.deleteMany(),
                 prisma.application.deleteMany(),
                 prisma.organizationMember.deleteMany(),
                 prisma.organization.deleteMany(),
@@ -196,7 +203,7 @@ describe("apps:delete", () => {
         expect(response.statusCode).toEqual(204);
     });
 
-    test<FastifyContext>("app with deployment", async (ctx) => {
+    test<FastifyContext>("app with contract", async (ctx) => {
         const response = await ctx.server.inject({
             url: "/apps/app-2",
             method: "DELETE",

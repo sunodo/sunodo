@@ -15,6 +15,12 @@ const deploy = async (node: Node, region: Region) => {
     const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
     const k8sApiExtension = kc.makeApiClient(k8s.ApiextensionsV1Api);
     // k8sApiExtension.createCustomResourceDefinition({...});
+    // TODO
+};
+
+const getMachineHash = async (url: string) => {
+    // TODO
+    return "0xdeadbeef";
 };
 
 export const createHandler: RouteHandlerMethodTypebox<
@@ -96,25 +102,37 @@ export const createHandler: RouteHandlerMethodTypebox<
             where: { validators: { some: { keyRef: { not: null } } } },
         });
 
-        // create deployment if doesn't exist
-        const deployment = await request.prisma.deployment.upsert({
+        // create contract from chain and address if doesn't exist
+        const contract = await request.prisma.contract.upsert({
             // search by chain and address (pair is unique)
             where: {
-                contractAddress_chainId: {
+                address_chainId: {
                     chainId: chain.id,
-                    contractAddress: request.body.contractAddress,
+                    address: request.body.contractAddress,
                 },
             },
             // if found, update the machine snapshot
             // XXX: should we do that blindly, or run the machine to verify the hash
-            update: { machineSnapshot: request.body.machineSnapshot },
+            update: { templateHash: request.body.machineSnapshot },
             // if doesn't exist, create one, with authority
             // XXX: should we do that blindly, or query the contract
             create: {
-                contractAddress: request.body.contractAddress,
+                address: request.body.contractAddress,
                 chain: { connect: chain },
                 consensus: { connect: authority },
-                machineSnapshot: request.body.machineSnapshot,
+                templateHash: request.body.machineSnapshot,
+            },
+        });
+
+        // create machine from url if doesn't exist
+        const machine = await request.prisma.machine.upsert({
+            where: { url: request.body.machineSnapshot },
+            create: {
+                url: request.body.machineSnapshot,
+                hash: await getMachineHash(request.body.machineSnapshot),
+            },
+            update: {
+                hash: await getMachineHash(request.body.machineSnapshot),
             },
         });
 
@@ -125,9 +143,10 @@ export const createHandler: RouteHandlerMethodTypebox<
                 application: { connect: application },
                 region: { connect: region },
                 runtime: { connect: runtime },
-                deployment: { connect: deployment },
+                contract: { connect: contract },
+                machine: { connect: machine },
             },
-            include: { deployment: true },
+            include: { contract: true, machine: true },
         });
 
         // deploy to k8s
@@ -136,8 +155,8 @@ export const createHandler: RouteHandlerMethodTypebox<
         return reply.code(200).send({
             app: application.name,
             chain: chain.name,
-            contractAddress: node.deployment.contractAddress,
-            machineSnapshot: node.deployment.machineSnapshot!, // at this point we must have a machine snapshot
+            contractAddress: node.contract.address,
+            machineSnapshot: node.machine.url, // at this point we must have a machine snapshot
             region: region.name,
             runtime: runtime.name,
             status: node.status,
@@ -178,16 +197,17 @@ export const listHandler: RouteHandlerMethodTypebox<
             application: true,
             region: true,
             runtime: true,
-            deployment: { include: { chain: true } },
+            contract: { include: { chain: true } },
+            machine: true,
         },
     });
 
     return reply.code(200).send(
         nodes.map((d) => ({
             app: d.application.name,
-            chain: d.deployment.chain.name,
-            contractAddress: d.deployment.contractAddress,
-            machineSnapshot: d.deployment.machineSnapshot!,
+            chain: d.contract.chain.name,
+            contractAddress: d.contract.address,
+            machineSnapshot: d.machine.url,
             region: d.region.name,
             runtime: d.runtime.name,
             status: d.status,
@@ -216,7 +236,8 @@ export const getHandler: RouteHandlerMethodTypebox<
         where: { application: { name: request.params.app, account } },
         include: {
             application: true,
-            deployment: { include: { chain: true } },
+            contract: { include: { chain: true } },
+            machine: true,
             region: true,
             runtime: true,
         },
@@ -225,9 +246,9 @@ export const getHandler: RouteHandlerMethodTypebox<
     return node
         ? reply.code(200).send({
               app: node.application.name,
-              chain: node.deployment.chain.name,
-              contractAddress: node.deployment.contractAddress,
-              machineSnapshot: node.deployment.machineSnapshot!,
+              chain: node.contract.chain.name,
+              contractAddress: node.contract.address,
+              machineSnapshot: node.machine.hash,
               region: node.region.name,
               runtime: node.runtime.name,
               status: node.status,

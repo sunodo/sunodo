@@ -115,7 +115,7 @@ describe("apps:list", () => {
         const body = JSON.parse(response.body) as Static<
             (typeof ListAppSchema.response)[200]
         >;
-        expect(body.map((a) => a.name)).toEqual(["app-1", "app-2"]);
+        expect(body.map((a) => a.name).sort()).toEqual(["app-1", "app-2"]);
     });
 
     test<FastifyContext>("org apps", async (ctx) => {

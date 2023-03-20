@@ -92,14 +92,14 @@ model Account {
 }
 
 model Chain {
-  id          Int          @id
-  createdAt   DateTime     @default(now())
-  name        String       @unique
-  label       String       @unique
+  id          Int        @id
+  createdAt   DateTime   @default(now())
+  name        String     @unique
+  label       String     @unique
   testnet     Boolean
   enabled     Boolean
   providerUrl String
-  deployments Deployment[]
+  contracts   Contract[]
 }
 
 model Region {
@@ -119,25 +119,35 @@ model Runtime {
   nodes     Node[]
 }
 
-model Deployment {
-  id              String    @id @default(uuid())
-  contractAddress String
-  createdAt       DateTime  @default(now())
-  machineSnapshot String?
-  consensus       Consensus @relation(fields: [consensusId], references: [id])
-  consensusId     String
-  chain           Chain     @relation(fields: [chainId], references: [id])
-  chainId         Int
-  nodes           Node[]
+model Contract {
+  id           String    @id @default(uuid())
+  createdAt    DateTime  @default(now())
+  address      String
+  templateHash String
+  consensus    Consensus @relation(fields: [consensusId], references: [id])
+  consensusId  String
+  chain        Chain     @relation(fields: [chainId], references: [id])
+  chainId      Int
+  nodes        Node[]
 
-  @@unique([contractAddress, chainId])
+  @@unique([address, chainId])
+}
+
+model Machine {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  hash      String   @unique
+  url       String   @unique
+  Node      Node[]
 }
 
 model Node {
   id            String      @id @default(uuid())
   createdAt     DateTime    @default(now())
-  deployment    Deployment  @relation(fields: [deploymentId], references: [id])
-  deploymentId  String
+  contract      Contract    @relation(fields: [contractId], references: [id])
+  contractId    String
+  machine       Machine     @relation(fields: [machineId], references: [id])
+  machineId     String
   application   Application @relation(fields: [applicationId], references: [id])
   applicationId String
   region        Region      @relation(fields: [regionId], references: [id])
@@ -155,10 +165,10 @@ model Validator {
 }
 
 model Consensus {
-  id          String        @id @default(uuid())
-  type        ConsensusType
-  validators  Validator[]
-  deployments Deployment[]
+  id         String        @id @default(uuid())
+  type       ConsensusType
+  validators Validator[]
+  contracts  Contract[]
 }
 
 enum ConsensusType {

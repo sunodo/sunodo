@@ -3,14 +3,14 @@ import { ConsensusType, Prisma } from "@prisma/client";
 import { JsonRpcProvider } from "ethers";
 import { RouteHandlerMethodTypebox } from "../../types";
 import {
-    CreateDeploymentSchema,
-    DeleteDeploymentSchema,
-    GetDeploymentSchema,
-    ListDeploymentSchema,
-} from "./deployments.schemas";
+    CreateContractSchema,
+    DeleteContractSchema,
+    GetContractSchema,
+    ListContractSchema,
+} from "./contracts.schemas";
 
 export const createHandler: RouteHandlerMethodTypebox<
-    typeof CreateDeploymentSchema
+    typeof CreateContractSchema
 > = async (request, reply) => {
     // get selected chain
     const chainId = parseInt(request.body.chain); // try to parse by id (number)
@@ -31,7 +31,7 @@ export const createHandler: RouteHandlerMethodTypebox<
         // query the contract for the authority address
         const provider = new JsonRpcProvider(chain.providerUrl);
         const dapp = CartesiDApp__factory.connect(
-            request.body.contractAddress,
+            request.body.address,
             provider
         );
         // XXX: assume it's authority, because that's the only one we have so far
@@ -51,33 +51,33 @@ export const createHandler: RouteHandlerMethodTypebox<
             },
         });
 
-        // create deployment if doesn't exist
-        const deployment = await request.prisma.deployment.upsert({
+        // create contract if doesn't exist
+        const contract = await request.prisma.contract.upsert({
             // search by chain and address (pair is unique)
             where: {
-                contractAddress_chainId: {
+                address_chainId: {
                     chainId: chain.id,
-                    contractAddress: request.body.contractAddress,
+                    address: request.body.address,
                 },
             },
             // if found, update the machine snapshot
             // XXX: should we do that blindly, or run the machine to verify the hash
-            update: { machineSnapshot: request.body.machineSnapshot },
+            update: { templateHash: request.body.templateHash },
             // if doesn't exist, create one, with authority
             // XXX: should we do that blindly, or query the contract
             create: {
-                contractAddress: request.body.contractAddress,
+                address: request.body.address,
                 chain: { connect: chain },
                 consensus: { connect: consensus },
-                machineSnapshot: request.body.machineSnapshot,
+                templateHash: request.body.templateHash,
             },
         });
 
         return reply.code(200).send({
-            id: deployment.id,
+            id: contract.id,
             chain: chain.name,
-            contractAddress: deployment.contractAddress,
-            machineSnapshot: deployment.machineSnapshot ?? undefined,
+            address: contract.address,
+            templateHash: contract.templateHash ?? undefined,
         });
     } catch (e) {
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -93,46 +93,46 @@ export const createHandler: RouteHandlerMethodTypebox<
 };
 
 export const listHandler: RouteHandlerMethodTypebox<
-    typeof ListDeploymentSchema
+    typeof ListContractSchema
 > = async (request, reply) => {
-    const deployments = await request.prisma.deployment.findMany({
+    const contracts = await request.prisma.contract.findMany({
         where: { chain: { name: request.query.chain } },
         include: { chain: true },
     });
 
     return reply.code(200).send(
-        deployments.map((d) => ({
+        contracts.map((d) => ({
             id: d.id,
             chain: d.chain.name,
-            contractAddress: d.contractAddress,
-            machineSnapshot: d.machineSnapshot!,
+            address: d.address,
+            templateHash: d.templateHash!,
         }))
     );
 };
 
 export const getHandler: RouteHandlerMethodTypebox<
-    typeof GetDeploymentSchema
+    typeof GetContractSchema
 > = async (request, reply) => {
-    const deployment = await request.prisma.deployment.findUnique({
+    const contract = await request.prisma.contract.findUnique({
         where: { id: request.params.id },
         include: { chain: true },
     });
 
-    return deployment
+    return contract
         ? reply.code(200).send({
-              id: deployment.id,
-              chain: deployment.chain.name,
-              contractAddress: deployment.contractAddress,
-              machineSnapshot: deployment.machineSnapshot!,
+              id: contract.id,
+              chain: contract.chain.name,
+              address: contract.address,
+              templateHash: contract.templateHash!,
           })
         : reply.code(404).send();
 };
 
 export const deleteHandler: RouteHandlerMethodTypebox<
-    typeof DeleteDeploymentSchema
+    typeof DeleteContractSchema
 > = async (request, reply) => {
     try {
-        const deleted = await request.prisma.deployment.delete({
+        const deleted = await request.prisma.contract.delete({
             where: { id: request.params.id },
         });
         return deleted ? reply.code(204).send() : reply.code(404).send();
@@ -142,7 +142,7 @@ export const deleteHandler: RouteHandlerMethodTypebox<
                 return reply.code(400).send({
                     statusCode: 400,
                     error: "Bad input",
-                    message: "Cannot delete deployment that has related data",
+                    message: "Cannot delete contract that has related data",
                 });
             }
             return reply.code(400).send({

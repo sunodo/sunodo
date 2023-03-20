@@ -1,3 +1,3 @@
 import { describe } from "vitest";
 
-describe.todo("nodes:delete");
+describe.todo("contracts:delete");
