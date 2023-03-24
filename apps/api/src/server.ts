@@ -1,5 +1,6 @@
-import Fastify from "fastify";
-import jwt from "fastify-auth0-verify";
+import Fastify, { FastifyRequest } from "fastify";
+import jwt, { FastifyAuth0VerifyOptions } from "fastify-auth0-verify";
+import { createError } from "@fastify/error";
 import stripe from "fastify-stripe";
 import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
@@ -16,6 +17,7 @@ import chainsRoutes from "./modules/chains/chains.routes";
 import contractsRoutes from "./modules/contracts/contracts.routes";
 import orgsRoutes from "./modules/orgs/orgs.routes";
 import regionsRoutes from "./modules/regions/regions.routes";
+import registryRoutes from "./modules/registry/registry.routes";
 import runtimesRoutes from "./modules/runtimes/runtimes.routes";
 import { FastifyTypebox } from "./types";
 
@@ -74,9 +76,48 @@ const buildServer = (options: ServerOptions): FastifyTypebox => {
         });
 
     // setup JWT validator using Auth0
-    server.register(jwt, {
+    // FastifyRegisterOptions<FastifyAuth0VerifyOptions>;
+    type FastifyAuth0VerifyExtractOptions = FastifyAuth0VerifyOptions & {
+        extractToken: (request: FastifyRequest) => string | void;
+    };
+
+    server.register<FastifyAuth0VerifyExtractOptions>(jwt, {
         domain: issuer,
         audience: ["https://api.sunodo.io", `${issuer}userinfo`],
+        extractToken: (request) => {
+            const BadRequestError = createError(
+                "FST_JWT_BAD_REQUEST",
+                "Format is Authorization: Bearer [token] or Basic base64(_:token])",
+                400
+            );
+            if (request.headers && request.headers.authorization) {
+                const parts = request.headers.authorization.split(" ");
+                if (parts.length === 2) {
+                    const scheme = parts[0];
+                    const auth = parts[1];
+
+                    if (/^Bearer$/i.test(scheme)) {
+                        return auth;
+                    } else if (/^Basic$/i.test(scheme)) {
+                        // decode user pass
+                        const credentialsDecoded = Buffer.from(
+                            auth,
+                            "base64"
+                        ).toString("utf8");
+                        const userPassRE = /^([^:]*):(.*)$/;
+                        const userPass = userPassRE.exec(credentialsDecoded);
+                        if (userPass === null) {
+                            throw new BadRequestError();
+                        }
+                        return userPass[2];
+                    } else {
+                        throw new BadRequestError();
+                    }
+                } else {
+                    throw new BadRequestError();
+                }
+            }
+        },
     });
 
     // stripe plugin
@@ -130,6 +171,7 @@ const buildServer = (options: ServerOptions): FastifyTypebox => {
     server.register(contractsRoutes, { prefix: "contracts" });
     server.register(orgsRoutes, { prefix: "orgs" });
     server.register(regionsRoutes, { prefix: "regions" });
+    server.register(registryRoutes, { prefix: "registry" });
     server.register(runtimesRoutes, { prefix: "runtimes" });
 
     return server;
