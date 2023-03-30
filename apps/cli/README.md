@@ -16,13 +16,13 @@ Public](https://github.com/drwpow/openapi-typescript) library.
 <!-- usage -->
 ```sh-session
 $ npm install -g @sunodo/cli
-$ sunodoctl COMMAND
+$ sunodo COMMAND
 running command...
-$ sunodoctl (--version)
-@sunodo/cli/0.0.0 darwin-arm64 node-v19.6.0
-$ sunodoctl --help [COMMAND]
+$ sunodo (--version)
+@sunodo/cli/0.1.0 darwin-arm64 node-v19.6.0
+$ sunodo --help [COMMAND]
 USAGE
-  $ sunodoctl COMMAND
+  $ sunodo COMMAND
 ...
 ```
 <!-- usagestop -->
@@ -30,29 +30,31 @@ USAGE
 # Commands
 
 <!-- commands -->
-* [`sunodoctl apps create [NAME]`](#sunodoctl-apps-create-name)
-* [`sunodoctl apps delete NAME`](#sunodoctl-apps-delete-name)
-* [`sunodoctl apps list`](#sunodoctl-apps-list)
-* [`sunodoctl auth login`](#sunodoctl-auth-login)
-* [`sunodoctl auth logout`](#sunodoctl-auth-logout)
-* [`sunodoctl help [COMMANDS]`](#sunodoctl-help-commands)
-* [`sunodoctl login`](#sunodoctl-login)
-* [`sunodoctl logout`](#sunodoctl-logout)
-* [`sunodoctl orgs create NAME`](#sunodoctl-orgs-create-name)
-* [`sunodoctl orgs delete NAME`](#sunodoctl-orgs-delete-name)
-* [`sunodoctl orgs list`](#sunodoctl-orgs-list)
-* [`sunodoctl platform chains`](#sunodoctl-platform-chains)
-* [`sunodoctl platform regions`](#sunodoctl-platform-regions)
-* [`sunodoctl platform runtimes`](#sunodoctl-platform-runtimes)
-* [`sunodoctl update [CHANNEL]`](#sunodoctl-update-channel)
+* [`sunodo apps create [NAME]`](#sunodo-apps-create-name)
+* [`sunodo apps delete NAME`](#sunodo-apps-delete-name)
+* [`sunodo apps list`](#sunodo-apps-list)
+* [`sunodo auth login`](#sunodo-auth-login)
+* [`sunodo auth logout`](#sunodo-auth-logout)
+* [`sunodo auth token`](#sunodo-auth-token)
+* [`sunodo help [COMMANDS]`](#sunodo-help-commands)
+* [`sunodo login`](#sunodo-login)
+* [`sunodo logout`](#sunodo-logout)
+* [`sunodo orgs create NAME`](#sunodo-orgs-create-name)
+* [`sunodo orgs delete NAME`](#sunodo-orgs-delete-name)
+* [`sunodo orgs list`](#sunodo-orgs-list)
+* [`sunodo platform chains`](#sunodo-platform-chains)
+* [`sunodo platform regions`](#sunodo-platform-regions)
+* [`sunodo platform runtimes`](#sunodo-platform-runtimes)
+* [`sunodo token`](#sunodo-token)
+* [`sunodo update [CHANNEL]`](#sunodo-update-channel)
 
-## `sunodoctl apps create [NAME]`
+## `sunodo apps create [NAME]`
 
 Create application
 
 ```
 USAGE
-  $ sunodoctl apps create [NAME] [--org <value>]
+  $ sunodo apps create [NAME] [--org <value>]
 
 FLAGS
   --org=<value>  organization slug of the application
@@ -61,32 +63,32 @@ DESCRIPTION
   Create application
 
 EXAMPLES
-  $ sunodoctl apps create
+  $ sunodo apps create
 ```
 
-## `sunodoctl apps delete NAME`
+## `sunodo apps delete NAME`
 
 Delete application
 
 ```
 USAGE
-  $ sunodoctl apps delete [NAME]
+  $ sunodo apps delete NAME
 
 DESCRIPTION
   Delete application
 
 EXAMPLES
-  $ sunodoctl apps delete
+  $ sunodo apps delete
 ```
 
-## `sunodoctl apps list`
+## `sunodo apps list`
 
 List applications
 
 ```
 USAGE
-  $ sunodoctl apps list [--columns <value> | -x] [--sort <value>] [--filter <value>] [--output csv|json|yaml | 
-    | [--csv | --no-truncate]] [--no-header | ] [--org <value>]
+  $ sunodo apps list [--columns <value> | -x] [--sort <value>] [--filter <value>] [--output csv|json|yaml |  |
+    [--csv | --no-truncate]] [--no-header | ] [--org <value>]
 
 FLAGS
   -x, --extended     show extra columns
@@ -104,52 +106,70 @@ DESCRIPTION
   List applications
 
 EXAMPLES
-  $ sunodoctl apps list
+  $ sunodo apps list
 ```
 
-## `sunodoctl auth login`
+## `sunodo auth login`
 
 Login or Signup to Sunodo
 
 ```
 USAGE
-  $ sunodoctl auth login
+  $ sunodo auth login
 
 DESCRIPTION
   Login or Signup to Sunodo
 
 ALIASES
-  $ sunodoctl login
+  $ sunodo login
 
 EXAMPLES
-  $ sunodoctl auth login
+  $ sunodo auth login
 ```
 
-## `sunodoctl auth logout`
+## `sunodo auth logout`
 
 clears local login credentials and invalidates API session
 
 ```
 USAGE
-  $ sunodoctl auth logout
+  $ sunodo auth logout
 
 DESCRIPTION
   clears local login credentials and invalidates API session
 
 ALIASES
-  $ sunodoctl logout
+  $ sunodo logout
 
 EXAMPLES
-  $ sunodoctl auth logout
+  $ sunodo auth logout
 ```
 
-## `sunodoctl help [COMMANDS]`
+## `sunodo auth token`
 
-Display help for sunodoctl.
+Prints current saved token (if authenticated)
 
 ```
 USAGE
-  $ sunodoctl help [COMMANDS] [-n]
+  $ sunodo auth token
+
+DESCRIPTION
+  Prints current saved token (if authenticated)
+
+ALIASES
+  $ sunodo token
+
+EXAMPLES
+  $ sunodo auth token
+```
+
+## `sunodo help [COMMANDS]`
+
+Display help for sunodo.
+
+```
+USAGE
+  $ sunodo help [COMMANDS] [-n]
 
 ARGUMENTS
   COMMANDS  Command to show help for.
@@ -158,54 +178,54 @@ FLAGS
   -n, --nested-commands  Include all nested commands in the output.
 
 DESCRIPTION
-  Display help for sunodoctl.
+  Display help for sunodo.
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.2.4/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.2.8/src/commands/help.ts)_
 
-## `sunodoctl login`
+## `sunodo login`
 
 Login or Signup to Sunodo
 
 ```
 USAGE
-  $ sunodoctl login
+  $ sunodo login
 
 DESCRIPTION
   Login or Signup to Sunodo
 
 ALIASES
-  $ sunodoctl login
+  $ sunodo login
 
 EXAMPLES
-  $ sunodoctl login
+  $ sunodo login
 ```
 
-## `sunodoctl logout`
+## `sunodo logout`
 
 clears local login credentials and invalidates API session
 
 ```
 USAGE
-  $ sunodoctl logout
+  $ sunodo logout
 
 DESCRIPTION
   clears local login credentials and invalidates API session
 
 ALIASES
-  $ sunodoctl logout
+  $ sunodo logout
 
 EXAMPLES
-  $ sunodoctl logout
+  $ sunodo logout
 ```
 
-## `sunodoctl orgs create NAME`
+## `sunodo orgs create NAME`
 
 Create organization
 
 ```
 USAGE
-  $ sunodoctl orgs create [NAME] --slug <value>
+  $ sunodo orgs create NAME --slug <value>
 
 FLAGS
   --slug=<value>  (required) slug of the organization
@@ -214,32 +234,32 @@ DESCRIPTION
   Create organization
 
 EXAMPLES
-  $ sunodoctl orgs create
+  $ sunodo orgs create
 ```
 
-## `sunodoctl orgs delete NAME`
+## `sunodo orgs delete NAME`
 
 Delete organization
 
 ```
 USAGE
-  $ sunodoctl orgs delete [NAME]
+  $ sunodo orgs delete NAME
 
 DESCRIPTION
   Delete organization
 
 EXAMPLES
-  $ sunodoctl orgs delete
+  $ sunodo orgs delete
 ```
 
-## `sunodoctl orgs list`
+## `sunodo orgs list`
 
 List organizations
 
 ```
 USAGE
-  $ sunodoctl orgs list [--columns <value> | -x] [--sort <value>] [--filter <value>] [--output csv|json|yaml | 
-    | [--csv | --no-truncate]] [--no-header | ]
+  $ sunodo orgs list [--columns <value> | -x] [--sort <value>] [--filter <value>] [--output csv|json|yaml |  |
+    [--csv | --no-truncate]] [--no-header | ]
 
 FLAGS
   -x, --extended     show extra columns
@@ -256,17 +276,17 @@ DESCRIPTION
   List organizations
 
 EXAMPLES
-  $ sunodoctl orgs list
+  $ sunodo orgs list
 ```
 
-## `sunodoctl platform chains`
+## `sunodo platform chains`
 
 list chains supported by the platform
 
 ```
 USAGE
-  $ sunodoctl platform chains [--columns <value> | -x] [--sort <value>] [--filter <value>] [--output csv|json|yaml | 
-    | [--csv | --no-truncate]] [--no-header | ] [--live <value>]
+  $ sunodo platform chains [--columns <value> | -x] [--sort <value>] [--filter <value>] [--output csv|json|yaml |  |
+    [--csv | --no-truncate]] [--no-header | ] [--live <value>]
 
 FLAGS
   -x, --extended     show extra columns
@@ -284,17 +304,17 @@ DESCRIPTION
   list chains supported by the platform
 
 EXAMPLES
-  $ sunodoctl platform chains
+  $ sunodo platform chains
 ```
 
-## `sunodoctl platform regions`
+## `sunodo platform regions`
 
 list regions supported by the platform
 
 ```
 USAGE
-  $ sunodoctl platform regions [--columns <value> | -x] [--sort <value>] [--filter <value>] [--output csv|json|yaml | 
-    | [--csv | --no-truncate]] [--no-header | ] [--live <value>]
+  $ sunodo platform regions [--columns <value> | -x] [--sort <value>] [--filter <value>] [--output csv|json|yaml |  |
+    [--csv | --no-truncate]] [--no-header | ] [--live <value>]
 
 FLAGS
   -x, --extended     show extra columns
@@ -312,17 +332,17 @@ DESCRIPTION
   list regions supported by the platform
 
 EXAMPLES
-  $ sunodoctl platform regions
+  $ sunodo platform regions
 ```
 
-## `sunodoctl platform runtimes`
+## `sunodo platform runtimes`
 
 list runtimes supported by the platform
 
 ```
 USAGE
-  $ sunodoctl platform runtimes [--columns <value> | -x] [--sort <value>] [--filter <value>] [--output csv|json|yaml | 
-    | [--csv | --no-truncate]] [--no-header | ] [--live <value>]
+  $ sunodo platform runtimes [--columns <value> | -x] [--sort <value>] [--filter <value>] [--output csv|json|yaml |  |
+    [--csv | --no-truncate]] [--no-header | ] [--live <value>]
 
 FLAGS
   -x, --extended     show extra columns
@@ -340,16 +360,34 @@ DESCRIPTION
   list runtimes supported by the platform
 
 EXAMPLES
-  $ sunodoctl platform runtimes
+  $ sunodo platform runtimes
 ```
 
-## `sunodoctl update [CHANNEL]`
+## `sunodo token`
 
-update the sunodoctl CLI
+Prints current saved token (if authenticated)
 
 ```
 USAGE
-  $ sunodoctl update [CHANNEL] [-a] [-v <value> | -i] [--force]
+  $ sunodo token
+
+DESCRIPTION
+  Prints current saved token (if authenticated)
+
+ALIASES
+  $ sunodo token
+
+EXAMPLES
+  $ sunodo token
+```
+
+## `sunodo update [CHANNEL]`
+
+update the sunodo CLI
+
+```
+USAGE
+  $ sunodo update [CHANNEL] [-a] [-v <value> | -i] [--force]
 
 FLAGS
   -a, --available        Install a specific version.
@@ -358,25 +396,25 @@ FLAGS
   --force                Force a re-download of the requested version.
 
 DESCRIPTION
-  update the sunodoctl CLI
+  update the sunodo CLI
 
 EXAMPLES
   Update to the stable channel:
 
-    $ sunodoctl update stable
+    $ sunodo update stable
 
   Update to a specific version:
 
-    $ sunodoctl update --version 1.0.0
+    $ sunodo update --version 1.0.0
 
   Interactively select version:
 
-    $ sunodoctl update --interactive
+    $ sunodo update --interactive
 
   See available versions:
 
-    $ sunodoctl update --available
+    $ sunodo update --available
 ```
 
-_See code: [@oclif/plugin-update](https://github.com/oclif/plugin-update/blob/v3.1.3/src/commands/update.ts)_
+_See code: [@oclif/plugin-update](https://github.com/oclif/plugin-update/blob/v3.1.9/src/commands/update.ts)_
 <!-- commandsstop -->

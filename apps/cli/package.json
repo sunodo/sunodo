@@ -1,16 +1,16 @@
 {
     "name": "@sunodo/cli",
-    "version": "0.0.0",
+    "version": "0.1.0",
     "description": "Sunodo CLI",
-    "author": "Danilo Tuler <danilo.tuler@cartesi.io>",
+    "author": "Danilo Tuler <danilo.tuler@sunodo.io>",
     "bin": {
-        "sunodoctl": "./bin/run.js"
+        "sunodo": "./bin/run.js"
     },
     "type": "module",
-    "homepage": "https://github.com/cartesi/sunodo",
+    "homepage": "https://github.com/sunodo/sunodo",
     "license": "MIT",
     "exports": "./dist/index.js",
-    "repository": "cartesi/sunodo",
+    "repository": "sunodo/sunodo",
     "files": [
         "/bin",
         "/dist",
@@ -61,8 +61,8 @@
         "typescript": "^5.0.2"
     },
     "oclif": {
-        "bin": "sunodoctl",
-        "dirname": "sunodoctl",
+        "bin": "sunodo",
+        "dirname": "sunodo",
         "commands": "./dist/commands",
         "plugins": [
             "@oclif/plugin-help",
@@ -88,9 +88,8 @@
         }
     },
     "scripts": {
-        "build": "shx rm -rf dist && yarn codegen && tsc -b",
-        "codegen:openapi": "openapi-typescript http://127.0.0.1:3001/docs/json --output src/services/sunodo.d.ts",
-        "codegen": "oazapfts http://127.0.0.1:3001/docs/json src/services/sunodo.ts && fix-esm-import-path src/services/sunodo.ts",
+        "build": "shx rm -rf dist && tsc -b",
+        "codegen": "oazapfts http://127.0.0.1:3001/docs/json src/services/sunodo.ts",
         "lint": "eslint . --ext .ts --config .eslintrc",
         "postpack": "shx rm -f oclif.manifest.json",
         "posttest": "yarn lint",
