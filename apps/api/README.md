@@ -49,3 +49,23 @@ Server ready at http://0.0.0.0:3001
 ```
 
 OpenAPI browser will be available at `http://localhost:3001/docs/`
+
+## Deployment
+
+The sunodo API and postgres database are currently deployed at [fly.io](http://fly.io/).
+As this is a monorepo deployment must be done from the project root directory, and executing the following command:
+
+```shell
+fly deploy --config apps/api/fly.toml --dockerfile ./Dockerfile
+```
+
+The following environment variables have to be set with `flyctl secrets set`:
+
+```shell
+AUTH_CLIENT_ID
+AUTH_CLIENT_SECRET
+AUTH_OPEN_API_CLIENT_ID
+STRIPE_PUBLIC_KEY
+STRIPE_SECRET_KEY
+STRIPE_WEBHOOK_SIGNING_SECRET
+```
