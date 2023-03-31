@@ -95,11 +95,11 @@ async function main() {
         where: { id: "a85afef5-7bf7-49ba-a043-d22afab0f800" },
         create: {
             id: "a85afef5-7bf7-49ba-a043-d22afab0f800",
-            address: "0xDD21AE38D6215479F3364D3Cf7d9D27aD209BD89",
+            address: "0x98DEa668E59E662DC0F8e5C6C5081dB3Bafd9C57",
             keyRef: "aee74f4a-ed99-4276-8bf8-faf45f5d625e", // AWS KEY ID
         },
         update: {
-            address: "0xDD21AE38D6215479F3364D3Cf7d9D27aD209BD89",
+            address: "0x98DEa668E59E662DC0F8e5C6C5081dB3Bafd9C57",
             keyRef: "aee74f4a-ed99-4276-8bf8-faf45f5d625e", // AWS KEY ID
         },
     });
@@ -109,9 +109,9 @@ async function main() {
         create: {
             id: "19054807-08c5-49e2-9416-130e38b1cbce",
             type: ConsensusType.AUTHORITY,
-            validators: { connect: validator },
+            validators: { connect: { id: validator.id } },
         },
-        update: { validators: { connect: validator } },
+        update: { validators: { connect: { id: validator.id } } },
     });
 }
 main()
