@@ -1,36 +1,69 @@
 import ora from "ora";
 import c from "ansi-colors";
+import { Args, Flags } from "@oclif/core";
+import { DownloadTemplateResult, downloadTemplate } from "giget";
+import type { TemplateProvider } from "giget";
 
 import { SunodoCommand } from "../../sunodoCommand.js";
-import { createApplication } from "../../services/sunodo.js";
-import { Args, Flags } from "@oclif/core";
 
 export default class CreateApplication extends SunodoCommand {
     static description = "Create application";
 
     static examples = ["<%= config.bin %> <%= command.id %>"];
 
-    static args = { name: Args.string() };
-
-    static flags = {
-        org: Flags.string({
-            description: "organization slug of the application",
+    static args = {
+        name: Args.string({
+            description: "application and directory name",
+            required: true,
         }),
     };
+
+    static flags = {
+        template: Flags.string({
+            description: "template name to use",
+            required: true,
+            options: ["javascript"],
+        }),
+        branch: Flags.string({
+            description: "branch name to use if not main",
+            default: "main",
+        }),
+    };
+
+    private async download(
+        template: string,
+        branch: string,
+        out: string
+    ): Promise<DownloadTemplateResult> {
+        const sunodoProvider: TemplateProvider = async (input) => {
+            return {
+                name: "sunodo",
+                subdir: input,
+                url: "https://github.com/sunodo/sunodo-templates",
+                tar: `https://codeload.github.com/sunodo/sunodo-templates/tar.gz/refs/heads/${branch}`,
+            };
+        };
+
+        const input = `sunodo:${template}`;
+        return downloadTemplate(input, {
+            dir: out,
+            providers: { sunodo: sunodoProvider },
+        });
+    }
 
     public async run(): Promise<void> {
         const { args } = await this.parse(CreateApplication);
         const { flags } = await this.parse(CreateApplication);
-
         const spinner = ora("Creating application...").start();
-        const { data, status } = await createApplication(
-            { name: args.name, org: flags.org },
-            this.fetchConfig
-        );
-        if (status === 201) {
-            spinner.succeed(`Application created: ${c.cyan(data.name)}`);
-        } else {
-            spinner.fail(`Error creating application: ${c.red(data.message)}`);
+        try {
+            const { dir } = await this.download(
+                flags.template,
+                flags.branch,
+                args.name
+            );
+            spinner.succeed(`Application created at ${c.cyan(dir)}`);
+        } catch (e: any) {
+            spinner.fail(`Error creating application: ${c.red(e.message)}`);
         }
     }
 }
