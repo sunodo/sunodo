@@ -8,6 +8,8 @@
 
 ## Quick Start
 
+Make sure that you configure the AWS CLI with the credentials of the account you want to deploy to.
+
 ```shell
 terraform init
 terraform validate

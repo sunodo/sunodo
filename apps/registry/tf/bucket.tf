@@ -76,7 +76,6 @@ resource "aws_kms_key" "sunodo_key" {
   deletion_window_in_days = 10
 }
 
-
 resource "aws_s3_bucket_server_side_encryption_configuration" "sunodo_bucket_encryption" {
   bucket = aws_s3_bucket.sunodo_bucket.id
   rule {
