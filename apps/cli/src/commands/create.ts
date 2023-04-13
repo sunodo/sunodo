@@ -1,12 +1,10 @@
 import ora from "ora";
 import c from "ansi-colors";
-import { Args, Flags } from "@oclif/core";
+import { Args, Command, Flags } from "@oclif/core";
 import { DownloadTemplateResult, downloadTemplate } from "giget";
 import type { TemplateProvider } from "giget";
 
-import { SunodoCommand } from "../sunodoCommand.js";
-
-export default class CreateCommand extends SunodoCommand {
+export default class CreateCommand extends Command {
     static description = "Create application";
 
     static examples = ["<%= config.bin %> <%= command.id %>"];
