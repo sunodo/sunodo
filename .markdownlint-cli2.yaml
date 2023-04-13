@@ -7,8 +7,12 @@ config:
         siblings_only: true
     ul-indent:
         indent: 4
+    no-duplicate-header:
+        allow_different_nesting: true
 
 noProgress: true
 
 ignores:
     - "**/node_modules/**"
+    - apps/cli/tmp
+    - .changeset/**
