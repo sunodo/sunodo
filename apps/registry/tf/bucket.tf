@@ -24,17 +24,24 @@ data "aws_iam_policy_document" "sunodo_registry" {
   statement {
 
     actions = [
-      "s3:PutObject",
-      "s3:GetObject",
-      "s3:DeleteObject",
-      "s3:ListMultipartUploadParts",
-      "s3:AbortMultipartUpload",
       "s3:ListBucket",
       "s3:GetBucketLocation",
       "s3:ListBucketMultipartUploads",
     ]
     resources = [
       aws_s3_bucket.sunodo_bucket.arn,
+    ]
+  }
+  statement {
+
+    actions = [
+      "s3:PutObject",
+      "s3:GetObject",
+      "s3:DeleteObject",
+      "s3:ListMultipartUploadParts",
+      "s3:AbortMultipartUpload",
+    ]
+    resources = [
       "${aws_s3_bucket.sunodo_bucket.arn}/*",
     ]
   }
