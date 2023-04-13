@@ -1,4 +1,5 @@
 config:
+    line-length: false
     list-marker-space:
         ul_multi: 3
         ul_single: 3
@@ -6,3 +7,8 @@ config:
         siblings_only: true
     ul-indent:
         indent: 4
+
+noProgress: true
+
+ignores:
+    - "**/node_modules/**"
