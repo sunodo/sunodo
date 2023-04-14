@@ -30,19 +30,17 @@ USAGE
 # Commands
 
 <!-- commands -->
-* [`sunodo apps create NAME`](#sunodo-apps-create-name)
-* [`sunodo apps delete NAME`](#sunodo-apps-delete-name)
-* [`sunodo apps list`](#sunodo-apps-list)
+* [`sunodo create NAME`](#sunodo-create-name)
 * [`sunodo help [COMMANDS]`](#sunodo-help-commands)
 * [`sunodo update [CHANNEL]`](#sunodo-update-channel)
 
-## `sunodo apps create NAME`
+## `sunodo create NAME`
 
 Create application
 
 ```
 USAGE
-  $ sunodo apps create NAME --template javascript [--branch <value>]
+  $ sunodo create NAME --template javascript [--branch <value>]
 
 ARGUMENTS
   NAME  application and directory name
@@ -56,51 +54,10 @@ DESCRIPTION
   Create application
 
 EXAMPLES
-  $ sunodo apps create
+  $ sunodo create
 ```
 
-## `sunodo apps delete NAME`
-
-Delete application
-
-```
-USAGE
-  $ sunodo apps delete NAME
-
-DESCRIPTION
-  Delete application
-
-EXAMPLES
-  $ sunodo apps delete
-```
-
-## `sunodo apps list`
-
-List applications
-
-```
-USAGE
-  $ sunodo apps list [--columns <value> | -x] [--sort <value>] [--filter <value>] [--output csv|json|yaml |  |
-    [--csv | --no-truncate]] [--no-header | ] [--org <value>]
-
-FLAGS
-  -x, --extended     show extra columns
-  --columns=<value>  only show provided columns (comma-separated)
-  --csv              output is csv format [alias: --output=csv]
-  --filter=<value>   filter property by partial string matching, ex: name=foo
-  --no-header        hide table header from output
-  --no-truncate      do not truncate output to fit screen
-  --org=<value>      organization slug of the applications
-  --output=<option>  output in a more machine friendly format
-                     <options: csv|json|yaml>
-  --sort=<value>     property to sort by (prepend '-' for descending)
-
-DESCRIPTION
-  List applications
-
-EXAMPLES
-  $ sunodo apps list
-```
+_See code: [dist/commands/create.ts](https://github.com/sunodo/sunodo/blob/v0.1.0/dist/commands/create.ts)_
 
 ## `sunodo help [COMMANDS]`
 

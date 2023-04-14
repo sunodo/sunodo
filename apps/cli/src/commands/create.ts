@@ -4,9 +4,9 @@ import { Args, Flags } from "@oclif/core";
 import { DownloadTemplateResult, downloadTemplate } from "giget";
 import type { TemplateProvider } from "giget";
 
-import { SunodoCommand } from "../../sunodoCommand.js";
+import { SunodoCommand } from "../sunodoCommand.js";
 
-export default class CreateApplication extends SunodoCommand {
+export default class CreateCommand extends SunodoCommand {
     static description = "Create application";
 
     static examples = ["<%= config.bin %> <%= command.id %>"];
@@ -52,8 +52,7 @@ export default class CreateApplication extends SunodoCommand {
     }
 
     public async run(): Promise<void> {
-        const { args } = await this.parse(CreateApplication);
-        const { flags } = await this.parse(CreateApplication);
+        const { args, flags } = await this.parse(CreateCommand);
         const spinner = ora("Creating application...").start();
         try {
             const { dir } = await this.download(
