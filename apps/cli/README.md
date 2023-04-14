@@ -30,7 +30,7 @@ USAGE
 # Commands
 
 <!-- commands -->
-* [`sunodo apps create [NAME]`](#sunodo-apps-create-name)
+* [`sunodo apps create NAME`](#sunodo-apps-create-name)
 * [`sunodo apps delete NAME`](#sunodo-apps-delete-name)
 * [`sunodo apps list`](#sunodo-apps-list)
 * [`sunodo auth login`](#sunodo-auth-login)
@@ -39,25 +39,27 @@ USAGE
 * [`sunodo help [COMMANDS]`](#sunodo-help-commands)
 * [`sunodo login`](#sunodo-login)
 * [`sunodo logout`](#sunodo-logout)
-* [`sunodo orgs create NAME`](#sunodo-orgs-create-name)
-* [`sunodo orgs delete NAME`](#sunodo-orgs-delete-name)
-* [`sunodo orgs list`](#sunodo-orgs-list)
 * [`sunodo platform chains`](#sunodo-platform-chains)
 * [`sunodo platform regions`](#sunodo-platform-regions)
 * [`sunodo platform runtimes`](#sunodo-platform-runtimes)
 * [`sunodo token`](#sunodo-token)
 * [`sunodo update [CHANNEL]`](#sunodo-update-channel)
 
-## `sunodo apps create [NAME]`
+## `sunodo apps create NAME`
 
 Create application
 
 ```
 USAGE
-  $ sunodo apps create [NAME] [--org <value>]
+  $ sunodo apps create NAME --template javascript [--branch <value>]
+
+ARGUMENTS
+  NAME  application and directory name
 
 FLAGS
-  --org=<value>  organization slug of the application
+  --branch=<value>     [default: main] branch name to use if not main
+  --template=<option>  (required) template name to use
+                       <options: javascript>
 
 DESCRIPTION
   Create application
@@ -219,66 +221,6 @@ EXAMPLES
   $ sunodo logout
 ```
 
-## `sunodo orgs create NAME`
-
-Create organization
-
-```
-USAGE
-  $ sunodo orgs create NAME --slug <value>
-
-FLAGS
-  --slug=<value>  (required) slug of the organization
-
-DESCRIPTION
-  Create organization
-
-EXAMPLES
-  $ sunodo orgs create
-```
-
-## `sunodo orgs delete NAME`
-
-Delete organization
-
-```
-USAGE
-  $ sunodo orgs delete NAME
-
-DESCRIPTION
-  Delete organization
-
-EXAMPLES
-  $ sunodo orgs delete
-```
-
-## `sunodo orgs list`
-
-List organizations
-
-```
-USAGE
-  $ sunodo orgs list [--columns <value> | -x] [--sort <value>] [--filter <value>] [--output csv|json|yaml |  |
-    [--csv | --no-truncate]] [--no-header | ]
-
-FLAGS
-  -x, --extended     show extra columns
-  --columns=<value>  only show provided columns (comma-separated)
-  --csv              output is csv format [alias: --output=csv]
-  --filter=<value>   filter property by partial string matching, ex: name=foo
-  --no-header        hide table header from output
-  --no-truncate      do not truncate output to fit screen
-  --output=<option>  output in a more machine friendly format
-                     <options: csv|json|yaml>
-  --sort=<value>     property to sort by (prepend '-' for descending)
-
-DESCRIPTION
-  List organizations
-
-EXAMPLES
-  $ sunodo orgs list
-```
-
 ## `sunodo platform chains`
 
 list chains supported by the platform
@@ -416,5 +358,5 @@ EXAMPLES
     $ sunodo update --available
 ```
 
-_See code: [@oclif/plugin-update](https://github.com/oclif/plugin-update/blob/v3.1.9/src/commands/update.ts)_
+_See code: [@oclif/plugin-update](https://github.com/oclif/plugin-update/blob/v3.1.8/src/commands/update.ts)_
 <!-- commandsstop -->
