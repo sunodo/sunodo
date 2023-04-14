@@ -1,8 +1,8 @@
 {
     "name": "@sunodo/cli",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "Sunodo CLI",
-    "author": "Danilo Tuler <danilo.tuler@sunodo.io>",
+    "author": "Danilo Tuler <tuler@pobox.com>",
     "bin": {
         "sunodo": "./bin/run.js"
     },
