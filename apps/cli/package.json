@@ -74,9 +74,6 @@
             "apps": {
                 "description": "application related commands"
             },
-            "auth": {
-                "description": "authentication related commands"
-            },
             "platform": {
                 "description": "display platform information"
             }

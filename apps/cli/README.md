@@ -33,16 +33,10 @@ USAGE
 * [`sunodo apps create NAME`](#sunodo-apps-create-name)
 * [`sunodo apps delete NAME`](#sunodo-apps-delete-name)
 * [`sunodo apps list`](#sunodo-apps-list)
-* [`sunodo auth login`](#sunodo-auth-login)
-* [`sunodo auth logout`](#sunodo-auth-logout)
-* [`sunodo auth token`](#sunodo-auth-token)
 * [`sunodo help [COMMANDS]`](#sunodo-help-commands)
-* [`sunodo login`](#sunodo-login)
-* [`sunodo logout`](#sunodo-logout)
 * [`sunodo platform chains`](#sunodo-platform-chains)
 * [`sunodo platform regions`](#sunodo-platform-regions)
 * [`sunodo platform runtimes`](#sunodo-platform-runtimes)
-* [`sunodo token`](#sunodo-token)
 * [`sunodo update [CHANNEL]`](#sunodo-update-channel)
 
 ## `sunodo apps create NAME`
@@ -111,60 +105,6 @@ EXAMPLES
   $ sunodo apps list
 ```
 
-## `sunodo auth login`
-
-Login or Signup to Sunodo
-
-```
-USAGE
-  $ sunodo auth login
-
-DESCRIPTION
-  Login or Signup to Sunodo
-
-ALIASES
-  $ sunodo login
-
-EXAMPLES
-  $ sunodo auth login
-```
-
-## `sunodo auth logout`
-
-clears local login credentials and invalidates API session
-
-```
-USAGE
-  $ sunodo auth logout
-
-DESCRIPTION
-  clears local login credentials and invalidates API session
-
-ALIASES
-  $ sunodo logout
-
-EXAMPLES
-  $ sunodo auth logout
-```
-
-## `sunodo auth token`
-
-Prints current saved token (if authenticated)
-
-```
-USAGE
-  $ sunodo auth token
-
-DESCRIPTION
-  Prints current saved token (if authenticated)
-
-ALIASES
-  $ sunodo token
-
-EXAMPLES
-  $ sunodo auth token
-```
-
 ## `sunodo help [COMMANDS]`
 
 Display help for sunodo.
@@ -184,42 +124,6 @@ DESCRIPTION
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.2.8/src/commands/help.ts)_
-
-## `sunodo login`
-
-Login or Signup to Sunodo
-
-```
-USAGE
-  $ sunodo login
-
-DESCRIPTION
-  Login or Signup to Sunodo
-
-ALIASES
-  $ sunodo login
-
-EXAMPLES
-  $ sunodo login
-```
-
-## `sunodo logout`
-
-clears local login credentials and invalidates API session
-
-```
-USAGE
-  $ sunodo logout
-
-DESCRIPTION
-  clears local login credentials and invalidates API session
-
-ALIASES
-  $ sunodo logout
-
-EXAMPLES
-  $ sunodo logout
-```
 
 ## `sunodo platform chains`
 
@@ -303,24 +207,6 @@ DESCRIPTION
 
 EXAMPLES
   $ sunodo platform runtimes
-```
-
-## `sunodo token`
-
-Prints current saved token (if authenticated)
-
-```
-USAGE
-  $ sunodo token
-
-DESCRIPTION
-  Prints current saved token (if authenticated)
-
-ALIASES
-  $ sunodo token
-
-EXAMPLES
-  $ sunodo token
 ```
 
 ## `sunodo update [CHANNEL]`
