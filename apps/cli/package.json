@@ -77,9 +77,6 @@
             "auth": {
                 "description": "authentication related commands"
             },
-            "orgs": {
-                "description": "organization related commands"
-            },
             "platform": {
                 "description": "display platform information"
             }
