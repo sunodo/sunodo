@@ -73,9 +73,6 @@
         "topics": {
             "apps": {
                 "description": "application related commands"
-            },
-            "platform": {
-                "description": "display platform information"
             }
         },
         "macos": {
