@@ -34,9 +34,6 @@ USAGE
 * [`sunodo apps delete NAME`](#sunodo-apps-delete-name)
 * [`sunodo apps list`](#sunodo-apps-list)
 * [`sunodo help [COMMANDS]`](#sunodo-help-commands)
-* [`sunodo platform chains`](#sunodo-platform-chains)
-* [`sunodo platform regions`](#sunodo-platform-regions)
-* [`sunodo platform runtimes`](#sunodo-platform-runtimes)
 * [`sunodo update [CHANNEL]`](#sunodo-update-channel)
 
 ## `sunodo apps create NAME`
@@ -124,90 +121,6 @@ DESCRIPTION
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.2.8/src/commands/help.ts)_
-
-## `sunodo platform chains`
-
-list chains supported by the platform
-
-```
-USAGE
-  $ sunodo platform chains [--columns <value> | -x] [--sort <value>] [--filter <value>] [--output csv|json|yaml |  |
-    [--csv | --no-truncate]] [--no-header | ] [--live <value>]
-
-FLAGS
-  -x, --extended     show extra columns
-  --columns=<value>  only show provided columns (comma-separated)
-  --csv              output is csv format [alias: --output=csv]
-  --filter=<value>   filter property by partial string matching, ex: name=foo
-  --live=<value>     include only live production chains
-  --no-header        hide table header from output
-  --no-truncate      do not truncate output to fit screen
-  --output=<option>  output in a more machine friendly format
-                     <options: csv|json|yaml>
-  --sort=<value>     property to sort by (prepend '-' for descending)
-
-DESCRIPTION
-  list chains supported by the platform
-
-EXAMPLES
-  $ sunodo platform chains
-```
-
-## `sunodo platform regions`
-
-list regions supported by the platform
-
-```
-USAGE
-  $ sunodo platform regions [--columns <value> | -x] [--sort <value>] [--filter <value>] [--output csv|json|yaml |  |
-    [--csv | --no-truncate]] [--no-header | ] [--live <value>]
-
-FLAGS
-  -x, --extended     show extra columns
-  --columns=<value>  only show provided columns (comma-separated)
-  --csv              output is csv format [alias: --output=csv]
-  --filter=<value>   filter property by partial string matching, ex: name=foo
-  --live=<value>     include only live production chains
-  --no-header        hide table header from output
-  --no-truncate      do not truncate output to fit screen
-  --output=<option>  output in a more machine friendly format
-                     <options: csv|json|yaml>
-  --sort=<value>     property to sort by (prepend '-' for descending)
-
-DESCRIPTION
-  list regions supported by the platform
-
-EXAMPLES
-  $ sunodo platform regions
-```
-
-## `sunodo platform runtimes`
-
-list runtimes supported by the platform
-
-```
-USAGE
-  $ sunodo platform runtimes [--columns <value> | -x] [--sort <value>] [--filter <value>] [--output csv|json|yaml |  |
-    [--csv | --no-truncate]] [--no-header | ] [--live <value>]
-
-FLAGS
-  -x, --extended     show extra columns
-  --columns=<value>  only show provided columns (comma-separated)
-  --csv              output is csv format [alias: --output=csv]
-  --filter=<value>   filter property by partial string matching, ex: name=foo
-  --live=<value>     include only live production chains
-  --no-header        hide table header from output
-  --no-truncate      do not truncate output to fit screen
-  --output=<option>  output in a more machine friendly format
-                     <options: csv|json|yaml>
-  --sort=<value>     property to sort by (prepend '-' for descending)
-
-DESCRIPTION
-  list runtimes supported by the platform
-
-EXAMPLES
-  $ sunodo platform runtimes
-```
 
 ## `sunodo update [CHANNEL]`
 
