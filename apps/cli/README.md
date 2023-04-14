@@ -19,7 +19,7 @@ $ npm install -g @sunodo/cli
 $ sunodo COMMAND
 running command...
 $ sunodo (--version)
-@sunodo/cli/0.1.0 darwin-arm64 node-v19.6.0
+@sunodo/cli/0.2.0 darwin-arm64 node-v19.6.0
 $ sunodo --help [COMMAND]
 USAGE
   $ sunodo COMMAND
@@ -57,7 +57,7 @@ EXAMPLES
   $ sunodo create
 ```
 
-_See code: [dist/commands/create.ts](https://github.com/sunodo/sunodo/blob/v0.1.0/dist/commands/create.ts)_
+_See code: [dist/commands/create.ts](https://github.com/sunodo/sunodo/blob/v0.2.0/dist/commands/create.ts)_
 
 ## `sunodo help [COMMANDS]`
 
