@@ -1,9 +1,15 @@
 # Sunodo CLI
 
-Sunodo provides a CLI to interact with the platform through its [REST API](../api/).
+Sunodo provides a CLI to help developers to:
 
-It's implemented using the [oclif framework](https://oclif.io) and distributed through several channels including `npm` and `homebrew`. An API TypeScript client is generated from the OpenAPI especification using the [openapi-typescript
-Public](https://github.com/drwpow/openapi-typescript) library.
+-   `create` applications from templates
+-   `build` applications from source to a cartesi machine
+-   `run` applications in a local development environment
+-   `test` aplications running inside a cartesi machine
+-   `deploy` applications to a cloud provider
+-   `monitor` application already running on a cloud provider
+
+It's implemented using the [oclif framework](https://oclif.io) and distributed through several channels including `npm` and `homebrew`.
 
 <!-- toc -->
 * [Sunodo CLI](#sunodo-cli)

@@ -1,12 +1,14 @@
 # Sunodo
 
-Sunodo is a hosting service for decentralized applications written using [Cartesi](http://cartesi.io) technology.
+Sunodo is a framework for developing decentralized applications built on top of [Cartesi](http://cartesi.io) technology.
+It helps developers to:
 
-If applications are decentralized why do they need hosting?
-
-Cartesi decentralized applications (DApps) are [application specific rollups](https://medium.com/cartesi/application-specific-rollups-e12ed5d9de01) that runs offchain and uses the blockchain as a consensus mechanism and dispute resolution. As such it needs to have nodes running that performs validation of the application computations (validator nodes), and also indexing services to serve the state of the application (reader nodes).
-
-Sunodo provide an easy way to deploy those nodes.
+-   `create` applications from templates
+-   `build` applications from source to a cartesi machine
+-   `run` applications in a local development environment
+-   `test` aplications running inside a cartesi machine
+-   `deploy` applications to a cloud provider
+-   `monitor` application already running on a cloud provider
 
 ## What's inside?
 
@@ -16,12 +18,14 @@ This monorepo ([turborepo](https://turbo.build/repo)) includes libraries and app
 
 ### Apps and Packages
 
--   `api`: a [fastify](https://www.fastify.io) REST API for deployment and management of DApps, deployed at [https://api.sunodo.io](https://api.sunodo.io);
 -   `cli`: a [oclif](https://oclif.io) CLI tool for deployment and management of DApps, available at `brew install sunodo`;
+-   `controller`: a web3 application that monitor DApps deployments and launches cartesi nodes;
 -   `docs`: a [docusaurus](https://docusaurus.io) app with Sunodo documentation, deployed at [https://docs.sunodo.io](https://docs.sunodo.io)
--   `registry`: a [docker registry](https://github.com/distribution/distribution) configuration to host a registry to accept applications docker images, with authorization against sunodo's api;
 -   `web`: a [next.js](https://nextjs.org/) app for Sunodo website, deployed at [https://sunodo.io](https://sunodo.io)
 -   `app`: a [next.js](https://nextjs.org/) app for Sunodo dashboard, deployed at [https://app.sunodo.io](https://app.sunodo.io)
+-   `machine-emulator-tools`: packaging of cartesi machine emulator tools as Docker images;
+-   `toolchain`: Docker image to help with cartesi build and execution;
+-   `contracts`: support smart contracts for node management;
 -   `ui`: a stub React component library shared by both `web` and `app` applications
 -   `eslint-config-custom`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
 -   `tsconfig`: `tsconfig.json`s used throughout the monorepo
