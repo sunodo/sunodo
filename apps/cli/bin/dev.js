@@ -1,4 +1,4 @@
-#!/usr/bin/env yarn -s ts-node
+#!/usr/bin/env ts-node
 
 import oclif from "@oclif/core";
 import path from "node:path";
