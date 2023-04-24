@@ -6,4 +6,6 @@ ADD https://github.com/cartesi/machine-emulator-tools/releases/download/v${VERSI
 RUN mkdir -p /tmp/machine-emulator-tools && tar -C /tmp/machine-emulator-tools -xzf /tmp/machine-emulator-tools.tar.gz
 
 FROM scratch as tools
-COPY --from=download /tmp/machine-emulator-tools/ /
+COPY --from=download /tmp/machine-emulator-tools/sbin/init /usr/sbin/init
+COPY --from=download /tmp/machine-emulator-tools/etc/hostname /etc/hostname
+COPY --from=download /tmp/machine-emulator-tools/opt/cartesi /opt/cartesi/
