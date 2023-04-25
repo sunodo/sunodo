@@ -34,8 +34,9 @@ export default class Shell extends Command {
         const toolchainImage = "sunodo/toolchain:0.14.0"; // XXX: how to resolve sdk version?
         const args = [
             "run",
-            "-it",
-            "-v",
+            "--interactive",
+            "--tty",
+            "--volume",
             bind,
             toolchainImage,
             "cartesi-machine",
