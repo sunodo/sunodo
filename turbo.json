@@ -11,7 +11,7 @@
     "pipeline": {
         "build": {
             "dependsOn": ["^build"],
-            "outputs": ["build/**", "dist/**", ".next/**"]
+            "outputs": ["build/**", "dist/**", ".next/**", ".vitepress/dist"]
         },
         "start": {
             "dependsOn": ["^build"]
