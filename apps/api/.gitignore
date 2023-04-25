@@ -1,6 +1,0 @@
-.env*
-*.js
-!jest.config.js
-*.d.ts
-*.dbml
-node_modules

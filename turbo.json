@@ -1,19 +1,6 @@
 {
     "$schema": "https://turbo.build/schema.json",
-    "globalEnv": [
-        "NODE_ENV",
-        "AUTH_ISSUER",
-        "AUTH_CLIENT_ID",
-        "AUTH_CLIENT_SECRET",
-        "AUTH_OPEN_API_CLIENT_ID",
-        "DATABASE_URL",
-        "DEFAULT_API_URL",
-        "PORT",
-        "TS_NODE_PROJECT",
-        "STRIPE_PUBLIC_KEY",
-        "STRIPE_SECRET_KEY",
-        "WEBSITE_URL"
-    ],
+    "globalEnv": ["NODE_ENV", "PORT", "TS_NODE_PROJECT"],
     "pipeline": {
         "build": {
             "dependsOn": ["^build"],
