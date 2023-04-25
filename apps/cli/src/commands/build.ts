@@ -146,6 +146,7 @@ export default class BuildApplication extends Command {
     ): Promise<void> {
         // create container
         const { stdout: cid } = await execa("docker", [
+            "container",
             "create",
             "--platform",
             "linux/riscv64",
@@ -181,6 +182,7 @@ export default class BuildApplication extends Command {
         await execa(
             "docker",
             [
+                "container",
                 "run",
                 "--rm",
                 "-v",
@@ -244,6 +246,7 @@ export default class BuildApplication extends Command {
         await execa(
             "docker",
             [
+                "container",
                 "run",
                 "--rm",
                 "-v",
