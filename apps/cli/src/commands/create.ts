@@ -22,7 +22,7 @@ export default class CreateCommand extends SunodoCommand {
         template: Flags.string({
             description: "template name to use",
             required: true,
-            options: ["javascript"],
+            options: ["javascript", "python"],
         }),
         branch: Flags.string({
             description: "branch name to use if not main",
