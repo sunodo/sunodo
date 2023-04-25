@@ -15,7 +15,7 @@ EOF
 WORKDIR /usr/local/src
 
 RUN <<EOF
-curl -sL https://github.com/cartesi/genext2fs/archive/refs/heads/next.tar.gz | tar --strip-components=1 -zxvf -
+curl -sL https://github.com/cartesi/genext2fs/archive/refs/heads/cartesi.tar.gz | tar --strip-components=1 -zxvf -
 ./autogen.sh
 ./configure
 make
