@@ -8,7 +8,7 @@ FROM ubuntu:22.04 as genext2fs
 
 RUN <<EOF
 apt-get update
-apt-get install -y --no-install-recommends autoconf automake ca-certificates curl build-essential libtool
+apt-get install -y --no-install-recommends autoconf automake ca-certificates curl build-essential libarchive-dev libtool
 rm -rf /var/lib/apt/lists/*
 EOF
 
@@ -17,7 +17,7 @@ WORKDIR /usr/local/src
 RUN <<EOF
 curl -sL https://github.com/cartesi/genext2fs/archive/refs/heads/cartesi.tar.gz | tar --strip-components=1 -zxvf -
 ./autogen.sh
-./configure
+./configure --enable-libarchive
 make
 make install
 EOF
