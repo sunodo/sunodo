@@ -25,7 +25,7 @@ $ npm install -g @sunodo/cli
 $ sunodo COMMAND
 running command...
 $ sunodo (--version)
-@sunodo/cli/0.2.0 darwin-arm64 node-v19.6.0
+@sunodo/cli/0.3.0 darwin-arm64 node-v20.0.0
 $ sunodo --help [COMMAND]
 USAGE
   $ sunodo COMMAND
@@ -36,9 +36,76 @@ USAGE
 # Commands
 
 <!-- commands -->
+* [`sunodo build`](#sunodo-build)
+* [`sunodo clean`](#sunodo-clean)
 * [`sunodo create NAME`](#sunodo-create-name)
 * [`sunodo help [COMMANDS]`](#sunodo-help-commands)
+* [`sunodo shell [IMAGE]`](#sunodo-shell-image)
 * [`sunodo update [CHANNEL]`](#sunodo-update-channel)
+
+## `sunodo build`
+
+Build application.
+
+```
+USAGE
+  $ sunodo build [--network <value>] [--from-image <value>] [--target <value>]
+
+FLAGS
+  --from-image=<value>  skip docker build and start from this image.
+  --network=<value>     [default: localhost] target network name of application.
+  --target=<value>      target of docker multi-stage build.
+
+DESCRIPTION
+  Build application.
+
+  Build application starting from a Dockerfile and ending with a snapshot of the corresponding Cartesi Machine already
+  booted and yielded for the first time. This snapshot can be used to start a Cartesi node for the application using
+  `sunodo run`. The process can also start from a Docker image built by the developer using `docker build` using the
+  option `--from-image`
+
+EXAMPLES
+  $ sunodo build
+
+  $ sunodo build --from-image my-app
+
+FLAG DESCRIPTIONS
+  --from-image=<value>  skip docker build and start from this image.
+
+    if the build process of the application Dockerfile needs more control the developer can build the image using the
+    `docker build` command, and then start the build process of the Cartesi machine starting from that image.
+
+  --network=<value>  target network name of application.
+
+    the specified network name is injected as build-arg of the application Dockerfile. It's up to the developer to use
+    that depending on the application needs.
+
+  --target=<value>  target of docker multi-stage build.
+
+    if the application Dockerfile uses a multi-stage strategy, and stage of the image to be exported as a Cartesi
+    machine is not the last stage, use this parameter to specify the target stage.
+```
+
+_See code: [dist/commands/build.ts](https://github.com/sunodo/sunodo/blob/v0.3.0/dist/commands/build.ts)_
+
+## `sunodo clean`
+
+Clean build artifacts of application.
+
+```
+USAGE
+  $ sunodo clean
+
+DESCRIPTION
+  Clean build artifacts of application.
+
+  Deletes all cached build artifacts of application.
+
+EXAMPLES
+  $ sunodo clean
+```
+
+_See code: [dist/commands/clean.ts](https://github.com/sunodo/sunodo/blob/v0.3.0/dist/commands/clean.ts)_
 
 ## `sunodo create NAME`
 
@@ -46,7 +113,7 @@ Create application
 
 ```
 USAGE
-  $ sunodo create NAME --template javascript [--branch <value>]
+  $ sunodo create NAME --template javascript|python [--branch <value>]
 
 ARGUMENTS
   NAME  application and directory name
@@ -54,7 +121,7 @@ ARGUMENTS
 FLAGS
   --branch=<value>     [default: main] branch name to use if not main
   --template=<option>  (required) template name to use
-                       <options: javascript>
+                       <options: javascript|python>
 
 DESCRIPTION
   Create application
@@ -63,7 +130,7 @@ EXAMPLES
   $ sunodo create
 ```
 
-_See code: [dist/commands/create.ts](https://github.com/sunodo/sunodo/blob/v0.2.0/dist/commands/create.ts)_
+_See code: [dist/commands/create.ts](https://github.com/sunodo/sunodo/blob/v0.3.0/dist/commands/create.ts)_
 
 ## `sunodo help [COMMANDS]`
 
@@ -83,7 +150,30 @@ DESCRIPTION
   Display help for sunodo.
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.2.8/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.2.9/src/commands/help.ts)_
+
+## `sunodo shell [IMAGE]`
+
+Start a shell in cartesi machine of application
+
+```
+USAGE
+  $ sunodo shell [IMAGE] [--run-as-root]
+
+ARGUMENTS
+  IMAGE  image ID|name
+
+FLAGS
+  --run-as-root  run as root user
+
+DESCRIPTION
+  Start a shell in cartesi machine of application
+
+EXAMPLES
+  $ sunodo shell
+```
+
+_See code: [dist/commands/shell.ts](https://github.com/sunodo/sunodo/blob/v0.3.0/dist/commands/shell.ts)_
 
 ## `sunodo update [CHANNEL]`
 
@@ -120,5 +210,5 @@ EXAMPLES
     $ sunodo update --available
 ```
 
-_See code: [@oclif/plugin-update](https://github.com/oclif/plugin-update/blob/v3.1.8/src/commands/update.ts)_
+_See code: [@oclif/plugin-update](https://github.com/oclif/plugin-update/blob/v3.1.13/src/commands/update.ts)_
 <!-- commandsstop -->
