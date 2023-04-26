@@ -1,5 +1,6 @@
 import { Command, Flags } from "@oclif/core";
 import fs from "fs-extra";
+import os from "os";
 import path from "path";
 import { execa } from "execa";
 import tmp from "tmp";
@@ -173,6 +174,19 @@ export default class BuildApplication extends Command {
         const tar = path.join(containerDir, tarName + ".tar");
         const ext2 = path.join(containerDir, tarName + ".ext2");
 
+        // su, variables to run container as current user
+        const user = os.userInfo();
+        const su = [
+            "--env",
+            `USER=${user.username}`,
+            "--env",
+            `GROUP=container-group-${user.gid}`,
+            "--env",
+            `UID=${user.uid}`,
+            "--env",
+            `GID=${user.gid}`,
+        ];
+
         // calculate extra size
         const blockSize = 4096;
         const extraBytes = bytes.parse(info.dataSize);
@@ -185,6 +199,7 @@ export default class BuildApplication extends Command {
                 "container",
                 "run",
                 "--rm",
+                ...su,
                 "--volume",
                 bind,
                 toolchainImage,
@@ -219,6 +234,19 @@ export default class BuildApplication extends Command {
         const driveLabel = "root"; // XXX: does this need to be customizable?
         const outDir = path.join(containerDir, name);
 
+        // su, variables to run container as current user
+        const user = os.userInfo();
+        const su = [
+            "--env",
+            `USER=${user.username}`,
+            "--env",
+            `GROUP=container-group-${user.gid}`,
+            "--env",
+            `UID=${user.uid}`,
+            "--env",
+            `GID=${user.gid}`,
+        ];
+
         // list of environment variables of docker image
         // XXX: we can't include all of them because cartesi-machine command has length limits
         const envs = info.env.filter((variable) => {
@@ -249,6 +277,7 @@ export default class BuildApplication extends Command {
                 "container",
                 "run",
                 "--rm",
+                ...su,
                 "--volume",
                 bind,
                 toolchainImage,
