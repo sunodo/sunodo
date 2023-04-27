@@ -6,7 +6,7 @@ It helps developers to:
 -   `create` applications from templates
 -   `build` applications from source to a cartesi machine
 -   `run` applications in a local development environment
--   `test` aplications running inside a cartesi machine
+-   `test` applications running inside a cartesi machine
 -   `deploy` applications to a cloud provider
 -   `monitor` application already running on a cloud provider
 
