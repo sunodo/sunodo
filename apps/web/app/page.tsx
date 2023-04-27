@@ -29,9 +29,6 @@ const termLines = [
 export default function Page() {
     return (
         <>
-            <center>
-                <Image alt="logo" src="img/logo.svg" width={100} height={100} />
-            </center>
             <Terminal lines={termLines} interval={40} replay={false} />
         </>
     );
