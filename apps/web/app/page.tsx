@@ -5,20 +5,23 @@ import "@nitric/react-animated-term/css/styles.css";
 
 const termLines = [
     {
-        text: "brew install sunodo",
-        cmd: true,
-        delay: 80,
-    },
-    {
-        text: "sunodo auth login",
+        text: "brew install sunodo/tap/sunodo",
         cmd: true,
     },
     {
-        text: "sunodo app create --name my-app",
+        text: "sunodo create <app> --template [javascript | python]",
         cmd: true,
     },
     {
-        text: "sunodo deploy --app my-app --chain goerli",
+        text: "cd <app>",
+        cmd: true,
+    },
+    {
+        text: "sunodo build",
+        cmd: true,
+    },
+    {
+        text: "sunodo shell",
         cmd: true,
     },
 ];
@@ -29,7 +32,7 @@ export default function Page() {
             <center>
                 <Image alt="logo" src="img/logo.svg" width={100} height={100} />
             </center>
-            <Terminal lines={termLines} interval={80} replay={false} />
+            <Terminal lines={termLines} interval={40} replay={false} />
         </>
     );
 }
