@@ -67,13 +67,14 @@ export default class BuildApplication extends Command {
      */
     private async buildDAppImage(options: ImageBuildOptions): Promise<string> {
         const buildResult = tmp.tmpNameSync();
+        this.debug(`building docker image and writing result to ${buildResult}`);
         const args = [
             "buildx",
             "build",
             "--load",
             "--build-arg",
             `NETWORK=${options.network}`,
-            "--metadata-file",
+            "--iidfile",
             buildResult,
         ];
         if (options.target) {
@@ -81,9 +82,7 @@ export default class BuildApplication extends Command {
         }
 
         await execa("docker", [...args, process.cwd()], { stdio: "inherit" });
-
-        const result = JSON.parse(fs.readFileSync(buildResult, "utf8"));
-        return result["containerimage.config.digest"].replace("sha256:", "");
+        return fs.readFileSync(buildResult, "utf8");
     }
 
     private async getImageInfo(image: string): Promise<ImageInfo> {

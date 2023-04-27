@@ -25,7 +25,7 @@ $ npm install -g @sunodo/cli
 $ sunodo COMMAND
 running command...
 $ sunodo (--version)
-@sunodo/cli/0.3.0 darwin-arm64 node-v20.0.0
+@sunodo/cli/0.3.1 darwin-arm64 node-v20.0.0
 $ sunodo --help [COMMAND]
 USAGE
   $ sunodo COMMAND
@@ -86,7 +86,7 @@ FLAG DESCRIPTIONS
     machine is not the last stage, use this parameter to specify the target stage.
 ```
 
-_See code: [dist/commands/build.ts](https://github.com/sunodo/sunodo/blob/v0.3.0/dist/commands/build.ts)_
+_See code: [dist/commands/build.ts](https://github.com/sunodo/sunodo/blob/v0.3.1/dist/commands/build.ts)_
 
 ## `sunodo clean`
 
@@ -105,7 +105,7 @@ EXAMPLES
   $ sunodo clean
 ```
 
-_See code: [dist/commands/clean.ts](https://github.com/sunodo/sunodo/blob/v0.3.0/dist/commands/clean.ts)_
+_See code: [dist/commands/clean.ts](https://github.com/sunodo/sunodo/blob/v0.3.1/dist/commands/clean.ts)_
 
 ## `sunodo create NAME`
 
@@ -130,7 +130,7 @@ EXAMPLES
   $ sunodo create
 ```
 
-_See code: [dist/commands/create.ts](https://github.com/sunodo/sunodo/blob/v0.3.0/dist/commands/create.ts)_
+_See code: [dist/commands/create.ts](https://github.com/sunodo/sunodo/blob/v0.3.1/dist/commands/create.ts)_
 
 ## `sunodo help [COMMANDS]`
 
@@ -173,7 +173,7 @@ EXAMPLES
   $ sunodo shell
 ```
 
-_See code: [dist/commands/shell.ts](https://github.com/sunodo/sunodo/blob/v0.3.0/dist/commands/shell.ts)_
+_See code: [dist/commands/shell.ts](https://github.com/sunodo/sunodo/blob/v0.3.1/dist/commands/shell.ts)_
 
 ## `sunodo update [CHANNEL]`
 
