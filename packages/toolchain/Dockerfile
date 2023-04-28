@@ -46,10 +46,10 @@ COPY --from=genext2fs /usr/local/bin/genext2fs /usr/bin/
 COPY --from=su-exec /usr/local/src/su-exec /usr/local/bin/
 
 ADD --chmod=644 \
-    https://github.com/cartesi/image-kernel/releases/download/v$LINUX_VERSION/linux-$LINUX_KERNEL_VERSION.bin \
+    linux-$LINUX_KERNEL_VERSION.bin \
     /opt/cartesi/share/images/linux.bin
 ADD --chmod=644 \
-    https://github.com/cartesi/machine-emulator-rom/releases/download/v$ROM_VERSION/rom-v$ROM_VERSION.bin \
+    rom-v$ROM_VERSION.bin \
     /opt/cartesi/share/images/rom.bin
 
 WORKDIR /mnt
