@@ -1,0 +1,163 @@
+version: "3.9"
+
+x-database-config: &database-config
+    POSTGRES_HOSTNAME: database
+    POSTGRES_PORT: "5432"
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: password
+    POSTGRES_DB: postgres
+
+services:
+    anvil:
+        image: sunodo/anvil:2.0.0
+        command: ["anvil", "--block-time", "${BLOCK_TIME:-5}"]
+        healthcheck:
+            test: ["CMD", "eth_isready"]
+            interval: 10s
+            timeout: 1s
+            retries: 5
+        environment:
+            ANVIL_IP_ADDR: 0.0.0.0
+        ports:
+            - "8545:8545"
+
+    database:
+        image: postgres:13-alpine
+        ports:
+            - 5432:5432
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U postgres || exit 1"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+        environment:
+            - POSTGRES_PASSWORD=password
+
+    redis:
+        image: redis:6-alpine
+        ports:
+            - 6379:6379
+        restart: always
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+    rollups_deployer:
+        image: sunodo/anvil:2.0.0
+        command: bash -c "gunzip -c /opt/cartesi/share/deployments/anvil.json.gz | eth_load"
+        depends_on:
+            anvil:
+                condition: service_started
+        restart: on-failure
+        volumes:
+            - blockchain-data:/opt/cartesi/share/deployments:ro
+        environment:
+            RPC_URL: http://anvil:8545
+
+    dapp_deployer:
+        image: cartesi/rollups-cli:0.9.0
+        restart: on-failure
+        depends_on:
+            rollups_deployer:
+                condition: service_completed_successfully
+        command:
+            [
+                "create",
+                "--rpc",
+                "http://anvil:8545",
+                "--deploymentFile",
+                "/opt/cartesi/share/deployments/localhost.json",
+                "--mnemonic",
+                "test test test test test test test test test test test junk",
+                "--templateHashFile",
+                "/var/opt/cartesi/machine-snapshots/0_0/hash",
+                "--outputFile",
+                "/opt/cartesi/share/deployments/dapp.json",
+            ]
+        volumes:
+            - blockchain-data:/opt/cartesi/share/deployments
+            - ./.sunodo/image:/var/opt/cartesi/machine-snapshots/0_0:ro
+
+    validator:
+        image: sunodo/rollups-node:0.1.0
+        depends_on:
+            dapp_deployer:
+                condition: service_completed_successfully
+        volumes:
+            - blockchain-data:/opt/cartesi/share/deployments
+            - ./.sunodo/image:/var/opt/cartesi/machine-snapshots/0_0
+        healthcheck:
+            test: ["CMD", "is_ready"]
+            interval: 10s
+            timeout: 1s
+            retries: 5
+        ports:
+            - 8080:8080
+        environment:
+            # global
+            RUST_LOG: info
+            ## shared
+            ### redis
+            REDIS_ENDPOINT: redis://redis:6379
+            ### contract-address-file
+            DAPP_CONTRACT_ADDRESS_FILE: /opt/cartesi/share/deployments/dapp.json
+            ### session-id
+            SESSION_ID: default_session_id
+            ### chain-id
+            CHAIN_ID: 31337
+            TX_CHAIN_ID: 31337
+            ### server-manager-endpoint
+            SERVER_MANAGER_ENDPOINT: http://localhost:5001
+            SERVER_MANAGER_ADDRESS: localhost:5001
+
+            ### database
+            <<: *database-config
+
+            # dispatcher
+            ## uses redis
+            ## uses chain-id (TX_CHAIN_ID acctually)
+            RD_DAPP_DEPLOYMENT_FILE: /opt/cartesi/share/deployments/dapp.json
+            RD_ROLLUPS_DEPLOYMENT_FILE: /opt/cartesi/share/deployments/localhost.json
+            RD_EPOCH_DURATION: "${EPOCH_DURATION:-86400}"
+            SC_GRPC_ENDPOINT: http://localhost:50051
+            SC_DEFAULT_CONFIRMATIONS: 1
+            TX_PROVIDER_HTTP_ENDPOINT: http://anvil:8545
+            TX_MNEMONIC: "test test test test test test test test test test test junk"
+            TX_CHAIN_IS_LEGACY: ${TX_LEGACY:-false}
+            TX_DEFAULT_CONFIRMATIONS: 2
+
+            # state-server
+            SF_GENESIS_BLOCK: 0x1
+            SF_SAFETY_MARGIN: 1
+            BH_HTTP_ENDPOINT: http://anvil:8545
+            BH_WS_ENDPOINT: ws://anvil:8545
+            BH_BLOCK_TIMEOUT: "${BLOCK_TIMEOUT:-8}"
+
+            # advance-runner
+            ## uses redis
+            ## uses contract-address-file
+            ## uses session-id
+            ## uses chain-id
+            ## uses server-manager-endpoint
+            SNAPSHOT_DIR: "/var/opt/cartesi/machine-snapshots"
+            SNAPSHOT_LATEST: "/var/opt/cartesi/machine-snapshots/latest"
+
+            # inspect-server
+            ## uses session-id
+            ## uses server-manager-endpoint (acctually uses SERVER_MANAGER_ADDRESS)
+            INSPECT_SERVER_ADDRESS: 0.0.0.0:5005
+
+            # indexer
+            ## uses redis
+            ## uses contract-address-file
+            ## uses chain-id
+
+            # graphql-server
+            ## uses postgres-config
+            GRAPHQL_HOST: 0.0.0.0
+            GRAPHQL_PORT: 4000
+
+volumes:
+    blockchain-data: {}

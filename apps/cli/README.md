@@ -25,7 +25,7 @@ $ npm install -g @sunodo/cli
 $ sunodo COMMAND
 running command...
 $ sunodo (--version)
-@sunodo/cli/0.3.1 darwin-arm64 node-v20.0.0
+@sunodo/cli/0.3.1 darwin-arm64 node-v20.2.0
 $ sunodo --help [COMMAND]
 USAGE
   $ sunodo COMMAND
@@ -40,6 +40,7 @@ USAGE
 * [`sunodo clean`](#sunodo-clean)
 * [`sunodo create NAME`](#sunodo-create-name)
 * [`sunodo help [COMMANDS]`](#sunodo-help-commands)
+* [`sunodo run`](#sunodo-run)
 * [`sunodo shell [IMAGE]`](#sunodo-shell-image)
 * [`sunodo update [CHANNEL]`](#sunodo-update-channel)
 
@@ -152,6 +153,30 @@ DESCRIPTION
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.2.9/src/commands/help.ts)_
 
+## `sunodo run`
+
+Run application node.
+
+```
+USAGE
+  $ sunodo run [--block-time <value>] [--epoch-duration <value>] [-v]
+
+FLAGS
+  -v, --verbose             verbose output
+  --block-time=<value>      [default: 5] interval between blocks (in seconds)
+  --epoch-duration=<value>  [default: 86400] duration of an epoch (in seconds)
+
+DESCRIPTION
+  Run application node.
+
+  Run a local cartesi node for the application.
+
+EXAMPLES
+  $ sunodo run
+```
+
+_See code: [dist/commands/run.ts](https://github.com/sunodo/sunodo/blob/v0.3.1/dist/commands/run.ts)_
+
 ## `sunodo shell [IMAGE]`
 
 Start a shell in cartesi machine of application
@@ -210,5 +235,5 @@ EXAMPLES
     $ sunodo update --available
 ```
 
-_See code: [@oclif/plugin-update](https://github.com/oclif/plugin-update/blob/v3.1.13/src/commands/update.ts)_
+_See code: [@oclif/plugin-update](https://github.com/oclif/plugin-update/blob/v3.1.15/src/commands/update.ts)_
 <!-- commandsstop -->
