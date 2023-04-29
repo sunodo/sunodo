@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+# https://ethereum.org/en/developers/docs/apis/json-rpc/#net_listening
+curl -X POST -s -H 'Content-Type: application/json' -d '{"jsonrpc":"2.0","id":"1","method":"net_listening","params":[]}' ${RPC_URL:-http://127.0.0.1:8545} | jq '.result'
