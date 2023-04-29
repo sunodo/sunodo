@@ -1,0 +1,36 @@
+name: cli
+on:
+    push:
+        tags:
+            - "@sunodo/cli@*"
+    pull_request:
+        paths:
+            - .github/workflows/cli.yaml
+            - apps/cli/**
+            - packages/eslint-config-custom/**
+            - packages/tsconfig/**
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+permissions:
+    contents: read
+    packages: write
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+
+            - name: Setup Node.js 20
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 20
+                  cache: "yarn"
+
+            - name: Install dependencies
+              run: yarn install
+
+            - name: Build
+              run: yarn build
+              working-directory: apps/cli

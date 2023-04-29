@@ -10,18 +10,17 @@
         "build": "turbo run build",
         "dev": "turbo run dev --parallel",
         "lint": "turbo run lint",
-        "format": "prettier --write \"**/*.{ts,tsx,md}\""
+        "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+        "version-packages": "yarn changeset version && turbo run version"
     },
     "devDependencies": {
+        "@changesets/cli": "^2",
         "eslint-config-custom": "*",
         "prettier": "latest",
         "turbo": "latest"
     },
     "engines": {
-        "node": ">=14.0.0"
-    },
-    "dependencies": {
-        "@changesets/cli": "^2"
+        "node": ">=18.0.0"
     },
     "packageManager": "yarn@1.22.19"
 }
