@@ -1,0 +1,58 @@
+## server-manager
+SERVER_MANAGER_LOG_LEVEL=info
+REMOTE_CARTESI_MACHINE_LOG_LEVEL=info
+
+##
+# state-server
+RUST_LOG=info
+BH_HTTP_ENDPOINT=https://eth-goerli.g.alchemy.com/v2/
+BH_WS_ENDPOINT=wss://eth-goerli.g.alchemy.com/v2/
+SF_GENESIS_BLOCK=0x1
+SF_SAFETY_MARGIN=1
+BH_BLOCK_TIMEOUT=8
+SS_SERVER_ADDRESS=0.0.0.0:50051
+
+##
+# database connection
+POSTGRES_HOSTNAME=postgres
+POSTGRES_PORT=5432
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=postgres
+POSTGRES_MIGRATION_FOLDER=/usr/local/bin/migrations/
+
+##
+# dispatcher
+RD_DAPP_CONTRACT_ADDRESS=
+RD_INITIAL_EPOCH=0
+SC_GRPC_ENDPOINT=http://localhost:50051
+SC_DEFAULT_CONFIRMATIONS=1
+TX_PROVIDER_HTTP_ENDPOINT=https://eth-goerli.g.alchemy.com/v2/
+TX_MNEMONIC=
+TX_CHAIN_ID=5
+TX_CHAIN_IS_LEGACY=false
+TX_DEFAULT_CONFIRMATIONS=2
+REDIS_ENDPOINT=redis://localhost:6379
+
+##
+# server-manager-broker-proxy
+#RUST_LOG=info
+CHAIN_ID=5
+DAPP_CONTRACT_ADDRESS=
+#REDIS_ENDPOINT=redis://redis:6379
+SERVER_MANAGER_ENDPOINT=http://localhost:5001
+SESSION_ID=default_rollups_id
+
+##
+# indexer
+#DAPP_CONTRACT_ADDRESS=
+
+## inspect-server
+INSPECT_SERVER_ADDRESS=0.0.0.0:5005
+SERVER_MANAGER_ADDRESS=localhost:5001
+SESSION_ID=default_rollups_id
+
+##
+# query-server
+GRAPHQL_HOST=0.0.0.0
+GRAPHQL_PORT=4000

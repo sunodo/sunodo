@@ -1,0 +1,5 @@
+#!/command/with-contenv sh
+exec \
+    su nobody \
+        -s /bin/sh \
+        -c "rollups_dispatcher --hc-port=8081 2>&1 | sed -e 's/^/rollups-dispatcher: /'"

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+su redis \
+    -s /bin/bash \
+    -c "redis-cli ping"

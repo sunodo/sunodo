@@ -1,0 +1,5 @@
+#!/command/with-contenv sh
+exec \
+    su nobody \
+        -s /bin/sh \
+        -c "indexer --health-check-port=8082 2>&1 | sed -e 's/^/rollups-indexer: /'"

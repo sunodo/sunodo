@@ -1,0 +1,8 @@
+#!/command/with-contenv sh
+
+s6-echo "Starting Redis server..."
+
+s6-notifyoncheck -t 500 -n 5 \
+    su redis \
+        -s /bin/sh \
+        -c "cd /var/lib/redis; redis-server"

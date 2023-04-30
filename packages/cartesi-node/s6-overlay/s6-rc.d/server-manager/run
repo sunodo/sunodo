@@ -1,0 +1,8 @@
+#!/command/with-contenv sh
+
+s6-echo "Starting server-manager..."
+
+s6-notifyoncheck -t 500 -n 5 \
+    su nobody \
+        -s /bin/sh \
+        -c "/opt/cartesi/bin/server-manager --manager-address=127.0.0.1:5001 2>&1"

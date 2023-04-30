@@ -1,0 +1,5 @@
+#!/command/with-contenv sh
+
+s6-echo "Stopping Redis server..."
+
+exec su redis -s /bin/sh -c "redis-cli shutdown"

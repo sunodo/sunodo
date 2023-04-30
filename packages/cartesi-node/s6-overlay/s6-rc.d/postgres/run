@@ -1,0 +1,5 @@
+#!/command/with-contenv sh
+
+s6-echo "Starting PostgreSQL server..."
+
+s6-notifyoncheck -t 500 -n 5 /usr/bin/pg_ctlcluster 13 main start --foreground -- -w
