@@ -13,37 +13,27 @@ It helps developers to:
 -   `monitor` application already running on a cloud provider
 -   `doctor` verify the minimal requirements for the sunodo execution commands
 
-## What's inside?
+## Apps and Packages
 
-This monorepo ([turborepo](https://turbo.build/repo)) includes libraries and applications for the upper part of the architecture diagram below.
-
-![architecture](architecture.jpg)
-
-### Apps and Packages
-
--   `cli`: a [oclif](https://oclif.io) CLI tool for deployment and management of DApps, available at `brew install sunodo`;
--   `controller`: a web3 application that monitor DApps deployments and launches cartesi nodes;
+-   `cli`: a [oclif](https://oclif.io) CLI tool for development, deployment and management of DApps, available at `brew install sunodo`;
 -   `docs`: a [VitePress](https://vitepress.dev/) app with Sunodo documentation, deployed at [https://docs.sunodo.io](https://docs.sunodo.io)
 -   `web`: a [next.js](https://nextjs.org/) app for Sunodo website, deployed at [https://sunodo.io](https://sunodo.io)
 -   `app`: a [next.js](https://nextjs.org/) app for Sunodo dashboard, deployed at [https://app.sunodo.io](https://app.sunodo.io)
 -   `machine-emulator-tools`: packaging of cartesi machine emulator tools as Docker images;
+-   `anvil`: Docker image of [anvil](https://book.getfoundry.sh/reference/anvil/), multi-arch;
+-   `rollups-node`: Docker image of a cartesi node for a local devnet execution;
 -   `sdk`: Docker image to help with cartesi build and execution;
--   `contracts`: support smart contracts for node management;
+-   `contracts`: smart contracts for application deployment;
+-   `token`: ERC-20 token smart contract for testing;
+-   `devnet`: Docker image for local devnet execution bundling cartesi and sunodo smart contracts;
 -   `ui`: a stub React component library shared by both `web` and `app` applications
+-   `wagmi-plugin-hardhat-deploy`: wagmi CLI [plugin](https://wagmi.sh/cli/plugins) which integrates with [hardhat-deploy](https://github.com/wighawag/hardhat-deploy) artifacts
 -   `eslint-config-custom`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
 -   `tsconfig`: `tsconfig.json`s used throughout the monorepo
 
 Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
-### Utilities
-
-This turborepo has some additional tools already setup for you:
-
--   [TypeScript](https://www.typescriptlang.org/) for static type checking
--   [ESLint](https://eslint.org/) for code linting
--   [Prettier](https://prettier.io) for code formatting
-
-### Build
+## Build
 
 To build all apps and packages, run the following command:
 
@@ -52,7 +42,7 @@ cd sunodo
 yarn run build
 ```
 
-### Develop
+## Develop
 
 To develop all apps and packages, run the following command:
 
