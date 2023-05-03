@@ -1,4 +1,13 @@
 # syntax=docker.io/docker/dockerfile:1.4
+
+ARG ROLLUPS_VERSION
+FROM cartesi/rollups-indexer:${ROLLUPS_VERSION}         AS indexer
+FROM cartesi/rollups-state-server:${ROLLUPS_VERSION}    AS state_server
+FROM cartesi/rollups-dispatcher:${ROLLUPS_VERSION}      AS dispatcher
+FROM cartesi/rollups-advance-runner:${ROLLUPS_VERSION}  AS advance_runner
+FROM cartesi/rollups-inspect-server:${ROLLUPS_VERSION}  AS inspect_server
+FROM cartesi/rollups-graphql-server:${ROLLUPS_VERSION}  AS graphql_server
+
 # not a public image yet
 # git clone git@github.com/cartesi-corp/machine-emulator
 # cd machine-emulator
@@ -31,13 +40,13 @@ curl -sSL https://github.com/just-containers/s6-overlay/releases/download/v${S6_
 EOF
 
 # FIXME: use a public release (ex. cartesi-corp/rollups-state-server:0.9.0)
-COPY --from=cartesi/rollups-state-server:0.9.0      /usr/local/bin/grpc-health-probe      /usr/local/bin/grpc-health-probe
-COPY --from=cartesi/rollups-state-server:0.9.0      /opt/cartesi/bin/rollups_state_server /opt/cartesi/bin/rollups_state_server
-COPY --from=cartesi/rollups-indexer:0.9.0           /opt/cartesi/bin/indexer              /opt/cartesi/bin/indexer
-COPY --from=cartesi/rollups-dispatcher:0.9.0        /opt/cartesi/bin/rollups_dispatcher   /opt/cartesi/bin/rollups_dispatcher
-COPY --from=cartesi/rollups-advance-runner:0.9.0    /opt/cartesi/bin/advance-runner       /opt/cartesi/bin/advance-runner
-COPY --from=cartesi/rollups-inspect-server:0.9.0    /opt/cartesi/bin/inspect-server       /opt/cartesi/bin/inspect-server
-COPY --from=cartesi/rollups-graphql-server:0.9.0    /opt/cartesi/bin/graphql-server       /opt/cartesi/bin/graphql-server
+COPY --from=state_server    /usr/local/bin/grpc-health-probe      /usr/local/bin/grpc-health-probe
+COPY --from=state_server    /opt/cartesi/bin/rollups_state_server /opt/cartesi/bin/rollups_state_server
+COPY --from=indexer         /opt/cartesi/bin/indexer              /opt/cartesi/bin/indexer
+COPY --from=dispatcher      /opt/cartesi/bin/rollups_dispatcher   /opt/cartesi/bin/rollups_dispatcher
+COPY --from=advance_runner  /opt/cartesi/bin/advance-runner       /opt/cartesi/bin/advance-runner
+COPY --from=inspect_server  /opt/cartesi/bin/inspect-server       /opt/cartesi/bin/inspect-server
+COPY --from=graphql_server  /opt/cartesi/bin/graphql-server       /opt/cartesi/bin/graphql-server
 
 RUN mkdir -p /opt/cartesi/share/dapp-bin/0_0 && ln -s /opt/cartesi/share/dapp-bin/0_0 /opt/cartesi/share/dapp-bin/latest
 
