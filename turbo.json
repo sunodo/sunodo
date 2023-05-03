@@ -1,6 +1,12 @@
 {
     "$schema": "https://turbo.build/schema.json",
-    "globalEnv": ["NODE_ENV", "PORT", "TS_NODE_PROJECT"],
+    "globalEnv": [
+        "MNEMONIC",
+        "NODE_ENV",
+        "PORT",
+        "PROJECT_ID",
+        "TS_NODE_PROJECT"
+    ],
     "pipeline": {
         "build": {
             "dependsOn": ["^build"],
