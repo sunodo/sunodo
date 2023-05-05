@@ -5,6 +5,7 @@
         "NODE_ENV",
         "PORT",
         "PROJECT_ID",
+        "RPC_URL",
         "TS_NODE_PROJECT"
     ],
     "pipeline": {
