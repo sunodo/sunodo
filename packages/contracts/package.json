@@ -1,0 +1,33 @@
+{
+    "name": "@sunodo/contracts",
+    "version": "0.3.0-snapshot",
+    "license": "MIT",
+    "scripts": {
+        "build": "hardhat compile",
+        "clean": "hardhat clean",
+        "dev": "hardhat node --export export/abi/localhost.json",
+        "docgen": "hardhat docgen"
+    },
+    "dependencies": {
+        "@cartesi/rollups": "0.9.0",
+        "typescript": "latest"
+    },
+    "devDependencies": {
+        "@nomicfoundation/hardhat-chai-matchers": "^1.0.6",
+        "@nomicfoundation/hardhat-network-helpers": "^1.0.8",
+        "@nomicfoundation/hardhat-toolbox": "^2.0.2",
+        "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers",
+        "@nomiclabs/hardhat-etherscan": "^3.1.7",
+        "@typechain/ethers-v5": "^10.2.0",
+        "@typechain/hardhat": "^6.1.5",
+        "@types/mocha": "^10.0.1",
+        "ethers": "^5.7.2",
+        "hardhat": "^2.13.1",
+        "hardhat-abi-exporter": "^2.10.1",
+        "hardhat-deploy": "^0.11.26",
+        "hardhat-gas-reporter": "^1.0.9",
+        "solidity-coverage": "^0.8.2",
+        "solidity-docgen": "^0.6.0-beta.35",
+        "typechain": "^8.1.1"
+    }
+}
