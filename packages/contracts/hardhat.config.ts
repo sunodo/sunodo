@@ -93,7 +93,7 @@ const config: HardhatUserConfig = {
             "iotex_testnet",
             "chiado",
         ],
-        ["@cartesi/util", "@cartesi/rollups"]
+        ["@cartesi/util", "@cartesi/rollups", "@sunodo/token"]
     ),
     docgen: {
         pages: "files",

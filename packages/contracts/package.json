@@ -10,6 +10,7 @@
     },
     "dependencies": {
         "@cartesi/rollups": "0.9.0",
+        "@sunodo/token": "*",
         "typescript": "latest"
     },
     "devDependencies": {
