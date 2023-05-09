@@ -1321,6 +1321,21 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
+"@cartesi/rollups@0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@cartesi/rollups/-/rollups-0.9.0.tgz#a0344a5d8a75b8c6f7f398739b6072e9395b8f18"
+  integrity sha512-ilmyHTJFyiIHopzJbmaTGRW+oPkbUnxkCZyAsxIAnUOjPzvlXRmukXubfL92lB/JvCqaSkCz8Gm/GXy1kw7AVQ==
+  dependencies:
+    "@cartesi/util" "^5.0.2"
+    "@openzeppelin/contracts" "4.8.0"
+
+"@cartesi/util@^5.0.2":
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/@cartesi/util/-/util-5.0.2.tgz#dfe0ff88b1998b88eafc4089949c3df71e3246e1"
+  integrity sha512-mIaOplU+RKkiW10JRpDBG8IG7lGKyXrkF6w4WHVZ2YKWze5I+mzJBaPALZLtJSuwb6GCqLZbB7NZx3A7iZyWkA==
+  dependencies:
+    "@openzeppelin/contracts" "3.2.1-solc-0.7"
+
 "@chainsafe/as-sha256@^0.3.1":
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/@chainsafe/as-sha256/-/as-sha256-0.3.1.tgz#3639df0e1435cab03f4d9870cc3ac079e57a6fc9"
@@ -3277,6 +3292,11 @@
   resolved "https://registry.yarnpkg.com/@nomiclabs/hardhat-ethers/-/hardhat-ethers-2.2.3.tgz#b41053e360c31a32c2640c9a45ee981a7e603fe0"
   integrity sha512-YhzPdzb612X591FOe68q+qXVXGG2ANZRvDo0RRUtimev85rCrAlv/TLMEZw5c+kq9AbzocLTVX/h2jVIFPL9Xg==
 
+"@nomiclabs/hardhat-ethers@npm:hardhat-deploy-ethers":
+  version "0.3.0-beta.13"
+  resolved "https://registry.yarnpkg.com/hardhat-deploy-ethers/-/hardhat-deploy-ethers-0.3.0-beta.13.tgz#b96086ff768ddf69928984d5eb0a8d78cfca9366"
+  integrity sha512-PdWVcKB9coqWV1L7JTpfXRCI91Cgwsm7KLmBcwZ8f0COSm1xtABHZTyz3fvF6p42cTnz1VM0QnfDvMFlIRkSNw==
+
 "@nomiclabs/hardhat-etherscan@^3":
   version "3.1.7"
   resolved "https://registry.yarnpkg.com/@nomiclabs/hardhat-etherscan/-/hardhat-etherscan-3.1.7.tgz#72e3d5bd5d0ceb695e097a7f6f5ff6fcbf062b9a"
@@ -3854,6 +3874,16 @@
   version "4.9.0"
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts-upgradeable/-/contracts-upgradeable-4.9.0.tgz#70aaef469c8ac5bb0ff781480f3d321cbf7be3a8"
   integrity sha512-+6i2j6vr2fdudTqkBvG+UOosankukxYzg3WN1nqU7ijjQ5A4osWaD3ip6CEz6YvDoSdZgcFVZoiGr7zRlUUoZw==
+
+"@openzeppelin/contracts@3.2.1-solc-0.7":
+  version "3.2.1-solc-0.7"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-3.2.1-solc-0.7.tgz#067a60918b935d4733208edb3d7e35cd1d51026b"
+  integrity sha512-VfKZE9L2HNaZVBR7l5yHbRmap3EiVw9F5iVXRRDdgfnA9vQ1yFanrs0VYmdo2VIXC+EsI9wPPYZY9Ic7/qDBdw==
+
+"@openzeppelin/contracts@4.8.0":
+  version "4.8.0"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.8.0.tgz#6854c37df205dd2c056bdfa1b853f5d732109109"
+  integrity sha512-AGuwhRRL+NaKx73WKRNzeCxOCOCxpaqF+kp8TJ89QzAipSwZy/NoflkWaL9bywXFRhIzXt8j38sfF7KBKCPWLw==
 
 "@pkgjs/parseargs@^0.11.0":
   version "0.11.0"
@@ -4603,6 +4633,11 @@
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/@types/minimist/-/minimist-1.2.2.tgz#ee771e2ba4b3dc5b372935d549fd9617bf345b8c"
   integrity sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==
+
+"@types/mocha@^10":
+  version "10.0.1"
+  resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-10.0.1.tgz#2f4f65bb08bc368ac39c96da7b2f09140b26851b"
+  integrity sha512-/fvYntiO1GeICvqbQ3doGDIP97vWmvFt83GKguJ6prmQM2iXZfFcq6YE8KteFyRtX2/h5Hf91BYvPodJKFYv5Q==
 
 "@types/mocha@^9":
   version "9.1.1"
@@ -8781,7 +8816,7 @@ ethers@^4.0.40:
     uuid "2.0.1"
     xmlhttprequest "1.8.0"
 
-ethers@^5.5.3, ethers@^5.7.1, ethers@legacy-v5:
+ethers@^5.5.3, ethers@^5.7, ethers@^5.7.1, ethers@legacy-v5:
   version "5.7.2"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.7.2.tgz#3a7deeabbb8c030d4126b24f84e525466145872e"
   integrity sha512-wswUsmWo1aOK8rR7DIKiWSw9DbLWe6x98Jrn8wcTflTVvaXhAMaB5zGAXy0GYQEQp9iO1iSHWVyARQm11zUtyg==
@@ -9949,7 +9984,7 @@ handle-thing@^2.0.0:
   resolved "https://registry.yarnpkg.com/handle-thing/-/handle-thing-2.0.1.tgz#857f79ce359580c340d43081cc648970d0bb234e"
   integrity sha512-9Qn4yBxelxoh2Ow62nP+Ka/kMnOXRi8BXnRaUwezLNhqelnN49xKz4F/dPP8OYLxLxq6JDtZb2i9XznUQbNPTg==
 
-handlebars@^4.0.1:
+handlebars@^4.0.1, handlebars@^4.7.7:
   version "4.7.7"
   resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.7.7.tgz#9ce33416aad02dbd6c8fafa8240d5d98004945a1"
   integrity sha512-aAcXm5OAfE/8IXkcZvCepKU3VzW1/39Fb5ZuqMtgI/hT8X2YgoMvBY5dLhq/cpOvw7Lk1nK/UF71aLG/ZnVYRA==
@@ -16024,6 +16059,11 @@ solc@0.7.3:
     semver "^5.5.0"
     tmp "0.0.33"
 
+solidity-ast@^0.4.38:
+  version "0.4.49"
+  resolved "https://registry.yarnpkg.com/solidity-ast/-/solidity-ast-0.4.49.tgz#ecba89d10c0067845b7848c3a3e8cc61a4fc5b82"
+  integrity sha512-Pr5sCAj1SFqzwFZw1HPKSq0PehlQNdM8GwKyAVYh2DOn7/cCK8LUKD1HeHnKtTgBW7hi9h4nnnan7hpAg5RhWQ==
+
 solidity-coverage@^0.8:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/solidity-coverage/-/solidity-coverage-0.8.2.tgz#bc39604ab7ce0a3fa7767b126b44191830c07813"
@@ -16049,6 +16089,14 @@ solidity-coverage@^0.8:
     semver "^7.3.4"
     shelljs "^0.8.3"
     web3-utils "^1.3.6"
+
+solidity-docgen@^0.6.0-beta.35:
+  version "0.6.0-beta.35"
+  resolved "https://registry.yarnpkg.com/solidity-docgen/-/solidity-docgen-0.6.0-beta.35.tgz#174d7fe54efa8b10f7d3cbe0dfc40e52e11bf867"
+  integrity sha512-9QdwK1THk/MWIdq1PEW/6dvtND0pUqpFTsbKwwU9YQIMYuRhH1lek9SsgnsGGYtdJ0VTrXXcVT30q20a8Y610A==
+  dependencies:
+    handlebars "^4.7.7"
+    solidity-ast "^0.4.38"
 
 sort-css-media-queries@2.1.0:
   version "2.1.0"
@@ -17221,7 +17269,7 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==
 
-typescript@^5, typescript@^5.0, typescript@^5.0.2:
+typescript@^5, typescript@^5.0, typescript@^5.0.2, typescript@latest:
   version "5.0.4"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.0.4.tgz#b217fd20119bd61a94d4011274e0ab369058da3b"
   integrity sha512-cW9T5W9xY37cc+jfEnaUvX91foxtHkza3Nw3wkoF4sSlKn0MONdkdEndig/qPBWXNkmplh3NzayQzCiHM4/hqw==
