@@ -5,6 +5,7 @@
         "INFURA_ID",
         "MNEMONIC",
         "NETWORK",
+        "NEXT_PUBLIC_ENABLE_TESTNETS",
         "NODE_ENV",
         "PORT",
         "PRIVATE_KEY",

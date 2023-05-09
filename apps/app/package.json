@@ -1,0 +1,42 @@
+{
+    "name": "@sunodo/app",
+    "private": true,
+    "version": "0.1.0",
+    "scripts": {
+        "codegen": "wagmi generate",
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint"
+    },
+    "dependencies": {
+        "@mantine/core": "^7",
+        "@mantine/hooks": "^7",
+        "@mantine/form": "^7",
+        "@mantine/notifications": "^7",
+        "@rainbow-me/rainbowkit": "^1",
+        "abitype": "^0.9",
+        "cookies-next": "^3",
+        "is-ipfs": "^8",
+        "next": "^13",
+        "react": "^18",
+        "react-dom": "^18",
+        "react-icons": "^4",
+        "viem": "^1",
+        "wagmi": "^1"
+    },
+    "devDependencies": {
+        "@sunodo/wagmi-plugin-hardhat-deploy": "^0.2",
+        "@types/node": "^20",
+        "@types/react": "^18",
+        "@types/react-dom": "^18",
+        "@wagmi/cli": "^1",
+        "eslint": "^8",
+        "eslint-config-next": "^13",
+        "pino-pretty": "^10",
+        "postcss": "^8",
+        "postcss-preset-mantine": "^1.6",
+        "postcss-simple-vars": "^7",
+        "typescript": "^5"
+    }
+}
