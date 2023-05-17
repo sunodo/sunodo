@@ -31,14 +31,14 @@ export default class Shell extends Command {
         const ext2 = path.join(containerDir, path.basename(ext2Path));
         const ramSize = "128Mi";
         const driveLabel = "root";
-        const toolchainImage = "sunodo/toolchain:0.14.0"; // XXX: how to resolve sdk version?
+        const sdkImage = "sunodo/sdk:0.15.0"; // XXX: how to resolve sdk version?
         const args = [
             "run",
             "--interactive",
             "--tty",
             "--volume",
             bind,
-            toolchainImage,
+            sdkImage,
             "cartesi-machine",
             `--ram-length=${ramSize}`,
             "--rollup",

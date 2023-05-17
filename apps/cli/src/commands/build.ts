@@ -67,7 +67,9 @@ export default class BuildApplication extends Command {
      */
     private async buildDAppImage(options: ImageBuildOptions): Promise<string> {
         const buildResult = tmp.tmpNameSync();
-        this.debug(`building docker image and writing result to ${buildResult}`);
+        this.debug(
+            `building docker image and writing result to ${buildResult}`
+        );
         const args = [
             "buildx",
             "build",
@@ -161,7 +163,7 @@ export default class BuildApplication extends Command {
     }
 
     private async createExt2(
-        toolchainImage: string,
+        sdkImage: string,
         info: ImageInfo,
         tarPath: string
     ): Promise<string> {
@@ -201,7 +203,7 @@ export default class BuildApplication extends Command {
                 ...su,
                 "--volume",
                 bind,
-                toolchainImage,
+                sdkImage,
                 "genext2fs",
                 "--tarball",
                 tar,
@@ -218,7 +220,7 @@ export default class BuildApplication extends Command {
     }
 
     private async createMachineSnapshot(
-        toolchainImage: string,
+        sdkImage: string,
         info: ImageInfo,
         ext2Path: string
     ): Promise<void> {
@@ -279,7 +281,7 @@ export default class BuildApplication extends Command {
                 ...su,
                 "--volume",
                 bind,
-                toolchainImage,
+                sdkImage,
                 "cartesi-machine",
                 "--assert-rolling-template",
                 `--ram-length=${ramSize}`,
@@ -307,7 +309,7 @@ export default class BuildApplication extends Command {
         const imageInfo = await this.getImageInfo(image);
 
         // resolve sdk version
-        const toolchainImage = `sunodo/toolchain:${imageInfo.sdkVersion}`;
+        const sdkImage = `sunodo/sdk:${imageInfo.sdkVersion}`;
 
         // export dapp image as rootfs tar
         await fs.emptyDir(".sunodo"); // XXX: make it less error prone
@@ -315,13 +317,9 @@ export default class BuildApplication extends Command {
         await this.exportImageTar(image, tarPath);
 
         // create ext2 drive
-        const ext2Path = await this.createExt2(
-            toolchainImage,
-            imageInfo,
-            tarPath
-        );
+        const ext2Path = await this.createExt2(sdkImage, imageInfo, tarPath);
 
         // execute the machine and save snapshot
-        await this.createMachineSnapshot(toolchainImage, imageInfo, ext2Path);
+        await this.createMachineSnapshot(sdkImage, imageInfo, ext2Path);
     }
 }
