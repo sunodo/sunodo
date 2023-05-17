@@ -1,5 +1,2 @@
 #!/command/with-contenv sh
-exec \
-    su nobody \
-        -s /bin/sh \
-        -c "caddy run --config /Caddyfile --adapter caddyfile 2>&1 | sed -e 's/^/caddy: /'"
+exec s6-setuidgid cartesi caddy run --config /Caddyfile --adapter caddyfile

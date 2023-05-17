@@ -1,5 +1,3 @@
 #!/command/with-contenv sh
-exec \
-    su nobody \
-        -s /bin/sh \
-        -c "inspect-server 2>&1 | sed 's/^/inspect-server: /'"
+s6-echo "Starting rollups-inspect-server..."
+exec s6-setuidgid cartesi inspect-server

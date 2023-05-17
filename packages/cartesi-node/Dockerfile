@@ -7,26 +7,8 @@ FROM cartesi/rollups-advance-runner:${ROLLUPS_VERSION}  AS advance_runner
 FROM cartesi/rollups-inspect-server:${ROLLUPS_VERSION}  AS inspect_server
 FROM cartesi/rollups-graphql-server:${ROLLUPS_VERSION}  AS graphql_server
 
-FROM debian:bullseye-20230502-slim as su-exec
-ENV DEBIAN_FRONTEND=noninteractive
-RUN <<EOF
-apt-get update
-apt-get install -y --no-install-recommends \
-    ca-certificates \
-    gcc \
-    git \
-    libc-dev \
-    make
-git clone --branch v0.2 --depth 1 https://github.com/ncopa/su-exec.git
-cd su-exec
-if [ `git rev-parse --verify HEAD` != 'f85e5bde1afef399021fbc2a99c837cf851ceafa' ]; then exit 1; fi
-make
-EOF
-
 FROM cartesi/server-manager:0.7.0-bullseye
 USER root
-
-COPY --from=su-exec /su-exec/su-exec /usr/local/bin/su-exec
 
 RUN <<EOF
 apt-get update
@@ -59,7 +41,7 @@ COPY --from=advance_runner  /opt/cartesi/bin/advance-runner       /opt/cartesi/b
 COPY --from=inspect_server  /opt/cartesi/bin/inspect-server       /opt/cartesi/bin/inspect-server
 COPY --from=graphql_server  /opt/cartesi/bin/graphql-server       /opt/cartesi/bin/graphql-server
 
-RUN mkdir -p /opt/cartesi/share/dapp-bin/0_0 && ln -s /opt/cartesi/share/dapp-bin/0_0 /opt/cartesi/share/dapp-bin/latest
+RUN mkdir -p /var/opt/cartesi/machine-snapshots/0_0 && ln -s /var/opt/cartesi/machine-snapshots/0_0 /var/opt/cartesi/machine-snapshots/latest
 
 COPY Caddyfile /Caddyfile
 COPY ./s6-overlay /etc/s6-overlay

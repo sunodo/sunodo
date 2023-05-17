@@ -2,4 +2,4 @@
 
 s6-echo "Stopping Redis server..."
 
-exec su redis -s /bin/sh -c "redis-cli shutdown"
+exec s6-setuidgid redis redis-cli shutdown

@@ -2,4 +2,4 @@
 
 s6-echo "Stopping PostgreSQL server..."
 
-exec /usr/bin/pg_ctlcluster 13 main stop -- -m fast
+/usr/bin/pg_ctlcluster 13 main stop -- -m fast

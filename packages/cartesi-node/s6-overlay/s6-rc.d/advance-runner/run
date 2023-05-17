@@ -1,5 +1,3 @@
 #!/command/with-contenv sh
-exec \
-    su nobody \
-        -s /bin/sh \
-        -c "advance-runner --health-check-port=8083 2>&1 | sed -e 's/^/advance-runner: /'"
+s6-echo "Starting rollups-advance-runner..."
+exec s6-setuidgid cartesi advance-runner --health-check-port=8083

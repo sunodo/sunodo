@@ -3,6 +3,7 @@ target "docker-platforms" {}
 
 target "default" {
   inherits = ["docker-metadata-action", "docker-platforms"]
+  tags     = ["sunodo/cartesi-node:devel"]
   args     = {
     ROLLUPS_VERSION = "devel"
   }

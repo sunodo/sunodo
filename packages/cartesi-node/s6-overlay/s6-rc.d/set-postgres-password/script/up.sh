@@ -8,7 +8,4 @@ do
     sleep .1
 done
 
-su postgres \
-        -s /bin/sh \
-        -c "psql -c \"ALTER USER postgres PASSWORD 'postgres';\""
-
+exec /command/s6-setuidgid postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"
