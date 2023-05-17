@@ -56,9 +56,11 @@ jobs:
             - name: Build and push
               uses: docker/bake-action@v3
               with:
+                  targets: 0-9-0
                   workdir: packages/cartesi-node
                   files: |
                       ./docker-bake.hcl
+                      ./docker-bake.platforms.hcl
                       ${{ steps.meta.outputs.bake-file }}
                   set: |
                       *.cache-from=type=gha
