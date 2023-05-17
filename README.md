@@ -24,7 +24,7 @@ This monorepo ([turborepo](https://turbo.build/repo)) includes libraries and app
 -   `web`: a [next.js](https://nextjs.org/) app for Sunodo website, deployed at [https://sunodo.io](https://sunodo.io)
 -   `app`: a [next.js](https://nextjs.org/) app for Sunodo dashboard, deployed at [https://app.sunodo.io](https://app.sunodo.io)
 -   `machine-emulator-tools`: packaging of cartesi machine emulator tools as Docker images;
--   `toolchain`: Docker image to help with cartesi build and execution;
+-   `sdk`: Docker image to help with cartesi build and execution;
 -   `contracts`: support smart contracts for node management;
 -   `ui`: a stub React component library shared by both `web` and `app` applications
 -   `eslint-config-custom`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
