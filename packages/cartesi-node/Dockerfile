@@ -1,5 +1,4 @@
 # syntax=docker.io/docker/dockerfile:1.4
-
 ARG ROLLUPS_VERSION
 FROM cartesi/rollups-indexer:${ROLLUPS_VERSION}         AS indexer
 FROM cartesi/rollups-state-server:${ROLLUPS_VERSION}    AS state_server
@@ -8,12 +7,26 @@ FROM cartesi/rollups-advance-runner:${ROLLUPS_VERSION}  AS advance_runner
 FROM cartesi/rollups-inspect-server:${ROLLUPS_VERSION}  AS inspect_server
 FROM cartesi/rollups-graphql-server:${ROLLUPS_VERSION}  AS graphql_server
 
-# not a public image yet
-# git clone git@github.com/cartesi-corp/machine-emulator
-# cd machine-emulator
-# git checkout feat/debian-based-image
-# docker buildx build -t cartesi/server-manager:bullseye -f .github/workflows/Dockerfile .
-FROM cartesi/server-manager:bullseye
+FROM debian:bullseye-20230502-slim as su-exec
+ENV DEBIAN_FRONTEND=noninteractive
+RUN <<EOF
+apt-get update
+apt-get install -y --no-install-recommends \
+    ca-certificates \
+    gcc \
+    git \
+    libc-dev \
+    make
+git clone --branch v0.2 --depth 1 https://github.com/ncopa/su-exec.git
+cd su-exec
+if [ `git rev-parse --verify HEAD` != 'f85e5bde1afef399021fbc2a99c837cf851ceafa' ]; then exit 1; fi
+make
+EOF
+
+FROM cartesi/server-manager:0.7.0-bullseye
+USER root
+
+COPY --from=su-exec /su-exec/su-exec /usr/local/bin/su-exec
 
 RUN <<EOF
 apt-get update
@@ -39,8 +52,6 @@ curl -sSL https://github.com/just-containers/s6-overlay/releases/download/v${S6_
 curl -sSL https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-$(arch).tar.xz | tar -Jxp -C /
 EOF
 
-# FIXME: use a public release (ex. cartesi-corp/rollups-state-server:0.9.0)
-COPY --from=state_server    /usr/local/bin/grpc-health-probe      /usr/local/bin/grpc-health-probe
 COPY --from=state_server    /opt/cartesi/bin/rollups_state_server /opt/cartesi/bin/rollups_state_server
 COPY --from=indexer         /opt/cartesi/bin/indexer              /opt/cartesi/bin/indexer
 COPY --from=dispatcher      /opt/cartesi/bin/rollups_dispatcher   /opt/cartesi/bin/rollups_dispatcher
@@ -54,12 +65,6 @@ COPY Caddyfile /Caddyfile
 COPY ./s6-overlay /etc/s6-overlay
 COPY ./entrypoint.sh /entrypoint.sh
 
-# TODO: we should see if this will work with s6-overlay, since the supervisor might need to run as root
-#RUN useradd --user-group --system --create-home --no-log-init -d /opt/cartesi -u 1001 cartesi
-#USER cartesi
-
-ENV PATH=/opt/cartesi/bin:$PATH
 WORKDIR /opt/cartesi
-
 EXPOSE 8080
 ENTRYPOINT ["/entrypoint.sh"]
