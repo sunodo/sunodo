@@ -85,7 +85,7 @@
         "eslint-config-oclif": "^4",
         "eslint-config-oclif-typescript": "^1",
         "npm-run-all": "^4",
-        "oclif": "^3.9",
+        "oclif": "^3.11",
         "rimraf": "^5",
         "ts-node": "^10.9",
         "tsconfig": "*",
@@ -102,6 +102,13 @@
             "@oclif/plugin-update"
         ],
         "topicSeparator": " ",
+        "update": {
+            "s3": {
+                "xz": true,
+                "bucket": "cli-prod-sunodo-origin",
+                "host": "https://cli.sunodo.io"
+            }
+        },
         "macos": {
             "identifier": "io.sunodo.cli"
         }
