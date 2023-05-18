@@ -1,0 +1,17 @@
+log:
+  level: WARN
+
+accessLog: {}
+
+entryPoints:
+  web:
+    address: ":9000"
+
+providers:
+  file:
+    directory: /etc/traefik/conf.d
+    watch: true
+
+metrics:
+  prometheus:
+    addServicesLabels: true

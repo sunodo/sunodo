@@ -24,11 +24,11 @@ rm -rf /var/lib/apt/lists/*
 EOF
 
 ARG S6_OVERLAY_VERSION=3.1.4.1
-ARG CADDY_VERSION=2.6.4
+ARG TRAEFIK_VERSION=2.10.1
 
 RUN <<EOF
-curl -sSL https://github.com/caddyserver/caddy/releases/download/v${CADDY_VERSION}/caddy_${CADDY_VERSION}_linux_$(dpkg --print-architecture).tar.gz | tar -xz -C /usr/local/bin caddy
-/usr/local/bin/caddy version
+curl -sSL https://github.com/traefik/traefik/releases/download/v${TRAEFIK_VERSION}/traefik_v${TRAEFIK_VERSION}_linux_$(dpkg --print-architecture).tar.gz | tar -xz -C /usr/local/bin traefik
+/usr/local/bin/traefik version
 
 curl -sSL https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz | tar -Jxp -C /
 curl -sSL https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-$(arch).tar.xz | tar -Jxp -C /
@@ -43,7 +43,7 @@ COPY --from=graphql_server  /opt/cartesi/bin/graphql-server       /opt/cartesi/b
 
 RUN mkdir -p /var/opt/cartesi/machine-snapshots/0_0 && ln -s /var/opt/cartesi/machine-snapshots/0_0 /var/opt/cartesi/machine-snapshots/latest
 
-COPY Caddyfile /Caddyfile
+COPY ./traefik /etc/traefik
 COPY ./s6-overlay /etc/s6-overlay
 COPY ./entrypoint.sh /entrypoint.sh
 
