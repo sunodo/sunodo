@@ -83,6 +83,13 @@
             "@oclif/plugin-update"
         ],
         "topicSeparator": " ",
+        "update": {
+            "s3": {
+                "xz": true,
+                "bucket": "cli-prod-sunodo-origin",
+                "host": "https://cli.sunodo.io"
+            }
+        },
         "macos": {
             "identifier": "io.sunodo.cli"
         }
