@@ -6,6 +6,8 @@ accessLog: {}
 entryPoints:
   web:
     address: ":8080"
+  traefik:
+    address: ":8088"
 
 providers:
   file:
