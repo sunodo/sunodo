@@ -294,6 +294,9 @@ export default class BuildApplication extends Command {
             ],
             { stdio: "inherit" }
         );
+
+        // change image directory permission to 755
+        await fs.chmod(path.join(absolutePath, name), 0o755);
     }
 
     public async run(): Promise<void> {
