@@ -5,7 +5,7 @@ accessLog: {}
 
 entryPoints:
   web:
-    address: ":9000"
+    address: ":8080"
 
 providers:
   file:
