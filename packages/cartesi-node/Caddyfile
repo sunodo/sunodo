@@ -1,5 +1,0 @@
-:8080 {
-    reverse_proxy /graphql              	127.0.0.1:4000
-    reverse_proxy /graphql/*              	127.0.0.1:4000
-    reverse_proxy /inspect/*                127.0.0.1:5005
-}
