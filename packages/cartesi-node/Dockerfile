@@ -1,11 +1,13 @@
 # syntax=docker.io/docker/dockerfile:1.4
+ARG REGISTRY=docker.io
+ARG ORG=cartesi
 ARG ROLLUPS_VERSION
-FROM cartesi/rollups-indexer:${ROLLUPS_VERSION}         AS indexer
-FROM cartesi/rollups-state-server:${ROLLUPS_VERSION}    AS state_server
-FROM cartesi/rollups-dispatcher:${ROLLUPS_VERSION}      AS dispatcher
-FROM cartesi/rollups-advance-runner:${ROLLUPS_VERSION}  AS advance_runner
-FROM cartesi/rollups-inspect-server:${ROLLUPS_VERSION}  AS inspect_server
-FROM cartesi/rollups-graphql-server:${ROLLUPS_VERSION}  AS graphql_server
+FROM ${REGISTRY}/${ORG}/rollups-indexer:${ROLLUPS_VERSION}         AS indexer
+FROM ${REGISTRY}/${ORG}/rollups-state-server:${ROLLUPS_VERSION}    AS state_server
+FROM ${REGISTRY}/${ORG}/rollups-dispatcher:${ROLLUPS_VERSION}      AS dispatcher
+FROM ${REGISTRY}/${ORG}/rollups-advance-runner:${ROLLUPS_VERSION}  AS advance_runner
+FROM ${REGISTRY}/${ORG}/rollups-inspect-server:${ROLLUPS_VERSION}  AS inspect_server
+FROM ${REGISTRY}/${ORG}/rollups-graphql-server:${ROLLUPS_VERSION}  AS graphql_server
 
 FROM cartesi/server-manager:0.7.0-bullseye
 USER root
