@@ -4,7 +4,7 @@ FROM debian:bullseye-20230502-slim
 # install curl and jq (for healthcheck support)
 RUN <<EOF
 apt-get update
-DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends ca-certificates curl jq
+DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends ca-certificates curl jq xxd
 rm -rf /var/lib/apt/lists/*
 EOF
 
@@ -14,7 +14,9 @@ RUN curl -sSL https://github.com/foundry-rs/foundry/releases/download/nightly/fo
 
 # healthcheck script using net_listening JSON-RPC method
 COPY eth_isready /usr/local/bin
+COPY eth_dump /usr/local/bin
+COPY eth_load /usr/local/bin
 
 HEALTHCHECK CMD eth_isready
 
-ENTRYPOINT ["/usr/local/bin/anvil"]
+CMD ["anvil"]
