@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+set -e
+RPC_URL="${RPC_URL:-http://127.0.0.1:8545}"
+
+# use a large column value so we have everything on one line, even though man says 256 is the maximum
+STATE=$(xxd -ps -c 1000000000)
+
+# build the JSON-RPC request, and write to a file because it's too long for the curl call
+DATA="{\"id\":2,\"jsonrpc\":\"2.0\",\"method\":\"anvil_loadState\",\"params\":[\"0x$STATE\"]}"
+TMPFILE=$(mktemp)
+echo "$DATA" > "$TMPFILE"
+
+echo "Loading state into ${RPC}"
+curl -sL -H 'Content-Type: application/json' -d @"$TMPFILE" "$RPC_URL" | jq -r .result

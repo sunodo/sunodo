@@ -4,7 +4,7 @@ on:
         branches:
             - main
         tags:
-            - v*
+            - anvil@*
     pull_request:
         paths:
             - .github/workflows/anvil.yaml
@@ -30,8 +30,7 @@ jobs:
                       docker.io/sunodo/anvil,enable=${{ github.event_name != 'pull_request' }}
                       ghcr.io/sunodo/anvil
                   tags: |
-                      type=semver,pattern={{version}}
-                      type=edge
+                      type=match,pattern=(.+)@(.*),group=2
                       type=ref,event=pr
                   labels: |
                       org.opencontainers.image.title=Sunodo anvil
