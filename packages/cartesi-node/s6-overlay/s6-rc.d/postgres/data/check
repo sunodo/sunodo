@@ -1,2 +1,0 @@
-#!/usr/bin/env sh
-exec s6-setuidgid postgres pg_isready

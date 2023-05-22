@@ -19,8 +19,6 @@ DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends \
     ca-certificates \
     curl \
     libpq5 \
-    postgresql-13 \
-    redis-server \
     xz-utils
 rm -rf /var/lib/apt/lists/*
 EOF

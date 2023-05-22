@@ -1,4 +1,0 @@
-#!/command/with-contenv sh
-s6-echo "Starting Redis server..."
-cd /var/lib/redis
-exec s6-setuidgid redis redis-server

@@ -1,5 +1,0 @@
-#!/command/with-contenv sh
-
-s6-echo "Stopping PostgreSQL server..."
-
-/usr/bin/pg_ctlcluster 13 main stop -- -m fast
