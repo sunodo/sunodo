@@ -1,8 +1,6 @@
 name: anvil
 on:
     push:
-        branches:
-            - main
         tags:
             - anvil@*
     pull_request:
