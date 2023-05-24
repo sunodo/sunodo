@@ -1,0 +1,2 @@
+#!/command/with-contenv sh
+exec s6-setuidgid nobody traefik --configfile /etc/traefik/traefik.yaml

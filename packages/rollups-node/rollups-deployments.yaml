@@ -1,0 +1,37 @@
+version: "3.9"
+services:
+    anvil:
+        image: sunodo/anvil:2.0.0
+        environment:
+            ANVIL_IP_ADDR: 0.0.0.0
+        healthcheck:
+            test: ["CMD", "eth_isready"]
+            interval: 1s
+            timeout: 10s
+            retries: 10
+    rollups:
+        image: cartesi/rollups-hardhat:${ROLLUPS_VERSION}
+        depends_on:
+            anvil:
+                condition: service_started
+        healthcheck:
+            test:
+                [
+                    "CMD",
+                    "test",
+                    "-f",
+                    "/opt/cartesi/share/deployments/localhost.json",
+                ]
+            interval: 1s
+            timeout: 1s
+            retries: 5
+        command:
+            [
+                "deploy",
+                "--network",
+                "localhost",
+                "--export",
+                "/opt/cartesi/share/deployments/localhost.json",
+            ]
+        environment:
+            RPC_URL: http://anvil:8545
