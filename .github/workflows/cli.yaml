@@ -34,3 +34,7 @@ jobs:
             - name: Build
               run: yarn build
               working-directory: apps/cli
+
+            - name: Install oclif
+              if: startsWith(github.ref, 'refs/tags/@sunodo/cli@')
+              run: yarn global add oclif
