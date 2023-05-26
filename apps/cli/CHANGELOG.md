@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0
+
+### Minor Changes
+
+-   cd8a3f4: - new `sunodo run` command
+
 ## 0.3.1
 
 ### Minor Changes
