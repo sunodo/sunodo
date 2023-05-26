@@ -1,0 +1,29 @@
+name: Remove docker images for stale/closed PR(s).
+on:
+    pull_request:
+        branches:
+            - main
+        types: [closed]
+jobs:
+    cleanup:
+        name: PR - cleanup ghcr.io/sunodo/${{ matrix.image }}:pr-${{ github.event.number }} images
+        runs-on: ubuntu-latest
+        permissions:
+            packages: write
+        strategy:
+            matrix:
+                image:
+                    - anvil
+                    - machine-emulator-tools
+                    - rollups-node
+                    - sdk
+        steps:
+            - uses: vlaurin/action-ghcr-prune@v0.5.0
+              with:
+                  organization: sunodo
+                  container: ${{ matrix.image }}
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  prune-untagged: true
+                  keep-last: 0
+                  prune-tags-regexes: |
+                      ^pr-${{ github.event.number }}$
