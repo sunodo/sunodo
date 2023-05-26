@@ -81,7 +81,7 @@ services:
             - ./.sunodo/image:/var/opt/cartesi/machine-snapshots/0_0:ro
 
     validator:
-        image: sunodo/rollups-node:0.1.0
+        image: sunodo/rollups-node:0.1.1
         depends_on:
             dapp_deployer:
                 condition: service_completed_successfully
