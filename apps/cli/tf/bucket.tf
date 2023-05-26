@@ -31,3 +31,37 @@ module "cdn" {
 
   depends_on = [module.acm_request_certificate]
 }
+
+module "oclif_user" {
+  source = "cloudposse/iam-system-user/aws"
+
+  # https://github.com/cloudposse/terraform-aws-iam-system-user
+  version   = "1.2.0"
+  namespace = "cli"
+  stage     = "prod"
+  name      = "sunodo"
+
+  inline_policies_map = {
+    s3 = data.aws_iam_policy_document.s3_policy.json
+  }
+}
+
+data "aws_iam_policy_document" "s3_policy" {
+  statement {
+    actions = [
+      "s3:ListBucket",
+    ]
+    resources = [
+      "arn:aws:s3:::cli-prod-sunodo-origin",
+    ]
+  }
+  statement {
+    actions = [
+      "s3:*",
+    ]
+    resources = [
+      "arn:aws:s3:::cli-prod-sunodo-origin/*",
+    ]
+  }
+}
+
