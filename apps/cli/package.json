@@ -80,7 +80,7 @@
         "posttest": "yarn lint",
         "prepack": "yarn build && oclif manifest && oclif readme",
         "test": "vitest",
-        "version": "oclif readme && git add README.md"
+        "version": "run-s prepack"
     },
     "engines": {
         "node": ">=18.0.0"
