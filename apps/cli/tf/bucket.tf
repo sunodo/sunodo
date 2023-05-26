@@ -8,3 +8,26 @@ module "acm_request_certificate" {
   ttl                               = "300"
   zone_id                           = "Z09327832YAJGJ5APMP08"
 }
+
+
+module "cdn" {
+  source = "cloudposse/cloudfront-s3-cdn/aws"
+
+  # https://github.com/cloudposse/terraform-aws-cloudfront-s3-cdn/tree/0.90.0
+  version                             = "v0.90.0"
+  name                                = "sunodo"
+  namespace                           = "cli"
+  stage                               = "prod"
+  aliases                             = ["cli.sunodo.io"]
+  dns_alias_enabled                   = true
+  parent_zone_id                      = "Z09327832YAJGJ5APMP08"
+  acm_certificate_arn                 = module.acm_request_certificate.arn
+  cloudfront_access_log_create_bucket = false
+  cloudfront_access_logging_enabled   = false
+  allowed_methods                     = ["GET", "HEAD", "OPTIONS"]
+  cached_methods                      = ["GET", "HEAD"]
+  versioning_enabled                  = false
+  block_origin_public_access_enabled  = false
+
+  depends_on = [module.acm_request_certificate]
+}
