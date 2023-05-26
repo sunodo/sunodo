@@ -23,17 +23,32 @@ DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends \
 rm -rf /var/lib/apt/lists/*
 EOF
 
-ARG S6_OVERLAY_VERSION=3.1.4.1
+ARG S6_OVERLAY_VERSION=3.1.5.0
 RUN <<EOF
-curl -sSL https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz | tar -Jxp -C /
-curl -sSL https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-$(arch).tar.xz | tar -Jxp -C /
+tmp_dir=$(mktemp -d)
+ARCH=$(arch)
+curl -sSL https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz \
+    -o "$tmp_dir"/s6-overlay-noarch.tar.xz
+curl -sSL https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz.sha256 \
+    -o "$tmp_dir"/s6-overlay-noarch.tar.xz.sha256
+curl -sSL https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-${ARCH}.tar.xz \
+    -o "$tmp_dir"/s6-overlay-${ARCH}.tar.xz
+curl -sSL https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-${ARCH}.tar.xz.sha256 \
+    -o "$tmp_dir"/s6-overlay-${ARCH}.tar.xz.sha256
+cd "$tmp_dir"
+sha256sum --check "$tmp_dir"/*.sha256
+tar -Jxpf "$tmp_dir"/s6-overlay-noarch.tar.xz -C /
+tar -Jxpf "$tmp_dir"/s6-overlay-${ARCH}.tar.xz -C /
+cd -
+rm -rf "$tmp_dir"
 EOF
 
 ARG TRAEFIK_VERSION=2.10.1
 RUN <<EOF
 tmp_dir=$(mktemp -d)
 ARCH=$(dpkg --print-architecture)
-curl -sSL https://github.com/traefik/traefik/releases/download/v${TRAEFIK_VERSION}/traefik_v${TRAEFIK_VERSION}_linux_${ARCH}.tar.gz -o "$tmp_dir"/traefik_v${TRAEFIK_VERSION}_linux_${ARCH}.tar.gz
+curl -sSL https://github.com/traefik/traefik/releases/download/v${TRAEFIK_VERSION}/traefik_v${TRAEFIK_VERSION}_linux_${ARCH}.tar.gz \
+    -o "$tmp_dir"/traefik_v${TRAEFIK_VERSION}_linux_${ARCH}.tar.gz
 curl -sSL https://github.com/traefik/traefik/releases/download/v${TRAEFIK_VERSION}/traefik_v${TRAEFIK_VERSION}_checksums.txt | \
      grep "traefik_v${TRAEFIK_VERSION}_linux_${ARCH}.tar.gz" > "$tmp_dir"/traefik_v${TRAEFIK_VERSION}_checksums.txt
 sha256sum "$tmp_dir"/traefik_v${TRAEFIK_VERSION}_checksums.txt --check
