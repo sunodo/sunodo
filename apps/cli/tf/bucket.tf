@@ -31,3 +31,30 @@ module "cdn" {
 
   depends_on = [module.acm_request_certificate]
 }
+
+data "aws_iam_policy_document" "sunodo_cli_s3_doc" {
+  statement {
+    actions = [
+      "s3:ListBucket",
+    ]
+    resources = [
+      "arn:aws:s3:::cli-prod-sunodo-origin",
+    ]
+  }
+  statement {
+    actions = [
+      "s3:*",
+    ]
+    resources = [
+      "arn:aws:s3:::cli-prod-sunodo-origin/*",
+    ]
+  }
+}
+
+resource "aws_iam_policy" "sunodo_cli_s3_policy" {
+  name        = "sunodo_cli_s3_policy"
+  path        = "/"
+  description = "Sunodo CLI S3 Storage Policy"
+  policy      = data.aws_iam_policy_document.sunodo_cli_s3_doc.json
+}
+
