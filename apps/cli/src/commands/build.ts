@@ -26,7 +26,7 @@ const CARTESI_LABEL_SDK_VERSION = `${CARTESI_LABEL_PREFIX}.sdk_version`;
 const CARTESI_LABEL_RAM_SIZE = `${CARTESI_LABEL_PREFIX}.ram_size`;
 const CARTESI_LABEL_DATA_SIZE = `${CARTESI_LABEL_PREFIX}.data_size`;
 
-const DEFAULT_SDK_VERSION = "0.14.0";
+const DEFAULT_SDK_VERSION = "0.15.0";
 const DEFAULT_RAM_SIZE = "128Mi";
 
 export default class BuildApplication extends Command {
