@@ -43,7 +43,7 @@ ARG ROM_VERSION
 
 RUN <<EOF
 apt-get update
-apt-get install -y --no-install-recommends libarchive-tools locales
+apt-get install -y --no-install-recommends curl libarchive-tools locales xz-utils
 rm -rf /var/lib/apt/lists/*
 
 sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
@@ -66,6 +66,8 @@ ADD --chmod=644 \
 ADD --chmod=644 \
     https://github.com/cartesi/machine-emulator-rom/releases/download/v$ROM_VERSION/rom-v$ROM_VERSION.bin \
     /opt/cartesi/share/images/rom.bin
+RUN curl -sSL https://github.com/cartesi/image-kernel/releases/download/v$LINUX_VERSION/linux-headers-$LINUX_KERNEL_VERSION.tar.xz | \
+    tar -xJ -C /
 
 WORKDIR /mnt
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
