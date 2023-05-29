@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+set -e
+TAR=$1
+TMP=$(mktemp)
+cp $TAR $TMP
+bsdtar -cf $TAR --format=gnutar @$TMP
+rm $TMP
