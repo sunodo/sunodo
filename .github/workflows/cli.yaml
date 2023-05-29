@@ -45,3 +45,10 @@ jobs:
               if: startsWith(github.ref, 'refs/tags/@sunodo/cli@')
               run: oclif pack deb
               working-directory: apps/cli
+
+            - name: Upload debian packages to Github artifacts
+              if: startsWith(github.ref, 'refs/tags/@sunodo/cli@')
+              uses: actions/upload-artifact@v3
+              with:
+                name: Packages
+                path: ./apps/cli/dist/deb/*.deb
