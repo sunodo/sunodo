@@ -39,17 +39,27 @@ jobs:
               if: startsWith(github.ref, 'refs/tags/@sunodo/cli@')
               run: yarn global add oclif
 
+            - name: Install GPG key for debian package signing
+              id: gpg_key
+              if: startsWith(github.ref, 'refs/tags/@sunodo/cli@')
+              uses: crazy-max/ghaction-import-gpg@v5
+              with:
+                  gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+                  passphrase: ${{ secrets.GPG_PASSPHRASE }}
+
             - name: Build debian package
               if: startsWith(github.ref, 'refs/tags/@sunodo/cli@')
               run: oclif pack deb
               working-directory: apps/cli
+              env:
+                  SUNODO_DEB_KEY: ${{ steps.gpg_key.outputs.keyid }}
 
             - name: Upload debian packages to Github artifacts
               if: startsWith(github.ref, 'refs/tags/@sunodo/cli@')
               uses: actions/upload-artifact@v3
               with:
-                name: Packages
-                path: ./apps/cli/dist/deb/*.deb
+                  name: Packages
+                  path: ./apps/cli/dist/deb/*.deb
 
             - name: Publish debian packages to S3
               if: startsWith(github.ref, 'refs/tags/@sunodo/cli@')
