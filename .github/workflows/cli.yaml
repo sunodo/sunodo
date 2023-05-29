@@ -20,6 +20,8 @@ jobs:
         runs-on: ubuntu-latest
         env:
           SUNODO_DEB_KEY: ${{ secrets.SUNODO_DEB_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         steps:
             - name: Checkout
               uses: actions/checkout@v3
@@ -52,3 +54,8 @@ jobs:
               with:
                 name: Packages
                 path: ./apps/cli/dist/deb/*.deb
+
+            - name: Publish debian packages to S3
+              if: startsWith(github.ref, 'refs/tags/@sunodo/cli@')
+              run: oclif upload deb
+              working-directory: apps/cli
