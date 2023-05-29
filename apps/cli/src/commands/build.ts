@@ -22,12 +22,13 @@ type ImageInfo = {
 };
 
 const CARTESI_LABEL_PREFIX = "io.cartesi.rollups";
-const CARTESI_LABEL_SDK_VERSION = `${CARTESI_LABEL_PREFIX}.sdk_version`;
 const CARTESI_LABEL_RAM_SIZE = `${CARTESI_LABEL_PREFIX}.ram_size`;
 const CARTESI_LABEL_DATA_SIZE = `${CARTESI_LABEL_PREFIX}.data_size`;
+const CARTESI_DEFAULT_RAM_SIZE = "128Mi";
 
-const DEFAULT_SDK_VERSION = "0.15.0";
-const DEFAULT_RAM_SIZE = "128Mi";
+const SUNODO_LABEL_PREFIX = "io.sunodo";
+const SUNODO_LABEL_SDK_VERSION = `${SUNODO_LABEL_PREFIX}.sdk_version`;
+const SUNODO_DEFAULT_SDK_VERSION = "0.1.0";
 
 export default class BuildApplication extends Command {
     static summary = "Build application.";
@@ -109,9 +110,9 @@ export default class BuildApplication extends Command {
             dataSize: labels[CARTESI_LABEL_DATA_SIZE] ?? "10Mb",
             entrypoint: imageInfo["Config"]["Entrypoint"] ?? [],
             env: imageInfo["Config"]["Env"] || [],
-            ramSize: labels[CARTESI_LABEL_RAM_SIZE] ?? DEFAULT_RAM_SIZE,
+            ramSize: labels[CARTESI_LABEL_RAM_SIZE] ?? CARTESI_DEFAULT_RAM_SIZE,
             sdkVersion:
-                labels[CARTESI_LABEL_SDK_VERSION] ?? DEFAULT_SDK_VERSION,
+                labels[SUNODO_LABEL_SDK_VERSION] ?? SUNODO_DEFAULT_SDK_VERSION,
             workdir: imageInfo["Config"]["WorkingDir"],
         };
 
@@ -122,12 +123,12 @@ export default class BuildApplication extends Command {
         // warn for using default values
         info.sdkVersion ||
             this.warn(
-                `Undefined ${CARTESI_LABEL_SDK_VERSION} label, defaulting to ${DEFAULT_SDK_VERSION}`
+                `Undefined ${SUNODO_LABEL_SDK_VERSION} label, defaulting to ${SUNODO_DEFAULT_SDK_VERSION}`
             );
 
         info.ramSize ||
             this.warn(
-                `Undefined ${CARTESI_LABEL_RAM_SIZE} label, defaulting to ${DEFAULT_RAM_SIZE}`
+                `Undefined ${CARTESI_LABEL_RAM_SIZE} label, defaulting to ${CARTESI_DEFAULT_RAM_SIZE}`
             );
 
         // validate data size value
@@ -187,6 +188,19 @@ export default class BuildApplication extends Command {
             "--env",
             `GID=${user.gid}`,
         ];
+
+        // re-tar as gnu format, issue with locale
+        await execa("docker", [
+            "container",
+            "run",
+            "--rm",
+            ...su,
+            "--volume",
+            bind,
+            sdkImage,
+            "retar",
+            tar,
+        ]);
 
         // calculate extra size
         const blockSize = 4096;
