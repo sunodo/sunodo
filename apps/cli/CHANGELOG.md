@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.5.0
+
+### Minor Changes
+
+-   240b9ac: add new templates (cpp, cpp-low-level, lua)
+
+### Patch Changes
+
+-   8faed78: fix issue #68 using retar tool of new SDK
+-   0908b7c: bump to sunodo/rollups-node:0.1.1
+-   ad9d396: change default SDK version to 0.15.0
+
 ## 0.4.0
 
 ### Minor Changes
