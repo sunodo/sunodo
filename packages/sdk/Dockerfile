@@ -43,7 +43,7 @@ ARG ROM_VERSION
 
 RUN <<EOF
 apt-get update
-apt-get install -y --no-install-recommends locales
+apt-get install -y --no-install-recommends libarchive-tools locales
 rm -rf /var/lib/apt/lists/*
 
 sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
@@ -55,7 +55,8 @@ ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY entrypoint.sh /usr/local/bin/
+COPY retar /usr/local/bin/
 COPY --from=genext2fs /usr/local/bin/genext2fs /usr/bin/
 COPY --from=su-exec /usr/local/src/su-exec /usr/local/bin/
 
