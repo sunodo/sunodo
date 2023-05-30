@@ -15,6 +15,7 @@ concurrency:
 permissions:
     contents: read
     packages: write
+    id-token: write
 jobs:
     build:
         runs-on: ubuntu-latest
@@ -46,6 +47,13 @@ jobs:
               with:
                   gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
                   passphrase: ${{ secrets.GPG_PASSPHRASE }}
+
+            - name: Configure AWS Credentials
+              if: startsWith(github.ref, 'refs/tags/@sunodo/cli@')
+              uses: aws-actions/configure-aws-credentials@v2
+              with:
+                  role-to-assume: ${{ secrets.IAM_ROLE_ARN }}
+                  aws-region: ${{ secrets.AWS_REGION }}
 
             - name: Build debian package
               if: startsWith(github.ref, 'refs/tags/@sunodo/cli@')
