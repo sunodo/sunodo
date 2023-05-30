@@ -58,3 +58,16 @@ resource "aws_iam_policy" "sunodo_cli_s3_policy" {
   policy      = data.aws_iam_policy_document.sunodo_cli_s3_doc.json
 }
 
+module "github-oidc" {
+  source  = "terraform-module/github-oidc-provider/aws"
+
+  # https://github.com/terraform-module/terraform-aws-github-oidc-provider
+  version = "~> 2.1.0"
+  create_oidc_provider = true
+  create_oidc_role     = true
+
+  repositories              = ["sunodo/sunodo"]
+  oidc_role_attach_policies = [aws_iam_policy.sunodo_cli_s3_policy.arn]
+
+  depends_on = [aws_iam_policy.sunodo_cli_s3_policy]
+}
