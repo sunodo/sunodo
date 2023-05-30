@@ -59,15 +59,13 @@ resource "aws_iam_policy" "sunodo_cli_s3_policy" {
 }
 
 module "github-oidc" {
-  source  = "terraform-module/github-oidc-provider/aws"
-
   # https://github.com/terraform-module/terraform-aws-github-oidc-provider
-  version = "~> 2.1.0"
-  create_oidc_provider = true
-  create_oidc_role     = true
-
+  source                    = "terraform-module/github-oidc-provider/aws"
+  version                   = "~> 2.1.0"
+  oidc_provider_arn         = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/token.actions.githubusercontent.com"
+  create_oidc_provider      = false
+  create_oidc_role          = true
   repositories              = ["sunodo/sunodo"]
   oidc_role_attach_policies = [aws_iam_policy.sunodo_cli_s3_policy.arn]
-
-  depends_on = [aws_iam_policy.sunodo_cli_s3_policy]
+  depends_on                = [aws_iam_policy.sunodo_cli_s3_policy]
 }
