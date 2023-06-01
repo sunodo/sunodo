@@ -1,10 +1,10 @@
 # syntax=docker.io/docker/dockerfile:1.4
-FROM debian:bullseye-20230502-slim
+FROM debian:bullseye-20230522-slim
 
 # install curl and jq (for healthcheck support)
 RUN <<EOF
 apt-get update
-DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends ca-certificates curl jq xxd
+DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends ca-certificates curl git jq xxd
 rm -rf /var/lib/apt/lists/*
 EOF
 
