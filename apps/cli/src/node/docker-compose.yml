@@ -28,12 +28,10 @@ services:
         volumes:
             - blockchain-data:/opt/cartesi/share/deployments:ro
         ports:
-            - "8545:8545"
+            - 8545:8545
 
     database:
         image: postgres:13-alpine
-        ports:
-            - 5432:5432
         healthcheck:
             test: ["CMD-SHELL", "pg_isready -U postgres || exit 1"]
             interval: 10s
@@ -44,8 +42,6 @@ services:
 
     redis:
         image: redis:6-alpine
-        ports:
-            - 6379:6379
         restart: always
         healthcheck:
             test: ["CMD", "redis-cli", "ping"]
