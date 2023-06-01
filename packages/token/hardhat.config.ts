@@ -1,6 +1,5 @@
 import { HttpNetworkUserConfig } from "hardhat/types";
 import { HardhatUserConfig } from "hardhat/config";
-import "@nomicfoundation/hardhat-toolbox";
 import "hardhat-deploy";
 
 // read MNEMONIC from env variable
@@ -20,7 +19,10 @@ const infuraNetwork = (
 };
 
 const config: HardhatUserConfig = {
-    solidity: "0.8.20",
+    solidity: {
+        version: "0.8.20",
+        settings: { evmVersion: "paris" },
+    },
     networks: {
         hardhat: mnemonic ? { accounts: { mnemonic } } : {},
         localhost: {
