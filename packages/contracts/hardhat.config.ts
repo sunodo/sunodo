@@ -1,7 +1,7 @@
 import path from "path";
 import { HardhatUserConfig } from "hardhat/config";
 import { HttpNetworkUserConfig } from "hardhat/types";
-import "@nomicfoundation/hardhat-toolbox";
+import "@nomicfoundation/hardhat-verify";
 import "@nomiclabs/hardhat-ethers";
 import "hardhat-abi-exporter";
 import "hardhat-deploy";
@@ -49,7 +49,10 @@ const external = (networks: string[], packages: string[]) => ({
 });
 
 const config: HardhatUserConfig = {
-    solidity: "0.8.20",
+    solidity: {
+        version: "0.8.20",
+        settings: { evmVersion: "paris" },
+    },
     networks: {
         hardhat: mnemonic ? { accounts: { mnemonic } } : {},
         localhost: {

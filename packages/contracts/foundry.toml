@@ -5,3 +5,4 @@ libs = ['../../node_modules', 'lib']
 test = 'test/foundry'
 cache_path = 'forge-cache'
 solc_version = '0.8.20'
+evm_version = 'paris'
