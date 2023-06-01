@@ -17,6 +17,7 @@ services:
                 "${BLOCK_TIME:-5}",
                 "--load-state",
                 "/opt/cartesi/share/deployments/anvil_state.json",
+                "${ANVIL_VERBOSITY:---silent}",
             ]
         healthcheck:
             test: ["CMD", "eth_isready"]
@@ -43,6 +44,7 @@ services:
     redis:
         image: redis:6-alpine
         restart: always
+        command: ["--loglevel", "${REDIS_LOG_LEVEL:-warning}"]
         healthcheck:
             test: ["CMD", "redis-cli", "ping"]
             interval: 10s
@@ -89,8 +91,10 @@ services:
         ports:
             - 8080:8080
         environment:
+            # s6-overlay
+            S6_VERBOSITY: "${S6_VERBOSITY:-2}"
             # global
-            RUST_LOG: info
+            RUST_LOG: "${RUST_LOG:-info}"
             ## shared
             ### redis
             REDIS_ENDPOINT: redis://redis:6379
@@ -104,6 +108,8 @@ services:
             ### server-manager-endpoint
             SERVER_MANAGER_ENDPOINT: http://localhost:5001
             SERVER_MANAGER_ADDRESS: localhost:5001
+            SERVER_MANAGER_LOG_LEVEL: "${SERVER_MANAGER_LOG_LEVEL:-info}"
+            REMOTE_CARTESI_MACHINE_LOG_LEVEL: info
 
             ### database
             <<: *database-config

@@ -2,7 +2,6 @@ import { Command, Flags } from "@oclif/core";
 import path from "path";
 import fs from "fs-extra";
 import { execa } from "execa";
-import inquirer from "inquirer";
 
 export default class Run extends Command {
     static summary = "Run application node.";
@@ -51,6 +50,11 @@ export default class Run extends Command {
             BLOCK_TIME: blockInterval.toString(),
             BLOCK_TIMEOUT: (blockInterval + 3).toString(),
             EPOCH_DURATION: epochDuration.toString(),
+            ANVIL_VERBOSITY: flags.verbose ? "" : "--silent",
+            REDIS_LOG_LEVEL: flags.verbose ? "verbose" : "warning",
+            S6_VERBOSITY: flags.verbose ? "2" : "0",
+            RUST_LOG: flags.verbose ? "info" : "error",
+            SERVER_MANAGER_LOG_LEVEL: flags.verbose ? "info" : "error",
         };
 
         // resolve compose file location based on version
@@ -70,29 +74,14 @@ export default class Run extends Command {
             "--project-name",
             projectName,
         ];
+        const attachment = flags.verbose ? [] : ["--attach", "validator"];
 
-        const mode = flags.verbose ? [] : ["--detach", "--wait"];
-
-        this.log("Starting node...");
         try {
             // run compose environment
-            await execa("docker", [...args, "up", ...mode], {
-                stdio: "inherit",
+            await execa("docker", [...args, "up", ...attachment], {
                 env,
+                stdio: "inherit",
             });
-
-            if (!flags.verbose) {
-                const host = "http://127.0.0.1";
-                this.log(`Anvil listening at ${host}:8545`);
-                this.log(`GraphQL Server listening at ${host}:8080/graphql`);
-                this.log(`Inspect Server listening at ${host}:8080/inspect`);
-
-                await inquirer.prompt({
-                    name: "continue",
-                    type: "confirm",
-                    message: "Press enter to stop the node",
-                });
-            }
         } finally {
             // shut it down, including volumes
             await execa("docker", [...args, "down", "--volumes"], {
