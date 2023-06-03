@@ -90,6 +90,7 @@ jobs:
             - name: Publish package
               if: startsWith(github.ref, 'refs/tags/@sunodo/contracts@')
               run: npm publish --access public
+              working-directory: packages/contracts
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
