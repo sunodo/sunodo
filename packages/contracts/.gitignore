@@ -14,3 +14,4 @@ export/abi/localhost.json
 
 # forge files
 forge-cache
+anvil_state.json

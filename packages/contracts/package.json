@@ -7,7 +7,7 @@
         "clean": "hardhat clean",
         "deploy": "hardhat deploy",
         "deploy:testnet": "run-s deploy:goerli deploy:sepolia deploy:polygon_mumbai deploy:arbitrum_goerli deploy:optimism_goerli deploy:bsc_testnet deploy:iotex_testnet deploy:chiado",
-        "deploy:localhost": "hardhat deploy --network localhost",
+        "deploy:localhost": "hardhat deploy --network localhost --export export/abi/localhost.json",
         "deploy:goerli": "hardhat deploy --network goerli --export export/abi/goerli.json",
         "deploy:sepolia": "hardhat deploy --network sepolia --export export/abi/sepolia.json",
         "deploy:polygon_mumbai": "hardhat deploy --network polygon_mumbai --export export/abi/polygon_mumbai.json",
