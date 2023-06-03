@@ -21,14 +21,7 @@ See [../../apps/cli/README.md](sundo CLI) docs for more information.
 
 ## Building
 
-To build the `sunodo/rollups-node` container image yourself, you should first export the contracts.
-
-```shell
-cd packages/rollups-node
-./export-deployments.sh
-```
-
-The file `.env` contains environment variables used in the process, in case you need to tweak them.
+To build the `sunodo/rollups-node` container image yourself, execute the command below.
 
 ```shell
 cd packages/rollups-node

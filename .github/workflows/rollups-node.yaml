@@ -20,10 +20,6 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v3
 
-            - name: Export deployments
-              run: ./export-deployments.sh
-              working-directory: packages/rollups-node
-
             - name: Docker meta
               id: meta
               uses: docker/metadata-action@v4
