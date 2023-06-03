@@ -9,6 +9,7 @@ typechain-types
 artifacts
 cache
 deployments/localhost
+dist
 docs
 export/abi/localhost.json
 
