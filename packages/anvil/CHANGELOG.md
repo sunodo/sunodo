@@ -1,5 +1,11 @@
 # anvil
 
+## 2.0.1
+
+### Patch Changes
+
+-   b891a90: fix cast and forge execution
+
 ## 2.0.0
 
 ### Major Changes
