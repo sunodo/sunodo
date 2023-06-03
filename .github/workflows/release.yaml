@@ -29,6 +29,6 @@ jobs:
               with:
                   version: yarn run version-packages
                   commit: "release: version packages"
-                  publish: yarn changeset tag && git push --follow-tags
+                  publish: yarn run publish-packages
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
