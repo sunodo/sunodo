@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+if [ $# -eq 0 ]; then
+    echo "Usage: $0 <network | deployment_file>"
+    exit 1
+fi
+
+if test -f "$1"; then
+    FILE=$1
+else
+    NETWORK=$1
+    DIRECTORY=${DEPLOYMENTS_DIRETORY:-"/opt/cartesi/share/deployments"}
+    FILE="$DIRECTORY/$NETWORK.json"
+fi
+
+jq -r '.contracts | to_entries[] | .key + ": " + .value.address' < "$FILE"

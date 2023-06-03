@@ -2,12 +2,14 @@
 ARG REGISTRY=docker.io
 ARG ORG=cartesi
 ARG ROLLUPS_VERSION
+ARG SUNODO_DEPLOYMENTS_VERSION=0.1.0
 FROM ${REGISTRY}/${ORG}/rollups-indexer:${ROLLUPS_VERSION}         AS indexer
 FROM ${REGISTRY}/${ORG}/rollups-state-server:${ROLLUPS_VERSION}    AS state_server
 FROM ${REGISTRY}/${ORG}/rollups-dispatcher:${ROLLUPS_VERSION}      AS dispatcher
 FROM ${REGISTRY}/${ORG}/rollups-advance-runner:${ROLLUPS_VERSION}  AS advance_runner
 FROM ${REGISTRY}/${ORG}/rollups-inspect-server:${ROLLUPS_VERSION}  AS inspect_server
 FROM ${REGISTRY}/${ORG}/rollups-graphql-server:${ROLLUPS_VERSION}  AS graphql_server
+FROM sunodo/deployments:${SUNODO_DEPLOYMENTS_VERSION}              AS deployments
 
 FROM cartesi/server-manager:0.7.0-bullseye
 USER root
@@ -18,6 +20,7 @@ DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends \
     apt-transport-https \
     ca-certificates \
     curl \
+    jq \
     libpq5 \
     xz-utils
 rm -rf /var/lib/apt/lists/*
@@ -63,14 +66,15 @@ COPY --from=dispatcher      /opt/cartesi/bin/rollups_dispatcher   /opt/cartesi/b
 COPY --from=advance_runner  /opt/cartesi/bin/advance-runner       /opt/cartesi/bin/advance-runner
 COPY --from=inspect_server  /opt/cartesi/bin/inspect-server       /opt/cartesi/bin/inspect-server
 COPY --from=graphql_server  /opt/cartesi/bin/graphql-server       /opt/cartesi/bin/graphql-server
+COPY --from=deployments     /opt/cartesi/share/deployments/       /opt/cartesi/share/deployments/
 
 RUN mkdir -p /var/opt/cartesi/machine-snapshots/0_0 && ln -s /var/opt/cartesi/machine-snapshots/0_0 /var/opt/cartesi/machine-snapshots/latest
 
 COPY ./traefik /etc/traefik
 COPY ./s6-overlay /etc/s6-overlay
-COPY ./is_ready /usr/local/bin/is_ready
+COPY ./is_ready /usr/local/bin/
+COPY ./address_book /usr/local/bin/
 COPY ./entrypoint.sh /entrypoint.sh
-COPY ./deployments /opt/cartesi/share/deployments
 
 HEALTHCHECK --interval=60s --start-period=5s --retries=5 CMD [ "/usr/local/bin/is_ready" ]
 
