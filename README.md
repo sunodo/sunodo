@@ -9,6 +9,7 @@ It helps developers to:
 -   `test` applications running inside a cartesi machine
 -   `deploy` applications to a cloud provider
 -   `monitor` application already running on a cloud provider
+-   `doctor` verify the minimal requirements for the sunodo execution commands
 
 ## What's inside?
 
