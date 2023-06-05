@@ -39,6 +39,7 @@ jobs:
 
             - name: Generate localhost deployment
               run: ./dump_localhost.sh
+              shell: bash
               working-directory: packages/contracts
 
             - name: Docker meta
