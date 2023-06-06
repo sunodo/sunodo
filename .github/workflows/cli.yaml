@@ -35,5 +35,4 @@ jobs:
               run: yarn install
 
             - name: Build
-              run: yarn build
-              working-directory: apps/cli
+              run: yarn build --filter @sunodo/cli
