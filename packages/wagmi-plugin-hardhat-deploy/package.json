@@ -1,0 +1,19 @@
+{
+    "name": "@sunodo/wagmi-plugin-hardhat-deploy",
+    "version": "0.0.0",
+    "description": "@wagmi/cli plugin for Hardhat Deploy exports",
+    "main": "src/index.ts",
+    "author": "Danilo Tuler",
+    "license": "Apache-2.0",
+    "scripts": {
+        "build": "tsc"
+    },
+    "type": "module",
+    "exports": "./dist/index.js",
+    "dependencies": {},
+    "devDependencies": {
+        "@wagmi/cli": "^1.1",
+        "abitype": "^0.8",
+        "typescript": "^5"
+    }
+}
