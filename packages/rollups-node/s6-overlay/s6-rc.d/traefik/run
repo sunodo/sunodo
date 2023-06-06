@@ -1,2 +1,4 @@
 #!/command/with-contenv sh
+/command/s6-echo "GraphQL server listening at http://localhost:8080/graphql"
+/command/s6-echo "Inspect server listening at http://localhost:8080/inspect"
 exec s6-setuidgid nobody traefik --configfile /etc/traefik/traefik.yaml
