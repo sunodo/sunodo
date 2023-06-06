@@ -7,8 +7,10 @@ on:
         paths:
             - .github/workflows/cli.yaml
             - apps/cli/**
+            - packages/contracts/**
             - packages/eslint-config-custom/**
             - packages/tsconfig/**
+            - packages/wagmi-plugin-hardhat-deploy/**
 concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}
     cancel-in-progress: true
@@ -31,8 +33,20 @@ jobs:
                   node-version: 20
                   cache: "yarn"
 
+            - name: Install Foundry
+              uses: foundry-rs/foundry-toolchain@v1
+
             - name: Install dependencies
               run: yarn install
+
+            - name: Build
+              run: yarn build
+              working-directory: packages/contracts
+
+            - name: Generate localhost deployment
+              run: ./dump_localhost.sh
+              shell: bash
+              working-directory: packages/contracts
 
             - name: Build
               run: yarn build --filter @sunodo/cli

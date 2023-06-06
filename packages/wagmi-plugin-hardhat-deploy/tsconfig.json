@@ -7,9 +7,6 @@
         "importHelpers": true,
         "outDir": "dist",
         "rootDir": "src",
-        "target": "es2020"
-    },
-    "ts-node": {
-        "esm": true
+        "target": "ES2020"
     }
 }
