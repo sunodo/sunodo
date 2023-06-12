@@ -50,7 +50,7 @@ export default class Run extends Command {
             BLOCK_TIME: blockInterval.toString(),
             BLOCK_TIMEOUT: (blockInterval + 3).toString(),
             EPOCH_DURATION: epochDuration.toString(),
-            ANVIL_VERBOSITY: flags.verbose ? "" : "--silent",
+            ANVIL_VERBOSITY: flags.verbose ? "--steps-tracing" : "--silent",
             REDIS_LOG_LEVEL: flags.verbose ? "verbose" : "warning",
             S6_VERBOSITY: flags.verbose ? "2" : "0",
             RUST_LOG: flags.verbose ? "info" : "error",
