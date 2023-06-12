@@ -76,6 +76,9 @@ export default class Run extends Command {
         ];
         const attachment = flags.verbose ? [] : ["--attach", "validator"];
 
+        // XXX: need this handler, so SIGINT can still call the finally block below
+        process.on("SIGINT", () => {});
+
         try {
             // run compose environment
             await execa("docker", [...args, "up", ...attachment], {
