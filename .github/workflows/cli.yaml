@@ -40,13 +40,4 @@ jobs:
               run: yarn install
 
             - name: Build
-              run: yarn build
-              working-directory: packages/contracts
-
-            - name: Generate localhost deployment
-              run: ./dump_localhost.sh
-              shell: bash
-              working-directory: packages/contracts
-
-            - name: Build
               run: yarn build --filter @sunodo/cli
