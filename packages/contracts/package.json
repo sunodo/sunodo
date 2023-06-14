@@ -27,7 +27,7 @@
         "tsc": "tsc"
     },
     "dependencies": {
-        "@cartesi/rollups": "0.9.0",
+        "@cartesi/rollups": "0.9.1",
         "@sunodo/token": "*",
         "typescript": "^5"
     },
