@@ -20,7 +20,15 @@ export default class CreateCommand extends Command {
         template: Flags.string({
             description: "template name to use",
             required: true,
-            options: ["cpp", "cpp-low-level", "javascript", "lua", "python"],
+            options: [
+                "cpp",
+                "cpp-low-level",
+                "go",
+                "javascript",
+                "lua",
+                "python",
+                "ruby",
+            ],
         }),
         branch: Flags.string({
             description: "branch name to use if not main",
