@@ -37,13 +37,7 @@ jobs:
               run: yarn
 
             - name: Build
-              run: yarn build
-              working-directory: packages/contracts
-
-            - name: Generate localhost deployment
-              run: ./dump_localhost.sh
-              shell: bash
-              working-directory: packages/contracts
+              run: yarn build --filter=contracts
 
             - name: Docker meta
               id: meta
@@ -104,6 +98,6 @@ jobs:
               with:
                   body_path: packages/contracts/CHANGELOG.md
                   files: |
-                      packages/contracts/anvil_state.json
+                      packages/contracts/build/anvil_state.json
                       packages/contracts/deployments/**
                       packages/contracts/export/abi/*

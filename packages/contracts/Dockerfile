@@ -10,4 +10,4 @@ COPY --from=cartesi/deployments:0.9.0 /opt/cartesi/share/deployments .
 COPY ./export/abi/localhost.json .
 
 # copy anvil dumped state
-COPY ./anvil_state.json .
+COPY ./build/anvil_state.json .
