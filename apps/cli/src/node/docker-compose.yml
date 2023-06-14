@@ -52,7 +52,7 @@ services:
             retries: 5
 
     dapp_deployer:
-        image: cartesi/rollups-cli:0.9.0
+        image: cartesi/rollups-cli:0.9.1
         restart: on-failure
         depends_on:
             anvil:
