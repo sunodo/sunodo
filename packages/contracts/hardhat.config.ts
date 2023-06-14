@@ -6,6 +6,7 @@ import "@nomiclabs/hardhat-ethers";
 import "hardhat-abi-exporter";
 import "hardhat-deploy";
 import "solidity-docgen";
+import "./src/tasks/deploy-anvil";
 
 // read MNEMONIC from env variable
 let mnemonic = process.env.MNEMONIC;
