@@ -92,7 +92,7 @@
     "engines": {
         "node": ">=18.0.0"
     },
-    "bugs": "https://github.com/cartesi/sunodo/issues",
+    "bugs": "https://github.com/sunodo/sunodo/issues",
     "keywords": [
         "oclif"
     ],
