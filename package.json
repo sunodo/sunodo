@@ -19,7 +19,7 @@
         "@changesets/cli": "^2",
         "eslint-config-custom": "*",
         "prettier": "latest",
-        "turbo": "latest"
+        "turbo": "^1.10.3"
     },
     "engines": {
         "node": ">=18.0.0"
