@@ -22,6 +22,8 @@
         "dev": {
             "cache": false
         },
-        "version": {}
+        "version": {
+            "dependsOn": ["^build"]
+        }
     }
 }
