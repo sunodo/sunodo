@@ -35,7 +35,7 @@
         "open": "^9.0",
         "ora": "^6.2",
         "tmp": "^0.2",
-        "viem": "^0.3"
+        "viem": "^1.0"
     },
     "devDependencies": {
         "@oclif/test": "^2.3",
@@ -44,24 +44,24 @@
         "@types/bytes": "^3.1",
         "@types/fs-extra": "^11",
         "@types/inquirer": "^9",
-        "@types/node": "^18",
+        "@types/node": "^20",
         "@types/node-fetch": "^2.6",
         "@types/prompts": "^2.4",
         "@types/tmp": "^0.2",
-        "@wagmi/cli": "^1.1",
+        "@wagmi/cli": "^1.2",
         "copyfiles": "^2",
         "eslint": "^8",
         "eslint-config-custom": "*",
         "eslint-config-oclif": "^4",
         "eslint-config-oclif-typescript": "^1",
         "npm-run-all": "^4",
-        "oclif": "^3.7",
+        "oclif": "^3.9",
         "rimraf": "^5",
         "ts-node": "^10.9",
         "tsconfig": "*",
         "tslib": "^2.5",
         "typescript": "^5.0",
-        "vitest": "^0.31"
+        "vitest": "^0.32"
     },
     "oclif": {
         "bin": "sunodo",
