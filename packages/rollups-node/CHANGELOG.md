@@ -1,5 +1,19 @@
 # rollups-node
 
+## 0.2.0
+
+### Minor Changes
+
+-   e806582: moving contracts deployments from rollups-node to its own docker image with sunodo smart contracts added to rollups
+-   6556a5d: bump rollups to 0.9.1
+-   fd955e3: remove exports ports of postgres and redis
+
+### Patch Changes
+
+-   fd955e3: reduce some log verbosity
+-   a6ad71e: log inspect-server and graphql-server endpoint urls
+-   fd955e3: adding small delay to check of server-manager and state_server
+
 ## 0.1.1
 
 ### Patch Changes

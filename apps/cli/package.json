@@ -1,6 +1,6 @@
 {
     "name": "@sunodo/cli",
-    "version": "0.5.0",
+    "version": "0.6.0",
     "description": "Sunodo CLI",
     "author": "Danilo Tuler <tuler@pobox.com>",
     "bin": {
