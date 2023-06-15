@@ -25,7 +25,7 @@ $ npm install -g @sunodo/cli
 $ sunodo COMMAND
 running command...
 $ sunodo (--version)
-@sunodo/cli/0.5.0 linux-x64 node-v20.2.0
+@sunodo/cli/0.6.0 linux-x64 node-v20.3.0
 $ sunodo --help [COMMAND]
 USAGE
   $ sunodo COMMAND
@@ -36,13 +36,43 @@ USAGE
 # Commands
 
 <!-- commands -->
+* [`sunodo address-book`](#sunodo-address-book)
 * [`sunodo build`](#sunodo-build)
 * [`sunodo clean`](#sunodo-clean)
 * [`sunodo create NAME`](#sunodo-create-name)
+* [`sunodo doctor`](#sunodo-doctor)
 * [`sunodo help [COMMANDS]`](#sunodo-help-commands)
 * [`sunodo run`](#sunodo-run)
+* [`sunodo send`](#sunodo-send)
+* [`sunodo send dapp-address`](#sunodo-send-dapp-address)
+* [`sunodo send erc20`](#sunodo-send-erc20)
+* [`sunodo send erc721`](#sunodo-send-erc721)
+* [`sunodo send ether`](#sunodo-send-ether)
+* [`sunodo send generic`](#sunodo-send-generic)
 * [`sunodo shell [IMAGE]`](#sunodo-shell-image)
 * [`sunodo update [CHANNEL]`](#sunodo-update-channel)
+
+## `sunodo address-book`
+
+Prints addresses of smart contracts deployed.
+
+```
+USAGE
+  $ sunodo address-book [--json]
+
+GLOBAL FLAGS
+  --json  Format output as json.
+
+DESCRIPTION
+  Prints addresses of smart contracts deployed.
+
+  Prints the addresses of all smart contracts deployed to the runtime environment of the application.
+
+EXAMPLES
+  $ sunodo address-book
+```
+
+_See code: [dist/commands/address-book.ts](https://github.com/sunodo/sunodo/blob/v0.6.0/dist/commands/address-book.ts)_
 
 ## `sunodo build`
 
@@ -87,7 +117,7 @@ FLAG DESCRIPTIONS
     machine is not the last stage, use this parameter to specify the target stage.
 ```
 
-_See code: [dist/commands/build.ts](https://github.com/sunodo/sunodo/blob/v0.5.0/dist/commands/build.ts)_
+_See code: [dist/commands/build.ts](https://github.com/sunodo/sunodo/blob/v0.6.0/dist/commands/build.ts)_
 
 ## `sunodo clean`
 
@@ -106,7 +136,7 @@ EXAMPLES
   $ sunodo clean
 ```
 
-_See code: [dist/commands/clean.ts](https://github.com/sunodo/sunodo/blob/v0.5.0/dist/commands/clean.ts)_
+_See code: [dist/commands/clean.ts](https://github.com/sunodo/sunodo/blob/v0.6.0/dist/commands/clean.ts)_
 
 ## `sunodo create NAME`
 
@@ -114,7 +144,7 @@ Create application
 
 ```
 USAGE
-  $ sunodo create NAME --template cpp|cpp-low-level|javascript|lua|python [--branch <value>]
+  $ sunodo create NAME --template cpp|cpp-low-level|go|javascript|lua|python|ruby [--branch <value>]
 
 ARGUMENTS
   NAME  application and directory name
@@ -122,7 +152,7 @@ ARGUMENTS
 FLAGS
   --branch=<value>     [default: main] branch name to use if not main
   --template=<option>  (required) template name to use
-                       <options: cpp|cpp-low-level|javascript|lua|python>
+                       <options: cpp|cpp-low-level|go|javascript|lua|python|ruby>
 
 DESCRIPTION
   Create application
@@ -131,7 +161,24 @@ EXAMPLES
   $ sunodo create
 ```
 
-_See code: [dist/commands/create.ts](https://github.com/sunodo/sunodo/blob/v0.5.0/dist/commands/create.ts)_
+_See code: [dist/commands/create.ts](https://github.com/sunodo/sunodo/blob/v0.6.0/dist/commands/create.ts)_
+
+## `sunodo doctor`
+
+Verify the minimal requirements for the sunodo execution commands
+
+```
+USAGE
+  $ sunodo doctor
+
+DESCRIPTION
+  Verify the minimal requirements for the sunodo execution commands
+
+EXAMPLES
+  $ sunodo doctor
+```
+
+_See code: [dist/commands/doctor.ts](https://github.com/sunodo/sunodo/blob/v0.6.0/dist/commands/doctor.ts)_
 
 ## `sunodo help [COMMANDS]`
 
@@ -175,7 +222,226 @@ EXAMPLES
   $ sunodo run
 ```
 
-_See code: [dist/commands/run.ts](https://github.com/sunodo/sunodo/blob/v0.5.0/dist/commands/run.ts)_
+_See code: [dist/commands/run.ts](https://github.com/sunodo/sunodo/blob/v0.6.0/dist/commands/run.ts)_
+
+## `sunodo send`
+
+Send input to the application.
+
+```
+USAGE
+  $ sunodo send
+
+DESCRIPTION
+  Send input to the application.
+
+  Sends different kinds of input to the application in interactive mode.
+
+EXAMPLES
+  $ sunodo send
+```
+
+_See code: [dist/commands/send/index.ts](https://github.com/sunodo/sunodo/blob/v0.6.0/dist/commands/send/index.ts)_
+
+## `sunodo send dapp-address`
+
+Send DApp address input to the application.
+
+```
+USAGE
+  $ sunodo send dapp-address [--dapp <value>] [-c <value>] [-r <value>] [--mnemonic-passphrase <value>]
+    [--mnemonic-index <value>]
+
+FLAGS
+  --dapp=<value>  dapp address.
+
+ETHEREUM FLAGS
+  -c, --chain=<value>    The chain name or EIP-155 chain ID.
+  -r, --rpc-url=<value>  The RPC endpoint.
+
+WALLET FLAGS
+  --mnemonic-index=<value>       Use the private key from the given mnemonic index.
+  --mnemonic-passphrase=<value>  Use a BIP39 passphrase for the mnemonic.
+
+DESCRIPTION
+  Send DApp address input to the application.
+
+  Sends an input to the application with its own address.
+
+EXAMPLES
+  $ sunodo send dapp-address
+
+FLAG DESCRIPTIONS
+  --dapp=<value>  dapp address.
+
+    the address of the DApp, defaults to the deployed DApp address if application is running.
+```
+
+## `sunodo send erc20`
+
+Send ERC-20 deposit to the application.
+
+```
+USAGE
+  $ sunodo send erc20 [--dapp <value>] [-c <value>] [-r <value>] [--mnemonic-passphrase <value>]
+    [--mnemonic-index <value>] [--token <value>] [--amount <value>]
+
+FLAGS
+  --amount=<value>  [default: 1] amount
+  --dapp=<value>    dapp address.
+  --token=<value>   token address
+
+ETHEREUM FLAGS
+  -c, --chain=<value>    The chain name or EIP-155 chain ID.
+  -r, --rpc-url=<value>  The RPC endpoint.
+
+WALLET FLAGS
+  --mnemonic-index=<value>       Use the private key from the given mnemonic index.
+  --mnemonic-passphrase=<value>  Use a BIP39 passphrase for the mnemonic.
+
+DESCRIPTION
+  Send ERC-20 deposit to the application.
+
+  Sends ERC-20 deposits to the application, optionally in interactive mode.
+
+EXAMPLES
+  $ sunodo send erc20
+
+FLAG DESCRIPTIONS
+  --dapp=<value>  dapp address.
+
+    the address of the DApp, defaults to the deployed DApp address if application is running.
+```
+
+## `sunodo send erc721`
+
+Send ERC-721 deposit to the application.
+
+```
+USAGE
+  $ sunodo send erc721 [--dapp <value>] [-c <value>] [-r <value>] [--mnemonic-passphrase <value>]
+    [--mnemonic-index <value>] [--token <value>] [--tokenId <value>]
+
+FLAGS
+  --dapp=<value>     dapp address.
+  --token=<value>    token address
+  --tokenId=<value>  token ID
+
+ETHEREUM FLAGS
+  -c, --chain=<value>    The chain name or EIP-155 chain ID.
+  -r, --rpc-url=<value>  The RPC endpoint.
+
+WALLET FLAGS
+  --mnemonic-index=<value>       Use the private key from the given mnemonic index.
+  --mnemonic-passphrase=<value>  Use a BIP39 passphrase for the mnemonic.
+
+DESCRIPTION
+  Send ERC-721 deposit to the application.
+
+  Sends ERC-721 deposits to the application, optionally in interactive mode.
+
+EXAMPLES
+  $ sunodo send erc721
+
+FLAG DESCRIPTIONS
+  --dapp=<value>  dapp address.
+
+    the address of the DApp, defaults to the deployed DApp address if application is running.
+```
+
+## `sunodo send ether`
+
+Send ether deposit to the application.
+
+```
+USAGE
+  $ sunodo send ether [--dapp <value>] [-c <value>] [-r <value>] [--mnemonic-passphrase <value>]
+    [--mnemonic-index <value>] [--amount <value>] [--execLayerData <value>]
+
+FLAGS
+  --amount=<value>         amount, in ETH units
+  --dapp=<value>           dapp address.
+  --execLayerData=<value>  [default: 0x] exec layer data
+
+ETHEREUM FLAGS
+  -c, --chain=<value>    The chain name or EIP-155 chain ID.
+  -r, --rpc-url=<value>  The RPC endpoint.
+
+WALLET FLAGS
+  --mnemonic-index=<value>       Use the private key from the given mnemonic index.
+  --mnemonic-passphrase=<value>  Use a BIP39 passphrase for the mnemonic.
+
+DESCRIPTION
+  Send ether deposit to the application.
+
+  Sends ether deposits to the application, optionally in interactive mode.
+
+EXAMPLES
+  $ sunodo send ether
+
+FLAG DESCRIPTIONS
+  --dapp=<value>  dapp address.
+
+    the address of the DApp, defaults to the deployed DApp address if application is running.
+```
+
+## `sunodo send generic`
+
+Send generic input to the application.
+
+```
+USAGE
+  $ sunodo send generic [--dapp <value>] [-c <value>] [-r <value>] [--mnemonic-passphrase <value>]
+    [--mnemonic-index <value>] [--input <value>] [--input-encoding hex|string|abi] [--input-abi-params <value>]
+
+FLAGS
+  --dapp=<value>              dapp address.
+  --input=<value>             see input-encoding for definition on how input is parsed
+  --input-abi-params=<value>  ABI params definition for input, following human-readable format specified at
+                              https://abitype.dev/api/human.html#parseabiparameters
+  --input-encoding=<option>   if input-encoding is undefined, the input is parsed as a hex-string if it starts with 0x
+                              or else is parsed as a UTF-8 encoding
+                              <options: hex|string|abi>
+
+ETHEREUM FLAGS
+  -c, --chain=<value>    The chain name or EIP-155 chain ID.
+  -r, --rpc-url=<value>  The RPC endpoint.
+
+WALLET FLAGS
+  --mnemonic-index=<value>       Use the private key from the given mnemonic index.
+  --mnemonic-passphrase=<value>  Use a BIP39 passphrase for the mnemonic.
+
+DESCRIPTION
+  Send generic input to the application.
+
+  Sends generics inputs to the application, optionally in interactive mode.
+
+EXAMPLES
+  $ sunodo send generic
+
+FLAG DESCRIPTIONS
+  --dapp=<value>  dapp address.
+
+    the address of the DApp, defaults to the deployed DApp address if application is running.
+
+  --input=<value>  see input-encoding for definition on how input is parsed
+
+    input payload
+
+  --input-abi-params=<value>
+
+    ABI params definition for input, following human-readable format specified at
+    https://abitype.dev/api/human.html#parseabiparameters
+
+    input abi params
+
+  --input-encoding=hex|string|abi
+
+    if input-encoding is undefined, the input is parsed as a hex-string if it starts with 0x or else is parsed as a
+    UTF-8 encoding
+
+    input encoding
+```
 
 ## `sunodo shell [IMAGE]`
 
@@ -198,7 +464,7 @@ EXAMPLES
   $ sunodo shell
 ```
 
-_See code: [dist/commands/shell.ts](https://github.com/sunodo/sunodo/blob/v0.5.0/dist/commands/shell.ts)_
+_See code: [dist/commands/shell.ts](https://github.com/sunodo/sunodo/blob/v0.6.0/dist/commands/shell.ts)_
 
 ## `sunodo update [CHANNEL]`
 
@@ -235,5 +501,5 @@ EXAMPLES
     $ sunodo update --available
 ```
 
-_See code: [@oclif/plugin-update](https://github.com/oclif/plugin-update/blob/v3.1.15/src/commands/update.ts)_
+_See code: [@oclif/plugin-update](https://github.com/oclif/plugin-update/blob/v3.1.18/src/commands/update.ts)_
 <!-- commandsstop -->

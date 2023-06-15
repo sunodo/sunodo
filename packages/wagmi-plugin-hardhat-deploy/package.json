@@ -1,6 +1,6 @@
 {
     "name": "@sunodo/wagmi-plugin-hardhat-deploy",
-    "version": "0.0.0",
+    "version": "0.1.0",
     "description": "@wagmi/cli plugin for Hardhat Deploy exports",
     "main": "src/index.ts",
     "author": "Danilo Tuler",

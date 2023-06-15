@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.6.0
+
+### Minor Changes
+
+-   553fa5d: new command `sunodo send` and its sub-commands to send inputs
+-   97a35e0: new command `sunodo doctor` to check system requirements
+-   553fa5d: new command `sunodo address-book` to know the addresses of deployed contracts
+-   cbddb6f: new `sunodo create` templates for `go` and `ruby`
+-   fd955e3: adjust non-verbose mode of `sunodo run` to always print output of the application
+-   e175be4: bump rollups to 0.9.1
+
 ## 0.5.0
 
 ### Minor Changes
@@ -22,7 +33,7 @@
 
 ### Minor Changes
 
--   Fix https://github.com/sunodo/sunodo/issues/34
+-   Fix [#34](https://github.com/sunodo/sunodo/issues/34)
 
 ## 0.3.0
 
