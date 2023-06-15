@@ -21,6 +21,9 @@ jobs:
                   node-version: current
                   cache: "yarn"
 
+            - name: Install Foundry
+              uses: foundry-rs/foundry-toolchain@v1
+
             - name: Install Dependencies
               run: yarn
 
