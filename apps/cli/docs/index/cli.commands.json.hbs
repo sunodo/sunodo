@@ -1,0 +1,8 @@
+[
+{{#each commands}}
+    {
+        "text": "{{../bin}} {{configuredId}}",
+        "link": "/reference/cli/{{slugify id}}"
+    }{{#unless @last}},{{/unless}}
+{{/each}}
+]

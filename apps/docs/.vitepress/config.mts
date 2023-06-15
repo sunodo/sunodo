@@ -1,5 +1,6 @@
-import { URL, fileURLToPath } from "node:url";
 import { DefaultTheme, defineConfig } from "vitepress";
+import { fileURLToPath, URL } from "node:url";
+import commands from "./cli.commands.json";
 
 const guideSidebar = (): DefaultTheme.SidebarItem[] => {
     return [
@@ -115,9 +116,11 @@ const referenceSidebar = (): DefaultTheme.SidebarItem[] => {
         {
             text: "CLI",
             link: "/reference/cli/",
+            items: commands,
         },
         {
             text: "Kubernetes Config",
+            collapsed: false,
             link: "/reference/kubernetes/",
         },
     ];
