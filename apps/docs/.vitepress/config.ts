@@ -120,7 +120,7 @@ export default defineConfig({
         },
         editLink: {
             pattern:
-                "https://github.com/sunodo/sunodo/edit/main/packages/docs/:path",
+                "https://github.com/sunodo/sunodo/edit/main/apps/docs/:path",
             text: "Edit this page on GitHub",
         },
         socialLinks: [
