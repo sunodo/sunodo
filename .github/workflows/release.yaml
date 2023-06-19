@@ -11,6 +11,9 @@ jobs:
     release:
         name: Release
         runs-on: ubuntu-latest
+        outputs:
+            published: ${{ steps.changeset.outputs.published }}
+            publishedPackages: ${{ steps.changeset.outputs.publishedPackages }}
         steps:
             - name: Checkout Repo
               uses: actions/checkout@v3
@@ -35,3 +38,40 @@ jobs:
                   publish: yarn run publish-packages
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    packages_to_build:
+        name: Get released packages
+        runs-on: ubuntu-latest
+        needs: release
+        if: ${{ needs.release.outputs.published == 'true' }}
+        outputs:
+            packages: ${{ steps.packages.outputs.PACKAGES }}
+        steps:
+            - name: Get released packages
+              id: packages
+              run: |
+                  echo "PACKAGES=$(jq -c '[ .[].name ]' <(echo '${{ needs.release.outputs.publishedPackages }}'))" >> "$GITHUB_OUTPUT"
+
+    build_rollups_node:
+        name: Build rollups-node
+        needs: [release, packages_to_build]
+        if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), 'rollups-node') }}
+        uses: ./.github/workflows/rollups-node.yaml
+
+    build_sdk:
+        name: Build sdk
+        needs: [release, packages_to_build]
+        if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), 'sdk') }}
+        uses: ./.github/workflows/sdk.yaml
+
+    build_anvil:
+        name: Build anvil
+        needs: [release, packages_to_build]
+        if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), 'anvil') }}
+        uses: ./.github/workflows/anvil.yaml
+
+    build_contracts:
+        name: Build contracts
+        needs: [release, packages_to_build]
+        if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), 'contracts') }}
+        uses: ./.github/workflows/contracts.yaml

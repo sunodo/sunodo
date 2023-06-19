@@ -1,8 +1,6 @@
 name: anvil
 on:
-    push:
-        tags:
-            - anvil@*
+    workflow_call:
     pull_request:
         paths:
             - .github/workflows/anvil.yaml
@@ -13,12 +11,19 @@ concurrency:
 permissions:
     contents: read
     packages: write
+    actions: write
 jobs:
     build:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
               uses: actions/checkout@v3
+
+            - name: Get package tag/version
+              id: package-version
+              if: ${{ github.event_name == 'push' }}
+              run: |
+                  jq -r '"PACKAGE_VERSION=\(.version)"' packages/anvil/package.json >> "$GITHUB_OUTPUT"
 
             - name: Docker meta
               id: meta
@@ -28,7 +33,7 @@ jobs:
                       docker.io/sunodo/anvil,enable=${{ github.event_name != 'pull_request' }}
                       ghcr.io/sunodo/anvil
                   tags: |
-                      type=match,pattern=(.+)@(.*),group=2
+                      type=raw,value=${{ steps.package-version.outputs.PACKAGE_VERSION }},enable=${{ github.event_name == 'push' }}
                       type=ref,event=pr
                   labels: |
                       org.opencontainers.image.title=Sunodo anvil

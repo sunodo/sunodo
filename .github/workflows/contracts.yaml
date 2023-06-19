@@ -1,8 +1,6 @@
 name: contracts
 on:
-    push:
-        tags:
-            - "@sunodo/contracts@*"
+    workflow_call:
     pull_request:
         paths:
             - .github/workflows/contracts.yaml
@@ -13,6 +11,7 @@ concurrency:
 permissions:
     contents: write
     packages: write
+    actions: write
 jobs:
     build:
         runs-on: ubuntu-latest
@@ -39,6 +38,12 @@ jobs:
             - name: Build
               run: yarn build --filter=contracts
 
+            - name: Get package tag/version
+              id: package-version
+              if: ${{ github.event_name == 'push' }}
+              run: |
+                  jq -r '"PACKAGE_VERSION=\(.version)"' packages/contracts/package.json >> "$GITHUB_OUTPUT"
+
             - name: Docker meta
               id: meta
               uses: docker/metadata-action@v4
@@ -47,7 +52,7 @@ jobs:
                       docker.io/sunodo/deployments,enable=${{ github.event_name != 'pull_request' }}
                       ghcr.io/sunodo/deployments
                   tags: |
-                      type=match,pattern=(.+)@(.*),group=2
+                      type=raw,value=${{ steps.package-version.outputs.PACKAGE_VERSION }},enable=${{ github.event_name == 'push' }}
                       type=ref,event=pr
                   labels: |
                       org.opencontainers.image.title=Sunodo's deployments
