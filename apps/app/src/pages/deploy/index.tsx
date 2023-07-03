@@ -75,7 +75,10 @@ const Deploy: FC = () => {
                         label="Validator rewards"
                         description="Cartesi nodes financial incentive mechanism"
                     >
-                        <Financial />
+                        <Financial
+                            onBack={() => setActive(active - 1)}
+                            onNext={() => setActive(active + 1)}
+                        />
                     </Stepper.Step>
                     <Stepper.Step
                         label="Review and deploy"

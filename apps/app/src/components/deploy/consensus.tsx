@@ -34,6 +34,7 @@ const ConsensusConfig: FC<ConsensusConfigProps> = (props) => {
         useState<ConsensusType>("authority");
 
     const [owner, setOwner] = useState<string>(props.owner ?? "");
+    const [authority, setAuthority] = useState<string>("");
 
     const registeredAuthorities: RegisteredAuthority[] = [
         {
@@ -63,6 +64,8 @@ const ConsensusConfig: FC<ConsensusConfigProps> = (props) => {
             );
         }
     );
+    const canProceed =
+        owner && isAddress(owner) && authority && isAddress(authority);
 
     return (
         <Stack>
@@ -102,7 +105,14 @@ const ConsensusConfig: FC<ConsensusConfigProps> = (props) => {
                         searchable
                         creatable
                         clearable
+                        required
                         itemComponent={SelectItem}
+                        onChange={(value) => value && setAuthority(value)}
+                        error={
+                            authority
+                                ? !isAddress(authority) && "Invalid address"
+                                : undefined
+                        }
                         description={
                             <Text>
                                 The address of an{" "}
@@ -160,7 +170,9 @@ const ConsensusConfig: FC<ConsensusConfigProps> = (props) => {
             </Radio.Group>
             <Group>
                 <Button onClick={props.onBack}>Back</Button>
-                <Button onClick={props.onNext}>Next</Button>
+                <Button disabled={!canProceed} onClick={props.onNext}>
+                    Next
+                </Button>
             </Group>
         </Stack>
     );

@@ -12,8 +12,8 @@ import {
     Text,
 } from "@mantine/core";
 
-type FinancialIncentiveType = "controlled" | "erc20";
-type Token = {
+export type FinancialIncentiveType = "controlled" | "erc20";
+export type Token = {
     address: string;
     symbol: string;
     name: string;
@@ -23,7 +23,12 @@ type Token = {
 
 type ItemProps = React.ComponentPropsWithoutRef<"div"> & Token;
 
-const Financial: FC = () => {
+export type FinancialProps = {
+    onBack?: () => void;
+    onNext?: () => void;
+};
+
+const Financial: FC<FinancialProps> = (props) => {
     const [type, setType] = useState<FinancialIncentiveType>();
     const [salary, setSalary] = useState<number | "">(1);
     const [deposit, setDeposit] = useState<number | "">(1);
@@ -100,6 +105,9 @@ const Financial: FC = () => {
             );
         }
     );
+
+    const canProceed =
+        type === "controlled" || (type === "erc20" && salary && deposit);
 
     return (
         <Stack>
@@ -186,7 +194,10 @@ const Financial: FC = () => {
                 </Collapse>
             </Radio.Group>
             <Group>
-                <Button>Next</Button>
+                <Button onClick={props.onBack}>Back</Button>
+                <Button disabled={!canProceed} onClick={props.onNext}>
+                    Next
+                </Button>
             </Group>
         </Stack>
     );
