@@ -267,6 +267,8 @@ export default class BuildApplication extends Command {
         const envs = info.env.filter((variable) => {
             if (variable.startsWith("ROLLUP_HTTP_SERVER_URL=")) {
                 return true;
+            } else if (variable.startsWith("NETWORK=")) {
+                return true;
             } else if (variable.startsWith("PATH=")) {
                 return true;
             } else {
