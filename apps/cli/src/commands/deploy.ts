@@ -7,7 +7,7 @@ import { create } from "kubo-rpc-client";
 import open from "open";
 import Gauge from "gauge";
 import { setGracefulCleanup, tmpNameSync } from "tmp";
-import { createReadStream, write } from "fs";
+import { createReadStream } from "fs";
 
 export default class Deploy extends Command {
     static summary = "Deploy application to a live network.";
@@ -22,6 +22,11 @@ export default class Deploy extends Command {
             description:
                 "address of IPFS node to upload the cartesi machine snapshot",
             default: new URL("http://127.0.0.1:5001"),
+        }),
+        webapp: Flags.url({
+            description: "address of sunodo webapp",
+            default: new URL("https://app.sunodo.io/deploy"),
+            hidden: true,
         }),
     };
 
@@ -93,7 +98,7 @@ export default class Deploy extends Command {
         // create tar from cartesi machine snapshot
         setGracefulCleanup();
         const tmpFile = tmpNameSync();
-        const progress = new Gauge({ cleanupOnExit: false });
+        const progress = new Gauge();
         const targz = await this.pack(snapshot, tmpFile, (current, total) => {
             progress.show("packing cartesi machine snapshot", current / total);
         });
@@ -113,13 +118,13 @@ export default class Deploy extends Command {
         this.log(`machine snapshot uploaded: ${cid.toString()}`);
 
         // open daploy webapp with CID pre-filled
-        // const baseUrl = "https://app.sunodo.io/deploy";
-        const baseUrl = "http://localhost:3000";
         this.log(
             "press any key to continue the deployment using your browser..."
         );
         await this.keypress();
-        await open(`${baseUrl}?cid=${cid}`, { app: { name: "google chrome" } });
+        await open(`${flags.webapp}?cid=${cid}`, {
+            app: { name: "google chrome" },
+        });
         process.exit(0);
     }
 }
