@@ -95,6 +95,10 @@ export default class Deploy extends Command {
             );
         }
 
+        const hash = fs
+            .readFileSync(path.join(snapshot, "hash"))
+            .toString("hex");
+
         // create tar from cartesi machine snapshot
         setGracefulCleanup();
         const tmpFile = tmpNameSync();
@@ -109,7 +113,7 @@ export default class Deploy extends Command {
         const result = await client.add(createReadStream(tmpFile), {
             progress: (bytes) =>
                 progress.show(
-                    "uploading cartesi machine snapshot",
+                    `uploading cartesi machine snapshot to ${flags.ipfs}`,
                     bytes / targz.size
                 ),
         });
@@ -122,7 +126,7 @@ export default class Deploy extends Command {
             "press any key to continue the deployment using your browser..."
         );
         await this.keypress();
-        await open(`${flags.webapp}?cid=${cid}`, {
+        await open(`${flags.webapp}?cid=${cid}&hash=0x${hash}`, {
             app: { name: "google chrome" },
         });
         process.exit(0);
