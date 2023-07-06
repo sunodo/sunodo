@@ -1,5 +1,4 @@
-// SPDX-License-Identifier: MIT
-/// @title Sunodo DApp Factory interface
+// SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.13;
 
 import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";

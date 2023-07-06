@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: Apache-2.0
 /// @title Consensus Payment System
 /// @dev Assumes block.timestamp <= type(uint96).max
 
