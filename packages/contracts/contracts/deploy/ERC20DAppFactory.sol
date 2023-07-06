@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: Apache-2.0
 /// @title ERC20 DApp Factory
 pragma solidity ^0.8.13;
 
