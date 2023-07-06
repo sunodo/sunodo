@@ -1,18 +1,26 @@
 import { FC, useState } from "react";
 import { List, Stack, Stepper, Text, Title } from "@mantine/core";
+import { Address } from "abitype";
+import { Hash, isHash } from "viem";
 import { useRouter } from "next/router";
 import Layout from "../../components/layout";
 import Network from "../../components/deploy/network";
 import MachineLocation from "../../components/deploy/machine";
 import ConsensusConfig from "../../components/deploy/consensus";
 import Financial from "../../components/deploy/financial";
+import Review from "../../components/deploy/review";
 
 const Deploy: FC = () => {
     const [active, setActive] = useState(0);
     const router = useRouter();
-    const cid = router.query.cid as string;
 
-    const [owner, setOwner] = useState("");
+    const [authority, setAuthority] = useState<Address | undefined>();
+    const [owner, setOwner] = useState<Address | undefined>();
+    const hashParam = isHash(router.query.hash as string)
+        ? (router.query.hash as string as Hash)
+        : undefined;
+    const [hash, setHash] = useState<Hash | undefined>(hashParam);
+    const [cid, setCid] = useState<string>(router.query.cid as string);
 
     return (
         <Layout>
@@ -45,8 +53,13 @@ const Deploy: FC = () => {
                         description="Location of cartesi machine snapshot"
                     >
                         <MachineLocation
+                            hash={hash}
                             cid={cid}
-                            onNext={(protocol, cid) => setActive(active + 1)}
+                            onNext={(hash, protocol, cid) => {
+                                setCid(cid);
+                                setHash(hash);
+                                setActive(active + 1);
+                            }}
                         />
                     </Stepper.Step>
                     <Stepper.Step
@@ -68,7 +81,11 @@ const Deploy: FC = () => {
                         <ConsensusConfig
                             owner={owner}
                             onBack={() => setActive(active - 1)}
-                            onNext={() => setActive(active + 1)}
+                            onNext={(owner, authority) => {
+                                setOwner(owner);
+                                setAuthority(authority);
+                                setActive(active + 1);
+                            }}
                         />
                     </Stepper.Step>
                     <Stepper.Step
@@ -83,7 +100,17 @@ const Deploy: FC = () => {
                     <Stepper.Step
                         label="Review and deploy"
                         description="Review configuration and deploy to the blockchain"
-                    ></Stepper.Step>
+                    >
+                        {authority && owner && hash && cid && (
+                            <Review
+                                onBack={() => setActive(active - 1)}
+                                authority={authority}
+                                owner={owner}
+                                hash={hash}
+                                cid={cid}
+                            />
+                        )}
+                    </Stepper.Step>
                 </Stepper>
             </Stack>
         </Layout>

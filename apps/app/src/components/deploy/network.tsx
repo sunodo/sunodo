@@ -1,11 +1,12 @@
 import { FC } from "react";
+import { Address } from "abitype";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Alert, Button, Group, Stack, Text } from "@mantine/core";
 import { useAccount, useBalance, useNetwork } from "wagmi";
 
 type NetworkProps = {
     onBack?: () => void;
-    onNext?: (chainId: number, address: string) => void;
+    onNext?: (chainId: number, address: Address) => void;
 };
 
 const Network: FC<NetworkProps> = (props) => {

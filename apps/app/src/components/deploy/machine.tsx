@@ -1,18 +1,26 @@
 import { FC, useState } from "react";
 import { Button, Group, Radio, Stack, Text, TextInput } from "@mantine/core";
+import { Hash, isHash } from "viem";
 import * as isIPFS from "is-ipfs";
 
 export type MachineLocationProtocol = "ipfs" | "url" | "private";
 
 export type MachineLocationProps = {
+    hash?: Hash;
     cid: string;
-    onNext?: (protocol: MachineLocationProtocol, value: string) => void;
+    onNext?: (
+        hash: Hash,
+        protocol: MachineLocationProtocol,
+        value: string
+    ) => void;
 };
 
 const MachineLocation: FC<MachineLocationProps> = (props) => {
+    const [hash, setHash] = useState<string>(props.hash ?? "");
     const [method, setMethod] = useState<MachineLocationProtocol>("ipfs");
     const [cid, setCid] = useState(props.cid);
     const error = cid && !isIPFS.cid(cid) && "Invalid CID";
+    const hashError = hash ? !isHash(hash) && "Invalid hash" : undefined;
     return (
         <Stack>
             <Text>
@@ -64,10 +72,23 @@ const MachineLocation: FC<MachineLocationProps> = (props) => {
                     disabled
                 />
             </Radio.Group>
+            <Text>
+                In addition to making the machine available, the machine hash
+                must be informed below:
+            </Text>
+            <TextInput
+                value={hash}
+                error={hashError}
+                onChange={(event) => setHash(event.target.value)}
+            />
             <Group>
                 <Button
-                    disabled={!cid || !!error}
-                    onClick={() => props.onNext && props.onNext(method, cid)}
+                    disabled={!isHash(hash) || !cid || !!error || !!hashError}
+                    onClick={() =>
+                        props.onNext &&
+                        hash &&
+                        props.onNext(hash as Hash, method, cid)
+                    }
                 >
                     Next
                 </Button>
