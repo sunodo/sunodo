@@ -1,11 +1,9 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction, DeployOptions } from "hardhat-deploy/types";
-import { Authority__factory } from "@cartesi/rollups";
 
 const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
     const { deployments, ethers, getNamedAccounts } = hre;
     const { deployer } = await getNamedAccounts();
-    const signer = await ethers.getSigner(deployer);
 
     const opts: DeployOptions = {
         deterministicDeployment: true,
@@ -15,34 +13,15 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
 
     const { InputBox } = await deployments.all();
 
-    const Authority = await deployments.deploy("SunodoAuthority", {
+    const AuthorityFactory = await deployments.deploy("AuthorityFactory", {
         ...opts,
-        contract: "Authority",
-        args: [deployer, InputBox.address],
+        args: [InputBox.address],
     });
+    const HistoryFactory = await deployments.deploy("HistoryFactory", opts);
 
-    /*
-    const Authority = await deployments.deploy("SunodoAuthority", {
+    await deployments.deploy("AuthorityHistoryPairFactory", {
         ...opts,
-        contract: "RoleBasedAuthority",
-        args: [deployer, InputBox.address, History.address],
+        args: [AuthorityFactory.address, HistoryFactory.address],
     });
-    */
-
-    const History = await deployments.deploy("SunodoHistory", {
-        ...opts,
-        contract: "History",
-        args: [Authority.address],
-    });
-
-    const authority = Authority__factory.connect(Authority.address, signer);
-    const currentHistory = await authority.getHistory();
-    if (currentHistory != History.address) {
-        const tx = await authority.setHistory(History.address);
-        const receipt = await tx.wait();
-        if (receipt.status == 0) {
-            throw Error(`Could not link Authority to history: ${tx.hash}`);
-        }
-    }
 };
 export default func;
