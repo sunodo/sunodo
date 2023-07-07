@@ -1,22 +1,15 @@
-import { FC, forwardRef, useState } from "react";
+import { FC, useState } from "react";
 import {
     Button,
     Collapse,
     Group,
     Radio,
-    Select,
-    SelectItem,
     Stack,
     Text,
     TextInput,
 } from "@mantine/core";
 import { Address } from "abitype";
 import { isAddress } from "viem";
-
-export type RegisteredAuthority = SelectItem & {
-    name: string;
-    address: string;
-};
 
 export type ConsensusType =
     | "authority"
@@ -37,34 +30,6 @@ const ConsensusConfig: FC<ConsensusConfigProps> = (props) => {
     const [owner, setOwner] = useState<string>(props.owner ?? "");
     const [authority, setAuthority] = useState<string>("");
 
-    const registeredAuthorities: RegisteredAuthority[] = [
-        {
-            label: "0xb0f3e011807ddA2E2644D27B7915f77E32D8b841",
-            name: "Sunodo",
-            address: "0xb0f3e011807ddA2E2644D27B7915f77E32D8b841",
-            value: "0xb0f3e011807ddA2E2644D27B7915f77E32D8b841",
-        },
-    ];
-
-    const SelectItem = forwardRef<HTMLDivElement, RegisteredAuthority>(
-        function AuthoritySelect(
-            { name, address, ...others }: RegisteredAuthority,
-            ref
-        ) {
-            return (
-                <div ref={ref} {...others}>
-                    <Group noWrap>
-                        <div>
-                            <Text size="sm">{name}</Text>
-                            <Text size="xs" opacity={0.65}>
-                                {address}
-                            </Text>
-                        </div>
-                    </Group>
-                </div>
-            );
-        }
-    );
     const canProceed =
         owner && isAddress(owner) && authority && isAddress(authority);
 
@@ -99,16 +64,12 @@ const ConsensusConfig: FC<ConsensusConfigProps> = (props) => {
                     }
                 />
                 <Collapse in={consensusType === "authority"}>
-                    <Select
+                    <TextInput
                         ml={40}
                         label="Contract Address"
-                        data={registeredAuthorities}
-                        searchable
-                        creatable
-                        clearable
                         required
-                        itemComponent={SelectItem}
-                        onChange={(value) => value && setAuthority(value)}
+                        value={authority}
+                        onChange={(e) => setAuthority(e.currentTarget.value)}
                         error={
                             authority
                                 ? !isAddress(authority) && "Invalid address"
