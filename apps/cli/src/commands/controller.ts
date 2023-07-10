@@ -1,9 +1,10 @@
+import { ExtractAbiEvents } from "abitype";
 import fs from "fs-extra";
 import path from "path";
 import { Command, Flags } from "@oclif/core";
 import { createPublicClient, http, isAddress, Log } from "viem";
-import { ExtractAbiEvents } from "abitype";
-import drivers from "../node/driver/index.js";
+
+import { createDriver } from "../node/driver/index.js";
 import { DApp, DAppStore } from "../node/database/index.js";
 import {
     controlledDAppFactoryAddress,
@@ -41,11 +42,32 @@ export default class Controller extends Command {
         "rpc-url": Flags.string({
             description: "JSON-RPC url of ethereum node",
             default: "http://127.0.0.1:8545",
+            char: "r",
+        }),
+        ipfs: Flags.url({
+            description:
+                "address of IPFS node to download the cartesi machine snapshot",
+            default: new URL("http://127.0.0.1:5001"),
+        }),
+        "mnemonic-passphrase": Flags.string({
+            description: "Use a BIP39 passphrase for the mnemonic.",
+            helpGroup: "Wallet",
+        }),
+        "mnemonic-index": Flags.integer({
+            description: "Use the private key from the given mnemonic index.",
+            helpGroup: "Wallet",
+            default: 0,
+        }),
+        "kms-key-id": Flags.string({
+            description: "Use a private key stored in an AWS KMS key.",
+            summary:
+                "Need access to use the key through standard AWS client authentication mechanisms.",
+            helpGroup: "Wallet",
         }),
         driver: Flags.string({
             description: "Node management driver to use",
-            default: "compose",
-            options: Object.keys(drivers),
+            default: "docker",
+            options: ["docker", "k8s", "fly"],
         }),
         financialProtocol: Flags.string({
             description:
@@ -118,13 +140,20 @@ export default class Controller extends Command {
         const chainId = await client.getChainId();
         this.log(`connected to chain ${chainId}`);
 
+        // directory to store cartesi machine snapshots
+        const machineDir = path.join(this.config.dataDir, "machine");
+        fs.ensureDirSync(machineDir);
+
         // driver for node management
-        const driver = drivers[flags.driver];
+        const driver = createDriver(flags.driver, machineDir, flags.ipfs);
 
         // connect to local database, lives inside dataDir of tool
         const dbPath = path.resolve(
             path.join(this.config.dataDir, chainId.toString(), "data.json")
         );
+        // ~/.local/share/sunodo/31337/data.json
+        // ~/.local/share/sunodo/31337.json
+
         const db = fs.existsSync(dbPath)
             ? DAppStore.load(dbPath, BigInt(Date.now()))
             : new DAppStore(0n, {}, []);
@@ -172,6 +201,7 @@ export default class Controller extends Command {
             eventName: "MachineLocation",
             fromBlock,
         });
+
         setInterval(async () => {
             // tick the clock, return dapps that should be shutdown at this time
             const now = BigInt(Date.now());
@@ -179,7 +209,7 @@ export default class Controller extends Command {
 
             // stop nodes that should be stopped
             await Promise.all(
-                shutdown.map(({ address }) => driver.stop(chainId, address))
+                shutdown.map(({ address }) => driver.stop(address))
             );
 
             // read any new machine location events
@@ -199,7 +229,7 @@ export default class Controller extends Command {
                 if (start) {
                     // node should start immediatelly
                     const location = db.machines[start.address];
-                    await driver.start(chainId, start.address, location);
+                    await driver.start(start.address, location);
                 }
             }
         }, client.pollingInterval);

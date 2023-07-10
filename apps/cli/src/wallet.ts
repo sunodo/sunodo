@@ -11,7 +11,7 @@ import {
 } from "viem";
 import { mnemonicToAccount } from "viem/accounts";
 
-const DEFAULT_DEVNET_MNEMONIC =
+export const DEFAULT_DEVNET_MNEMONIC =
     "test test test test test test test test test test test junk";
 
 export interface EthereumPromptOptions {

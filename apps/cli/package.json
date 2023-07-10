@@ -31,14 +31,14 @@
         "fs-extra": "^11",
         "gauge": "^5.0",
         "giget": "^1.1",
-        "kubo-rpc-client": "^3.0.1",
+        "kubo-rpc-client": "^3.0",
         "node-fetch": "3.3",
         "open": "^9.0",
         "ora": "^6.2",
         "tar-fs": "^3.0",
         "tmp": "^0.2",
         "viem": "^1.0",
-        "zlib": "^1.0.5"
+        "zlib": "^1.0"
     },
     "devDependencies": {
         "@oclif/test": "^2.3",
