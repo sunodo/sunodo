@@ -3,6 +3,7 @@ import fs from "fs-extra";
 import path from "path";
 import { Command, Flags } from "@oclif/core";
 import { createPublicClient, http, isAddress, Log } from "viem";
+import { execa } from "execa";
 
 import { createDriver } from "../node/driver/index.js";
 import { DApp, DAppStore } from "../node/database/index.js";
@@ -12,6 +13,7 @@ import {
     iFinancialProtocolABI,
     iMachineProtocolABI,
 } from "../contracts.js";
+import { DEFAULT_DEVNET_MNEMONIC } from "../wallet.js";
 
 type FinancialRunwayLog = Log<
     bigint,
@@ -39,6 +41,18 @@ export default class Controller extends Command {
     static examples = ["<%= config.bin %> <%= command.id %>"];
 
     static flags = {
+        dev: Flags.boolean({
+            description: "enable dev mode, running a local devnet",
+            default: false,
+        }),
+        "block-time": Flags.integer({
+            description: "interval between blocks (in seconds), for dev mode",
+            default: 5,
+        }),
+        "epoch-duration": Flags.integer({
+            description: "duration of an epoch (in seconds)",
+            default: 86400,
+        }),
         "rpc-url": Flags.string({
             description: "JSON-RPC url of ethereum node",
             default: "http://127.0.0.1:8545",
@@ -129,8 +143,50 @@ export default class Controller extends Command {
         return db.addDApp(blockNumber, now, { address, shutdownAt });
     }
 
+    private async runDocker(
+        blockInterval: number,
+        devMode: boolean,
+        verbose: boolean
+    ): Promise<void> {
+        // resolve compose file location based on version
+        const composeFile = path.join(
+            path.dirname(new URL(import.meta.url).pathname),
+            "..",
+            "node",
+            "docker-compose-controller.yml"
+        );
+
+        // run docker infrastructure
+        const args = [
+            "compose",
+            "--file",
+            composeFile,
+            "--project-directory",
+            path.dirname(composeFile),
+            "--project-name",
+            "sunodo-controller",
+        ];
+
+        const attachment = verbose ? [] : ["--attach", "validator"];
+
+        const env: NodeJS.ProcessEnv = {
+            ANVIL_VERBOSITY: verbose ? "--steps-tracing" : "--silent",
+            BLOCK_TIME: blockInterval.toString(),
+            COMPOSE_PROFILES: devMode ? "dev" : "",
+            REDIS_LOG_LEVEL: verbose ? "verbose" : "warning",
+        };
+
+        await execa("docker", [...args, "up", ...attachment], {
+            env,
+            stdio: "inherit",
+        });
+    }
+
     public async run(): Promise<void> {
         const { flags } = await this.parse(Controller);
+
+        // run controller docker infrastructure
+        await this.runDocker(flags["block-time"], flags.dev, flags.verbose);
 
         // connect to blockchain
         this.log(`connecting to ${flags["rpc-url"]}`);

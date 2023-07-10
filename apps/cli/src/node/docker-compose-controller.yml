@@ -17,7 +17,7 @@ services:
                 "--block-time",
                 "${BLOCK_TIME:-5}",
                 "--load-state",
-                "/opt/cartesi/share/deployments/anvil_state.json",
+                "/anvil/anvil_state.json",
                 "${ANVIL_VERBOSITY:---silent}",
             ]
         healthcheck:
@@ -25,10 +25,10 @@ services:
             interval: 10s
             timeout: 1s
             retries: 5
+        volumes:
+            - ./:/anvil/
         environment:
             ANVIL_IP_ADDR: 0.0.0.0
-        volumes:
-            - blockchain-data:/opt/cartesi/share/deployments:ro
         ports:
             - 8545:8545
 
@@ -51,6 +51,3 @@ services:
             interval: 10s
             timeout: 5s
             retries: 5
-
-volumes:
-    blockchain-data: {}
