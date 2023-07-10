@@ -1,0 +1,21 @@
+# `{{bin}} {{command.configuredId}}`
+
+{{command.summary}}
+
+{{command.description}}
+
+## Usage
+
+## Flags
+
+{{#each command.flags}}
+-   `--{{name}} <value>` {{summary}} {{description}}
+{{/each}}
+
+## Global Flags
+
+## Examples
+
+```text
+{{command.formatted}}
+```

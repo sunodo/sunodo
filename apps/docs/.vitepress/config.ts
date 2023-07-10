@@ -1,4 +1,5 @@
 import { DefaultTheme, defineConfig } from "vitepress";
+import commands from "./cli.commands.json";
 
 const guideSidebar = (): DefaultTheme.SidebarItem[] => {
     return [
@@ -94,7 +95,18 @@ const guideSidebar = (): DefaultTheme.SidebarItem[] => {
 };
 
 const referenceSidebar = (): DefaultTheme.SidebarItem[] => {
-    return [];
+    return [
+        {
+            text: "CLI",
+            collapsed: false,
+            items: commands,
+        },
+        {
+            text: "Contracts",
+            collapsed: false,
+            items: [],
+        },
+    ];
 };
 
 // https://vitepress.dev/reference/site-config
