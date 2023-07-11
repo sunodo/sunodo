@@ -91,6 +91,11 @@ export default class Controller extends Command {
             description:
                 "Address of the contract to watch for application machine locations",
         }),
+        verbose: Flags.boolean({
+            description: "verbose output",
+            default: false,
+            char: "v",
+        }),
     };
 
     private async addMachine(db: DAppStore, log: MachineLocationLog) {
@@ -203,12 +208,11 @@ export default class Controller extends Command {
         // driver for node management
         const driver = createDriver(flags.driver, machineDir, flags.ipfs);
 
-        // connect to local database, lives inside dataDir of tool
+        // connect to local database, lives inside dataDir
+        // ~/.local/share/sunodo/31337/data.json
         const dbPath = path.resolve(
             path.join(this.config.dataDir, chainId.toString(), "data.json")
         );
-        // ~/.local/share/sunodo/31337/data.json
-        // ~/.local/share/sunodo/31337.json
 
         const db = fs.existsSync(dbPath)
             ? DAppStore.load(dbPath, BigInt(Date.now()))
