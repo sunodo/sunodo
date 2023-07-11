@@ -1,13 +1,17 @@
 import { Command, Flags } from "@oclif/core";
 import path from "path";
 import fs from "fs-extra";
-import tar from "tar-fs";
-import zlib from "zlib";
 import { create } from "kubo-rpc-client";
 import open from "open";
-import Gauge from "gauge";
-import { setGracefulCleanup, tmpNameSync } from "tmp";
-import { createReadStream } from "fs";
+import { Readable } from "stream";
+import progress from "progress-stream";
+import cliProgress from "cli-progress";
+import {
+    createDirectoryEncoderStream,
+    CAREncoderStream,
+    FileLike,
+} from "ipfs-car";
+import zlib from "zlib";
 
 export default class Deploy extends Command {
     static summary = "Deploy application to a live network.";
@@ -40,51 +44,6 @@ export default class Deploy extends Command {
         );
     }
 
-    private async pack(
-        directory: string,
-        destination: string,
-        progress: (current: number, total: number) => void = () => {}
-    ): Promise<fs.Stats> {
-        return new Promise((resolve, reject) => {
-            let bytesWritten = 0;
-            const writeStream = fs.createWriteStream(destination);
-
-            // list files to add to tar (non-recursive)
-            const files = fs
-                .readdirSync(directory, { withFileTypes: true })
-                .filter((dirent) => dirent.isFile())
-                .map((f) => f.name);
-
-            // get sum of size of all files in bytes
-            const entries = files.map((f) =>
-                fs.statSync(path.join(directory, f))
-            );
-            const totalSize = entries
-                .map((stat) => stat.size)
-                .reduce((a, b) => a + b, 0);
-
-            const mtime = new Date(0);
-            const tarStream = tar.pack(directory, {
-                entries: files,
-                map: (headers) => ({ ...headers, mtime }),
-            });
-
-            const gzipStream = zlib.createGzip();
-            writeStream.on("error", (error) => {
-                reject(error);
-            });
-            writeStream.on("finish", () => {
-                resolve(fs.statSync(destination));
-            });
-            tarStream.on("data", (chunk) => {
-                bytesWritten += chunk.length;
-                progress(bytesWritten, totalSize);
-            });
-
-            tarStream.pipe(gzipStream).pipe(writeStream);
-        });
-    }
-
     public async run(): Promise<void> {
         const { flags } = await this.parse(Deploy);
 
@@ -99,25 +58,46 @@ export default class Deploy extends Command {
             .readFileSync(path.join(snapshot, "hash"))
             .toString("hex");
 
-        // create tar from cartesi machine snapshot
-        setGracefulCleanup();
-        const tmpFile = tmpNameSync();
-        const progress = new Gauge();
-        const targz = await this.pack(snapshot, tmpFile, (current, total) => {
-            progress.show("packing cartesi machine snapshot", current / total);
-        });
-        this.debug(`created .tar.gz at ${tmpFile} with ${targz.size} bytes`);
-
         // upload tar to IPFS, getting the CID
         const client = create({ url: flags.ipfs });
-        const result = await client.add(createReadStream(tmpFile), {
-            progress: (bytes) =>
-                progress.show(
-                    `uploading cartesi machine snapshot to ${flags.ipfs}`,
-                    bytes / targz.size
-                ),
+
+        const multibar = new cliProgress.MultiBar({
+            clearOnComplete: true,
+            hideCursor: true,
+            autopadding: true,
+            format: "{bar} | {filename} | {value}/{total}",
         });
-        progress.hide();
+
+        // @ts-expect-error node web stream not type compatible with web stream
+        const files: FileLike[] = fs.readdirSync(snapshot).map((name) => {
+            // get size of file
+            const { size } = fs.statSync(path.join(snapshot, name));
+
+            // create progress bar for this filse
+            const bar = multibar.create(size, 0, { filename: name });
+
+            // create stream progress
+            const p = progress({ length: size, time: 100 }, (progress) =>
+                bar.update(progress.transferred, { filename: name })
+            );
+            return {
+                name,
+                stream: () =>
+                    Readable.toWeb(
+                        fs
+                            .createReadStream(path.join(snapshot, name))
+                            .pipe(p)
+                            .pipe(zlib.createGzip())
+                    ),
+            };
+        });
+        const result = await client.add(
+            createDirectoryEncoderStream(files).pipeThrough(
+                new CAREncoderStream()
+            )
+        );
+        multibar.stop();
+
         const { cid } = result;
         this.log(`machine snapshot uploaded: ${cid.toString()}`);
 
