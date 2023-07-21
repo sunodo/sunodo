@@ -1,13 +1,12 @@
 import { Address } from "abitype";
 import { Command, Flags, Interfaces } from "@oclif/core";
 import { isAddress, PublicClient, WalletClient } from "viem";
-import { foundry } from "@wagmi/chains";
 import { input, select } from "@inquirer/prompts";
 import ora from "ora";
 
 import { SunodoCommand } from "../../sunodoCommand.js";
 import * as CustomFlags from "../../flags.js";
-import createClients from "../../wallet.js";
+import createClients, { chains } from "../../wallet.js";
 
 export type Flags<T extends typeof Command> = Interfaces.InferredFlags<
     (typeof SendBaseCommand)["baseFlags"] & T["flags"]
@@ -24,11 +23,13 @@ export abstract class SendBaseCommand<
             description:
                 "the address of the DApp, defaults to the deployed DApp address if application is running.",
         }),
-        chain: Flags.string({
+        chain: CustomFlags.chain({
             description: "The chain name or EIP-155 chain ID.",
             char: "c",
             env: "CHAIN",
             helpGroup: "Ethereum",
+            chains,
+            options: chains.map((c) => c.network),
         }),
         "rpc-url": Flags.string({
             description: "The RPC endpoint.",
@@ -56,7 +57,6 @@ export abstract class SendBaseCommand<
     }> {
         // create viem clients
         return createClients({
-            supportedChains: [foundry],
             chain: this.flags.chain,
             rpcUrl: this.flags["rpc-url"],
             mnemonicPassphrase: this.flags["mnemonic-passphrase"],
