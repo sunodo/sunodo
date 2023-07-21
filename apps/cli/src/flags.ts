@@ -1,6 +1,9 @@
 import { Flags } from "@oclif/core";
+import { Chain } from "@wagmi/chains";
 import { Address } from "abitype";
 import { isAddress, isHex } from "viem";
+
+import { ConsensusType } from "./deploy.js";
 
 // custom flag for Address, does validation
 export const address = Flags.custom<Address>({
@@ -29,5 +32,19 @@ export const hex = Flags.custom<`0x${string}`>({
             return input;
         }
         throw new Error("Invalid hex string");
+    },
+});
+
+// flag for chain selection, require a list of supported chains
+type ChainOpts = { chains: Chain[] };
+export const chain = Flags.custom<Chain, ChainOpts>({
+    parse: async (input, _context, { chains }) => {
+        const chain = chains.find(
+            (c) => c.name === input || c.id === parseInt(input)
+        );
+        if (!chain) {
+            throw new Error(`Invalid chain ${input}`);
+        }
+        return chain;
     },
 });

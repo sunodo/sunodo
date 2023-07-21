@@ -1,20 +1,86 @@
-import { AsyncPromptConfig, confirm, input, select } from "@inquirer/prompts";
 import {
+    AsyncPromptConfig,
+    Separator,
+    confirm,
+    input,
+    select,
+} from "@inquirer/prompts";
+import { CancelablePromise, Context } from "@inquirer/type";
+import {
+    Address,
+    Hex,
     encodeAbiParameters,
+    getAddress,
     isAddress,
     isHex,
     parseAbiParameters,
     stringToHex,
+    toHex,
 } from "viem";
+import chalk from "chalk";
+
+/**
+ * Create an "and" validator from two validators
+ * @param v1 first validator function
+ * @param v2 second validator function
+ * @returns composed validator function using 'and'
+ */
+const and =
+    <T, R>(v1: (value: T) => R, v2?: (value: T) => R) =>
+    (value: T) => {
+        const r1 = v1(value);
+        if (r1 !== true) {
+            return r1;
+        }
+        if (v2) {
+            const r2 = v2(value);
+            return r2;
+        }
+        return true;
+    };
+
+/**
+ * Prompt for an address value.
+ * @param config inquirer config
+ * @returns address
+ */
+export type AddressPromptConfig = AsyncPromptConfig & { default?: Address };
+export const addressInput = async (
+    config: AddressPromptConfig,
+): Promise<Address> => {
+    const address = await input({
+        ...config,
+        validate: and(
+            (value) => isAddress(value) || "Enter a valid address",
+            config.validate,
+        ),
+    });
+    return getAddress(address);
+};
+
+/**
+ * Prompt for a hex value.
+ * @param config inquirer config
+ * @returns hex
+ */
+export type HexPromptConfig = AsyncPromptConfig & { default?: Hex };
+export const hexInput = async (config: HexPromptConfig): Promise<Hex> => {
+    const value = await input({
+        ...config,
+        validate: and(
+            (value) => isHex(value) || "Enter a valid hex value",
+            config.validate,
+        ),
+    });
+    return value as Hex;
+};
 
 /**
  * Prompt for a bytes input, by choosing from different encoding options.
  * @param config inquirer config
  * @returns bytes as hex string
  */
-export const bytesInput = async (
-    config: AsyncPromptConfig
-): Promise<`0x${string}`> => {
+export const bytesInput = async (config: AsyncPromptConfig): Promise<Hex> => {
     const encoding = await select({
         ...config,
         choices: [
@@ -39,11 +105,9 @@ export const bytesInput = async (
     });
     switch (encoding) {
         case "hex":
-            const valueHex = await input({
+            const valueHex = await hexInput({
                 ...config,
                 message: `${config.message} (as hex-string)`,
-                validate: (value) =>
-                    isHex(value) || "Enter a hex-string value starting with 0x",
             });
             return valueHex as `0x${string}`;
         case "string":
@@ -65,7 +129,7 @@ export const bytesInput = async (
  * @returns ABI encoded parameters as hex string
  */
 export const abiParamsInput = async (
-    config: AsyncPromptConfig
+    config: AsyncPromptConfig,
 ): Promise<`0x${string}`> => {
     const encoding = await input({
         message: `${config.message} (as ABI encoded https://abitype.dev/api/human.html#parseabiparameters )`,
@@ -109,7 +173,7 @@ export const abiParamsInput = async (
                                 return "Invalid number";
                             }
                         },
-                    })
+                    }),
                 );
                 break;
             case "bytes":
@@ -121,7 +185,7 @@ export const abiParamsInput = async (
                         message,
                         validate: (value) =>
                             isAddress(value) || "Invalid address",
-                    })
+                    }),
                 );
                 break;
             default:
@@ -129,4 +193,47 @@ export const abiParamsInput = async (
         }
     }
     return encodeAbiParameters(abiParameters, values);
+};
+
+// types below should be exported by @inquirer/select
+export type Choice<Value> = {
+    value: Value;
+    name?: string;
+    description?: string;
+    disabled?: boolean | string;
+    type?: never;
+};
+
+export type SelectConfig<Value> = AsyncPromptConfig & {
+    choices: ReadonlyArray<Choice<Value> | Separator>;
+    pageSize?: number;
+};
+
+export const selectAuto = <Value extends unknown>(
+    config: SelectConfig<Value> & { discardDisabled?: boolean },
+    context?: Context | undefined,
+): CancelablePromise<Value> => {
+    const choices = config.choices;
+
+    const list = config.discardDisabled
+        ? choices.filter((c) => c.type !== "separator" && !c.disabled)
+        : choices;
+
+    if (list.length === 1) {
+        const choice = list[0];
+        if (choice.type !== "separator") {
+            const output = context?.output || process.stdout;
+            const prefix = chalk.green("?");
+            const message: string = chalk.bold(config.message);
+            output.write(
+                `${prefix} ${message} ${chalk.cyan(
+                    choice.name || choice.value,
+                )}\n`,
+            );
+            return new CancelablePromise<Value>((resolve) =>
+                resolve(choice.value),
+            );
+        }
+    }
+    return select(config, context);
 };
