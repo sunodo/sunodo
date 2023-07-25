@@ -1,0 +1,27 @@
+manifestVersion: subsquid.io/v0.1
+name: sunodo-sepolia
+version: 1
+description: Indexes entities used by sunodo
+build:
+deploy:
+    addons:
+        postgres:
+    processor:
+        env:
+            NETWORK: sepolia
+            SEPOLIA_HTTP_URL: https://rpc.ankr.com/eth_sepolia
+        cmd:
+            - node
+            - lib/main
+    api:
+        cmd:
+            - npx
+            - squid-graphql-server
+            - "--dumb-cache"
+            - in-memory
+            - "--dumb-cache-ttl"
+            - "1000"
+            - "--dumb-cache-size"
+            - "100"
+            - "--dumb-cache-max-age"
+            - "1000"
