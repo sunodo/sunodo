@@ -1,0 +1,3 @@
+type Authority @entity {
+    id: ID!
+}
