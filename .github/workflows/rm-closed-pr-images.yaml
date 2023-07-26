@@ -23,7 +23,7 @@ jobs:
                   organization: sunodo
                   container: ${{ matrix.image }}
                   token: ${{ secrets.GITHUB_TOKEN }}
-                  prune-untagged: true
+                  prune-untagged: false
                   keep-last: 0
                   prune-tags-regexes: |
                       ^pr-${{ github.event.number }}$
