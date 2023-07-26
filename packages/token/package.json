@@ -13,16 +13,15 @@
         "clean": "run-s clean:hardhat clean:ignored",
         "compile": "hardhat compile",
         "deploy": "hardhat deploy",
-        "deploy:testnet": "run-s deploy:goerli deploy:sepolia deploy:polygon_mumbai deploy:arbitrum_goerli deploy:optimism_goerli deploy:bsc_testnet deploy:iotex_testnet deploy:chiado",
-        "deploy:localhost": "hardhat deploy --network localhost",
-        "deploy:goerli": "hardhat deploy --network goerli --export export/abi/goerli.json",
-        "deploy:sepolia": "hardhat deploy --network sepolia --export export/abi/sepolia.json",
-        "deploy:polygon_mumbai": "hardhat deploy --network polygon_mumbai --export export/abi/polygon_mumbai.json",
+        "deploy:arbitrum": "hardhat deploy --network arbitrum --export export/abi/arbitrum.json",
         "deploy:arbitrum_goerli": "hardhat deploy --network arbitrum_goerli --export export/abi/arbitrum_goerli.json",
+        "deploy:localhost": "hardhat deploy --network localhost --export export/abi/localhost.json --reset",
+        "deploy:mainnet": "hardhat deploy --network mainnet --export export/abi/mainnet.json",
+        "deploy:mainnets": "run-s deploy:arbitrum deploy:mainnet deploy:optimism",
+        "deploy:optimism": "hardhat deploy --network optimism --export export/abi/optimism.json",
         "deploy:optimism_goerli": "hardhat deploy --network optimism_goerli --export export/abi/optimism_goerli.json",
-        "deploy:bsc_testnet": "hardhat deploy --network bsc_testnet --export export/abi/bsc_testnet.json",
-        "deploy:iotex_testnet": "hardhat deploy --network iotex_testnet --export export/abi/iotex_testnet.json",
-        "deploy:chiado": "hardhat deploy --network chiado --export export/abi/chiado.json",
+        "deploy:sepolia": "hardhat deploy --network sepolia --export export/abi/sepolia.json",
+        "deploy:testnet": "run-s deploy:arbitrum_goerli deploy:optimism_goerli deploy:sepolia",
         "dev": "hardhat node",
         "export": "hardhat export-artifacts export/artifacts --hide-sources --including-empty-bytecode --including-no-public-functions",
         "prepack": "run-s clean build:prod",
@@ -30,13 +29,15 @@
         "tsc:prod": "tsc -p tsconfig.prod.json"
     },
     "devDependencies": {
+        "@safe-global/safe-singleton-factory": "^1",
+        "@wagmi/chains": "^1",
         "hardhat": "^2",
         "hardhat-deploy": "^0.11",
         "npm-run-all": "^4",
         "typescript": "^5"
     },
     "dependencies": {
-        "@openzeppelin/contracts-upgradeable": "4.9.0"
+        "@openzeppelin/contracts-upgradeable": "4.9.2"
     },
     "files": [
         "contracts",

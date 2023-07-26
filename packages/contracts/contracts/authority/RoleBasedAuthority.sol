@@ -6,7 +6,6 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 import {IConsensus} from "@cartesi/rollups/contracts/consensus/IConsensus.sol";
 import {Authority} from "@cartesi/rollups/contracts/consensus/authority/Authority.sol";
-import {IInputBox} from "@cartesi/rollups/contracts/inputs/IInputBox.sol";
 import {IHistory} from "@cartesi/rollups/contracts/history/IHistory.sol";
 
 /// @notice IConsensus implementation which delegates to an Authority contract and provides AccessControl
@@ -26,9 +25,8 @@ contract RoleBasedAuthority is AccessControl, IConsensus {
 
     /// @notice Create a new RoleBasedAuthority
     /// @param _owner The address that will be the ADMIN of this contract
-    /// @param _inputBox The input box used by the Authority
-    constructor(address _owner, IInputBox _inputBox) {
-        authority = new Authority(address(this), _inputBox);
+    constructor(address _owner) {
+        authority = new Authority(address(this));
         _grantRole(DEFAULT_ADMIN_ROLE, _owner);
     }
 

@@ -4,7 +4,8 @@
         "MNEMONIC",
         "NODE_ENV",
         "PORT",
-        "PROJECT_ID",
+        "INFURA_ID",
+        "ALCHEMY_ID",
         "RPC_URL",
         "TS_NODE_PROJECT"
     ],
