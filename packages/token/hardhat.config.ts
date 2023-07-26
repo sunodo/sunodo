@@ -1,19 +1,35 @@
 import { HttpNetworkUserConfig } from "hardhat/types";
 import { HardhatUserConfig } from "hardhat/config";
+import { getSingletonFactoryInfo } from "@safe-global/safe-singleton-factory";
+
 import "hardhat-deploy";
+
+import {
+    Chain,
+    arbitrum,
+    arbitrumGoerli,
+    mainnet,
+    optimism,
+    optimismGoerli,
+    sepolia,
+} from "@wagmi/chains";
 
 // read MNEMONIC from env variable
 let mnemonic = process.env.MNEMONIC;
 
-const infuraNetwork = (
-    network: string,
-    chainId?: number,
-    gas?: number
-): HttpNetworkUserConfig => {
+const networkConfig = (chain: Chain): HttpNetworkUserConfig => {
+    let url = chain.rpcUrls.public.http.at(0);
+
+    // support for infura and alchemy URLs through env variables
+    if (process.env.INFURA_ID && chain.rpcUrls.infura?.http) {
+        url = `${chain.rpcUrls.infura.http}/${process.env.INFURA_ID}`;
+    } else if (process.env.ALCHEMY_ID && chain.rpcUrls.alchemy?.http) {
+        url = `${chain.rpcUrls.alchemy.http}/${process.env.ALCHEMY_ID}`;
+    }
+
     return {
-        url: `https://${network}.infura.io/v3/${process.env.PROJECT_ID}`,
-        chainId,
-        gas,
+        chainId: chain.id,
+        url,
         accounts: mnemonic ? { mnemonic } : undefined,
     };
 };
@@ -29,30 +45,36 @@ const config: HardhatUserConfig = {
             url: process.env.RPC_URL || "http://localhost:8545",
             accounts: mnemonic ? { mnemonic } : undefined,
         },
-        goerli: infuraNetwork("goerli", 5, 6283185),
-        sepolia: infuraNetwork("sepolia", 11155111, 6283185),
-        polygon_mumbai: infuraNetwork("polygon-mumbai", 80001),
-        arbitrum_goerli: infuraNetwork("arbitrum-goerli", 421613),
-        optimism_goerli: infuraNetwork("optimism-goerli", 420),
-        bsc_testnet: {
-            url: "https://data-seed-prebsc-1-s1.binance.org:8545",
-            chainId: 97,
-            accounts: mnemonic ? { mnemonic } : undefined,
-        },
-        iotex_testnet: {
-            url: "https://babel-api.testnet.iotex.io",
-            chainId: 4690,
-            accounts: mnemonic ? { mnemonic } : undefined,
-        },
-        chiado: {
-            url: "https://rpc.chiadochain.net",
-            chainId: 10200,
-            gasPrice: 1000000000,
-            accounts: mnemonic ? { mnemonic } : undefined,
-        },
+        arbitrum_goerli: networkConfig(arbitrumGoerli),
+        arbitrum: networkConfig(arbitrum),
+        mainnet: networkConfig(mainnet),
+        optimism: networkConfig(optimism),
+        optimism_goerli: networkConfig(optimismGoerli),
+        sepolia: networkConfig(sepolia),
     },
     namedAccounts: {
         deployer: 0,
+    },
+    deterministicDeployment: (network: string) => {
+        // networks will use another deterministic deployment proxy
+        // https://github.com/safe-global/safe-singleton-factory
+        const chainId = parseInt(network);
+        const info = getSingletonFactoryInfo(chainId);
+        if (info) {
+            return {
+                factory: info.address,
+                deployer: info.signerAddress,
+                funding: (
+                    BigInt(info.gasPrice) * BigInt(info.gasLimit)
+                ).toString(),
+                signedTx: info.transaction,
+            };
+        } else {
+            console.warn(
+                `unsupported deterministic deployment for network ${network}`
+            );
+            return undefined;
+        }
     },
 };
 
