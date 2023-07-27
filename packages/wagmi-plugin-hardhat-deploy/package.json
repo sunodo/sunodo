@@ -12,8 +12,8 @@
     "exports": "./dist/index.js",
     "dependencies": {},
     "devDependencies": {
-        "@wagmi/cli": "^1.2",
-        "abitype": "^0.8",
+        "@wagmi/cli": "^1",
+        "abitype": "^0.9",
         "typescript": "^5"
     }
 }
