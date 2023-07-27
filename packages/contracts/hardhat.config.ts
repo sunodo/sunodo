@@ -102,7 +102,7 @@ const config: HardhatUserConfig = {
             "optimism_goerli",
             "sepolia",
         ],
-        ["@cartesi/util", "@cartesi/rollups", "@sunodo/token"]
+        ["@cartesi/util", "@cartesi/rollups"]
     ),
     docgen: {
         pages: "files",
