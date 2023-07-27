@@ -54,10 +54,6 @@ export default class SendERC721 extends SendBaseCommand<typeof SendERC721> {
         // get dapp address from local node, or ask
         const dapp = await super.getDAppAddress();
 
-        const chainId = await publicClient.getChainId();
-        const addresses: Record<number, Address> = erc721PortalAddress;
-        const address = addresses[chainId] as Address;
-
         const ercValidator = async (
             value: string
         ): Promise<string | boolean> => {
@@ -94,7 +90,7 @@ export default class SendERC721 extends SendBaseCommand<typeof SendERC721> {
             }));
 
         const { request } = await publicClient.simulateContract({
-            address,
+            address: erc721PortalAddress,
             abi: erc721PortalABI,
             functionName: "depositERC721Token",
             args: [token, dapp, BigInt(tokenId), "0x", "0x"],
