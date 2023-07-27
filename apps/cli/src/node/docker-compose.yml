@@ -82,7 +82,7 @@ services:
                 condition: service_completed_successfully
         volumes:
             - blockchain-data:/opt/cartesi/share/deployments:ro
-            - ./.sunodo/image:/var/opt/cartesi/machine-snapshots/0_0
+            - ./.sunodo/image:/tmp/machine-snapshots/0_0:ro
         healthcheck:
             test: ["CMD", "is_ready"]
             interval: 10s
