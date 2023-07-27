@@ -16,6 +16,10 @@ import {
 
 // read MNEMONIC from env variable
 let mnemonic = process.env.MNEMONIC;
+let privateKey = process.env.PRIVATE_KEY;
+
+const DEFAULT_DEVNET_MNEMONIC =
+    "test test test test test test test test test test test junk";
 
 const networkConfig = (chain: Chain): HttpNetworkUserConfig => {
     let url = chain.rpcUrls.public.http.at(0);
@@ -30,7 +34,11 @@ const networkConfig = (chain: Chain): HttpNetworkUserConfig => {
     return {
         chainId: chain.id,
         url,
-        accounts: mnemonic ? { mnemonic } : undefined,
+        accounts: mnemonic
+            ? { mnemonic }
+            : privateKey
+            ? [privateKey]
+            : undefined,
     };
 };
 
@@ -43,7 +51,13 @@ const config: HardhatUserConfig = {
         hardhat: mnemonic ? { accounts: { mnemonic } } : {},
         localhost: {
             url: process.env.RPC_URL || "http://localhost:8545",
-            accounts: mnemonic ? { mnemonic } : undefined,
+            accounts: mnemonic
+                ? { mnemonic }
+                : privateKey
+                ? [privateKey]
+                : {
+                      mnemonic: DEFAULT_DEVNET_MNEMONIC,
+                  },
         },
         arbitrum_goerli: networkConfig(arbitrumGoerli),
         arbitrum: networkConfig(arbitrum),

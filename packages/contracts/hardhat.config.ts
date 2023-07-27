@@ -22,6 +22,8 @@ import {
 
 // read MNEMONIC from env variable
 let mnemonic = process.env.MNEMONIC;
+let privateKey = process.env.PRIVATE_KEY;
+
 const DEFAULT_DEVNET_MNEMONIC =
     "test test test test test test test test test test test junk";
 
@@ -45,7 +47,11 @@ const networkConfig = (chain: Chain): HttpNetworkUserConfig => {
     return {
         chainId: chain.id,
         url,
-        accounts: mnemonic ? { mnemonic } : undefined,
+        accounts: mnemonic
+            ? { mnemonic }
+            : privateKey
+            ? [privateKey]
+            : undefined,
     };
 };
 
