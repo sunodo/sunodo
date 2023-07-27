@@ -6,6 +6,7 @@
         "PORT",
         "INFURA_ID",
         "ALCHEMY_ID",
+        "PRIVATE_KEY",
         "RPC_URL",
         "TS_NODE_PROJECT"
     ],
