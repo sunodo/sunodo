@@ -29,15 +29,11 @@ export default class SendEther extends SendBaseCommand<typeof SendEther> {
         // get dapp address from local node, or ask
         const dapp = await super.getDAppAddress();
 
-        const chainId = await publicClient.getChainId();
-        const addresses: Record<number, Address> = etherPortalAddress;
-        const address = addresses[chainId] as Address;
-
         const amount =
             this.flags.amount || (await input({ message: "Amount" }));
 
         const { request } = await publicClient.simulateContract({
-            address,
+            address: etherPortalAddress,
             abi: etherPortalABI,
             functionName: "depositEther",
             args: [dapp, this.flags.execLayerData],

@@ -125,14 +125,10 @@ export default class SendGeneric extends SendBaseCommand<typeof SendGeneric> {
         // get dapp address from local node, or ask
         const dapp = await super.getDAppAddress();
 
-        const chainId = await publicClient.getChainId();
-        const addresses: Record<number, Address> = inputBoxAddress;
-        const address = addresses[chainId] as Address;
-
         const payload =
             (await this.getInput()) || (await bytesInput({ message: "Input" }));
         const { request } = await publicClient.simulateContract({
-            address,
+            address: inputBoxAddress,
             abi: inputBoxABI,
             functionName: "addInput",
             args: [dapp, payload],

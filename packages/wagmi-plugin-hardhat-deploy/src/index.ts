@@ -87,6 +87,19 @@ const plugin = (config: HardhatDeployOptions): Plugin => {
                 {}
             );
 
+            // simplify address structure if addresses on all chains are the same
+            Object.values(contracts).forEach((contract) => {
+                const addresses = Object.values(
+                    contract.address as Record<number, Address>
+                );
+                // build a unique list of addresses
+                const unique = [...new Set(addresses)];
+
+                // replace field with a single address if all addresses are the same
+                contract.address =
+                    unique.length === 1 ? unique[0] : contract.address;
+            });
+
             return Object.values(contracts);
         },
     };

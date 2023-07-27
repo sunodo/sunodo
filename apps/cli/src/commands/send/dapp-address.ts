@@ -22,12 +22,8 @@ export default class SendAddress extends SendBaseCommand<typeof SendAddress> {
         // get dapp address from local node, or ask
         const dapp = await super.getDAppAddress();
 
-        const chainId = await publicClient.getChainId();
-        const addresses: Record<number, Address> = dAppAddressRelayAddress;
-        const address = addresses[chainId] as Address;
-
         const { request } = await publicClient.simulateContract({
-            address,
+            address: dAppAddressRelayAddress,
             abi: dAppAddressRelayABI,
             functionName: "relayDAppAddress",
             args: [dapp],
