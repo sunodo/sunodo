@@ -27,7 +27,6 @@
     },
     "dependencies": {
         "@cartesi/rollups": "1.0.0-rc.1",
-        "@sunodo/token": "*",
         "typescript": "^5"
     },
     "devDependencies": {
