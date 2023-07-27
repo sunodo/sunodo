@@ -9,4 +9,5 @@ typechain-types
 artifacts
 cache
 deployments/localhost
+deployments/*/solcInputs/*.json
 /dist
