@@ -40,7 +40,7 @@ type ChainOpts = { chains: Chain[] };
 export const chain = Flags.custom<Chain, ChainOpts>({
     parse: async (input, _context, { chains }) => {
         const chain = chains.find(
-            (c) => c.name === input || c.id === parseInt(input)
+            (c) => c.network === input || c.id === parseInt(input),
         );
         if (!chain) {
             throw new Error(`Invalid chain ${input}`);
