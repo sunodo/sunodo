@@ -163,7 +163,7 @@ const publishIPFS = async (
 };
 
 /**
- *
+ * Publish the cartesi machine to a public location
  * @param machine directory of cartesi machine snapshot to deploy
  * @param options
  * @returns selected publishing method and location of published machine
