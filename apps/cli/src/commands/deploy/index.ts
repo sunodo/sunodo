@@ -1,13 +1,51 @@
-import { Command, Flags } from "@oclif/core";
+import { Args, Command, Flags, Interfaces } from "@oclif/core";
+import { Address, Hash } from "viem";
 import path from "path";
 import { URL } from "url";
 import chalk from "chalk";
 
-import deploy from "../deploy.js";
-import * as CustomFlags from "../flags.js";
-import { chains } from "../wallet.js";
+import { SunodoCommand } from "../../sunodoCommand.js";
+import deploy from "../../deploy.js";
+import * as CustomFlags from "../../flags.js";
+import { chains } from "../../wallet.js";
 
-export default class Deploy extends Command {
+export type Deployment = {
+    transaction: Hash; // hash of the transaction that deployed the application
+    address: Address; // address of the deployed application
+    owner: Address; // address of the application owner
+    consensus: Address; // address of the consensus smart contract
+    templateHash: Hash; // hash of the cartesi machine template
+    location: string; // public location of the cartesi machine template
+};
+
+export type Flags<T extends typeof Command> = Interfaces.InferredFlags<
+    (typeof DeployBaseCommand)["baseFlags"] & T["flags"]
+>;
+export type Args<T extends typeof Command> = Interfaces.InferredArgs<T["args"]>;
+
+// base command for sending input to the application
+export abstract class DeployBaseCommand<
+    T extends typeof Command,
+> extends SunodoCommand<typeof DeployBaseCommand> {
+    static baseFlags = {};
+
+    protected flags!: Flags<T>;
+    protected args!: Args<T>;
+
+    public async init(): Promise<void> {
+        await super.init();
+        const { args, flags } = await this.parse({
+            flags: this.ctor.flags,
+            baseFlags: (super.ctor as typeof DeployBaseCommand).baseFlags,
+            args: this.ctor.args,
+            strict: this.ctor.strict,
+        });
+        this.flags = flags as Flags<T>;
+        this.args = args as Args<T>;
+    }
+}
+
+export default class Deploy extends DeployBaseCommand<typeof Deploy> {
     static summary = "Deploy application to a live network.";
 
     static description =
@@ -122,16 +160,6 @@ export default class Deploy extends Command {
         }),
     };
 
-    private async keypress() {
-        process.stdin.setRawMode(true);
-        return new Promise((resolve) =>
-            process.stdin.once("data", (d) => {
-                process.stdin.setRawMode(false);
-                resolve(d);
-            })
-        );
-    }
-
     public async run(): Promise<void> {
         const { flags } = await this.parse(Deploy);
 
@@ -156,8 +184,10 @@ export default class Deploy extends Command {
                 unpermissioned: flags["consensus-unpermissioned"],
             },
         });
-        this.log(`${chalk.green("✔")} Application deployed ${chalk.cyan(application)}`);
-
-        process.exit(0);
+        this.log(
+            `${chalk.green("✔")} Application deployed ${chalk.cyan(
+                application,
+            )}`,
+        );
     }
 }
