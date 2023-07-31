@@ -18,6 +18,7 @@ import {
     controlledDAppFactoryAddress,
     iPayableDAppFactoryABI,
 } from "./contracts.js";
+import { Deployment } from "./commands/deploy/index.js";
 
 type CartesiDAppFactoryABI = typeof cartesiDAppFactoryABI;
 type ApplicationCreatedEvent = ExtractAbiEvent<
@@ -79,7 +80,7 @@ const fetchAuthorities = async (
             // 11155111: 3982032n, // block number AuthorityFactory was deployed on this network
         };
         const fromBlock = fromBlocks[chainId];
-        if (fromBlock) {
+        if (fromBlock !== undefined) {
             // create filter to read events from an AuthorityFactory contract
             const filter = await publicClient.createContractEventFilter({
                 abi: authorityFactoryABI,
@@ -216,8 +217,9 @@ const publish = async (
 };
 
 const configureNetwork = async (options: EthereumPromptOptions) => {
-    const { publicClient, walletClient } = await createClients(options);
+    const { chain, publicClient, walletClient } = await createClients(options);
     return {
+        chain,
         publicClient,
         walletClient,
     };
@@ -373,7 +375,7 @@ const configureRewards = async (): Promise<RewardsConfig> => {
 const deploy = async (
     machine: string,
     options: DeployOptions,
-): Promise<Address> => {
+): Promise<Deployment> => {
     // check machine integrity and return its hash
     const templateHash = await check(machine);
     process.stdout.write(
@@ -391,7 +393,7 @@ const deploy = async (
     );
 
     // configure network
-    const { publicClient, walletClient } = await configureNetwork(
+    const { chain, publicClient, walletClient } = await configureNetwork(
         options.network,
     );
 
@@ -446,7 +448,15 @@ const deploy = async (
         for (const log of logs) {
             const { application } = log.args;
             if (application) {
-                return application;
+                return {
+                    address: application,
+                    chainId: chain.id,
+                    transaction: hash,
+                    consensus,
+                    owner,
+                    templateHash,
+                    location,
+                };
             }
         }
         throw new Error("ApplicationCreated event not found");

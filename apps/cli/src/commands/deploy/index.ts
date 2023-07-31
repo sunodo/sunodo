@@ -1,8 +1,9 @@
 import { Args, Command, Flags, Interfaces } from "@oclif/core";
-import { Address, Hash } from "viem";
+import { Address, Chain, Hash } from "viem";
+import chalk from "chalk";
+import fs from "fs-extra";
 import path from "path";
 import { URL } from "url";
-import chalk from "chalk";
 
 import { SunodoCommand } from "../../sunodoCommand.js";
 import deploy from "../../deploy.js";
@@ -10,6 +11,7 @@ import * as CustomFlags from "../../flags.js";
 import { chains } from "../../wallet.js";
 
 export type Deployment = {
+    chainId: number; // id of chain where the application was deployed
     transaction: Hash; // hash of the transaction that deployed the application
     address: Address; // address of the deployed application
     owner: Address; // address of the application owner
@@ -31,6 +33,20 @@ export abstract class DeployBaseCommand<
 
     protected flags!: Flags<T>;
     protected args!: Args<T>;
+
+    protected getDeployments(): Deployment[] {
+        const filename = path.join(".sunodo", "deployments.json");
+        return fs.existsSync(filename)
+            ? (fs.readJsonSync(filename) as Deployment[])
+            : [];
+    }
+
+    protected saveDeployment(deployment: Deployment) {
+        const deployments = this.getDeployments();
+        deployments.push(deployment);
+        const filename = path.join(".sunodo", "deployments.json");
+        fs.outputJsonSync(filename, deployments);
+    }
 
     public async init(): Promise<void> {
         await super.init();
@@ -164,7 +180,7 @@ export default class Deploy extends DeployBaseCommand<typeof Deploy> {
         const { flags } = await this.parse(Deploy);
 
         const snapshot = path.join(".sunodo", "image");
-        const application = await deploy(snapshot, {
+        const deployment = await deploy(snapshot, {
             ipfs: {
                 url: flags["ipfs-url"],
                 username: flags["ipfs-username"],
@@ -184,9 +200,12 @@ export default class Deploy extends DeployBaseCommand<typeof Deploy> {
                 unpermissioned: flags["consensus-unpermissioned"],
             },
         });
+        // save deployment to local json file
+        this.saveDeployment(deployment);
+
         this.log(
             `${chalk.green("✔")} Application deployed ${chalk.cyan(
-                application,
+                deployment.address,
             )}`,
         );
     }

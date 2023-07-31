@@ -284,6 +284,7 @@ const createWalletClient = async (
 const createClients = async (
     options: EthereumPromptOptions,
 ): Promise<{
+    chain: Chain;
     publicClient: PublicClient;
     walletClient: WalletClient;
 }> => {
@@ -300,6 +301,7 @@ const createClients = async (
     const walletClient = await createWalletClient(options, chain, transport);
 
     return {
+        chain,
         publicClient,
         walletClient,
     };
