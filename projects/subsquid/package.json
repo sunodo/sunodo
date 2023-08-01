@@ -3,9 +3,9 @@
     "version": "0.6.0",
     "private": true,
     "scripts": {
-        "build": "run-s tsc",
-        "clean": "rimraf lib src/abi src/model",
-        "codegen": "run-p codegen:database codegen:wagmi",
+        "build": "run-s clean codegen tsc",
+        "clean": "rimraf lib src/model",
+        "codegen": "run-p codegen:database",
         "codegen:database": "squid-typeorm-codegen",
         "codegen:wagmi": "wagmi generate",
         "update": "npx npm-check-updates --filter /subsquid/ --upgrade && npm i -f",
@@ -31,7 +31,6 @@
     },
     "devDependencies": {
         "@subsquid/typeorm-codegen": "^1.2",
-        "@sunodo/wagmi-plugin-hardhat-deploy": "*",
         "@types/node": "^20",
         "@wagmi/chains": "^1.6",
         "@wagmi/cli": "^1.3",
