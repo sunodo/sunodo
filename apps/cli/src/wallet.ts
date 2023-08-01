@@ -126,14 +126,11 @@ const selectTransport = async (
     if (options.rpcUrl) {
         return http(options.rpcUrl);
     } else {
-        if (chain.rpcUrls.public.http) {
-            // or chain.rpcUrls.default.http ?
-            // if no url is provided, then the transport will fall back to a public RPC URL on the chain
-            return http();
-        } else {
-            const url = await input({ message: "RPC URL" });
-            return http(url);
-        }
+        const url = await input({
+            message: "RPC URL",
+            default: chain.rpcUrls.public.http[0],
+        });
+        return http(url);
     }
 };
 
