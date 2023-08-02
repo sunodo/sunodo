@@ -1,11 +1,19 @@
 import { input, password as inputPassword, select } from "@inquirer/prompts";
 import fs from "fs";
 import path from "path";
-import { Address, Hash, PublicClient, zeroAddress } from "viem";
+import {
+    Address,
+    Hash,
+    isAddress,
+    getAddress,
+    PublicClient,
+    zeroAddress,
+} from "viem";
 import { ExtractAbiEvent } from "abitype";
 import ora from "ora";
 import { URL } from "url";
 import chalk from "chalk";
+import { cacheExchange, createClient, fetchExchange } from "@urql/core";
 
 import { importDirectory, testConnection } from "./ipfs.js";
 import createClients, { EthereumPromptOptions } from "./wallet.js";
@@ -19,6 +27,7 @@ import {
     iPayableDAppFactoryABI,
 } from "./contracts.js";
 import { Deployment } from "./commands/deploy/index.js";
+import { AuthoritiesDocument } from "./graphql/index.js";
 
 type CartesiDAppFactoryABI = typeof cartesiDAppFactoryABI;
 type ApplicationCreatedEvent = ExtractAbiEvent<
@@ -75,28 +84,48 @@ const fetchAuthorities = async (
 ): Promise<Address[]> => {
     const chainId = publicClient.chain?.id;
     if (chainId) {
-        const fromBlocks: Record<number, bigint> = {
-            31337: 0n,
-            // 11155111: 3982032n, // block number AuthorityFactory was deployed on this network
+        const indexingUrl: Record<number, string> = {
+            11155111: "https://squid.subsquid.io/sunodo-sepolia/graphql",
         };
-        const fromBlock = fromBlocks[chainId];
-        if (fromBlock !== undefined) {
-            // create filter to read events from an AuthorityFactory contract
-            const filter = await publicClient.createContractEventFilter({
-                abi: authorityFactoryABI,
-                eventName: "AuthorityCreated",
-                address,
-                fromBlock,
+
+        const url = indexingUrl[chainId];
+        if (url) {
+            const client = createClient({
+                url,
+                exchanges: [cacheExchange, fetchExchange],
             });
+            const { data } = await client
+                .query(AuthoritiesDocument, {})
+                .toPromise();
+            if (data?.authorities) {
+                return data.authorities
+                    .filter((authority) => isAddress(authority.id))
+                    .map((authority) => getAddress(authority.id));
+            }
+        } else {
+            const fromBlocks: Record<number, bigint> = {
+                31337: 0n,
+                // 11155111: 3982032n, // block number AuthorityFactory was deployed on this network
+            };
+            const fromBlock = fromBlocks[chainId];
+            if (fromBlock !== undefined) {
+                // create filter to read events from an AuthorityFactory contract
+                const filter = await publicClient.createContractEventFilter({
+                    abi: authorityFactoryABI,
+                    eventName: "AuthorityCreated",
+                    address,
+                    fromBlock,
+                });
 
-            // read all logs since beginning of time
-            const logs = await publicClient.getFilterLogs({ filter });
+                // read all logs since beginning of time
+                const logs = await publicClient.getFilterLogs({ filter });
 
-            // parse logs into list of authorities
-            const authorities = logs
-                .filter((log) => log.args.authority)
-                .map((log) => log.args.authority!);
-            return authorities;
+                // parse logs into list of authorities
+                const authorities = logs
+                    .filter((log) => log.args.authority)
+                    .map((log) => log.args.authority!);
+                return authorities;
+            }
         }
     }
     return [];

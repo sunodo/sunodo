@@ -28,6 +28,7 @@
         "@oclif/plugin-help": "^5.2",
         "@oclif/plugin-plugins": "^3.1",
         "@oclif/plugin-update": "^3.1",
+        "@urql/core": "^4.1",
         "@wagmi/chains": "^1.6",
         "@wagmi/core": "^1.3",
         "@walletconnect/ethereum-provider": "^2.9",
@@ -39,6 +40,7 @@
         "fs-extra": "^11",
         "gauge": "^5.0",
         "giget": "^1.1",
+        "graphql": "^16",
         "helia": "^1.3",
         "ipfs-car": "^1.0",
         "kubo-rpc-client": "^3.0",
@@ -54,6 +56,11 @@
         "zlib": "^1.0"
     },
     "devDependencies": {
+        "@graphql-codegen/cli": "^5",
+        "@graphql-codegen/typed-document-node": "^5",
+        "@graphql-codegen/typescript": "^4",
+        "@graphql-codegen/typescript-operations": "^4",
+        "@graphql-typed-document-node/core": "^3.2",
         "@oclif/test": "^2.3",
         "@sunodo/contracts": "*",
         "@sunodo/wagmi-plugin-hardhat-deploy": "*",
@@ -99,7 +106,9 @@
     "scripts": {
         "build": "run-s clean codegen compile copy-files",
         "clean": "rimraf dist",
-        "codegen": "wagmi generate",
+        "codegen": "run-p codegen:graphql codegen:wagmi",
+        "codegen:graphql": "graphql-codegen",
+        "codegen:wagmi": "wagmi generate",
         "compile": "tsc -b",
         "copy-files": "copyfiles -u 1 src/**/*.yml dist",
         "lint": "eslint . --ext .ts --config .eslintrc",
