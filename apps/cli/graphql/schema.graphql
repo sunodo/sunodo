@@ -1,0 +1,78 @@
+type Query {
+    authorities(
+        where: AuthorityWhereInput
+        orderBy: [AuthorityOrderByInput!]
+        offset: Int
+        limit: Int
+    ): [Authority!]!
+    authorityById(id: String!): Authority
+    authorityByUniqueInput(where: WhereIdInput!): Authority
+        @deprecated(reason: "Use authorityById")
+    authoritiesConnection(
+        orderBy: [AuthorityOrderByInput!]!
+        after: String
+        first: Int
+        where: AuthorityWhereInput
+    ): AuthoritiesConnection!
+    squidStatus: SquidStatus
+}
+
+type Authority {
+    id: String!
+}
+
+input AuthorityWhereInput {
+    id_isNull: Boolean
+    id_eq: String
+    id_not_eq: String
+    id_gt: String
+    id_gte: String
+    id_lt: String
+    id_lte: String
+    id_in: [String!]
+    id_not_in: [String!]
+    id_contains: String
+    id_not_contains: String
+    id_containsInsensitive: String
+    id_not_containsInsensitive: String
+    id_startsWith: String
+    id_not_startsWith: String
+    id_endsWith: String
+    id_not_endsWith: String
+    AND: [AuthorityWhereInput!]
+    OR: [AuthorityWhereInput!]
+}
+
+enum AuthorityOrderByInput {
+    id_ASC
+    id_DESC
+}
+
+input WhereIdInput {
+    id: String!
+}
+
+type AuthoritiesConnection {
+    edges: [AuthorityEdge!]!
+    pageInfo: PageInfo!
+    totalCount: Int!
+}
+
+type AuthorityEdge {
+    node: Authority!
+    cursor: String!
+}
+
+type PageInfo {
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    startCursor: String!
+    endCursor: String!
+}
+
+type SquidStatus {
+    """
+    The height of the processed part of the chain
+    """
+    height: Int
+}
