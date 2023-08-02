@@ -1,15 +1,18 @@
 import { input } from "@inquirer/prompts";
 import { Address } from "abitype";
+import chalk from "chalk";
 import {
     Chain,
     createPublicClient as viemCreatePublicClient,
     createWalletClient as viemCreateWalletClient,
+    formatUnits,
     http,
     HttpTransport,
     PublicClient,
     WalletClient,
     custom,
     Account,
+    Transport,
 } from "viem";
 import { mnemonicToAccount, privateKeyToAccount } from "viem/accounts";
 import { MetaMaskSDK } from "@metamask/sdk";
@@ -150,15 +153,46 @@ const createPublicClient = async (
     return publicClient;
 };
 
+/**
+ * Format the balance of an account for display
+ * @param account account to format the balance for
+ * @param publicClient client to query the balance
+ * @returns formatted balance string
+ */
+const addressBalanceLabel = async (
+    address: Address,
+    publicClient: PublicClient,
+): Promise<string> => {
+    const chain = publicClient.chain;
+    if (chain) {
+        // query balance using provider
+        const balance = await publicClient.getBalance({ address });
+
+        // format balance
+        const symbol = chain.nativeCurrency.symbol;
+        const balanceStr = formatUnits(balance, chain.nativeCurrency.decimals);
+        let balanceLabel = chalk.bold(`${balanceStr} ${symbol}`);
+
+        // display in red if balance is zero
+        if (balance === 0n) {
+            balanceLabel = chalk.red(balanceLabel);
+        }
+        return `${address} ${balanceLabel}`;
+    } else {
+        return address;
+    }
+};
+
 const createWalletClient = async (
     options: EthereumPromptOptions,
     chain: Chain,
-    publicTransport: HttpTransport,
+    publicClient: PublicClient,
+    publicTransport: Transport,
 ): Promise<WalletClient> => {
     if (options.mnemonicPassphrase) {
         // mnemonic specified
         const account = mnemonicToAccount(options.mnemonicPassphrase, {
-            accountIndex: options.mnemonicIndex,
+            addressIndex: options.mnemonicIndex,
         });
 
         // create wallet client
@@ -187,12 +221,15 @@ const createWalletClient = async (
                 chain,
             });
             const addresses = await client.requestAddresses();
+            const choices = await Promise.all(
+                addresses.map(async (value) => {
+                    const name = await addressBalanceLabel(value, publicClient);
+                    return { name, value };
+                }),
+            );
             const account = await selectAuto<Address>({
                 message: "Account",
-                choices: addresses.map((address) => ({
-                    name: address,
-                    value: address,
-                })),
+                choices,
                 pageSize: Math.min(addresses.length, 20),
             });
 
@@ -218,13 +255,16 @@ const createWalletClient = async (
                 chain,
             });
             const addresses = await client.requestAddresses();
+            const choices = await Promise.all(
+                addresses.map(async (value) => {
+                    const name = await addressBalanceLabel(value, publicClient);
+                    return { name, value };
+                }),
+            );
             const account = await selectAuto<Address>({
                 message: "Account",
-                choices: addresses.map((address) => ({
-                    name: address,
-                    value: address,
-                })),
-                pageSize: Math.min(addresses.length, 20),
+                choices,
+                pageSize: choices.length,
             });
 
             // create wallet client
@@ -242,29 +282,39 @@ const createWalletClient = async (
             });
 
             // select account from mnemonic
-            const account = options.mnemonicIndex
-                ? mnemonicToAccount(mnemonic, {
-                      accountIndex: options.mnemonicIndex,
-                  })
-                : await selectAuto<Account>({
-                      message: "Account",
-                      choices: [...Array(10)].map((_, accountIndex) => {
-                          const account = mnemonicToAccount(mnemonic, {
-                              accountIndex,
-                          });
-                          return {
-                              name: account.address,
-                              value: account,
-                          };
-                      }),
-                      pageSize: 10,
-                  });
+            if (options.mnemonicIndex) {
+                return viemCreateWalletClient({
+                    transport: publicTransport,
+                    chain,
+                    account: mnemonicToAccount(mnemonic, {
+                        addressIndex: options.mnemonicIndex,
+                    }),
+                });
+            } else {
+                const choices = await Promise.all(
+                    [...Array(10)].map(async (_, addressIndex) => {
+                        const account = mnemonicToAccount(mnemonic, {
+                            addressIndex,
+                        });
+                        const name = await addressBalanceLabel(
+                            account.address,
+                            publicClient,
+                        );
+                        return { name, value: account };
+                    }),
+                );
+                const account = await selectAuto<Account>({
+                    message: "Account",
+                    choices,
+                    pageSize: choices.length,
+                });
 
-            return viemCreateWalletClient({
-                transport: publicTransport,
-                chain,
-                account,
-            });
+                return viemCreateWalletClient({
+                    transport: publicTransport,
+                    chain,
+                    account,
+                });
+            }
         } else if (wallet === "private-key") {
             const privateKey = await hexInput({ message: "Private Key" });
             const account = privateKeyToAccount(privateKey);
@@ -295,7 +345,12 @@ const createClients = async (
     const publicClient = await createPublicClient(chain, transport);
 
     // create wallet client
-    const walletClient = await createWalletClient(options, chain, transport);
+    const walletClient = await createWalletClient(
+        options,
+        chain,
+        publicClient,
+        transport,
+    );
 
     return {
         chain,
