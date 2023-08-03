@@ -14,8 +14,8 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
     // deploy the wrapper around the CartesiDAppFactory that includes machine IPFS hash
     const { CartesiDAppFactory } = await deployments.all();
 
-    // deploy the controlled factory
-    await deployments.deploy("ControlledDAppFactory", {
+    // deploy the factory of of payable deploys using ERC-20
+    await deployments.deploy("PayableDAppSystem", {
         ...opts,
         args: [CartesiDAppFactory.address],
     });

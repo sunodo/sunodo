@@ -11,9 +11,7 @@ interface IFinancialProtocol {
     /// @dev This event signals until when the validator node for the dapp should be running.
     /// The offchain implementation which controls the execution of validator nodes is free
     /// to choose which implementation contracts they will rely on for this information.
-    /// The dapp can be deployed on a different network than the one this event is emitted on.
-    /// @param chainid The chainid of the network the dapp is deployed
     /// @param dapp The dapp address
     /// @param until The point in time when the dapp will run out of funds (seconds since epoch)
-    event FinancialRunway(uint256 chainid, address dapp, uint256 until);
+    event FinancialRunway(address indexed dapp, uint256 until);
 }
