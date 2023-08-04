@@ -8,6 +8,7 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
 
     await deploy("SunodoToken", {
         from: deployer,
+        args: [deployer],
         deterministicDeployment: true,
         log: true,
     });
