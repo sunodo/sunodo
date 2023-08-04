@@ -12,7 +12,7 @@ export interface DeployOptions {
 
 const deploy = async (
     taskArgs: DeployOptions,
-    hre: HardhatRuntimeEnvironment
+    hre: HardhatRuntimeEnvironment,
 ) => {
     const { dumpFile, silent } = taskArgs;
     const exportFile =
@@ -46,13 +46,13 @@ task("deploy-anvil", "Deploys to anvil and dump state")
         "dumpFile",
         "anvil state dump file",
         "build/anvil_state.json",
-        types.string
+        types.string,
     )
     .addOptionalParam<string>(
         "exportFile",
         "hardhat-deploy export file",
         undefined,
-        types.string
+        types.string,
     )
     .addFlag("silent", "do not print any log")
     .setAction(deploy);

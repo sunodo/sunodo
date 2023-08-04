@@ -3,7 +3,7 @@
     "version": "0.1.1",
     "license": "Apache-2.0",
     "scripts": {
-        "build": "run-s compile export deploy:anvil",
+        "build": "run-s compile tsc export",
         "clean:ignored": "rimraf artifacts cache coverage deployments/localhost dist",
         "clean:hardhat": "hardhat clean",
         "clean": "run-s clean:hardhat clean:ignored",
@@ -11,23 +11,19 @@
         "deploy": "hardhat deploy",
         "deploy:arbitrum": "hardhat deploy --network arbitrum --export export/abi/arbitrum.json",
         "deploy:arbitrum_goerli": "hardhat deploy --network arbitrum_goerli --export export/abi/arbitrum_goerli.json",
-        "deploy:anvil": "hardhat --network localhost deploy-anvil --dump-file build/anvil_state.json --silent",
-        "deploy:localhost": "hardhat deploy --network localhost --export export/abi/localhost.json --reset",
         "deploy:mainnet": "hardhat deploy --network mainnet --export export/abi/mainnet.json",
         "deploy:mainnets": "run-s deploy:arbitrum deploy:mainnet deploy:optimism",
         "deploy:optimism": "hardhat deploy --network optimism --export export/abi/optimism.json",
         "deploy:optimism_goerli": "hardhat deploy --network optimism_goerli --export export/abi/optimism_goerli.json",
         "deploy:sepolia": "hardhat deploy --network sepolia --export export/abi/sepolia.json",
         "deploy:testnet": "run-s deploy:arbitrum_goerli deploy:optimism_goerli deploy:sepolia",
-        "dev": "hardhat node --export export/abi/localhost.json",
         "docgen": "hardhat docgen",
         "export": "hardhat export-artifacts export/artifacts --hide-sources --including-empty-bytecode --including-no-public-functions",
         "prepack": "run-s build tsc",
         "tsc": "tsc"
     },
     "dependencies": {
-        "@cartesi/rollups": "1.0.0-rc.1",
-        "typescript": "^5"
+        "@cartesi/rollups": "1.0.0-rc.1"
     },
     "devDependencies": {
         "@nomicfoundation/hardhat-verify": "^1",
@@ -38,7 +34,8 @@
         "hardhat-abi-exporter": "^2",
         "hardhat-deploy": "^0.11",
         "npm-run-all": "^4",
-        "solidity-docgen": "^0.6.0-beta.35"
+        "solidity-docgen": "^0.6.0-beta.35",
+        "typescript": "^5"
     },
     "files": [
         "contracts",

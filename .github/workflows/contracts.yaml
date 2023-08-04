@@ -103,6 +103,5 @@ jobs:
               with:
                   body_path: packages/contracts/CHANGELOG.md
                   files: |
-                      packages/contracts/build/anvil_state.json
                       packages/contracts/deployments/**
                       packages/contracts/export/abi/*
