@@ -13,7 +13,7 @@ export default defineConfig({
                 "**/IPayableDAppFactory.json",
             ],
         }),
-        hardhatDeploy({ directory: "../../packages/contracts/export/abi" }),
+        hardhatDeploy({ directory: "../../packages/devnet/export/abi" }),
         erc(),
     ],
 });

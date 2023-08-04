@@ -1,27 +1,14 @@
 import path from "path";
 import { HardhatUserConfig } from "hardhat/config";
-import { HttpNetworkUserConfig } from "hardhat/types";
 import { getSingletonFactoryInfo } from "@safe-global/safe-singleton-factory";
 
-import "@nomicfoundation/hardhat-verify";
 import "@nomiclabs/hardhat-ethers";
 import "hardhat-abi-exporter";
 import "hardhat-deploy";
-import "solidity-docgen";
-
-import {
-    Chain,
-    arbitrum,
-    arbitrumGoerli,
-    mainnet,
-    optimism,
-    optimismGoerli,
-    sepolia,
-} from "@wagmi/chains";
+import "./src/tasks/deploy-anvil";
 
 // read MNEMONIC from env variable
 let mnemonic = process.env.MNEMONIC;
-let privateKey = process.env.PRIVATE_KEY;
 
 const DEFAULT_DEVNET_MNEMONIC =
     "test test test test test test test test test test test junk";
@@ -29,29 +16,8 @@ const DEFAULT_DEVNET_MNEMONIC =
 const ppath = (packageName: string, pathname: string) => {
     return path.join(
         path.dirname(require.resolve(`${packageName}/package.json`)),
-        pathname
+        pathname,
     );
-};
-
-const networkConfig = (chain: Chain): HttpNetworkUserConfig => {
-    let url = chain.rpcUrls.public.http.at(0);
-
-    // support for infura and alchemy URLs through env variables
-    if (process.env.INFURA_ID && chain.rpcUrls.infura?.http) {
-        url = `${chain.rpcUrls.infura.http}/${process.env.INFURA_ID}`;
-    } else if (process.env.ALCHEMY_ID && chain.rpcUrls.alchemy?.http) {
-        url = `${chain.rpcUrls.alchemy.http}/${process.env.ALCHEMY_ID}`;
-    }
-
-    return {
-        chainId: chain.id,
-        url,
-        accounts: mnemonic
-            ? { mnemonic }
-            : privateKey
-            ? [privateKey]
-            : undefined,
-    };
 };
 
 const external = (networks: string[], packages: string[]) => ({
@@ -63,10 +29,10 @@ const external = (networks: string[], packages: string[]) => ({
         (acc, network) => ({
             ...acc,
             [network]: packages.map((packageName) =>
-                ppath(packageName, `/deployments/${network}`)
+                ppath(packageName, `/deployments/${network}`),
             ),
         }),
-        {}
+        {},
     ),
 });
 
@@ -85,27 +51,16 @@ const config: HardhatUserConfig = {
                       mnemonic: DEFAULT_DEVNET_MNEMONIC,
                   },
         },
-        arbitrum_goerli: networkConfig(arbitrumGoerli),
-        arbitrum: networkConfig(arbitrum),
-        mainnet: networkConfig(mainnet),
-        optimism: networkConfig(optimism),
-        optimism_goerli: networkConfig(optimismGoerli),
-        sepolia: networkConfig(sepolia),
     },
     external: external(
+        ["localhost"],
         [
-            "arbitrum",
-            "arbitrum_goerli",
-            "mainnet",
-            "optimism",
-            "optimism_goerli",
-            "sepolia",
+            "@cartesi/util",
+            "@cartesi/rollups",
+            "@sunodo/token",
+            "@sunodo/contracts",
         ],
-        ["@cartesi/util", "@cartesi/rollups"]
     ),
-    docgen: {
-        pages: "files",
-    },
     namedAccounts: {
         deployer: 0,
     },
@@ -125,7 +80,7 @@ const config: HardhatUserConfig = {
             };
         } else {
             console.warn(
-                `unsupported deterministic deployment for network ${network}`
+                `unsupported deterministic deployment for network ${network}`,
             );
             return undefined;
         }

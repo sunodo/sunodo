@@ -91,7 +91,7 @@
         "tsconfig": "*",
         "tslib": "^2",
         "typescript": "^5",
-        "vitest": "^0.33"
+        "vitest": "^0.34"
     },
     "oclif": {
         "bin": "sunodo",

@@ -1,0 +1,39 @@
+{
+    "name": "@sunodo/devnet",
+    "version": "0.1.0",
+    "license": "Apache-2.0",
+    "scripts": {
+        "build": "run-s compile export deploy:anvil",
+        "clean:ignored": "rimraf artifacts cache coverage deployments/localhost dist",
+        "clean:hardhat": "hardhat clean",
+        "clean": "run-s clean:hardhat clean:ignored",
+        "compile": "hardhat compile",
+        "deploy": "hardhat deploy",
+        "deploy:anvil": "hardhat --network localhost deploy-anvil --dump-file build/anvil_state.json --silent",
+        "deploy:localhost": "hardhat deploy --network localhost --export export/abi/localhost.json --reset",
+        "dev": "hardhat node --export export/abi/localhost.json",
+        "export": "hardhat export-artifacts export/artifacts --hide-sources --including-empty-bytecode --including-no-public-functions",
+        "prepack": "run-s build tsc",
+        "tsc": "tsc"
+    },
+    "devDependencies": {
+        "@nomiclabs/hardhat-ethers": "^2",
+        "@safe-global/safe-singleton-factory": "^1",
+        "@sunodo/contracts": "*",
+        "@sunodo/token": "*",
+        "hardhat": "^2",
+        "hardhat-abi-exporter": "^2",
+        "hardhat-deploy": "^0.11",
+        "npm-run-all": "^4"
+    },
+    "files": [
+        "deployments/*/*.json",
+        "deployments/*/.chainid",
+        "dist/src",
+        "dist/deploy/*.js",
+        "export"
+    ],
+    "dependencies": {
+        "prettier": "^3.0.0"
+    }
+}
