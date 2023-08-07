@@ -15,7 +15,7 @@ export type Deployment = {
     transaction: Hash; // hash of the transaction that deployed the application
     address: Address; // address of the deployed application
     owner: Address; // address of the application owner
-    consensus: Address; // address of the consensus smart contract
+    factory: Address; // address of the factory smart contract
     templateHash: Hash; // hash of the cartesi machine template
     location: string; // public location of the cartesi machine template
 };
@@ -89,59 +89,6 @@ export default class Deploy extends DeployBaseCommand<typeof Deploy> {
         }),
     };
 
-    static consensusFlags = {
-        owner: CustomFlags.address({
-            summary: "address of owner of the application",
-            description:
-                "the application owner has the power to change the consensus at any time",
-            helpGroup: "Consensus",
-        }),
-        "consensus-authority": CustomFlags.address({
-            summary: "address of authority smart contract",
-            description:
-                "An Authority has the power to submit any claims of the state of the application, and cannot be challenged",
-            helpGroup: "Consensus",
-            exclusive: [
-                "consensus-multisig",
-                "consensus-quorum",
-                "consensus-unpermissioned",
-            ],
-        }),
-        "consensus-multisig": CustomFlags.address({
-            summary: "address of multisig smart contract",
-            description:
-                "The multisig is still an authority validator, where a set of validators who are part of a multisig contract must agree on the state of the application. If there is no agreement the application will be no longer validated, there is still no consensus protocol.",
-            helpGroup: "Consensus",
-            exclusive: [
-                "consensus-authority",
-                "consensus-quorum",
-                "consensus-unpermissioned",
-            ],
-        }),
-        "consensus-quorum": CustomFlags.address({
-            summary: "address of quorum smart contract",
-            description:
-                "The application is validated by a quorum of validators, who must agree on the state of the machine. If there is any disagreement the verification protocol is initiated.",
-            helpGroup: "Consensus",
-            exclusive: [
-                "consensus-authority",
-                "consensus-multisig",
-                "consensus-unpermissioned",
-            ],
-        }),
-        "consensus-unpermissioned": CustomFlags.address({
-            summary: "address of unpermissioned smart contract",
-            description:
-                "The application is validated by a quorum of validators, who must agree on the state of the machine. If there is any disagreement the verification protocol is initiated.",
-            helpGroup: "Consensus",
-            exclusive: [
-                "consensus-authority",
-                "consensus-multisig",
-                "consensus-quorum",
-            ],
-        }),
-    };
-
     static ipfsFlags = {
         "ipfs-url": Flags.url({
             summary:
@@ -168,7 +115,16 @@ export default class Deploy extends DeployBaseCommand<typeof Deploy> {
         ...this.networkFlags,
         ...this.walletFlags,
         ...this.ipfsFlags,
-        ...this.consensusFlags,
+        owner: CustomFlags.address({
+            summary: "address of owner of the application",
+            description:
+                "the application owner has the power to change the consensus at any time",
+        }),
+        factory: CustomFlags.address({
+            summary: "address of dapp factory",
+            description:
+                "A factory is already associated with a consensus and a payment method",
+        }),
         webapp: Flags.url({
             description: "address of sunodo webapp",
             default: new URL("https://app.sunodo.io/deploy"),
@@ -192,13 +148,8 @@ export default class Deploy extends DeployBaseCommand<typeof Deploy> {
                 mnemonicPassphrase: flags["mnemonic-passphrase"],
                 mnemonicIndex: flags["mnemonic-index"],
             },
-            consensus: {
-                owner: flags.owner,
-                authority: flags["consensus-authority"],
-                multisig: flags["consensus-multisig"],
-                quorum: flags["consensus-quorum"],
-                unpermissioned: flags["consensus-unpermissioned"],
-            },
+            owner: flags.owner,
+            factory: flags.factory,
         });
         // save deployment to local json file
         this.saveDeployment(deployment);

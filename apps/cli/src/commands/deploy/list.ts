@@ -46,7 +46,7 @@ export default class DeployList extends DeployBaseCommand<typeof DeployList> {
                     txt.push(["Network", `${chain ? chain.name : ""}`]);
                     txt.push(["Transaction", deployment.transaction]);
                     txt.push(["Owner", deployment.owner]);
-                    txt.push(["Consensus", deployment.consensus]);
+                    txt.push(["Factory", deployment.factory]);
                     txt.push(["Template Hash", deployment.templateHash]);
                     txt.push(["Location", deployment.location]);
                     const col0 = txt.reduce(
