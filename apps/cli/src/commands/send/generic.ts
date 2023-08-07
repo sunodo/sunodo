@@ -46,7 +46,7 @@ export default class SendGeneric extends SendBaseCommand<typeof SendGeneric> {
         if (input) {
             if (encoding === "hex") {
                 // validate if is a hex value
-                if (isHex(input)) {
+                if (!isHex(input)) {
                     throw new Error("input encoded as hex must start with 0x");
                 }
                 return input as `0x${string}`;
@@ -63,7 +63,7 @@ export default class SendGeneric extends SendBaseCommand<typeof SendGeneric> {
                 const values: any[] = input.split(",").map((v, index) => {
                     if (index >= abiParameters.length) {
                         throw new Error(
-                            `Too many values, expected ${abiParameters.length} values based on --input-abi-params '${abiParams}', parsing value at index ${index} from input '${input}'`
+                            `Too many values, expected ${abiParameters.length} values based on --input-abi-params '${abiParams}', parsing value at index ${index} from input '${input}'`,
                         );
                     }
                     const param = abiParameters[index];
@@ -102,7 +102,7 @@ export default class SendGeneric extends SendBaseCommand<typeof SendGeneric> {
                 });
                 if (values.length !== abiParameters.length) {
                     throw new Error(
-                        `Not enough values, expected ${abiParameters.length} values based on --input-abi-params '${abiParams}', parsed ${values.length} values from input '${input}'`
+                        `Not enough values, expected ${abiParameters.length} values based on --input-abi-params '${abiParams}', parsed ${values.length} values from input '${input}'`,
                     );
                 }
                 return encodeAbiParameters(abiParameters, values);
@@ -120,7 +120,7 @@ export default class SendGeneric extends SendBaseCommand<typeof SendGeneric> {
 
     public async send(
         publicClient: PublicClient,
-        walletClient: WalletClient
+        walletClient: WalletClient,
     ): Promise<Address> {
         // get dapp address from local node, or ask
         const dapp = await super.getDAppAddress();
