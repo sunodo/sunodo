@@ -10,12 +10,13 @@ import {
     Address,
     Hex,
     encodeAbiParameters,
+    formatUnits,
     getAddress,
     isAddress,
     isHex,
     parseAbiParameters,
+    parseUnits,
     stringToHex,
-    toHex,
 } from "viem";
 import chalk from "chalk";
 
@@ -46,13 +47,13 @@ const and =
  */
 export type AddressPromptConfig = AsyncPromptConfig & { default?: Address };
 export const addressInput = async (
-    config: AddressPromptConfig,
+    config: AddressPromptConfig
 ): Promise<Address> => {
     const address = await input({
         ...config,
         validate: and(
             (value) => isAddress(value) || "Enter a valid address",
-            config.validate,
+            config.validate
         ),
     });
     return getAddress(address);
@@ -69,10 +70,28 @@ export const hexInput = async (config: HexPromptConfig): Promise<Hex> => {
         ...config,
         validate: and(
             (value) => isHex(value) || "Enter a valid hex value",
-            config.validate,
+            config.validate
         ),
     });
     return value as Hex;
+};
+
+export type BigintPromptConfig = AsyncPromptConfig & {
+    decimals: number;
+    default?: bigint;
+};
+export const bigintInput = async (
+    config: BigintPromptConfig
+): Promise<bigint> => {
+    const defaultValue =
+        config.default != undefined
+            ? formatUnits(config.default, config.decimals)
+            : undefined;
+    const value = await input({
+        ...config,
+        default: defaultValue,
+    });
+    return parseUnits(value, config.decimals);
 };
 
 /**
@@ -129,7 +148,7 @@ export const bytesInput = async (config: AsyncPromptConfig): Promise<Hex> => {
  * @returns ABI encoded parameters as hex string
  */
 export const abiParamsInput = async (
-    config: AsyncPromptConfig,
+    config: AsyncPromptConfig
 ): Promise<`0x${string}`> => {
     const encoding = await input({
         message: `${config.message} (as ABI encoded https://abitype.dev/api/human.html#parseabiparameters )`,
@@ -173,7 +192,7 @@ export const abiParamsInput = async (
                                 return "Invalid number";
                             }
                         },
-                    }),
+                    })
                 );
                 break;
             case "bytes":
@@ -185,7 +204,7 @@ export const abiParamsInput = async (
                         message,
                         validate: (value) =>
                             isAddress(value) || "Invalid address",
-                    }),
+                    })
                 );
                 break;
             default:
@@ -211,7 +230,7 @@ export type SelectConfig<Value> = AsyncPromptConfig & {
 
 export const selectAuto = <Value extends unknown>(
     config: SelectConfig<Value> & { discardDisabled?: boolean },
-    context?: Context | undefined,
+    context?: Context | undefined
 ): CancelablePromise<Value> => {
     const choices = config.choices;
 
@@ -227,11 +246,11 @@ export const selectAuto = <Value extends unknown>(
             const message: string = chalk.bold(config.message);
             output.write(
                 `${prefix} ${message} ${chalk.cyan(
-                    choice.name || choice.value,
-                )}\n`,
+                    choice.name || choice.value
+                )}\n`
             );
             return new CancelablePromise<Value>((resolve) =>
-                resolve(choice.value),
+                resolve(choice.value)
             );
         }
     }
