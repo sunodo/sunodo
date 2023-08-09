@@ -2,14 +2,12 @@
 ARG REGISTRY=docker.io
 ARG ORG=cartesi
 ARG ROLLUPS_VERSION
-ARG SUNODO_DEPLOYMENTS_VERSION=0.1.0
 FROM ${REGISTRY}/${ORG}/rollups-indexer:${ROLLUPS_VERSION}         AS indexer
 FROM ${REGISTRY}/${ORG}/rollups-state-server:${ROLLUPS_VERSION}    AS state_server
 FROM ${REGISTRY}/${ORG}/rollups-dispatcher:${ROLLUPS_VERSION}      AS dispatcher
 FROM ${REGISTRY}/${ORG}/rollups-advance-runner:${ROLLUPS_VERSION}  AS advance_runner
 FROM ${REGISTRY}/${ORG}/rollups-inspect-server:${ROLLUPS_VERSION}  AS inspect_server
 FROM ${REGISTRY}/${ORG}/rollups-graphql-server:${ROLLUPS_VERSION}  AS graphql_server
-FROM sunodo/deployments:${SUNODO_DEPLOYMENTS_VERSION}              AS deployments
 
 FROM cartesi/server-manager:0.8.2
 USER root
@@ -66,7 +64,6 @@ COPY --from=dispatcher      /opt/cartesi/bin/cartesi-rollups-dispatcher     /usr
 COPY --from=advance_runner  /opt/cartesi/bin/cartesi-rollups-advance-runner /usr/bin/cartesi-rollups-advance-runner
 COPY --from=inspect_server  /opt/cartesi/bin/cartesi-rollups-inspect-server /usr/bin/cartesi-rollups-inspect-server
 COPY --from=graphql_server  /opt/cartesi/bin/cartesi-rollups-graphql-server /usr/bin/cartesi-rollups-graphql-server
-COPY --from=deployments     /opt/cartesi/share/deployments/                 /opt/cartesi/share/deployments/
 
 RUN mkdir -p /var/opt/cartesi/machine-snapshots/0_0 && ln -s /var/opt/cartesi/machine-snapshots/0_0 /var/opt/cartesi/machine-snapshots/latest
 
