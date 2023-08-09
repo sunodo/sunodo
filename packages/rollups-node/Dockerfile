@@ -11,7 +11,7 @@ FROM ${REGISTRY}/${ORG}/rollups-inspect-server:${ROLLUPS_VERSION}  AS inspect_se
 FROM ${REGISTRY}/${ORG}/rollups-graphql-server:${ROLLUPS_VERSION}  AS graphql_server
 FROM sunodo/deployments:${SUNODO_DEPLOYMENTS_VERSION}              AS deployments
 
-FROM cartesi/server-manager:0.7.0-bullseye
+FROM cartesi/server-manager:0.8.2
 USER root
 
 RUN <<EOF
