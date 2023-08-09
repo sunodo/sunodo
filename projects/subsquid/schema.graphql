@@ -1,3 +1,17 @@
 type Authority @entity {
     id: ID!
 }
+
+type Token @entity {
+    id: ID!
+    symbol: String!
+    name: String!
+    decimals: Int!
+}
+
+type Factory @entity {
+    id: ID!
+    authority: Authority!
+    token: Token!
+    price: BigInt!
+}

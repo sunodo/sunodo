@@ -1,50 +1,6 @@
 import { DataSource } from "@subsquid/evm-processor";
 import { lookupArchive } from "@subsquid/archive-registry";
-import {
-    Chain,
-    arbitrum,
-    arbitrumGoerli,
-    foundry,
-    mainnet,
-    optimism,
-    optimismGoerli,
-    sepolia,
-} from "@wagmi/chains";
-import { Address } from "abitype";
-import { encodeEventTopics } from "viem";
-
-import {
-    authorityFactoryABI,
-    authorityFactoryAddress as authorityFactoryAddresses,
-} from "./abi/contracts";
-
-const chains = [
-    arbitrum,
-    arbitrumGoerli,
-    foundry,
-    mainnet,
-    optimism,
-    optimismGoerli,
-    sepolia,
-];
-
-type EventConfig = {
-    topic0: string;
-};
-
-type ContractConfig = {
-    block: number;
-    address: Address;
-    events: Record<string, EventConfig>;
-};
-
-export type DatasourceConfig = {
-    datasource: DataSource;
-    finalityConfirmation: number;
-    contracts: {
-        AuthorityFactory: ContractConfig;
-    };
-};
+import { Chain } from "@wagmi/chains";
 
 /**
  * Archives supported by Subsquid Aquarium
@@ -55,15 +11,6 @@ const archives: Record<string, string> = {
     homestead: lookupArchive("eth-mainnet"),
     sepolia: lookupArchive("sepolia"),
     // there is no support for optimism yet
-};
-
-const blocks: Record<string, Record<string, number>> = {
-    foundry: {
-        AuthorityFactory: 0,
-    },
-    sepolia: {
-        AuthorityFactory: 3976538,
-    },
 };
 
 /**
@@ -87,35 +34,9 @@ const chainURL = (chain: Chain): string | undefined => {
     }
 };
 
-export const createDatasource = (): DatasourceConfig => {
-    // resolve network from NETWORK env variable, default is local foundry
-    const chain: Chain =
-        chains.find((c) => c.network === process.env.NETWORK) || foundry;
-
-    // we don't need to wait on local foundry
-    const finalityConfirmation = chain.id === 31337 ? 0 : 10;
-
+export const createDatasource = (chain: Chain): DataSource => {
     return {
-        datasource: {
-            archive: archives[chain.network],
-            chain: chainURL(chain),
-        },
-        finalityConfirmation,
-        contracts: {
-            AuthorityFactory: {
-                block: blocks[chain.network].AuthorityFactory || 0,
-                address: authorityFactoryAddresses,
-                events: {
-                    AuthorityCreated: {
-                        topic0: encodeEventTopics<
-                            typeof authorityFactoryABI,
-                            " AuthorityCreated"
-                        >({
-                            abi: authorityFactoryABI,
-                        })[0],
-                    },
-                },
-            },
-        },
+        archive: archives[chain.network],
+        chain: chainURL(chain),
     };
 };
