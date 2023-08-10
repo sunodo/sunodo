@@ -334,81 +334,6 @@
         }
       ]
     },
-    "CartesiIPFSDAppFactory": {
-      "address": "0x3450e47CcDbcaA57A93BC3E3d6D94E928Fb0B668",
-      "abi": [
-        {
-          "inputs": [
-            {
-              "internalType": "contract ICartesiDAppFactory",
-              "name": "_factory",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "nonpayable",
-          "type": "constructor"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "chainid",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "dapp",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "string",
-              "name": "location",
-              "type": "string"
-            }
-          ],
-          "name": "MachineLocation",
-          "type": "event"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "contract IConsensus",
-              "name": "_consensus",
-              "type": "address"
-            },
-            {
-              "internalType": "address",
-              "name": "_dappOwner",
-              "type": "address"
-            },
-            {
-              "internalType": "bytes32",
-              "name": "_templateHash",
-              "type": "bytes32"
-            },
-            {
-              "internalType": "string",
-              "name": "_cid",
-              "type": "string"
-            }
-          ],
-          "name": "newApplication",
-          "outputs": [
-            {
-              "internalType": "contract CartesiDApp",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        }
-      ]
-    },
     "History": {
       "address": "0x55a62B15719119725d0e8763F69c1d17c7946673",
       "abi": [
@@ -1449,6 +1374,95 @@
             }
           ],
           "stateMutability": "view",
+          "type": "function"
+        }
+      ]
+    },
+    "PayableDAppSystem": {
+      "address": "0xEBc7b046e7781cCBF75A4Aa32A40eB3932c1813E",
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "contract ICartesiDAppFactory",
+              "name": "_factory",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "contract IPayableDAppFactory",
+              "name": "factory",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "contract IERC20",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "contract IConsensus",
+              "name": "consensus",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "price",
+              "type": "uint256"
+            }
+          ],
+          "name": "PayableDAppFactoryCreated",
+          "type": "event"
+        },
+        {
+          "inputs": [],
+          "name": "factory",
+          "outputs": [
+            {
+              "internalType": "contract ICartesiDAppFactory",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "contract IERC20",
+              "name": "_token",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IConsensus",
+              "name": "_consensus",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_price",
+              "type": "uint256"
+            }
+          ],
+          "name": "newPayableDAppFactory",
+          "outputs": [
+            {
+              "internalType": "contract IPayableDAppFactory",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
           "type": "function"
         }
       ]
