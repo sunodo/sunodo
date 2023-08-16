@@ -31,7 +31,7 @@ import {
     payableDAppSystemAddress,
 } from "./contracts.js";
 import { Deployment } from "./commands/deploy/index.js";
-import { AuthoritiesDocument } from "./graphql/index.js";
+import { FactoriesDocument } from "./graphql/index.js";
 
 type CartesiDAppFactoryABI = typeof cartesiDAppFactoryABI;
 type ApplicationCreatedEvent = ExtractAbiEvent<
@@ -84,7 +84,7 @@ export type RewardsConfig = { token: ERC20; runway: bigint; cost: bigint };
  * @returns list of addresses of deployed factories
  */
 const fetchFactories = async (
-    publicClient: PublicClient
+    publicClient: PublicClient,
 ): Promise<Address[]> => {
     const chainId = publicClient.chain?.id;
     if (chainId) {
@@ -99,21 +99,21 @@ const fetchFactories = async (
                 exchanges: [cacheExchange, fetchExchange],
             });
             const { data } = await client
-                .query(AuthoritiesDocument, {})
+                .query(FactoriesDocument, {})
                 .toPromise();
-            if (data?.authorities) {
-                return data.authorities
-                    .filter((authority) => isAddress(authority.id))
-                    .map((authority) => getAddress(authority.id));
+            if (data?.factories) {
+                return data.factories
+                    .filter((factory) => isAddress(factory.id))
+                    .map((factory) => getAddress(factory.id));
             }
         } else {
             const fromBlocks: Record<number, bigint> = {
                 31337: 0n,
-                // 11155111: 3982032n, // block number AuthorityFactory was deployed on this network
+                // 11155111: 4058614n, // block number PayableDAppSystem was deployed on this network
             };
             const fromBlock = fromBlocks[chainId];
             if (fromBlock !== undefined) {
-                // create filter to read events from an AuthorityFactory contract
+                // create filter to read events from an PayableDAppSystem contract
                 const filter = await publicClient.createContractEventFilter({
                     abi: payableDAppSystemABI,
                     eventName: "PayableDAppFactoryCreated",
@@ -124,7 +124,7 @@ const fetchFactories = async (
                 // read all logs since beginning of time
                 const logs = await publicClient.getFilterLogs({ filter });
 
-                // parse logs into list of authorities
+                // parse logs into list of factories
                 const factories = logs
                     .filter((log) => log.args.factory)
                     .map((log) => log.args.factory!);
@@ -143,7 +143,7 @@ const fetchFactories = async (
 const check = async (machine: string): Promise<Hash> => {
     if (!fs.existsSync(machine) || !fs.statSync(machine).isDirectory()) {
         throw new Error(
-            "Cartesi machine snapshot not found, run 'sunodo build'"
+            "Cartesi machine snapshot not found, run 'sunodo build'",
         );
     }
 
@@ -155,7 +155,7 @@ const check = async (machine: string): Promise<Hash> => {
 
 const publishIPFS = async (
     machine: string,
-    options: IPFSOptions
+    options: IPFSOptions,
 ): Promise<PublishResult> => {
     // XXX: start own IPFS node?
 
@@ -204,7 +204,7 @@ const publishIPFS = async (
  */
 const publish = async (
     machine: string,
-    options: DeployOptions
+    options: DeployOptions,
 ): Promise<PublishResult> => {
     // assume the method is "ipfs" if user specified an IPFS url, otherwise ask
     const method = options.ipfs.url
@@ -260,7 +260,7 @@ const configureNetwork = async (options: EthereumPromptOptions) => {
 
 const configureOwner = async (
     givenOwner?: Address,
-    account?: Address
+    account?: Address,
 ): Promise<Address> => {
     const defaultOwner = account;
     const owner: Address =
@@ -275,7 +275,7 @@ const configureOwner = async (
 const configureFactory = async (
     publicClient: PublicClient,
     walletClient: WalletClient,
-    factory?: Address
+    factory?: Address,
 ) => {
     // honor the authority address if specified
     if (factory) {
@@ -297,7 +297,7 @@ const configureFactory = async (
             (factory) => ({
                 name: factory,
                 value: factory,
-            })
+            }),
         );
         choices.push({ name: "Other", value: zeroAddress });
         let factory = await select<Address>({
@@ -335,7 +335,7 @@ const configureFactory = async (
 const configureRewards = async (
     publicClient: PublicClient,
     walletClient: WalletClient,
-    factory: IPayableDAppFactory
+    factory: IPayableDAppFactory,
 ): Promise<RewardsConfig> => {
     // query the factory token
     const token = getContract({
@@ -358,10 +358,10 @@ const configureRewards = async (
     const cost = await factory.read.cost([runway]);
     const costStr = `${formatUnits(
         cost,
-        await token.read.decimals()
+        await token.read.decimals(),
     )} ${await token.read.symbol()}`;
     p.succeed(
-        `Cost for ${days} day${days > 1 ? "s" : ""} ${chalk.cyan(costStr)}`
+        `Cost for ${days} day${days > 1 ? "s" : ""} ${chalk.cyan(costStr)}`,
     );
 
     return {
@@ -373,12 +373,12 @@ const configureRewards = async (
 
 const deploy = async (
     machine: string,
-    options: DeployOptions
+    options: DeployOptions,
 ): Promise<Deployment> => {
     // check machine integrity and return its hash
     const templateHash = await check(machine);
     process.stdout.write(
-        `${chalk.green("?")} Machine hash ${chalk.cyan(templateHash)}\n`
+        `${chalk.green("?")} Machine hash ${chalk.cyan(templateHash)}\n`,
     );
 
     // 4 steps: machine, network, factory, payment
@@ -387,33 +387,33 @@ const deploy = async (
     const { method, location } = await publish(machine, options);
     process.stdout.write(
         `${chalk.green("?")} Machine ${method} location ${chalk.cyan(
-            location
-        )}\n`
+            location,
+        )}\n`,
     );
 
     // configure network
     const { chain, publicClient, walletClient } = await configureNetwork(
-        options.network
+        options.network,
     );
 
     // configure owner
     const owner = await configureOwner(
         options.owner,
-        walletClient.account?.address
+        walletClient.account?.address,
     );
 
     // choose factory
     const factory = await configureFactory(
         publicClient,
         walletClient,
-        options.factory
+        options.factory,
     );
 
     // configure rewards
     const { token, runway, cost } = await configureRewards(
         publicClient,
         walletClient,
-        factory
+        factory,
     );
 
     // send allowance transaction if needed
@@ -433,7 +433,7 @@ const deploy = async (
                 validate: async (value) => {
                     const amount = parseUnits(
                         value,
-                        await token.read.decimals()
+                        await token.read.decimals(),
                     );
                     if (amount < cost) {
                         return "Insufficient allowance";
@@ -443,7 +443,7 @@ const deploy = async (
             });
             const { request } = await token.simulate.approve(
                 [factory.address, newAllowance],
-                { account: walletClient.account }
+                { account: walletClient.account },
             );
             const hash = await walletClient.writeContract(request);
             const progress = ora(`Submitting transaction ${hash}...`).start();
@@ -456,7 +456,7 @@ const deploy = async (
     // send transaction
     const { request } = await factory.simulate.newApplication(
         [owner, templateHash, location, runway],
-        { account: walletClient.account }
+        { account: walletClient.account },
     );
     const hash = await walletClient.writeContract(request);
     const progress = ora(`Submitting transaction ${hash}...`).start();

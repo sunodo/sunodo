@@ -3,3 +3,16 @@ query authorities {
         id
     }
 }
+
+query factories {
+    factories {
+        id
+        price
+        token {
+            decimals
+            id
+            name
+            symbol
+        }
+    }
+}
