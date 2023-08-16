@@ -33,8 +33,5 @@
         "dist/src",
         "dist/deploy/*.js",
         "export"
-    ],
-    "dependencies": {
-        "prettier": "^3.0.0"
-    }
+    ]
 }

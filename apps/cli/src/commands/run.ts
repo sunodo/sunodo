@@ -2,6 +2,7 @@ import { Command, Flags } from "@oclif/core";
 import path from "path";
 import fs from "fs-extra";
 import { execa } from "execa";
+import { DEFAULT_DEVNET_MNEMONIC } from "../wallet.js";
 
 export default class Run extends Command {
     static summary = "Run application node.";
@@ -47,14 +48,18 @@ export default class Run extends Command {
         const blockInterval = flags["block-time"];
         const epochDuration = flags["epoch-duration"];
         const env: NodeJS.ProcessEnv = {
+            ANVIL_VERBOSITY: flags.verbose ? "--steps-tracing" : "--silent",
             BLOCK_TIME: blockInterval.toString(),
             BLOCK_TIMEOUT: (blockInterval + 3).toString(),
+            CHAIN_ID: "31337",
             EPOCH_DURATION: epochDuration.toString(),
-            ANVIL_VERBOSITY: flags.verbose ? "--steps-tracing" : "--silent",
+            MNEMONIC: DEFAULT_DEVNET_MNEMONIC,
             REDIS_LOG_LEVEL: flags.verbose ? "verbose" : "warning",
-            S6_VERBOSITY: flags.verbose ? "2" : "0",
             RUST_LOG: flags.verbose ? "info" : "error",
+            RPC_URL: "http://anvil:8545",
+            S6_VERBOSITY: flags.verbose ? "2" : "0",
             SERVER_MANAGER_LOG_LEVEL: flags.verbose ? "info" : "error",
+            WS_URL: "ws://anvil:8545",
         };
 
         // resolve compose file location based on version
@@ -62,7 +67,7 @@ export default class Run extends Command {
             path.dirname(new URL(import.meta.url).pathname),
             "..",
             "node",
-            "docker-compose.yml"
+            "docker-compose-dev.yml"
         );
 
         const args = [

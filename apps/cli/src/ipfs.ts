@@ -1,4 +1,4 @@
-import fs from "fs";
+import fs from "fs-extra";
 import path from "path";
 import cliProgress from "cli-progress";
 import progress from "progress-stream";
@@ -9,22 +9,22 @@ import {
     CAREncoderStream,
     FileLike,
 } from "ipfs-car";
-import { CarReader } from "@ipld/car";
 import { createHelia } from "helia";
 import { car } from "@helia/car";
 import { create } from "kubo-rpc-client";
+import { CarReader } from "@ipld/car";
 
 import { IPFSOptions } from "./deploy.js";
 export type IPFSTestResult = "success" | "unauthorized" | "failed";
 
 export const testConnection = async (
-    options: IPFSOptions
+    options: IPFSOptions,
 ): Promise<IPFSTestResult> => {
     try {
         const headers: Record<string, string> = {};
         if (options.username && options.password) {
             headers["authorization"] = `Basic ${Buffer.from(
-                `${options.username}:${options.password}`
+                `${options.username}:${options.password}`,
             ).toString("base64")}`;
         }
         const client = create({ url: options.url, headers: headers });
@@ -41,8 +41,8 @@ export const testConnection = async (
 
 export const importDirectory = async (
     directory: string,
-    options: IPFSOptions
-) => {
+    options: IPFSOptions,
+): Promise<string> => {
     // progress bar for each file
     const multibar = new cliProgress.MultiBar({
         clearOnComplete: true,
@@ -60,7 +60,7 @@ export const importDirectory = async (
 
         // create stream progress
         const p = progress({ length: size, time: 100 }, (progress) =>
-            bar.update(progress.transferred, { filename: name })
+            bar.update(progress.transferred, { filename: name }),
         );
 
         // create stream, passing through progress counter based of raw file size
@@ -88,7 +88,7 @@ export const importDirectory = async (
                     cid = block.cid.toString();
                     controller.enqueue(block);
                 },
-            })
+            }),
         )
         .pipeThrough(new CAREncoderStream());
 
@@ -105,7 +105,7 @@ export const importDirectory = async (
         const headers: Record<string, string> = {};
         if (options.username && options.password) {
             headers["Authorization"] = `Basic ${Buffer.from(
-                `${options.username}:${options.password}`
+                `${options.username}:${options.password}`,
             ).toString("base64")}`;
         }
         const client = create({ url: options.url, headers });
