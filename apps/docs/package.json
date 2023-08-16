@@ -9,6 +9,6 @@
     },
     "devDependencies": {
         "@algolia/client-search": "^4",
-        "vitepress": "^1.0.0-beta.7"
+        "vitepress": "^1.0.0-rc.4"
     }
 }
