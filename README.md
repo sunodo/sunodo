@@ -21,7 +21,7 @@ This monorepo ([turborepo](https://turbo.build/repo)) includes libraries and app
 
 -   `cli`: a [oclif](https://oclif.io) CLI tool for deployment and management of DApps, available at `brew install sunodo`;
 -   `controller`: a web3 application that monitor DApps deployments and launches cartesi nodes;
--   `docs`: a [docusaurus](https://docusaurus.io) app with Sunodo documentation, deployed at [https://docs.sunodo.io](https://docs.sunodo.io)
+-   `docs`: a [VitePress](https://vitepress.dev/) app with Sunodo documentation, deployed at [https://docs.sunodo.io](https://docs.sunodo.io)
 -   `web`: a [next.js](https://nextjs.org/) app for Sunodo website, deployed at [https://sunodo.io](https://sunodo.io)
 -   `app`: a [next.js](https://nextjs.org/) app for Sunodo dashboard, deployed at [https://app.sunodo.io](https://app.sunodo.io)
 -   `machine-emulator-tools`: packaging of cartesi machine emulator tools as Docker images;
