@@ -24,14 +24,14 @@ export default class Shell extends Command {
 
     private async startShell(
         ext2Path: string,
-        runAsRoot: boolean
+        runAsRoot: boolean,
     ): Promise<void> {
         const containerDir = "/mnt";
         const bind = `${path.resolve(path.dirname(ext2Path))}:${containerDir}`;
         const ext2 = path.join(containerDir, path.basename(ext2Path));
         const ramSize = "128Mi";
         const driveLabel = "root";
-        const sdkImage = "sunodo/sdk:0.15.0"; // XXX: how to resolve sdk version?
+        const sdkImage = "sunodo/sdk:0.2.0"; // XXX: how to resolve sdk version?
         const args = [
             "run",
             "--interactive",

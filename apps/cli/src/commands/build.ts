@@ -28,7 +28,7 @@ const CARTESI_DEFAULT_RAM_SIZE = "128Mi";
 
 const SUNODO_LABEL_PREFIX = "io.sunodo";
 const SUNODO_LABEL_SDK_VERSION = `${SUNODO_LABEL_PREFIX}.sdk_version`;
-const SUNODO_DEFAULT_SDK_VERSION = "0.1.0";
+const SUNODO_DEFAULT_SDK_VERSION = "0.2.0";
 
 export default class BuildApplication extends Command {
     static summary = "Build application.";
@@ -69,7 +69,7 @@ export default class BuildApplication extends Command {
     private async buildDAppImage(options: ImageBuildOptions): Promise<string> {
         const buildResult = tmp.tmpNameSync();
         this.debug(
-            `building docker image and writing result to ${buildResult}`
+            `building docker image and writing result to ${buildResult}`,
         );
         const args = [
             "buildx",
@@ -100,7 +100,7 @@ export default class BuildApplication extends Command {
         // validate image architecture (must be riscv64)
         if (imageInfo["Architecture"] !== "riscv64") {
             throw new Error(
-                `Invalid image Architecture: ${imageInfo["Architecture"]}. Expected riscv64`
+                `Invalid image Architecture: ${imageInfo["Architecture"]}. Expected riscv64`,
             );
         }
 
@@ -123,18 +123,18 @@ export default class BuildApplication extends Command {
         // warn for using default values
         info.sdkVersion ||
             this.warn(
-                `Undefined ${SUNODO_LABEL_SDK_VERSION} label, defaulting to ${SUNODO_DEFAULT_SDK_VERSION}`
+                `Undefined ${SUNODO_LABEL_SDK_VERSION} label, defaulting to ${SUNODO_DEFAULT_SDK_VERSION}`,
             );
 
         info.ramSize ||
             this.warn(
-                `Undefined ${CARTESI_LABEL_RAM_SIZE} label, defaulting to ${CARTESI_DEFAULT_RAM_SIZE}`
+                `Undefined ${CARTESI_LABEL_RAM_SIZE} label, defaulting to ${CARTESI_DEFAULT_RAM_SIZE}`,
             );
 
         // validate data size value
         if (bytes(info.dataSize) === null) {
             throw new Error(
-                `Invalid ${CARTESI_LABEL_DATA_SIZE} value: ${info.dataSize}`
+                `Invalid ${CARTESI_LABEL_DATA_SIZE} value: ${info.dataSize}`,
             );
         }
 
@@ -145,7 +145,7 @@ export default class BuildApplication extends Command {
 
     private async exportImageTar(
         image: string,
-        tarPath: string
+        tarPath: string,
     ): Promise<void> {
         // create container
         const { stdout: cid } = await execa("docker", [
@@ -166,7 +166,7 @@ export default class BuildApplication extends Command {
     private async createExt2(
         sdkImage: string,
         info: ImageInfo,
-        tarPath: string
+        tarPath: string,
     ): Promise<string> {
         // extract base name of tar file
         const tarName = path.basename(tarPath, path.extname(tarPath));
@@ -228,7 +228,7 @@ export default class BuildApplication extends Command {
                 extraSize,
                 ext2,
             ],
-            { stdio: "inherit" }
+            { stdio: "inherit" },
         );
         return path.join(path.dirname(tarPath), tarName + ".ext2");
     }
@@ -236,7 +236,7 @@ export default class BuildApplication extends Command {
     private async createMachineSnapshot(
         sdkImage: string,
         info: ImageInfo,
-        ext2Path: string
+        ext2Path: string,
     ): Promise<void> {
         // extract base name of tar file
         const name = path.basename(ext2Path, path.extname(ext2Path));
@@ -306,7 +306,7 @@ export default class BuildApplication extends Command {
                 "--",
                 bootargs,
             ],
-            { stdio: "inherit" }
+            { stdio: "inherit" },
         );
 
         // change image directory permission to 755

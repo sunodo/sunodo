@@ -38,7 +38,7 @@ export abstract class SunodoCommand<T extends typeof Command> extends Command {
 
     protected async getServiceState(
         projectName: string,
-        serviceName: string
+        serviceName: string,
     ): Promise<string | undefined> {
         // get service information
         const { stdout } = await execa("docker", [
@@ -67,7 +67,7 @@ export abstract class SunodoCommand<T extends typeof Command> extends Command {
                 !fs.statSync(snapshot).isDirectory()
             ) {
                 throw new Error(
-                    "Cartesi machine snapshot not found, run 'sunodo build'"
+                    "Cartesi machine snapshot not found, run 'sunodo build'",
                 );
             }
 
@@ -83,7 +83,7 @@ export abstract class SunodoCommand<T extends typeof Command> extends Command {
                 "running"
             ) {
                 throw new Error(
-                    "Cartesi application node not running, run 'sunodo run'"
+                    "Cartesi application node not running, run 'sunodo run'",
                 );
             }
 
@@ -93,27 +93,27 @@ export abstract class SunodoCommand<T extends typeof Command> extends Command {
             // copy files from docker compose environment
             await execa("docker", [
                 ...args,
-                "validator:/opt/cartesi/share/deployments/localhost.json",
+                "anvil:/usr/share/sunodo/localhost.json",
                 ".sunodo",
             ]);
             await execa("docker", [
                 ...args,
-                "validator:/opt/cartesi/share/deployments/dapp.json",
+                "anvil:/usr/share/sunodo/dapp.json",
                 ".sunodo",
             ]);
         }
 
         // parse files
         const localhost = JSON.parse(
-            fs.readFileSync(path.join(".sunodo", "localhost.json"), "utf-8")
+            fs.readFileSync(path.join(".sunodo", "localhost.json"), "utf-8"),
         ) as Export;
         const dapp = JSON.parse(
-            fs.readFileSync(path.join(".sunodo", "dapp.json"), "utf-8")
+            fs.readFileSync(path.join(".sunodo", "dapp.json"), "utf-8"),
         ) as DApp;
 
         // build address book
         const contracts = Object.entries(
-            localhost.contracts
+            localhost.contracts,
         ).reduce<AddressBook>((acc, [name, { address }]) => {
             acc[name] = address;
             return acc;
