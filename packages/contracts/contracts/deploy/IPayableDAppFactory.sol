@@ -18,7 +18,7 @@ interface IPayableDAppFactory {
     /// @param _dappOwner The address that should own the DApp
     /// @param _templateHash The hash of the initial state of the Cartesi Machine
     /// @param _cid The IPFS CID of the cartesi machine snapshot
-    /// @param _runway the amount of time in seconds the dapp will be running (will trigger transfer)
+    /// @param _runway The amount of time in seconds the dapp will be running (will trigger transfer)
     /// @return The application
     function newApplication(
         address _dappOwner,
@@ -30,12 +30,16 @@ interface IPayableDAppFactory {
     /// @notice Import an existing dapp to be managed by this factory
     /// @param _dapp The dapp to be imported
     /// @param _cid The IPFS CID of the cartesi machine snapshot
-    /// @param _runway the amount of time in seconds the dapp will be running (will trigger transfer)
+    /// @param _runway The amount of time in seconds the dapp will be running (will trigger transfer)
     function importApplication(
         CartesiDApp _dapp,
         string memory _cid,
         uint256 _runway
     ) external;
+
+    /// @notice Sets a name for the factory using ENS service
+    /// @param _name The name of the factory
+    function setName(string memory _name) external;
 
     /// @notice Returns the cost of running a DApp for a given time
     /// @param _time The time in seconds
