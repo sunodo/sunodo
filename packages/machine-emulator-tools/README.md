@@ -7,7 +7,7 @@ It is currently distributed in binary format compiled for the `linux/riscv64` ar
 However the most convenient way to add this to the user application, which uses Docker as a build system, was to add a `COPY --from` directive, like the one below:
 
 ```dockerfile
-COPY --from=cartesi/machine-emulator-tools:0.11.0 / /
+COPY --from=cartesi/machine-emulator-tools:0.12.0 / /
 ```
 
 While `cartesi` doesn't provide such image, Sunodo will provide the image under the `ghcr.io/sunodo` organization.
@@ -15,7 +15,7 @@ While `cartesi` doesn't provide such image, Sunodo will provide the image under 
 So the application should include the following:
 
 ```dockerfile
-COPY --from=sunodo/machine-emulator-tools:0.11.0-ubuntu22.04 / /
+COPY --from=sunodo/machine-emulator-tools:0.12.0-ubuntu22.04 / /
 ```
 
 Only `ubuntu 22.04` is currently supported. We might add other distributions in the future.
