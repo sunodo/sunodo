@@ -1,5 +1,8 @@
 {
-    "name": "sdk",
+    "name": "@sunodo/sdk",
     "private": true,
-    "version": "0.1.0"
+    "version": "0.1.0",
+    "scripts": {
+        "build": "docker buildx bake"
+    }
 }
