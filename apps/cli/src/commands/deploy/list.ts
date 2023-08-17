@@ -3,7 +3,7 @@ import { foundry } from "@wagmi/chains";
 
 import { DeployBaseCommand, Deployment } from "./index.js";
 import * as CustomFlags from "../../flags.js";
-import { chains } from "../../wallet.js";
+import { supportedChains } from "../../wallet.js";
 
 export default class DeployList extends DeployBaseCommand<typeof DeployList> {
     static summary = "List deployments of the application.";
@@ -18,8 +18,8 @@ export default class DeployList extends DeployBaseCommand<typeof DeployList> {
     static flags = {
         network: CustomFlags.chain({
             summary: "network to list the deployments",
-            options: chains.map((c) => c.network),
-            chains,
+            options: supportedChains.map((c) => c.network),
+            chains: supportedChains,
         }),
     };
 
@@ -37,7 +37,7 @@ export default class DeployList extends DeployBaseCommand<typeof DeployList> {
         if (!this.jsonEnabled()) {
             if (deployments.length > 0) {
                 deployments.forEach((deployment, index) => {
-                    const chain = [...chains, foundry].find(
+                    const chain = [...supportedChains, foundry].find(
                         (c) => c.id === deployment.chainId,
                     );
 

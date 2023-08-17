@@ -6,7 +6,7 @@ import ora from "ora";
 
 import { SunodoCommand } from "../../sunodoCommand.js";
 import * as CustomFlags from "../../flags.js";
-import createClients, { chains } from "../../wallet.js";
+import createClients, { supportedChains } from "../../wallet.js";
 
 export type Flags<T extends typeof Command> = Interfaces.InferredFlags<
     (typeof SendBaseCommand)["baseFlags"] & T["flags"]
@@ -15,7 +15,7 @@ export type Args<T extends typeof Command> = Interfaces.InferredArgs<T["args"]>;
 
 // base command for sending input to the application
 export abstract class SendBaseCommand<
-    T extends typeof Command
+    T extends typeof Command,
 > extends SunodoCommand<typeof SendBaseCommand> {
     static baseFlags = {
         dapp: CustomFlags.address({
@@ -28,8 +28,8 @@ export abstract class SendBaseCommand<
             char: "c",
             env: "CHAIN",
             helpGroup: "Ethereum",
-            chains,
-            options: chains.map((c) => c.network),
+            chains: supportedChains,
+            options: supportedChains.map((c) => c.network),
         }),
         "rpc-url": Flags.string({
             description: "The RPC endpoint.",
@@ -58,6 +58,7 @@ export abstract class SendBaseCommand<
         // create viem clients
         return createClients({
             chain: this.flags.chain,
+            dev: true,
             rpcUrl: this.flags["rpc-url"],
             mnemonicPassphrase: this.flags["mnemonic-passphrase"],
             mnemonicIndex: this.flags["mnemonic-index"],
@@ -96,7 +97,7 @@ export abstract class SendBaseCommand<
 
     protected abstract send(
         publicClient: PublicClient,
-        walletClient: WalletClient
+        walletClient: WalletClient,
     ): Promise<Address>;
 
     public async run(): Promise<void> {
@@ -119,7 +120,7 @@ export default class Send extends Command {
     public async run(): Promise<void> {
         // get all send sub-commands
         const sendCommands = this.config.commands.filter((command) =>
-            command.id.startsWith("send:")
+            command.id.startsWith("send:"),
         );
 
         // select the send sub-command
