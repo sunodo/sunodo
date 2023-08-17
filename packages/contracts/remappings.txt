@@ -1,4 +1,5 @@
 @cartesi/=../../node_modules/@cartesi/
+@ensdomains/=../../node_modules/@ensdomains/
 @openzeppelin/=../../node_modules/@openzeppelin/
 ds-test/=lib/forge-std/lib/ds-test/src/
 eth-gas-reporter/=../../node_modules/eth-gas-reporter/

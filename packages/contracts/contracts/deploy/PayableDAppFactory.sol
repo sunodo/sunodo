@@ -1,11 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
-/// @title ERC20 DApp Factory
+/// @title Payable DApp Factory
 pragma solidity ^0.8.13;
 
 import {IConsensus} from "@cartesi/rollups/contracts/consensus/IConsensus.sol";
 import {CartesiDApp} from "@cartesi/rollups/contracts/dapp/CartesiDApp.sol";
 import {ICartesiDApp} from "@cartesi/rollups/contracts/dapp/ICartesiDApp.sol";
 import {ICartesiDAppFactory} from "@cartesi/rollups/contracts/dapp/ICartesiDAppFactory.sol";
+
+import {ENS} from "@ensdomains/ens-contracts/contracts/registry/ENS.sol";
+import {ADDR_REVERSE_NODE} from "@ensdomains/ens-contracts/contracts/reverseRegistrar/ReverseRegistrar.sol";
+import {IReverseRegistrar} from "@ensdomains/ens-contracts/contracts/reverseRegistrar/IReverseRegistrar.sol";
 
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
@@ -23,6 +27,7 @@ contract PayableDAppFactory is
     Ownable,
     Pausable
 {
+    ENS public immutable ens;
     ICartesiDAppFactory public immutable factory;
     IERC20 public immutable token;
     IConsensus public immutable consensus;
@@ -36,18 +41,29 @@ contract PayableDAppFactory is
     /// @param _price The price per second of execution of the dapp node
     constructor(
         address _owner,
+        ENS _ens,
         ICartesiDAppFactory _factory,
         IERC20 _token,
         IConsensus _consensus,
         uint256 _price
     ) {
         factory = _factory;
+        ens = _ens;
         token = _token;
         consensus = _consensus;
         price = _price;
 
         // transfer ownership to the give owner
         transferOwnership(_owner);
+    }
+
+    function setName(string memory name) external override onlyOwner {
+        IReverseRegistrar ensReverseRegistrar = IReverseRegistrar(
+            ens.owner(ADDR_REVERSE_NODE)
+        );
+
+        // call the ENS reverse registrar to register name of address
+        ensReverseRegistrar.setName(name);
     }
 
     /// @dev This function deploys a new application, and registers it with the payment system
