@@ -63,6 +63,16 @@ const guideSidebar = (): DefaultTheme.SidebarItem[] => {
             ],
         },
         {
+            text: "Interacting",
+            collapsed: false,
+            items: [
+                {
+                    text: "Sending inputs",
+                    link: "/guide/interacting/sending-inputs",
+                },
+            ],
+        },
+        {
             text: "Deploying",
             collapsed: false,
             items: [
