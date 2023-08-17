@@ -9,14 +9,14 @@ x-database-config: &database-config
 
 services:
     anvil:
-        image: sunodo/anvil:2.0.0
+        image: sunodo/devnet:1.0.0
         command:
             [
                 "anvil",
                 "--block-time",
                 "${BLOCK_TIME:-5}",
                 "--load-state",
-                "/opt/cartesi/share/deployments/anvil_state.json",
+                "/usr/share/sunodo/anvil_state.json",
                 "${ANVIL_VERBOSITY:---silent}",
             ]
         healthcheck:
@@ -27,7 +27,7 @@ services:
         environment:
             ANVIL_IP_ADDR: 0.0.0.0
         volumes:
-            - blockchain-data:/opt/cartesi/share/deployments:ro
+            - blockchain-data:/usr/share/sunodo
         ports:
             - 8545:8545
 
@@ -52,7 +52,7 @@ services:
             retries: 5
 
     dapp_deployer:
-        image: cartesi/rollups-cli:0.9.1
+        image: cartesi/rollups-cli:1.0.0
         restart: on-failure
         depends_on:
             anvil:
@@ -63,16 +63,16 @@ services:
                 "--rpc",
                 "http://anvil:8545",
                 "--deploymentFile",
-                "/opt/cartesi/share/deployments/localhost.json",
+                "/usr/share/sunodo/localhost.json",
                 "--mnemonic",
                 "test test test test test test test test test test test junk",
                 "--templateHashFile",
                 "/var/opt/cartesi/machine-snapshots/0_0/hash",
                 "--outputFile",
-                "/opt/cartesi/share/deployments/dapp.json",
+                "/usr/share/sunodo/dapp.json",
             ]
         volumes:
-            - blockchain-data:/opt/cartesi/share/deployments
+            - blockchain-data:/usr/share/sunodo
             - ./.sunodo/image:/var/opt/cartesi/machine-snapshots/0_0:ro
 
     validator:
@@ -81,7 +81,7 @@ services:
             dapp_deployer:
                 condition: service_completed_successfully
         volumes:
-            - blockchain-data:/opt/cartesi/share/deployments:ro
+            - blockchain-data:/usr/share/sunodo:ro
             - ./.sunodo/image:/tmp/machine-snapshots/0_0:ro
         healthcheck:
             test: ["CMD", "is_ready"]
@@ -99,7 +99,7 @@ services:
             ### redis
             REDIS_ENDPOINT: redis://redis:6379
             ### contract-address-file
-            DAPP_CONTRACT_ADDRESS_FILE: /opt/cartesi/share/deployments/dapp.json
+            DAPP_CONTRACT_ADDRESS_FILE: /usr/share/sunodo/dapp.json
             ### session-id
             SESSION_ID: default_session_id
             ### chain-id
@@ -117,13 +117,13 @@ services:
             # dispatcher
             ## uses redis
             ## uses chain-id (TX_CHAIN_ID acctually)
-            RD_DAPP_DEPLOYMENT_FILE: /opt/cartesi/share/deployments/dapp.json
-            RD_ROLLUPS_DEPLOYMENT_FILE: /opt/cartesi/share/deployments/localhost.json
+            AUTH_MNEMONIC: "test test test test test test test test test test test junk"
+            RD_DAPP_DEPLOYMENT_FILE: /usr/share/sunodo/dapp.json
+            RD_ROLLUPS_DEPLOYMENT_FILE: /usr/share/sunodo/localhost.json
             RD_EPOCH_DURATION: "${EPOCH_DURATION:-86400}"
             SC_GRPC_ENDPOINT: http://localhost:50051
             SC_DEFAULT_CONFIRMATIONS: 1
             TX_PROVIDER_HTTP_ENDPOINT: http://anvil:8545
-            TX_MNEMONIC: "test test test test test test test test test test test junk"
             TX_CHAIN_IS_LEGACY: ${TX_LEGACY:-false}
             TX_DEFAULT_CONFIRMATIONS: 2
 
