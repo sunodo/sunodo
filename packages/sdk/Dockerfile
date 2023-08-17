@@ -17,8 +17,9 @@ EOF
 FROM builder as genext2fs
 
 WORKDIR /usr/local/src
+ARG GENEXT2FS_VERSION=1.5.2
 RUN <<EOF
-curl -sL https://github.com/cartesi/genext2fs/archive/refs/heads/cartesi.tar.gz | tar --strip-components=1 -zxvf -
+curl -sL https://github.com/cartesi/genext2fs/archive/refs/tags/v${GENEXT2FS_VERSION}.tar.gz | tar --strip-components=1 -zxvf -
 ./autogen.sh
 ./configure --enable-libarchive
 make
@@ -41,6 +42,7 @@ ARG LINUX_VERSION
 ARG LINUX_KERNEL_VERSION
 ARG ROM_VERSION
 
+USER root
 RUN <<EOF
 apt-get update
 apt-get install -y --no-install-recommends curl libarchive-tools locales xz-utils
@@ -62,10 +64,10 @@ COPY --from=su-exec /usr/local/src/su-exec /usr/local/bin/
 
 ADD --chmod=644 \
     https://github.com/cartesi/image-kernel/releases/download/v$LINUX_VERSION/linux-$LINUX_KERNEL_VERSION.bin \
-    /opt/cartesi/share/images/linux.bin
+    /usr/share/cartesi-machine/images/linux.bin
 ADD --chmod=644 \
     https://github.com/cartesi/machine-emulator-rom/releases/download/v$ROM_VERSION/rom-v$ROM_VERSION.bin \
-    /opt/cartesi/share/images/rom.bin
+    /usr/share/cartesi-machine/images/rom.bin
 RUN curl -sSL https://github.com/cartesi/image-kernel/releases/download/v$LINUX_VERSION/linux-headers-$LINUX_KERNEL_VERSION.tar.xz | \
     tar -xJ -C /
 

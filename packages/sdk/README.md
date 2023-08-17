@@ -6,7 +6,7 @@ The image starts from the Cartesi emulator image, and adds the following:
 
 -   linux kernel published by Cartesi
 -   ROM published by Cartesi
--   a custom [genext2fs](https://github.com/cartesi/genext2fs/tree/next) tools used to generate the root filesystem of the application.
+-   a custom [genext2fs](https://github.com/cartesi/genext2fs/tree/next) tool used to generate the root filesystem of the application.
 
 The produced image is published to both [DockerHub](https://hub.docker.com/repository/docker/sunodo/sdk/general) and [GitHub](https://github.com/orgs/sunodo/packages/container/package/sdk), for better availability.
 
