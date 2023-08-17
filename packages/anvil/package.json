@@ -1,5 +1,8 @@
 {
     "name": "anvil",
     "private": true,
-    "version": "2.0.1"
+    "version": "2.0.1",
+    "scripts": {
+        "build": "docker buildx bake"
+    }
 }
