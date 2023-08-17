@@ -8,7 +8,7 @@ import { URL } from "url";
 import { SunodoCommand } from "../../sunodoCommand.js";
 import deploy from "../../deploy.js";
 import * as CustomFlags from "../../flags.js";
-import { chains } from "../../wallet.js";
+import { supportedChains } from "../../wallet.js";
 
 export type Deployment = {
     chainId: number; // id of chain where the application was deployed
@@ -72,8 +72,8 @@ export default class Deploy extends DeployBaseCommand<typeof Deploy> {
     static networkFlags = {
         network: CustomFlags.chain({
             summary: "network to deploy to",
-            options: chains.map((c) => c.network),
-            chains,
+            options: supportedChains.map((c) => c.network),
+            chains: supportedChains,
         }),
     };
 

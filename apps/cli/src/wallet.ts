@@ -20,39 +20,20 @@ import { EthereumProvider } from "@walletconnect/ethereum-provider";
 import qrcode from "qrcode-terminal";
 import ansiColors from "ansi-colors";
 import {
-    arbitrum,
     arbitrumGoerli,
     foundry,
-    mainnet,
-    optimism,
     optimismGoerli,
     sepolia,
 } from "@wagmi/chains";
 
 import { Choice, hexInput, selectAuto } from "./prompts.js";
 
-// list of all chains that will eventually be supported
-export const chains: Chain[] = [
-    arbitrum,
+// list of all supported chains
+export const supportedChains: Chain[] = [
     arbitrumGoerli,
-    mainnet,
-    optimism,
     optimismGoerli,
     sepolia,
 ];
-
-// list of chains that are currently enabled
-const enabledChains: Chain[] = [arbitrumGoerli, optimismGoerli, sepolia];
-
-// build a select choice from a Chain object
-const chainChoices = chains.map((chain: Chain) => ({
-    name: chain.name,
-    value: chain,
-    disabled:
-        enabledChains.findIndex((c) => c.id === chain.id) == -1
-            ? "(coming soon)"
-            : false,
-}));
 
 export const DEFAULT_DEVNET_MNEMONIC =
     "test test test test test test test test test test test junk";
@@ -101,21 +82,27 @@ export type TransactionPrompt = (
 ) => Promise<Address>;
 
 const selectChain = async (options: EthereumPromptOptions): Promise<Chain> => {
+    // development mode, include foundry as an option
+    const chains = options.dev
+        ? [foundry, ...supportedChains]
+        : supportedChains;
+
     if (options.chain) {
         const chain = options.chain;
-        if (enabledChains.findIndex((c) => c.id === chain.id) >= 0) {
+        if (chains.findIndex((c) => c.id === chain.id) >= 0) {
             return options.chain;
         }
         throw new Error(`Unsupported chain ${options.chain.network}`);
-    } else if (options.dev) {
-        // development mode, assume local foundry
-        return foundry;
     } else {
         // allow user to select from list
+        const choices = chains.map((chain) => ({
+            name: chain.name,
+            value: chain,
+        }));
         return await selectAuto<Chain>({
             message: "Chain",
-            choices: chainChoices,
-            pageSize: chainChoices.length,
+            choices,
+            pageSize: choices.length,
             discardDisabled: true,
         });
     }
