@@ -1,5 +1,5 @@
 # syntax=docker.io/docker/dockerfile:1.4
-FROM debian:bullseye-20230522-slim
+FROM debian:bookworm-20230814-slim
 
 # install curl and jq (for healthcheck support)
 RUN <<EOF
