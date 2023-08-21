@@ -1,5 +1,7 @@
 # Sunodo
 
+![Release Packages](https://github.com/sunodo/sunodo/actions/workflows/release.yaml/badge.svg)
+
 Sunodo is a framework for developing decentralized applications built on top of [Cartesi](http://cartesi.io) technology.
 It helps developers to:
 
