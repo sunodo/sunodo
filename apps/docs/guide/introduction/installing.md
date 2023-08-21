@@ -4,7 +4,7 @@ The `sunodo` CLI tool can be installed on macOS and Linux, and on Windows using 
 
 ## System requirements
 
-The CLI heavily uses [Docker](https://docker.com) under the hood, so you must have it installed, along with the following plugins:
+The CLI heavily uses [Docker](https://docker.com) under the hood, so you must have it installed and up-to-date, along with the following plugins:
 
 -   [Docker Buildx](https://docs.docker.com/buildx/working-with-buildx/)
 -   [Docker Compose](https://docs.docker.com/compose/)

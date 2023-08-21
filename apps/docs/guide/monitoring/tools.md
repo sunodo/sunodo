@@ -1,5 +1,5 @@
 # Monitoring tools
 
-::: warning
+::: info
 To be done
 :::

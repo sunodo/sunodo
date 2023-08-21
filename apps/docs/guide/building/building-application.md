@@ -10,8 +10,8 @@ The build process use [Docker](https://www.docker.com/), so you need to have it 
 
 Building consists of the following intermediate steps:
 
--   building the application code to the RISC-V architecture
--   assembling a Cartesi Machine using a Linux distribution
--   booting the machine with the application entrypoint until it yields successfully for the first time.
+1. building the application code to the RISC-V architecture
+2. assembling a Cartesi Machine using a Linux distribution
+3. booting the machine with the application entrypoint until it yields successfully for the first time.
 
-The end result of this process is a "cartesi machine snapshot".
+The end result of this process is a _cartesi machine snapshot_, which is a cartesi machine image ready to receive inputs.
