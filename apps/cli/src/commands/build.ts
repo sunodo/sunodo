@@ -7,7 +7,6 @@ import tmp from "tmp";
 import bytes from "bytes";
 
 type ImageBuildOptions = {
-    network: string;
     target?: string;
 };
 
@@ -44,12 +43,6 @@ export default class BuildApplication extends Command {
     static args = {};
 
     static flags = {
-        network: Flags.string({
-            summary: "target network name of application.",
-            description:
-                "the specified network name is injected as build-arg of the application Dockerfile. It's up to the developer to use that depending on the application needs.",
-            default: "localhost",
-        }),
         "from-image": Flags.string({
             summary: "skip docker build and start from this image.",
             description:
@@ -71,15 +64,7 @@ export default class BuildApplication extends Command {
         this.debug(
             `building docker image and writing result to ${buildResult}`,
         );
-        const args = [
-            "buildx",
-            "build",
-            "--load",
-            "--build-arg",
-            `NETWORK=${options.network}`,
-            "--iidfile",
-            buildResult,
-        ];
+        const args = ["buildx", "build", "--load", "--iidfile", buildResult];
         if (options.target) {
             args.push("--target", options.target);
         }
