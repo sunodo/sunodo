@@ -50,6 +50,10 @@ const guideSidebar = (): DefaultTheme.SidebarItem[] => {
                     text: "Target network",
                     link: "/guide/building/target-network",
                 },
+                {
+                    text: "Customizing",
+                    link: "/guide/building/customizing",
+                },
             ],
         },
         {
@@ -59,6 +63,10 @@ const guideSidebar = (): DefaultTheme.SidebarItem[] => {
                 {
                     text: "Running the application",
                     link: "/guide/running/running-application",
+                },
+                {
+                    text: "Sending inputs",
+                    link: "/guide/running/sending-inputs",
                 },
             ],
         },
@@ -77,6 +85,10 @@ const guideSidebar = (): DefaultTheme.SidebarItem[] => {
                 {
                     text: "Billing system",
                     link: "/guide/deploying/billing",
+                },
+                {
+                    text: "Becoming a Validator",
+                    link: "/guide/deploying/validator",
                 },
             ],
         },

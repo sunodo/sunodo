@@ -1,6 +1,6 @@
 # What is Sunodo?
 
-Sunodo is a [Cartesi](https://cartesi.io) Rollups as a Service platform and a set of tools to improve the development workflow of Cartesi DApps.
+Sunodo is a [Cartesi](https://cartesi.io) Rollups as a Service platform and a set of tools to improve the development workflow of Cartesi applications.
 
 The main tool is the `sunodo` command line interface (CLI) that can be used to:
 

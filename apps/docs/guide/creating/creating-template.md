@@ -1,5 +1,5 @@
 # Creating a new template
 
-::: warning
+::: info
 To be done
 :::

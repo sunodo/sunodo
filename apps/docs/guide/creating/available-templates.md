@@ -7,7 +7,7 @@ These are the templates currently available:
 -   `cpp`: C++ template
 -   `cpp-low-level`: C++ template using the low level API, instead of the HTTP server
 -   `go`: Go lang template
--   `javascript`: NodeJS 20 template
+-   [`javascript`](https://github.com/sunodo/sunodo-templates/blob/main/javascript/README.md): NodeJS 20 template
 -   `lua`: Lua 5.4 template
--   `python`: python 3 template
+-   [`python`](https://github.com/sunodo/sunodo-templates/blob/main/python/README.md): python 3 template
 -   `ruby`: ruby template
