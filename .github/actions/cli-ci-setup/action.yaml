@@ -12,6 +12,7 @@ runs:
           sudo apt-get update
           sudo apt-get install -y nsis p7zip-full awscli
         shell: bash
+        continue-on-error: true
 
       - name: Setup Node.js 20
         uses: actions/setup-node@v3

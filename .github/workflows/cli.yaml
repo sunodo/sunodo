@@ -98,8 +98,40 @@ jobs:
               run: |
                 yarn oclif upload tarballs
 
-    promote-deb-and-tarballs:
-      needs: [pack_upload_deb, pack_upload_tarballs]
+    pack_upload_mac:
+      runs-on: macOS-latest
+      if: startsWith(github.ref, 'refs/tags/@sunodo/cli@')
+      steps:
+            - uses: actions/checkout@v3
+
+            - name: Setup environment
+              uses: './.github/actions/cli-ci-setup'
+
+            - name: Build macos package
+              run: yarn oclif pack deb --root="./apps/cli"
+
+            - name: Sign Package
+              run: |
+                productsign --sign "Developer ID Installer: ${{ secrets.DEVELOPER_ID }}" ./input.pkg ./signed.pkg
+              working-directory: apps/cli/dist/macos
+
+            - name: Verify Signature
+              run: spctl -a -vv ./signed.pkg
+              working-directory: apps/cli/dist/macos
+
+            - name: Upload mac packages to Github artifacts
+              uses: actions/upload-artifact@v3
+              with:
+                  name: Packages-mac
+                  path: ./apps/cli/dist/macos
+
+            - name: Upload mac packages to S3
+              working-directory: apps/cli
+              run: |
+                yarn oclif upload macos
+
+    promote-deb-macos-tarballs:
+      needs: [pack_upload_deb, pack_upload_tarballs, pack_upload_mac]
       runs-on: ubuntu-latest
       steps:
             - uses: actions/checkout@v3
@@ -137,5 +169,6 @@ jobs:
             - name: Promote packages to S3
               run: |
                 yarn oclif promote --deb --xz --indexes --version=${{ steps.extract_info.outputs.version }} --sha=${{ steps.extract_info.outputs.sha }}
+                yarn oclif promote --macos --xz --indexes --version=${{ steps.extract_info.outputs.version }} --sha=${{ steps.extract_info.outputs.sha }}
                 aws s3 cp  s3://cli-prod-sunodo-origin/versions/${{ steps.extract_info.outputs.version }}/${{ steps.extract_info.outputs.sha }}/apt/./ s3://cli-prod-sunodo-origin/channels/stable/apt/./ --recursive
               working-directory: apps/cli
