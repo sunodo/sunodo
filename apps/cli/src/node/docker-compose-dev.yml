@@ -109,7 +109,7 @@ services:
             SERVER_MANAGER_ENDPOINT: http://localhost:5001
             SERVER_MANAGER_ADDRESS: localhost:5001
             SERVER_MANAGER_LOG_LEVEL: "${SERVER_MANAGER_LOG_LEVEL:-info}"
-            REMOTE_CARTESI_MACHINE_LOG_LEVEL: info
+            REMOTE_CARTESI_MACHINE_LOG_LEVEL: "${REMOTE_CARTESI_MACHINE_LOG_LEVEL:-info}"
 
             ### database
             <<: *database-config
