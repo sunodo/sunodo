@@ -11,7 +11,7 @@ hero:
           link: /guide/introduction/what-is-sunodo
         - theme: alt
           text: Reference
-          link: /reference/cli/create
+          link: /reference/contracts/
         - theme: alt
           text: View on GitHub
           link: https://github.com/sunodo/sunodo
