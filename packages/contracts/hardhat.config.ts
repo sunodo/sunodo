@@ -29,7 +29,7 @@ const DEFAULT_DEVNET_MNEMONIC =
 const ppath = (packageName: string, pathname: string) => {
     return path.join(
         path.dirname(require.resolve(`${packageName}/package.json`)),
-        pathname
+        pathname,
     );
 };
 
@@ -63,10 +63,10 @@ const external = (networks: string[], packages: string[]) => ({
         (acc, network) => ({
             ...acc,
             [network]: packages.map((packageName) =>
-                ppath(packageName, `/deployments/${network}`)
+                ppath(packageName, `/deployments/${network}`),
             ),
         }),
-        {}
+        {},
     ),
 });
 
@@ -101,10 +101,11 @@ const config: HardhatUserConfig = {
             "optimism_goerli",
             "sepolia",
         ],
-        ["@cartesi/util", "@cartesi/rollups"]
+        ["@cartesi/util", "@cartesi/rollups"],
     ),
     docgen: {
-        pages: "files",
+        pages: "single",
+        outputDir: "../../apps/docs/reference/contracts",
     },
     namedAccounts: {
         deployer: 0,
@@ -125,7 +126,7 @@ const config: HardhatUserConfig = {
             };
         } else {
             console.warn(
-                `unsupported deterministic deployment for network ${network}`
+                `unsupported deterministic deployment for network ${network}`,
             );
             return undefined;
         }

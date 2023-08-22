@@ -106,7 +106,20 @@ const guideSidebar = (): DefaultTheme.SidebarItem[] => {
 };
 
 const referenceSidebar = (): DefaultTheme.SidebarItem[] => {
-    return [];
+    return [
+        {
+            text: "Smart Contracts",
+            link: "/reference/contracts/",
+        },
+        {
+            text: "CLI",
+            link: "/reference/cli/",
+        },
+        {
+            text: "Kubernetes Config",
+            link: "/reference/kubernetes/",
+        },
+    ];
 };
 
 // https://vitepress.dev/reference/site-config
@@ -124,7 +137,7 @@ export default defineConfig({
                 link: "/guide/introduction/what-is-sunodo",
                 activeMatch: "/guide/",
             },
-            { text: "Reference", link: "/reference/cli/create" },
+            { text: "Reference", link: "/reference/contracts/" },
         ],
         sidebar: {
             "/guide/": guideSidebar(),
