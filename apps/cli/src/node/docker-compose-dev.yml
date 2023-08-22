@@ -9,7 +9,7 @@ x-database-config: &database-config
 
 services:
     anvil:
-        image: sunodo/devnet:1.0.0
+        image: sunodo/devnet:devel
         command:
             [
                 "anvil",
@@ -76,7 +76,7 @@ services:
             - ./.sunodo/image:/var/opt/cartesi/machine-snapshots/0_0:ro
 
     validator:
-        image: sunodo/rollups-node:0.3.0
+        image: sunodo/rollups-node:devel
         depends_on:
             dapp_deployer:
                 condition: service_completed_successfully
