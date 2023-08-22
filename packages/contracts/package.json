@@ -23,7 +23,7 @@
         "tsc": "tsc"
     },
     "dependencies": {
-        "@cartesi/rollups": "1.0.0-rc.1"
+        "@cartesi/rollups": "1.0.0"
     },
     "devDependencies": {
         "@nomicfoundation/hardhat-verify": "^1",
