@@ -55,6 +55,7 @@ export default class Run extends Command {
             EPOCH_DURATION: epochDuration.toString(),
             MNEMONIC: DEFAULT_DEVNET_MNEMONIC,
             REDIS_LOG_LEVEL: flags.verbose ? "verbose" : "warning",
+            REMOTE_CARTESI_MACHINE_LOG_LEVEL: flags.verbose ? "info" : "error",
             RUST_LOG: flags.verbose ? "info" : "error",
             RPC_URL: "http://anvil:8545",
             S6_VERBOSITY: flags.verbose ? "2" : "0",
