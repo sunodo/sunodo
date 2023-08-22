@@ -60,13 +60,13 @@ cp "$tmp_dir"/traefik /usr/local/bin/traefik
 rm -rf "$tmp_dir"
 EOF
 
-COPY --from=state_server    /opt/cartesi/bin/rollups_state_server /opt/cartesi/bin/rollups_state_server
-COPY --from=indexer         /opt/cartesi/bin/indexer              /opt/cartesi/bin/indexer
-COPY --from=dispatcher      /opt/cartesi/bin/rollups_dispatcher   /opt/cartesi/bin/rollups_dispatcher
-COPY --from=advance_runner  /opt/cartesi/bin/advance-runner       /opt/cartesi/bin/advance-runner
-COPY --from=inspect_server  /opt/cartesi/bin/inspect-server       /opt/cartesi/bin/inspect-server
-COPY --from=graphql_server  /opt/cartesi/bin/graphql-server       /opt/cartesi/bin/graphql-server
-COPY --from=deployments     /opt/cartesi/share/deployments/       /opt/cartesi/share/deployments/
+COPY --from=state_server    /opt/cartesi/bin/cartesi-rollups-state-server   /usr/bin/cartesi-rollups-state-server
+COPY --from=indexer         /opt/cartesi/bin/cartesi-rollups-indexer        /usr/bin/cartesi-rollups-indexer
+COPY --from=dispatcher      /opt/cartesi/bin/cartesi-rollups-dispatcher     /usr/bin/cartesi-rollups-dispatcher
+COPY --from=advance_runner  /opt/cartesi/bin/cartesi-rollups-advance-runner /usr/bin/cartesi-rollups-advance-runner
+COPY --from=inspect_server  /opt/cartesi/bin/cartesi-rollups-inspect-server /usr/bin/cartesi-rollups-inspect-server
+COPY --from=graphql_server  /opt/cartesi/bin/cartesi-rollups-graphql-server /usr/bin/cartesi-rollups-graphql-server
+COPY --from=deployments     /opt/cartesi/share/deployments/                 /opt/cartesi/share/deployments/
 
 RUN mkdir -p /var/opt/cartesi/machine-snapshots/0_0 && ln -s /var/opt/cartesi/machine-snapshots/0_0 /var/opt/cartesi/machine-snapshots/latest
 
