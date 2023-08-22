@@ -152,15 +152,13 @@ export default defineConfig({
             { icon: "twitter", link: "https://twitter.com/SunodoProject" },
             { icon: "github", link: "https://github.com/sunodo/sunodo" },
         ],
-        /*
-        TODO: request algolia search integration
         search: {
             provider: "algolia",
             options: {
-                appId: "0000000000",
-                apiKey: "xxxxxxx",
+                appId: "A3KGKST4NL",
+                apiKey: "4808497d4d3970d37a6c75f58ee1fccf",
                 indexName: "sunodo",
             },
-        },*/
+        },
     },
 });
