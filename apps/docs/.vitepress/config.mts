@@ -161,4 +161,7 @@ export default defineConfig({
             },
         },
     },
+    sitemap: {
+        hostname: "https://docs.sunodo.io",
+    },
 });
