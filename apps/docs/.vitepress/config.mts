@@ -124,7 +124,6 @@ const referenceSidebar = (): DefaultTheme.SidebarItem[] => {
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-    lang: "en-US",
     title: "Sunodo",
     description: "Documentation",
     lastUpdated: true,
