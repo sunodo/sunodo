@@ -24,6 +24,7 @@ contract PayableDAppSystem is IPayableDAppSystem {
     /// @notice Create a new ERC20 based DApp factory using the specified token
     function newPayableDAppFactory(
         IERC20 _token,
+        address _payee,
         IConsensus _consensus,
         uint256 _price
     ) external returns (IPayableDAppFactory) {
@@ -31,6 +32,7 @@ contract PayableDAppSystem is IPayableDAppSystem {
         PayableDAppFactory payableFactory = new PayableDAppFactory(
             msg.sender,
             ens,
+            _payee,
             factory,
             _token,
             _consensus,
@@ -41,6 +43,7 @@ contract PayableDAppSystem is IPayableDAppSystem {
         emit PayableDAppFactoryCreated(
             payableFactory,
             _token,
+            _payee,
             _consensus,
             _price
         );

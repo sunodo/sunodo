@@ -13,19 +13,26 @@ interface IPayableDAppSystem {
     /// @notice A new factory was created
     /// @param factory The address of the factory
     /// @param token The token used for billing
+    /// @param payee The address that will receive the payments
     /// @param consensus The consensus associated with the factory
     /// @param price The price per minute of dapp node execution
     event PayableDAppFactoryCreated(
         IPayableDAppFactory factory,
         IERC20 token,
+        address payee,
         IConsensus consensus,
         uint256 price
     );
 
     /// @notice Create a new ERC20 based DApp factory using the specified token
+    /// @param token The token used for billing
+    /// @param payee The address that will receive the payments
+    /// @param consensus The consensus associated with the factory
+    /// @param price The price per second of application node execution
     function newPayableDAppFactory(
-        IERC20 _token,
+        IERC20 token,
+        address payee,
         IConsensus consensus,
-        uint256 _price
+        uint256 price
     ) external returns (IPayableDAppFactory);
 }
