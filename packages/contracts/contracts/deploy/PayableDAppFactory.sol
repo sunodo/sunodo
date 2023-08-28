@@ -27,21 +27,27 @@ contract PayableDAppFactory is
     Ownable,
     Pausable
 {
+    uint256 public immutable price;
+
     ENS public immutable ens;
     ICartesiDAppFactory public immutable factory;
     IERC20 public immutable token;
     IConsensus public immutable consensus;
-    uint256 public immutable price;
+    address public immutable payee;
 
     mapping(ICartesiDApp => uint256) public runway;
 
-    /// @notice Construct a new ERC20DAppFactory with the given token as payment method
+    /// @notice Construct a new PayableDAppFactory with the given token as payment method and price
+    /// @param _owner The owner of the factory, who can pause its operation
+    /// @param _payee The receiver of the payments to applications managed by this factory
     /// @param _factory The factory to delegate calls to instantiate the dapp
+    /// @param _token The token to use as payment method
     /// @param _consensus The consensus contract to use
     /// @param _price The price per second of execution of the dapp node
     constructor(
         address _owner,
         ENS _ens,
+        address _payee,
         ICartesiDAppFactory _factory,
         IERC20 _token,
         IConsensus _consensus,
@@ -52,6 +58,7 @@ contract PayableDAppFactory is
         token = _token;
         consensus = _consensus;
         price = _price;
+        payee = _payee;
 
         // transfer ownership to the give owner
         transferOwnership(_owner);
@@ -96,7 +103,7 @@ contract PayableDAppFactory is
         uint256 _runway
     ) external override whenNotPaused {
         require(
-            _dapp.getConsensus() == this.consensus(),
+            _dapp.getConsensus() == consensus,
             "PaymentDAppFactory: cannot import dapp with a different consensus"
         );
 
@@ -133,16 +140,16 @@ contract PayableDAppFactory is
 
         // transfer tokens from sender to this contract
         require(
-            token.transferFrom(_msgSender, address(this), _cost),
+            token.transferFrom(_msgSender, payee, _cost),
             "PaymentDAppFactory: failed to transfer tokens"
         );
 
         uint256 currentRunway = runway[_dapp];
 
         // if runway was in the past, update to now
-        currentRunway = currentRunway < block.timestamp
-            ? block.timestamp
-            : currentRunway;
+        if (currentRunway < block.timestamp) {
+            currentRunway = block.timestamp;
+        }
 
         // update dapp runway
         uint256 newRunway = currentRunway + _time;
@@ -152,13 +159,6 @@ contract PayableDAppFactory is
         emit FinancialRunway(address(_dapp), newRunway);
 
         return newRunway;
-    }
-
-    function withdraw() external onlyOwner {
-        require(
-            token.transfer(msg.sender, token.balanceOf(address(this))),
-            "PaymentDAppFactory: failed to withdraw tokens"
-        );
     }
 
     function pause() public onlyOwner {

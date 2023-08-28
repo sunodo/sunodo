@@ -52,6 +52,9 @@ interface IPayableDAppFactory {
     /// @notice The consensus wired to the factory
     function consensus() external view returns (IConsensus);
 
+    /// @notice The address which will receive payments for the applications
+    function payee() external view returns (address);
+
     /// @notice Returns the runway of a given DApp
     /// @param _dapp The DApp address
     function runway(ICartesiDApp _dapp) external view returns (uint256);
