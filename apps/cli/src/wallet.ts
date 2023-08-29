@@ -19,12 +19,7 @@ import { MetaMaskSDK } from "@metamask/sdk";
 import { EthereumProvider } from "@walletconnect/ethereum-provider";
 import qrcode from "qrcode-terminal";
 import ansiColors from "ansi-colors";
-import {
-    arbitrumGoerli,
-    foundry,
-    optimismGoerli,
-    sepolia,
-} from "@wagmi/chains";
+import { arbitrumGoerli, foundry, optimismGoerli, sepolia } from "viem/chains";
 
 import { Choice, hexInput, selectAuto } from "./prompts.js";
 

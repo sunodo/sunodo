@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import { foundry } from "@wagmi/chains";
+import { foundry } from "viem/chains";
 
 import { DeployBaseCommand, Deployment } from "./index.js";
 import * as CustomFlags from "../../flags.js";
