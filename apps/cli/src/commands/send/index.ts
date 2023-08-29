@@ -23,13 +23,12 @@ export abstract class SendBaseCommand<
             description:
                 "the address of the DApp, defaults to the deployed DApp address if application is running.",
         }),
-        chain: CustomFlags.chain({
-            description: "The chain name or EIP-155 chain ID.",
+        "chain-id": Flags.integer({
+            description: "The EIP-155 chain ID.",
             char: "c",
             env: "CHAIN",
             helpGroup: "Ethereum",
-            chains: supportedChains,
-            options: supportedChains.map((c) => c.network),
+            options: supportedChains.map((c) => c.id.toString()),
         }),
         "rpc-url": Flags.string({
             description: "The RPC endpoint.",
@@ -57,7 +56,7 @@ export abstract class SendBaseCommand<
     }> {
         // create viem clients
         return createClients({
-            chain: this.flags.chain,
+            chain: supportedChains.find((c) => c.id == this.flags["chain-id"]),
             dev: true,
             rpcUrl: this.flags["rpc-url"],
             mnemonicPassphrase: this.flags["mnemonic-passphrase"],

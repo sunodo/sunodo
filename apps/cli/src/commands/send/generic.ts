@@ -1,3 +1,4 @@
+import { Flags } from "@oclif/core";
 import { Address, parseAbiParameters } from "abitype";
 import {
     encodeAbiParameters,
@@ -12,7 +13,6 @@ import {
 import { inputBoxABI, inputBoxAddress } from "../../contracts.js";
 import { SendBaseCommand } from "./index.js";
 import { bytesInput } from "../../prompts.js";
-import { Flags } from "@oclif/core";
 
 export default class SendGeneric extends SendBaseCommand<typeof SendGeneric> {
     static summary = "Send generic input to the application.";

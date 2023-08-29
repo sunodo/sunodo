@@ -3,7 +3,7 @@ import path from "path";
 import { Command, Interfaces } from "@oclif/core";
 import { execa } from "execa";
 import { Abi, Address } from "abitype";
-import { PsResponse } from "./types/docker";
+import { PsResponse } from "./types/docker.js";
 
 export type Flags<T extends typeof Command> = Interfaces.InferredFlags<
     (typeof SunodoCommand)["baseFlags"] & T["flags"]

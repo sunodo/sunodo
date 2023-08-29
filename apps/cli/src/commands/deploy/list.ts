@@ -1,8 +1,8 @@
+import { Flags } from "@oclif/core";
 import chalk from "chalk";
 import { foundry } from "viem/chains";
 
 import { DeployBaseCommand, Deployment } from "./index.js";
-import * as CustomFlags from "../../flags.js";
 import { supportedChains } from "../../wallet.js";
 
 export default class DeployList extends DeployBaseCommand<typeof DeployList> {
@@ -16,21 +16,19 @@ export default class DeployList extends DeployBaseCommand<typeof DeployList> {
     static examples = ["<%= config.bin %> <%= command.id %>"];
 
     static flags = {
-        network: CustomFlags.chain({
+        "chain-id": Flags.integer({
             summary: "network to list the deployments",
-            options: supportedChains.map((c) => c.network),
-            chains: supportedChains,
+            options: supportedChains.map((c) => c.id.toString()),
         }),
     };
 
     public async run(): Promise<Deployment[]> {
-        const { network } = this.flags;
         let deployments = this.getDeployments();
 
-        if (network) {
+        if (this.flags["chain-id"]) {
             // filter by network
             deployments = deployments.filter(
-                (deployment) => deployment.chainId === network.id,
+                (deployment) => deployment.chainId === this.flags["chain-id"],
             );
         }
 
