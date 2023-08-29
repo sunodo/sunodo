@@ -87,7 +87,7 @@ const selectChain = async (options: EthereumPromptOptions): Promise<Chain> => {
         if (chains.findIndex((c) => c.id === chain.id) >= 0) {
             return options.chain;
         }
-        throw new Error(`Unsupported chain ${options.chain.network}`);
+        throw new Error(`Unsupported chainId ${options.chain.id}`);
     } else {
         // allow user to select from list
         const choices = chains.map((chain) => ({

@@ -1,5 +1,5 @@
 import { Args, Command, Flags, Interfaces } from "@oclif/core";
-import { Address, Chain, Hash } from "viem";
+import { Address, Hash } from "viem";
 import chalk from "chalk";
 import fs from "fs-extra";
 import path from "path";
@@ -70,10 +70,9 @@ export default class Deploy extends DeployBaseCommand<typeof Deploy> {
     static examples = ["<%= config.bin %> <%= command.id %>"];
 
     static networkFlags = {
-        network: CustomFlags.chain({
+        "chain-id": Flags.integer({
             summary: "network to deploy to",
-            options: supportedChains.map((c) => c.network),
-            chains: supportedChains,
+            options: supportedChains.map((c) => c.id.toString()),
         }),
     };
 
@@ -144,7 +143,7 @@ export default class Deploy extends DeployBaseCommand<typeof Deploy> {
             },
             network: {
                 dev: flags.dev,
-                chain: flags.network,
+                chain: supportedChains.find((c) => c.id == flags["chain-id"]),
                 mnemonicPassphrase: flags["mnemonic-passphrase"],
                 mnemonicIndex: flags["mnemonic-index"],
             },
