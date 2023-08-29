@@ -1,9 +1,7 @@
 import { Flags } from "@oclif/core";
-import { Chain } from "@wagmi/chains";
+import { Chain } from "viem/chains";
 import { Address } from "abitype";
 import { isAddress, isHex } from "viem";
-
-import { ConsensusType } from "./deploy.js";
 
 // custom flag for Address, does validation
 export const address = Flags.custom<Address>({

@@ -1,6 +1,6 @@
 import { DataSource } from "@subsquid/evm-processor";
 import { lookupArchive } from "@subsquid/archive-registry";
-import { Chain } from "@wagmi/chains";
+import { Chain } from "viem/chains";
 
 /**
  * Archives supported by Subsquid Aquarium

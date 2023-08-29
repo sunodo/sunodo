@@ -7,7 +7,7 @@ import {
     optimism,
     optimismGoerli,
     sepolia,
-} from "@wagmi/chains";
+} from "viem/chains";
 
 const chains = [
     arbitrum,

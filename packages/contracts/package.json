@@ -33,7 +33,7 @@
         "@nomicfoundation/hardhat-verify": "^1",
         "@nomiclabs/hardhat-ethers": "^2",
         "@safe-global/safe-singleton-factory": "^1",
-        "@wagmi/chains": "^1",
+        "viem": "^1",
         "hardhat": "^2",
         "hardhat-abi-exporter": "^2",
         "hardhat-deploy": "^0.11",

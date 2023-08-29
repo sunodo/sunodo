@@ -12,7 +12,7 @@ import {
     optimism,
     optimismGoerli,
     sepolia,
-} from "@wagmi/chains";
+} from "viem/chains";
 
 // read MNEMONIC from env variable
 let mnemonic = process.env.MNEMONIC;
@@ -85,7 +85,7 @@ const config: HardhatUserConfig = {
             };
         } else {
             console.warn(
-                `unsupported deterministic deployment for network ${network}`
+                `unsupported deterministic deployment for network ${network}`,
             );
             return undefined;
         }
