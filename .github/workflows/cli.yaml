@@ -10,7 +10,6 @@ on:
             - packages/contracts/**
             - packages/eslint-config-custom/**
             - packages/tsconfig/**
-            - packages/wagmi-plugin-hardhat-deploy/**
 concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}
     cancel-in-progress: true

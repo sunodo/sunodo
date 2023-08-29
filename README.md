@@ -27,7 +27,6 @@ It helps developers to:
 -   `token`: ERC-20 token smart contract for testing;
 -   `devnet`: Docker image for local devnet execution bundling cartesi and sunodo smart contracts;
 -   `ui`: a stub React component library shared by both `web` and `app` applications
--   `wagmi-plugin-hardhat-deploy`: wagmi CLI [plugin](https://wagmi.sh/cli/plugins) which integrates with [hardhat-deploy](https://github.com/wighawag/hardhat-deploy) artifacts
 -   `eslint-config-custom`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
 -   `tsconfig`: `tsconfig.json`s used throughout the monorepo
 
