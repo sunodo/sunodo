@@ -1,5 +1,9 @@
 # Becoming a Validator
 
+::: warning
+This is still under development and will be available in a future release.
+:::
+
 The following diagram illustrates the deployment system implemented by Sunodo.
 
 ![Deployment overview](./deploy-overview.jpg)
