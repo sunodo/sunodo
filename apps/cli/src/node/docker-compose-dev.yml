@@ -92,6 +92,7 @@ services:
             - 8080:8080
         environment:
             # s6-overlay
+            S6_STAGE2_HOOK: "/etc/s6-overlay/scripts/stage2-hook.sh"
             S6_VERBOSITY: "${S6_VERBOSITY:-2}"
             # global
             RUST_LOG: "${RUST_LOG:-info}"
