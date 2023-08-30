@@ -36,6 +36,8 @@ export default class Controller extends Command {
 
     static examples = ["<%= config.bin %> <%= command.id %>"];
 
+    static hidden = true;
+
     static flags = {
         "rpc-url": Flags.string({
             description: "JSON-RPC url of ethereum node",
