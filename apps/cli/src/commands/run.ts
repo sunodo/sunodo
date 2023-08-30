@@ -20,6 +20,11 @@ export default class Run extends Command {
             description: "duration of an epoch (in seconds)",
             default: 86400,
         }),
+        "no-backend": Flags.boolean({
+            description: "Run a node without the application code. Application must be executed by the developer on the host machine, fetching inputs from the node running at http://localhost:5004",
+            summary: "run a node without the application code",
+            default: false,
+        }),
         verbose: Flags.boolean({
             description: "verbose output",
             default: false,
@@ -30,19 +35,24 @@ export default class Run extends Command {
     public async run(): Promise<void> {
         const { flags } = await this.parse(Run);
         const snapshot = path.join(".sunodo", "image");
+        let projectName: string;
 
-        // check if snapshot exists
-        if (!fs.existsSync(snapshot) || !fs.statSync(snapshot).isDirectory()) {
-            throw new Error(
-                "Cartesi machine snapshot not found, run 'sunodo build'"
-            );
+        if (flags["no-backend"]) {
+            projectName = "sunodo-node";
+        } else {
+            // Check if snapshot exists
+            if (!fs.existsSync(snapshot) || !fs.statSync(snapshot).isDirectory()) {
+                throw new Error(
+                    "Cartesi machine snapshot not found, run 'sunodo build'"
+                );
+            }
+
+            // Read hash of the cartesi machine snapshot
+            const hash = fs
+                .readFileSync(path.join(snapshot, "hash"))
+                .toString("hex");
+            projectName = hash.substring(0, 8);
         }
-
-        // read hash of the cartesi machine snapshot
-        const hash = fs
-            .readFileSync(path.join(snapshot, "hash"))
-            .toString("hex");
-        const projectName = hash.substring(0, 8);
 
         // setup the environment variable used in docker compose
         const blockInterval = flags["block-time"];
@@ -63,18 +73,28 @@ export default class Run extends Command {
             WS_URL: "ws://anvil:8545",
         };
 
-        // resolve compose file location based on version
-        const composeFile = path.join(
+        // Construct the path for Docker Compose files
+        const composeFileDev = path.join(
+            "--file=",
             path.dirname(new URL(import.meta.url).pathname),
             "..",
             "node",
             "docker-compose-dev.yml"
         );
+        const composeFileHost = path.join(
+            "--file=",
+            path.dirname(new URL(import.meta.url).pathname),
+            "..",
+            "node",
+            "docker-compose-host.yml"
+        );
+
+        // Use composeFileDev by default, add composeFileHost if --no-backend is defined
+        const selectedComposeFiles = flags["no-backend"] ? [composeFileDev, composeFileHost] : [composeFileDev];
 
         const args = [
             "compose",
-            "--file",
-            composeFile,
+            ...selectedComposeFiles,
             "--project-directory",
             ".",
             "--project-name",
