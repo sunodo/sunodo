@@ -8,6 +8,7 @@ FROM ${REGISTRY}/${ORG}/rollups-dispatcher:${ROLLUPS_VERSION}      AS dispatcher
 FROM ${REGISTRY}/${ORG}/rollups-advance-runner:${ROLLUPS_VERSION}  AS advance_runner
 FROM ${REGISTRY}/${ORG}/rollups-inspect-server:${ROLLUPS_VERSION}  AS inspect_server
 FROM ${REGISTRY}/${ORG}/rollups-graphql-server:${ROLLUPS_VERSION}  AS graphql_server
+FROM ${REGISTRY}/${ORG}/rollups-host-runner:${ROLLUPS_VERSION}     AS host_runner
 
 FROM cartesi/server-manager:0.8.2
 USER root
@@ -64,11 +65,13 @@ COPY --from=dispatcher      /opt/cartesi/bin/cartesi-rollups-dispatcher     /usr
 COPY --from=advance_runner  /opt/cartesi/bin/cartesi-rollups-advance-runner /usr/bin/cartesi-rollups-advance-runner
 COPY --from=inspect_server  /opt/cartesi/bin/cartesi-rollups-inspect-server /usr/bin/cartesi-rollups-inspect-server
 COPY --from=graphql_server  /opt/cartesi/bin/cartesi-rollups-graphql-server /usr/bin/cartesi-rollups-graphql-server
+COPY --from=host_runner     /opt/cartesi/bin/cartesi-rollups-host-runner    /usr/bin/cartesi-rollups-host-runner
 
 RUN mkdir -p /var/opt/cartesi/machine-snapshots/0_0 && ln -s /var/opt/cartesi/machine-snapshots/0_0 /var/opt/cartesi/machine-snapshots/latest
 
 COPY ./traefik /etc/traefik
-COPY ./s6-overlay /etc/s6-overlay
+COPY ./s6-overlay/s6-rc.d /etc/s6-overlay/s6-rc.d
+COPY ./s6-overlay/stage2-hook.sh /etc/s6-overlay/scripts/stage2-hook.sh
 COPY ./is_ready /usr/local/bin/
 COPY ./address_book /usr/local/bin/
 COPY ./entrypoint.sh /entrypoint.sh
