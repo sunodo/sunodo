@@ -1,5 +1,9 @@
 # Billing system
 
+::: warning
+This is still under development and will be available in a future release.
+:::
+
 The deployment of an application is done through a `PayableDAppFactory` smart contract.
 
 The contract defines which ERC-20 token is accepted as payment and the price of application execution per unit of time (second). In the current design, the price is fixed, and cannot be changed by the validator.
