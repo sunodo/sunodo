@@ -8,6 +8,8 @@ import { supportedChains } from "../../wallet.js";
 export default class DeployList extends DeployBaseCommand<typeof DeployList> {
     static summary = "List deployments of the application.";
 
+    static hidden = true;
+
     static enableJsonFlag = true;
 
     static description =

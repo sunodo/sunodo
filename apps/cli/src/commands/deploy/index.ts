@@ -69,6 +69,8 @@ export default class Deploy extends DeployBaseCommand<typeof Deploy> {
 
     static examples = ["<%= config.bin %> <%= command.id %>"];
 
+    static hidden = true;
+
     static networkFlags = {
         "chain-id": Flags.integer({
             summary: "network to deploy to",
