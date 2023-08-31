@@ -1,5 +1,11 @@
 # anvil
 
+## 3.0.0
+
+### Major Changes
+
+-   ffad9be: change base image to debian:bookworm
+
 ## 2.0.1
 
 ### Patch Changes

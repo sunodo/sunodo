@@ -25,7 +25,7 @@ $ npm install -g @sunodo/cli
 $ sunodo COMMAND
 running command...
 $ sunodo (--version)
-@sunodo/cli/0.6.0 linux-x64 node-v20.3.0
+@sunodo/cli/0.7.0 linux-x64 node-v20.5.1
 $ sunodo --help [COMMAND]
 USAGE
   $ sunodo COMMAND
@@ -72,7 +72,7 @@ EXAMPLES
   $ sunodo address-book
 ```
 
-_See code: [dist/commands/address-book.ts](https://github.com/sunodo/sunodo/blob/v0.6.0/dist/commands/address-book.ts)_
+_See code: [dist/commands/address-book.ts](https://github.com/sunodo/sunodo/blob/v0.7.0/dist/commands/address-book.ts)_
 
 ## `sunodo build`
 
@@ -80,11 +80,10 @@ Build application.
 
 ```
 USAGE
-  $ sunodo build [--network <value>] [--from-image <value>] [--target <value>]
+  $ sunodo build [--from-image <value>] [--target <value>]
 
 FLAGS
   --from-image=<value>  skip docker build and start from this image.
-  --network=<value>     [default: localhost] target network name of application.
   --target=<value>      target of docker multi-stage build.
 
 DESCRIPTION
@@ -106,18 +105,13 @@ FLAG DESCRIPTIONS
     if the build process of the application Dockerfile needs more control the developer can build the image using the
     `docker build` command, and then start the build process of the Cartesi machine starting from that image.
 
-  --network=<value>  target network name of application.
-
-    the specified network name is injected as build-arg of the application Dockerfile. It's up to the developer to use
-    that depending on the application needs.
-
   --target=<value>  target of docker multi-stage build.
 
     if the application Dockerfile uses a multi-stage strategy, and stage of the image to be exported as a Cartesi
     machine is not the last stage, use this parameter to specify the target stage.
 ```
 
-_See code: [dist/commands/build.ts](https://github.com/sunodo/sunodo/blob/v0.6.0/dist/commands/build.ts)_
+_See code: [dist/commands/build.ts](https://github.com/sunodo/sunodo/blob/v0.7.0/dist/commands/build.ts)_
 
 ## `sunodo clean`
 
@@ -136,7 +130,7 @@ EXAMPLES
   $ sunodo clean
 ```
 
-_See code: [dist/commands/clean.ts](https://github.com/sunodo/sunodo/blob/v0.6.0/dist/commands/clean.ts)_
+_See code: [dist/commands/clean.ts](https://github.com/sunodo/sunodo/blob/v0.7.0/dist/commands/clean.ts)_
 
 ## `sunodo create NAME`
 
@@ -161,7 +155,7 @@ EXAMPLES
   $ sunodo create
 ```
 
-_See code: [dist/commands/create.ts](https://github.com/sunodo/sunodo/blob/v0.6.0/dist/commands/create.ts)_
+_See code: [dist/commands/create.ts](https://github.com/sunodo/sunodo/blob/v0.7.0/dist/commands/create.ts)_
 
 ## `sunodo doctor`
 
@@ -178,7 +172,7 @@ EXAMPLES
   $ sunodo doctor
 ```
 
-_See code: [dist/commands/doctor.ts](https://github.com/sunodo/sunodo/blob/v0.6.0/dist/commands/doctor.ts)_
+_See code: [dist/commands/doctor.ts](https://github.com/sunodo/sunodo/blob/v0.7.0/dist/commands/doctor.ts)_
 
 ## `sunodo help [COMMANDS]`
 
@@ -198,7 +192,7 @@ DESCRIPTION
   Display help for sunodo.
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.2.9/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.2.18/src/commands/help.ts)_
 
 ## `sunodo run`
 
@@ -222,7 +216,7 @@ EXAMPLES
   $ sunodo run
 ```
 
-_See code: [dist/commands/run.ts](https://github.com/sunodo/sunodo/blob/v0.6.0/dist/commands/run.ts)_
+_See code: [dist/commands/run.ts](https://github.com/sunodo/sunodo/blob/v0.7.0/dist/commands/run.ts)_
 
 ## `sunodo send`
 
@@ -241,7 +235,7 @@ EXAMPLES
   $ sunodo send
 ```
 
-_See code: [dist/commands/send/index.ts](https://github.com/sunodo/sunodo/blob/v0.6.0/dist/commands/send/index.ts)_
+_See code: [dist/commands/send/index.ts](https://github.com/sunodo/sunodo/blob/v0.7.0/dist/commands/send/index.ts)_
 
 ## `sunodo send dapp-address`
 
@@ -249,15 +243,16 @@ Send DApp address input to the application.
 
 ```
 USAGE
-  $ sunodo send dapp-address [--dapp <value>] [-c <value>] [-r <value>] [--mnemonic-passphrase <value>]
+  $ sunodo send dapp-address [--dapp <value>] [-c 421613|420|11155111] [-r <value>] [--mnemonic-passphrase <value>]
     [--mnemonic-index <value>]
 
 FLAGS
   --dapp=<value>  dapp address.
 
 ETHEREUM FLAGS
-  -c, --chain=<value>    The chain name or EIP-155 chain ID.
-  -r, --rpc-url=<value>  The RPC endpoint.
+  -c, --chain-id=<option>  The EIP-155 chain ID.
+                           <options: 421613|420|11155111>
+  -r, --rpc-url=<value>    The RPC endpoint.
 
 WALLET FLAGS
   --mnemonic-index=<value>       Use the private key from the given mnemonic index.
@@ -277,13 +272,15 @@ FLAG DESCRIPTIONS
     the address of the DApp, defaults to the deployed DApp address if application is running.
 ```
 
+_See code: [dist/commands/send/dapp-address.ts](https://github.com/sunodo/sunodo/blob/v0.7.0/dist/commands/send/dapp-address.ts)_
+
 ## `sunodo send erc20`
 
 Send ERC-20 deposit to the application.
 
 ```
 USAGE
-  $ sunodo send erc20 [--dapp <value>] [-c <value>] [-r <value>] [--mnemonic-passphrase <value>]
+  $ sunodo send erc20 [--dapp <value>] [-c 421613|420|11155111] [-r <value>] [--mnemonic-passphrase <value>]
     [--mnemonic-index <value>] [--token <value>] [--amount <value>]
 
 FLAGS
@@ -292,8 +289,9 @@ FLAGS
   --token=<value>   token address
 
 ETHEREUM FLAGS
-  -c, --chain=<value>    The chain name or EIP-155 chain ID.
-  -r, --rpc-url=<value>  The RPC endpoint.
+  -c, --chain-id=<option>  The EIP-155 chain ID.
+                           <options: 421613|420|11155111>
+  -r, --rpc-url=<value>    The RPC endpoint.
 
 WALLET FLAGS
   --mnemonic-index=<value>       Use the private key from the given mnemonic index.
@@ -313,13 +311,15 @@ FLAG DESCRIPTIONS
     the address of the DApp, defaults to the deployed DApp address if application is running.
 ```
 
+_See code: [dist/commands/send/erc20.ts](https://github.com/sunodo/sunodo/blob/v0.7.0/dist/commands/send/erc20.ts)_
+
 ## `sunodo send erc721`
 
 Send ERC-721 deposit to the application.
 
 ```
 USAGE
-  $ sunodo send erc721 [--dapp <value>] [-c <value>] [-r <value>] [--mnemonic-passphrase <value>]
+  $ sunodo send erc721 [--dapp <value>] [-c 421613|420|11155111] [-r <value>] [--mnemonic-passphrase <value>]
     [--mnemonic-index <value>] [--token <value>] [--tokenId <value>]
 
 FLAGS
@@ -328,8 +328,9 @@ FLAGS
   --tokenId=<value>  token ID
 
 ETHEREUM FLAGS
-  -c, --chain=<value>    The chain name or EIP-155 chain ID.
-  -r, --rpc-url=<value>  The RPC endpoint.
+  -c, --chain-id=<option>  The EIP-155 chain ID.
+                           <options: 421613|420|11155111>
+  -r, --rpc-url=<value>    The RPC endpoint.
 
 WALLET FLAGS
   --mnemonic-index=<value>       Use the private key from the given mnemonic index.
@@ -349,13 +350,15 @@ FLAG DESCRIPTIONS
     the address of the DApp, defaults to the deployed DApp address if application is running.
 ```
 
+_See code: [dist/commands/send/erc721.ts](https://github.com/sunodo/sunodo/blob/v0.7.0/dist/commands/send/erc721.ts)_
+
 ## `sunodo send ether`
 
 Send ether deposit to the application.
 
 ```
 USAGE
-  $ sunodo send ether [--dapp <value>] [-c <value>] [-r <value>] [--mnemonic-passphrase <value>]
+  $ sunodo send ether [--dapp <value>] [-c 421613|420|11155111] [-r <value>] [--mnemonic-passphrase <value>]
     [--mnemonic-index <value>] [--amount <value>] [--execLayerData <value>]
 
 FLAGS
@@ -364,8 +367,9 @@ FLAGS
   --execLayerData=<value>  [default: 0x] exec layer data
 
 ETHEREUM FLAGS
-  -c, --chain=<value>    The chain name or EIP-155 chain ID.
-  -r, --rpc-url=<value>  The RPC endpoint.
+  -c, --chain-id=<option>  The EIP-155 chain ID.
+                           <options: 421613|420|11155111>
+  -r, --rpc-url=<value>    The RPC endpoint.
 
 WALLET FLAGS
   --mnemonic-index=<value>       Use the private key from the given mnemonic index.
@@ -385,13 +389,15 @@ FLAG DESCRIPTIONS
     the address of the DApp, defaults to the deployed DApp address if application is running.
 ```
 
+_See code: [dist/commands/send/ether.ts](https://github.com/sunodo/sunodo/blob/v0.7.0/dist/commands/send/ether.ts)_
+
 ## `sunodo send generic`
 
 Send generic input to the application.
 
 ```
 USAGE
-  $ sunodo send generic [--dapp <value>] [-c <value>] [-r <value>] [--mnemonic-passphrase <value>]
+  $ sunodo send generic [--dapp <value>] [-c 421613|420|11155111] [-r <value>] [--mnemonic-passphrase <value>]
     [--mnemonic-index <value>] [--input <value>] [--input-encoding hex|string|abi] [--input-abi-params <value>]
 
 FLAGS
@@ -404,8 +410,9 @@ FLAGS
                               <options: hex|string|abi>
 
 ETHEREUM FLAGS
-  -c, --chain=<value>    The chain name or EIP-155 chain ID.
-  -r, --rpc-url=<value>  The RPC endpoint.
+  -c, --chain-id=<option>  The EIP-155 chain ID.
+                           <options: 421613|420|11155111>
+  -r, --rpc-url=<value>    The RPC endpoint.
 
 WALLET FLAGS
   --mnemonic-index=<value>       Use the private key from the given mnemonic index.
@@ -443,6 +450,8 @@ FLAG DESCRIPTIONS
     input encoding
 ```
 
+_See code: [dist/commands/send/generic.ts](https://github.com/sunodo/sunodo/blob/v0.7.0/dist/commands/send/generic.ts)_
+
 ## `sunodo shell [IMAGE]`
 
 Start a shell in cartesi machine of application
@@ -464,7 +473,7 @@ EXAMPLES
   $ sunodo shell
 ```
 
-_See code: [dist/commands/shell.ts](https://github.com/sunodo/sunodo/blob/v0.6.0/dist/commands/shell.ts)_
+_See code: [dist/commands/shell.ts](https://github.com/sunodo/sunodo/blob/v0.7.0/dist/commands/shell.ts)_
 
 ## `sunodo update [CHANNEL]`
 
@@ -501,5 +510,5 @@ EXAMPLES
     $ sunodo update --available
 ```
 
-_See code: [@oclif/plugin-update](https://github.com/oclif/plugin-update/blob/v3.1.18/src/commands/update.ts)_
+_See code: [@oclif/plugin-update](https://github.com/oclif/plugin-update/blob/v3.1.32/src/commands/update.ts)_
 <!-- commandsstop -->

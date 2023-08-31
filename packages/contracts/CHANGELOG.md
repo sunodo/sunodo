@@ -1,5 +1,17 @@
 # @sunodo/contracts
 
+## 0.2.0
+
+### Minor Changes
+
+-   295125c: deploy to sepolia
+-   3bafd18: relicense to Apache-2.0
+-   b13a11c: add ENS integration to set PayableDAppFactory name
+-   fcd87ec: using a payee for the PayableDAppFactory instead of using the contract as token holder
+-   0984046: deterministic deployment using safe singleton factory
+-   0984046: bump rollups to 1.0
+-   6394d1d: replacing deployment of Authority with an AuthorityFactory
+
 ## 0.1.1
 
 ### Patch Changes

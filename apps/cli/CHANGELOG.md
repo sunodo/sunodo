@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.7.0
+
+### Minor Changes
+
+-   6f76cf8: hide host's machine-snapshot from validator container
+-   3502bba: bump machine-emulator-sdk to 0.16.2
+-   28e7bdc: replacing `network` command option with `chain-id`, which is always an integer
+-   120239b: remove the --network option of sunodo build
+-   611c1ba: bump rollups to 1.0.0
+
+### Patch Changes
+
+-   918601a: fix check of send generic hex value
+
 ## 0.6.0
 
 ### Minor Changes

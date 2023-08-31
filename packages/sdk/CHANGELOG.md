@@ -1,5 +1,12 @@
 # sdk
 
+## 0.2.0
+
+### Minor Changes
+
+-   3502bba: bump machine-emulator-sdk to 0.16.2
+-   3502bba: bump genext2fs to 1.5.2
+
 ## 0.1.0
 
 ### Minor Changes
