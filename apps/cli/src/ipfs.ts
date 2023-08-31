@@ -9,10 +9,7 @@ import {
     CAREncoderStream,
     FileLike,
 } from "ipfs-car";
-import { createHelia } from "helia";
-import { car } from "@helia/car";
 import { create } from "kubo-rpc-client";
-import { CarReader } from "@ipld/car";
 
 import { IPFSOptions } from "./deploy.js";
 export type IPFSTestResult = "success" | "unauthorized" | "failed";
@@ -92,38 +89,28 @@ export const importDirectory = async (
         )
         .pipeThrough(new CAREncoderStream());
 
-    if (false) {
-        // XXX: start IPFS node
-        const helia = await createHelia();
-
-        // @ts-expect-error node web stream not type compatible with web stream
-        const reader = await CarReader.fromIterable(Readable.fromWeb(stream));
-        const c = car(helia);
-        await c.import(reader);
-    } else {
-        // connect to remote IPFS node
-        const headers: Record<string, string> = {};
-        if (options.username && options.password) {
-            headers["Authorization"] = `Basic ${Buffer.from(
-                `${options.username}:${options.password}`,
-            ).toString("base64")}`;
-        }
-        const client = create({ url: options.url, headers });
-
-        // upload tar to IPFS, getting the CID
-        // @ts-expect-error node web stream not type compatible with web stream
-        const results = client.dag.import([Readable.fromWeb(stream)]);
-        for await (const result of results) {
-            console.log(`pinned: ${result.root.cid}`);
-            const error = result.root.pinErrorMsg;
-            if (error) {
-                throw new Error(error);
-            }
-        }
-
-        // XXX: import above should be pinning, but it doesn't seem to be
-        await client.pin.add(cid);
+    // connect to remote IPFS node
+    const headers: Record<string, string> = {};
+    if (options.username && options.password) {
+        headers["Authorization"] = `Basic ${Buffer.from(
+            `${options.username}:${options.password}`,
+        ).toString("base64")}`;
     }
+    const client = create({ url: options.url, headers });
+
+    // upload tar to IPFS, getting the CID
+    // @ts-expect-error node web stream not type compatible with web stream
+    const results = client.dag.import([Readable.fromWeb(stream)]);
+    for await (const result of results) {
+        console.log(`pinned: ${result.root.cid}`);
+        const error = result.root.pinErrorMsg;
+        if (error) {
+            throw new Error(error);
+        }
+    }
+
+    // XXX: import above should be pinning, but it doesn't seem to be
+    await client.pin.add(cid);
 
     // hide completed progress bar
     multibar.stop();
