@@ -1,4 +1,5 @@
 ---
+"@sunodo/cli": minor
 "@sunodo/sdk": minor
 ---
 
