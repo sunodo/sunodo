@@ -18,8 +18,6 @@
         "/oclif.manifest.json"
     ],
     "dependencies": {
-        "@helia/car": "^1.0",
-        "@helia/unixfs": "^1.4",
         "@inquirer/prompts": "^3.0",
         "@kubernetes/client-node": "^0.18",
         "@ledgerhq/hw-app-eth": "^6",
@@ -40,7 +38,6 @@
         "gauge": "^5.0",
         "giget": "^1.1",
         "graphql": "^16",
-        "helia": "^2.0",
         "ipfs-car": "^1.0",
         "kubo-rpc-client": "^3.0",
         "lokijs": "^1.5",
