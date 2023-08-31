@@ -19,7 +19,6 @@ It helps developers to:
 -   `docs`: a [VitePress](https://vitepress.dev/) app with Sunodo documentation, deployed at [https://docs.sunodo.io](https://docs.sunodo.io)
 -   `web`: a [next.js](https://nextjs.org/) app for Sunodo website, deployed at [https://sunodo.io](https://sunodo.io)
 -   `app`: a [next.js](https://nextjs.org/) app for Sunodo dashboard, deployed at [https://app.sunodo.io](https://app.sunodo.io)
--   `machine-emulator-tools`: packaging of cartesi machine emulator tools as Docker images;
 -   `anvil`: Docker image of [anvil](https://book.getfoundry.sh/reference/anvil/), multi-arch;
 -   `rollups-node`: Docker image of a cartesi node for a local devnet execution;
 -   `sdk`: Docker image to help with cartesi build and execution;

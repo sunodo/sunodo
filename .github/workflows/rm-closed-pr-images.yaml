@@ -15,7 +15,6 @@ jobs:
                 image:
                     - anvil
                     - devnet
-                    - machine-emulator-tools
                     - rollups-node
                     - sdk
         steps:
