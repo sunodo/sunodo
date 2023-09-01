@@ -4,6 +4,8 @@ import { Args, Command, Flags } from "@oclif/core";
 import { DownloadTemplateResult, downloadTemplate } from "giget";
 import type { TemplateProvider } from "giget";
 
+const DEFAULT_TEMPLATES_BRANCH = "sdk-0.2";
+
 export default class CreateCommand extends Command {
     static description = "Create application";
 
@@ -31,15 +33,15 @@ export default class CreateCommand extends Command {
             ],
         }),
         branch: Flags.string({
-            description: "branch name to use if not main",
-            default: "main",
+            description: `sunodo/sunodo-templates repository branch name to use`,
+            default: DEFAULT_TEMPLATES_BRANCH,
         }),
     };
 
     private async download(
         template: string,
         branch: string,
-        out: string
+        out: string,
     ): Promise<DownloadTemplateResult> {
         const sunodoProvider: TemplateProvider = async (input) => {
             return {
@@ -64,7 +66,7 @@ export default class CreateCommand extends Command {
             const { dir } = await this.download(
                 flags.template,
                 flags.branch,
-                args.name
+                args.name,
             );
             spinner.succeed(`Application created at ${c.cyan(dir)}`);
         } catch (e: any) {
