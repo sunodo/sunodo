@@ -31,6 +31,7 @@ export default class CreateCommand extends Command {
                 "python",
                 "ruby",
                 "rust",
+                "typescript",
             ],
         }),
         branch: Flags.string({

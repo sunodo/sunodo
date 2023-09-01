@@ -12,3 +12,4 @@ These are the templates currently available:
 -   [`python`](https://github.com/sunodo/sunodo-templates/blob/main/python/README.md): python 3 template
 -   `ruby`: ruby template
 -   `rust`: rust template
+-   [`typescript`](https://github.com/sunodo/sunodo-templates/blob/main/typescript/README.md): TypeScript template
