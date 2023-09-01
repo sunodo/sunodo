@@ -9,7 +9,7 @@ x-database-config: &database-config
 
 services:
     anvil:
-        image: sunodo/devnet:1.0.0
+        image: sunodo/devnet:1.1.0
         command:
             [
                 "anvil",
