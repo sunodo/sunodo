@@ -30,6 +30,7 @@ export default class CreateCommand extends Command {
                 "lua",
                 "python",
                 "ruby",
+                "rust",
             ],
         }),
         branch: Flags.string({
