@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.7.1
+
+### Patch Changes
+
+-   ab2066c: add typescript template
+-   9551a97: fix brew installation
+-   658f9d1: add rust template
+-   b0219f8: change default sunodo/sunodo-templates repository default branch the create command uses
+-   6a26d4c: bump devnet to 1.1.0
+
 ## 0.7.0
 
 ### Minor Changes
