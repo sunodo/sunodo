@@ -11,3 +11,4 @@ These are the templates currently available:
 -   `lua`: Lua 5.4 template
 -   [`python`](https://github.com/sunodo/sunodo-templates/blob/main/python/README.md): python 3 template
 -   `ruby`: ruby template
+-   `rust`: rust template

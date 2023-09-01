@@ -28,6 +28,7 @@ export default class CreateCommand extends Command {
                 "lua",
                 "python",
                 "ruby",
+                "rust",
             ],
         }),
         branch: Flags.string({
@@ -39,7 +40,7 @@ export default class CreateCommand extends Command {
     private async download(
         template: string,
         branch: string,
-        out: string
+        out: string,
     ): Promise<DownloadTemplateResult> {
         const sunodoProvider: TemplateProvider = async (input) => {
             return {
@@ -64,7 +65,7 @@ export default class CreateCommand extends Command {
             const { dir } = await this.download(
                 flags.template,
                 flags.branch,
-                args.name
+                args.name,
             );
             spinner.succeed(`Application created at ${c.cyan(dir)}`);
         } catch (e: any) {
