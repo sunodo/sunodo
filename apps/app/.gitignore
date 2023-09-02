@@ -38,4 +38,5 @@ yarn-error.log*
 *.tsbuildinfo
 
 # generated files
-app/contracts.ts
+src/contracts.ts
+src/graphql

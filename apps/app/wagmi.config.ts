@@ -7,7 +7,11 @@ export default defineConfig({
     plugins: [
         hardhat({
             project: "../../packages/contracts",
-            include: ["**/IFinancialProtocol.json", "**/IMachineProtocol.json"],
+            include: [
+                "**/IFinancialProtocol.json",
+                "**/IMachineProtocol.json",
+                "**/IPayableDAppFactory.json",
+            ],
         }),
         hardhatDeploy({ directory: "../../packages/contracts/export/abi" }),
         erc(),

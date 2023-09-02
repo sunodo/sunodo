@@ -1,0 +1,13 @@
+query inputs {
+  inputs(orderBy: timestamp_DESC) {
+    id
+    index
+    payload
+    msgSender
+    timestamp
+    transactionHash
+    application {
+      id
+    }
+  }
+}

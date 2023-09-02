@@ -7,6 +7,7 @@ import { useDisclosure } from "@mantine/hooks";
 import StyleProvider from "../providers/styleProvider";
 import WalletProvider from "../providers/walletProvider";
 import Header from "../components/header";
+import GraphQLProvider from "../providers/graphqlProvider";
 
 const Layout: FC<{ children: React.ReactNode }> = ({ children }) => {
     const [opened, { toggle }] = useDisclosure();
@@ -19,18 +20,20 @@ const Layout: FC<{ children: React.ReactNode }> = ({ children }) => {
             <body>
                 <StyleProvider>
                     <WalletProvider>
-                        <AppShell header={{ height: 60 }} padding="md">
-                            <AppShell.Header>
-                                <Burger
-                                    opened={opened}
-                                    onClick={toggle}
-                                    hiddenFrom="sm"
-                                    size="sm"
-                                />
-                                <Header />
-                            </AppShell.Header>
-                            <AppShell.Main>{children}</AppShell.Main>
-                        </AppShell>
+                        <GraphQLProvider>
+                            <AppShell header={{ height: 60 }} padding="md">
+                                <AppShell.Header>
+                                    <Burger
+                                        opened={opened}
+                                        onClick={toggle}
+                                        hiddenFrom="sm"
+                                        size="sm"
+                                    />
+                                    <Header />
+                                </AppShell.Header>
+                                <AppShell.Main>{children}</AppShell.Main>
+                            </AppShell>
+                        </GraphQLProvider>
                     </WalletProvider>
                 </StyleProvider>
             </body>
