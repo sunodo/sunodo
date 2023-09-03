@@ -22,6 +22,7 @@ import {
 } from "react-icons/tb";
 import { useDisclosure } from "@mantine/hooks";
 import { InputItemFragment } from "../../graphql";
+import Address from "../address";
 
 export type InputCardProps = {
     input: InputItemFragment;
@@ -37,25 +38,13 @@ const InputTr: FC<InputCardProps> = ({ input }) => {
         <>
             <Table.Tr>
                 <Table.Td>
-                    <Group>
-                        <Jazzicon
-                            diameter={20}
-                            seed={jsNumberForAddress(input.msgSender)}
-                        />
-                        <Text>{getAddress(input.msgSender)}</Text>
-                    </Group>
+                    <Address value={input.msgSender as Address} icon />
                 </Table.Td>
                 <Table.Td>
                     <TbArrowRight />
                 </Table.Td>
                 <Table.Td>
-                    <Group>
-                        <Jazzicon
-                            diameter={20}
-                            seed={jsNumberForAddress(input.application.id)}
-                        />
-                        <Text>{getAddress(input.application.id)}</Text>
-                    </Group>
+                    <Address value={input.application.id as Address} icon />
                 </Table.Td>
                 <Table.Td>
                     <Text>{input.index}</Text>
