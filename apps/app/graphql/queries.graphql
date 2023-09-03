@@ -1,13 +1,17 @@
+fragment InputItem on Input {
+  id
+  application {
+    id
+  }
+  index
+  payload
+  msgSender
+  timestamp
+  transactionHash
+}
+
 query inputs {
   inputs(orderBy: timestamp_DESC) {
-    id
-    index
-    payload
-    msgSender
-    timestamp
-    transactionHash
-    application {
-      id
-    }
+    ...InputItem
   }
 }

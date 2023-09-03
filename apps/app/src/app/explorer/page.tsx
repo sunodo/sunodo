@@ -1,17 +1,18 @@
 "use client";
 import { FC } from "react";
-import { useInputsQuery } from "../../graphql";
+import { useInputsQuery } from "../../graphql/index";
+import InputCard from "../../components/explorer/input";
+import { Stack } from "@mantine/core";
 
 const Explorer: FC = (props) => {
     const [{ data }] = useInputsQuery();
     return (
         <div>
-            <h1>Explorer</h1>
-            <ul>
+            <Stack>
                 {data?.inputs.map((input) => (
-                    <li key={input.id}>{input.application.id}</li>
+                    <InputCard key={input.id} input={input} />
                 ))}
-            </ul>
+            </Stack>
         </div>
     );
 };
