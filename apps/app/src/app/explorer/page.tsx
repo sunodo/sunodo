@@ -14,6 +14,7 @@ const Explorer: FC = (props) => {
                     <Table.Th>From</Table.Th>
                     <Table.Th></Table.Th>
                     <Table.Th>To</Table.Th>
+                    <Table.Th>Method</Table.Th>
                     <Table.Th>Index</Table.Th>
                     <Table.Th>Age</Table.Th>
                     <Table.Th>Data</Table.Th>

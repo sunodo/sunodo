@@ -4,6 +4,7 @@ import {
     Collapse,
     Group,
     JsonInput,
+    Pill,
     Table,
     Tabs,
     Text,
@@ -12,7 +13,6 @@ import {
 import { CodeHighlight } from "@mantine/code-highlight";
 import { FC } from "react";
 import prettyMilliseconds from "pretty-ms";
-import Jazzicon, { jsNumberForAddress } from "react-jazzicon";
 import { Hex, getAddress, hexToString } from "viem";
 import {
     TbAlphabetLatin,
@@ -24,9 +24,28 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { InputItemFragment } from "../../graphql";
 import Address from "../address";
+import { erc20PortalAddress, etherPortalAddress } from "../../contracts";
 
 export type InputCardProps = {
     input: InputItemFragment;
+};
+
+export type MethodResolver = (
+    input: InputItemFragment,
+) => string | undefined | false;
+
+const etherDepositResolver: MethodResolver = (input) =>
+    getAddress(input.msgSender) === etherPortalAddress && "depositEther";
+const erc20PortalResolver: MethodResolver = (input) =>
+    getAddress(input.msgSender) === erc20PortalAddress && "depositERC20Tokens";
+
+const resolvers: MethodResolver[] = [etherDepositResolver, erc20PortalResolver];
+const methodResolver: MethodResolver = (input) => {
+    for (const resolver of resolvers) {
+        const method = resolver(input);
+        if (method) return method;
+    }
+    return undefined;
 };
 
 const InputTr: FC<InputCardProps> = ({ input }) => {
@@ -35,6 +54,8 @@ const InputTr: FC<InputCardProps> = ({ input }) => {
         unitCount: 2,
         verbose: true,
     });
+
+    const method = <Pill>{methodResolver(input) ?? "?"}</Pill>;
     return (
         <>
             <Table.Tr>
@@ -47,6 +68,7 @@ const InputTr: FC<InputCardProps> = ({ input }) => {
                 <Table.Td>
                     <Address value={input.application.id as Address} icon />
                 </Table.Td>
+                <Table.Td>{method}</Table.Td>
                 <Table.Td>
                     <Text>{input.index}</Text>
                 </Table.Td>
