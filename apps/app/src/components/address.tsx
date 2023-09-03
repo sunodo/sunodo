@@ -1,5 +1,6 @@
 import {
     ActionIcon,
+    Anchor,
     CopyButton,
     Group,
     rem,
@@ -9,8 +10,18 @@ import {
 import { FC } from "react";
 import { jsNumberForAddress } from "react-jazzicon";
 import Jazzicon from "react-jazzicon/dist/Jazzicon";
-import { Address } from "viem";
+import { Address, getAddress } from "viem";
 import { TbCheck, TbCopy } from "react-icons/tb";
+
+import {
+    dAppAddressRelayAddress,
+    erc20PortalAddress,
+    erc1155BatchPortalAddress,
+    erc1155SinglePortalAddress,
+    erc721PortalAddress,
+    etherPortalAddress,
+} from "../contracts";
+import Link from "next/link";
 
 export type AddressProps = {
     value: Address;
@@ -18,7 +29,22 @@ export type AddressProps = {
     iconSize?: number;
 };
 
+const cartesi: Record<Address, string> = {
+    [dAppAddressRelayAddress]: "DAppAddressRelay",
+    [erc20PortalAddress]: "ERC20Portal",
+    [erc1155BatchPortalAddress]: "ERC1155BatchPortal",
+    [erc1155SinglePortalAddress]: "ERC1155SinglePortal",
+    [erc721PortalAddress]: "ERC721Portal",
+    [etherPortalAddress]: "EtherPortal",
+};
+
+const resolveName = (value: Address) => {
+    return cartesi[value];
+};
+
 const Address: FC<AddressProps> = ({ value, icon, iconSize }) => {
+    value = getAddress(value);
+    const text = resolveName(value) ?? `${value.substring(0, 24)}...`;
     return (
         <Group gap={10}>
             {icon && (
@@ -27,7 +53,9 @@ const Address: FC<AddressProps> = ({ value, icon, iconSize }) => {
                     seed={jsNumberForAddress(value)}
                 />
             )}
-            <Text>{value}</Text>
+            <Anchor href={`address/${value}`} component={Link}>
+                <Text>{text}</Text>
+            </Anchor>
             <CopyButton value={value} timeout={2000}>
                 {({ copied, copy }) => (
                     <Tooltip

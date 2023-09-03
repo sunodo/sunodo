@@ -3,6 +3,7 @@ import {
     ActionIcon,
     Collapse,
     Group,
+    JsonInput,
     Table,
     Tabs,
     Text,
@@ -93,9 +94,9 @@ const InputTr: FC<InputCardProps> = ({ input }) => {
                             </Tabs.Panel>
 
                             <Tabs.Panel value="json">
-                                <CodeHighlight
-                                    code={hexToString(input.payload as Hex)}
-                                    language="json"
+                                <JsonInput
+                                    rows={10}
+                                    value={hexToString(input.payload as Hex)}
                                 />
                             </Tabs.Panel>
                         </Tabs>

@@ -1,13 +1,14 @@
 "use client";
 import { FC } from "react";
 import { useInputsQuery } from "../../graphql/index";
-import { Table } from "@mantine/core";
+import { Table, Title } from "@mantine/core";
 import InputTr from "../../components/explorer/inputTr";
 
 const Explorer: FC = (props) => {
     const [{ data }] = useInputsQuery();
     return (
         <div>
+            <Title order={2}>Inputs</Title>
             <Table>
                 <Table.Thead>
                     <Table.Th>From</Table.Th>
