@@ -2871,6 +2871,14 @@
   dependencies:
     "@lit-labs/ssr-dom-shim" "^1.0.0"
 
+"@mantine/code-highlight@^7":
+  version "7.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@mantine/code-highlight/-/code-highlight-7.0.0-beta.2.tgz#cee7280df21e56a0510ee7caccdaf9ffbb8bcd09"
+  integrity sha512-34ZFV47vN1hpX7wuv5wa/W1Rxdwzt5AekDGW9LNtypvIaee9qenwXkAkMwXW7Uwsl+Ta7eN4CUgFZhRSKEI9BA==
+  dependencies:
+    clsx "2.0.0"
+    highlight.js "^11.7.0"
+
 "@mantine/core@^6":
   version "6.0.19"
   resolved "https://registry.yarnpkg.com/@mantine/core/-/core-6.0.19.tgz#612413f0e8eb117e6a39068a625c6ccf2ae2ccdd"
@@ -10600,6 +10608,11 @@ hey-listen@^1.0.8:
   version "1.0.8"
   resolved "https://registry.yarnpkg.com/hey-listen/-/hey-listen-1.0.8.tgz#8e59561ff724908de1aa924ed6ecc84a56a9aa68"
   integrity sha512-COpmrF2NOg4TBWUJ5UVyaCU2A88wEMkUPK4hNqyCkqHbxT92BbvfjoSozkAIIm6XhicGlJHhFdullInrdhwU8Q==
+
+highlight.js@^11.7.0:
+  version "11.8.0"
+  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-11.8.0.tgz#966518ea83257bae2e7c9a48596231856555bb65"
+  integrity sha512-MedQhoqVdr0U6SSnWPzfiadUcDHfN/Wzq25AkXiQv9oiOO/sG0S7XkvpFIqWBl9Yq1UYyYOOVORs5UW2XlPyzg==
 
 hmac-drbg@^1.0.1:
   version "1.0.1"

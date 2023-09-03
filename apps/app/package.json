@@ -12,6 +12,7 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@mantine/code-highlight": "^7",
         "@mantine/core": "^7",
         "@mantine/form": "^7",
         "@mantine/hooks": "^7",

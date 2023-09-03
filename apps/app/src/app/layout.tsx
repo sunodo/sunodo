@@ -1,5 +1,6 @@
 "use client";
 import "@mantine/core/styles.css";
+import "@mantine/code-highlight/styles.css";
 import React, { FC } from "react";
 import { AppShell, Burger, ColorSchemeScript } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
