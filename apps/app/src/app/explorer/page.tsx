@@ -8,20 +8,23 @@ const Explorer: FC = (props) => {
     const [{ data }] = useInputsQuery();
     return (
         <div>
-            <Title order={2}>Inputs</Title>
             <Table>
                 <Table.Thead>
-                    <Table.Th>From</Table.Th>
-                    <Table.Th></Table.Th>
-                    <Table.Th>To</Table.Th>
-                    <Table.Th>Method</Table.Th>
-                    <Table.Th>Index</Table.Th>
-                    <Table.Th>Age</Table.Th>
-                    <Table.Th>Data</Table.Th>
+                    <Table.Tr>
+                        <Table.Th>From</Table.Th>
+                        <Table.Th></Table.Th>
+                        <Table.Th>To</Table.Th>
+                        <Table.Th>Method</Table.Th>
+                        <Table.Th>Index</Table.Th>
+                        <Table.Th>Age</Table.Th>
+                        <Table.Th>Data</Table.Th>
+                    </Table.Tr>
                 </Table.Thead>
-                {data?.inputs.map((input) => (
-                    <InputTr key={input.id} input={input} />
-                ))}
+                <Table.Tbody>
+                    {data?.inputs.map((input) => (
+                        <InputTr key={input.id} input={input} />
+                    ))}
+                </Table.Tbody>
             </Table>
         </div>
     );

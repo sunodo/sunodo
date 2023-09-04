@@ -44,7 +44,14 @@ const resolveName = (value: Address) => {
 
 const Address: FC<AddressProps> = ({ value, icon, iconSize }) => {
     value = getAddress(value);
-    const text = resolveName(value) ?? `${value.substring(0, 24)}...`;
+    const name = resolveName(value);
+    const label = name ? (
+        <Tooltip label={value}>
+            <Text>{name}</Text>
+        </Tooltip>
+    ) : (
+        <Text>{`${value.substring(0, 24)}...`}</Text>
+    );
     return (
         <Group gap={10}>
             {icon && (
@@ -54,7 +61,7 @@ const Address: FC<AddressProps> = ({ value, icon, iconSize }) => {
                 />
             )}
             <Anchor href={`address/${value}`} component={Link}>
-                <Text>{text}</Text>
+                {label}
             </Anchor>
             <CopyButton value={value} timeout={2000}>
                 {({ copied, copy }) => (

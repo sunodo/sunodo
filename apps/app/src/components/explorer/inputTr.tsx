@@ -1,10 +1,9 @@
 "use client";
 import {
     ActionIcon,
+    Badge,
     Collapse,
-    Group,
     JsonInput,
-    Pill,
     Table,
     Tabs,
     Text,
@@ -55,7 +54,11 @@ const InputTr: FC<InputCardProps> = ({ input }) => {
         verbose: true,
     });
 
-    const method = <Pill>{methodResolver(input) ?? "?"}</Pill>;
+    const method = (
+        <Badge variant="default" style={{ textTransform: "none" }}>
+            {methodResolver(input) ?? "?"}
+        </Badge>
+    );
     return (
         <>
             <Table.Tr>
@@ -83,7 +86,7 @@ const InputTr: FC<InputCardProps> = ({ input }) => {
             </Table.Tr>
             <Table.Tr></Table.Tr>
             <Table.Tr>
-                <Table.Td colSpan={6} p={0}>
+                <Table.Td colSpan={8} p={0}>
                     <Collapse in={opened}>
                         <Tabs defaultValue="raw">
                             <Tabs.List>
