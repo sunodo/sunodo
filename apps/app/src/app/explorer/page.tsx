@@ -1,13 +1,54 @@
 "use client";
 import { FC } from "react";
-import { useInputsQuery } from "../../graphql/index";
-import { Table, Title } from "@mantine/core";
+import { useInputsQuery, useStatsQuery } from "../../graphql/index";
+import {
+    Anchor,
+    Breadcrumbs,
+    Card,
+    Center,
+    Grid,
+    Group,
+    Paper,
+    Stack,
+    Table,
+    Text,
+    Title,
+} from "@mantine/core";
 import InputTr from "../../components/explorer/inputTr";
+import { TbApps, TbInbox } from "react-icons/tb";
 
 const Explorer: FC = (props) => {
+    const [{ data: stats }] = useStatsQuery();
     const [{ data }] = useInputsQuery();
     return (
-        <div>
+        <Stack>
+            <Breadcrumbs>
+                <Anchor>Home</Anchor>
+            </Breadcrumbs>
+            <Group>
+                <Card w={200} radius="md" shadow="sm">
+                    <Group gap={5}>
+                        <TbInbox size={20} />
+                        <Text c="dimmed">Inputs</Text>
+                    </Group>
+                    <Text fw={800} size="xl">
+                        {stats?.inputsConnection.totalCount}
+                    </Text>
+                </Card>
+                <Card w={200} radius="md" shadow="sm">
+                    <Group gap={5}>
+                        <TbApps />
+                        <Text c="dimmed">Applications</Text>
+                    </Group>
+                    <Text fw={800} size="xl">
+                        {stats?.applicationsConnection.totalCount}
+                    </Text>
+                </Card>
+            </Group>
+            <Group>
+                <TbInbox size={40} />
+                <Title order={3}>Inputs</Title>
+            </Group>
             <Table>
                 <Table.Thead>
                     <Table.Tr>
@@ -26,7 +67,7 @@ const Explorer: FC = (props) => {
                     ))}
                 </Table.Tbody>
             </Table>
-        </div>
+        </Stack>
     );
 };
 

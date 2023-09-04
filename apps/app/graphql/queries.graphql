@@ -15,3 +15,12 @@ query inputs {
     ...InputItem
   }
 }
+
+query stats {
+  inputsConnection(orderBy: id_ASC) {
+    totalCount
+  }
+  applicationsConnection(orderBy: id_ASC) {
+    totalCount
+  }
+}
