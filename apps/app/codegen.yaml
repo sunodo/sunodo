@@ -1,4 +1,4 @@
-schema: http://localhost:4350/graphql
+schema: https://squid.subsquid.io/rollups-sepolia/v/v5/graphql
 documents: ./graphql/queries.graphql
 generates:
     src/graphql/index.tsx:

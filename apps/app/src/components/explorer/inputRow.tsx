@@ -47,12 +47,15 @@ const methodResolver: MethodResolver = (input) => {
     return undefined;
 };
 
-const InputTr: FC<InputCardProps> = ({ input }) => {
+const InputRow: FC<InputCardProps> = ({ input }) => {
     const [opened, { toggle }] = useDisclosure(false);
     const age = prettyMilliseconds(Date.now() - input.timestamp * 1000, {
         unitCount: 2,
         verbose: true,
     });
+
+    const from = input.msgSender as Address;
+    const to = input.application.id as Address;
 
     const method = (
         <Badge variant="default" style={{ textTransform: "none" }}>
@@ -63,13 +66,13 @@ const InputTr: FC<InputCardProps> = ({ input }) => {
         <>
             <Table.Tr>
                 <Table.Td>
-                    <Address value={input.msgSender as Address} icon />
+                    <Address value={from} icon />
                 </Table.Td>
                 <Table.Td>
                     <TbArrowRight />
                 </Table.Td>
                 <Table.Td>
-                    <Address value={input.application.id as Address} icon />
+                    <Address value={to} icon href={`/applications/${to}`} />
                 </Table.Td>
                 <Table.Td>{method}</Table.Td>
                 <Table.Td>
@@ -132,4 +135,4 @@ const InputTr: FC<InputCardProps> = ({ input }) => {
     );
 };
 
-export default InputTr;
+export default InputRow;

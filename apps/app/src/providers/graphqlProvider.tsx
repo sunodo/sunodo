@@ -8,7 +8,7 @@ export type GraphQLProviderProps = {
 const GraphQLProvider: FC<GraphQLProviderProps> = (props) => {
     // TODO: change according to selected chain
     const client = new Client({
-        url: "http://localhost:4350/graphql",
+        url: "https://squid.subsquid.io/rollups-sepolia/v/v5/graphql",
         exchanges: [cacheExchange, fetchExchange],
     });
     return <Provider value={client}>{props.children}</Provider>;

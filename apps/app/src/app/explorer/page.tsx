@@ -1,21 +1,18 @@
 "use client";
 import { FC } from "react";
-import { useInputsQuery, useStatsQuery } from "../../graphql/index";
 import {
     Anchor,
     Breadcrumbs,
     Card,
-    Center,
-    Grid,
     Group,
-    Paper,
     Stack,
     Table,
     Text,
     Title,
 } from "@mantine/core";
-import InputTr from "../../components/explorer/inputTr";
 import { TbApps, TbInbox } from "react-icons/tb";
+import { useInputsQuery, useStatsQuery } from "../../graphql/index";
+import InputRow from "../../components/explorer/inputRow";
 
 const Explorer: FC = (props) => {
     const [{ data: stats }] = useStatsQuery();
@@ -63,7 +60,7 @@ const Explorer: FC = (props) => {
                 </Table.Thead>
                 <Table.Tbody>
                     {data?.inputs.map((input) => (
-                        <InputTr key={input.id} input={input} />
+                        <InputRow key={input.id} input={input} />
                     ))}
                 </Table.Tbody>
             </Table>
