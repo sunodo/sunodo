@@ -70,14 +70,15 @@ export abstract class SendBaseCommand<
             return this.flags.dapp;
         }
 
-        // get the address book
-        const addressBook = await super.getAddressBook();
-        const dapp =
-            addressBook["CartesiDApp"] ||
-            (await input({
-                message: "DApp address",
-                validate: (value) => isAddress(value) || "Invalid address",
-            }));
+        // get the running container dapp address
+        const nodeAddress = await super.getDAppAddress();
+
+        // query for the address
+        const dapp = await input({
+            message: "DApp address",
+            validate: (value) => isAddress(value) || "Invalid address",
+            default: nodeAddress,
+        });
 
         return dapp as Address;
     }
