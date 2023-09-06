@@ -2,8 +2,22 @@ import fs from "fs";
 import path from "path";
 import { Command, Interfaces } from "@oclif/core";
 import { execa } from "execa";
-import { Abi, Address } from "abitype";
+import { Address } from "abitype";
 import { PsResponse } from "./types/docker.js";
+import {
+    authorityAddress,
+    authorityFactoryAddress,
+    cartesiDAppFactoryAddress,
+    dAppAddressRelayAddress,
+    erc1155BatchPortalAddress,
+    erc1155SinglePortalAddress,
+    erc20PortalAddress,
+    erc721PortalAddress,
+    etherPortalAddress,
+    inputBoxAddress,
+    payableDAppSystemAddress,
+    sunodoTokenAddress,
+} from "./contracts.js";
 
 export type Flags<T extends typeof Command> = Interfaces.InferredFlags<
     (typeof SunodoCommand)["baseFlags"] & T["flags"]
@@ -11,20 +25,6 @@ export type Flags<T extends typeof Command> = Interfaces.InferredFlags<
 export type Args<T extends typeof Command> = Interfaces.InferredArgs<T["args"]>;
 
 export type AddressBook = Record<string, Address>;
-export interface ContractExport {
-    address: Address;
-    abi: Abi;
-    linkedData?: any;
-}
-
-export interface Export {
-    chainId: string;
-    name: string;
-    contracts: {
-        [name: string]: ContractExport;
-    };
-}
-
 export interface DApp {
     address: Address;
     blockHash: Address;
@@ -54,73 +54,78 @@ export abstract class SunodoCommand<T extends typeof Command> extends Command {
         return ps.length > 0 ? ps[0].State : undefined;
     }
 
-    protected async getAddressBook(): Promise<AddressBook> {
-        if (
-            !fs.existsSync(path.join(".sunodo", "localhost.json")) ||
-            !fs.existsSync(path.join(".sunodo", "dapp.json"))
-        ) {
-            const snapshot = path.join(".sunodo", "image");
-
-            // check if snapshot exists
-            if (
-                !fs.existsSync(snapshot) ||
-                !fs.statSync(snapshot).isDirectory()
-            ) {
-                throw new Error(
-                    "Cartesi machine snapshot not found, run 'sunodo build'",
-                );
-            }
-
-            // read hash of the cartesi machine snapshot
-            const hash = fs
-                .readFileSync(path.join(snapshot, "hash"))
-                .toString("hex");
+    protected async getDAppAddress(): Promise<Address | undefined> {
+        // read hash of the cartesi machine snapshot, if one exists
+        const hashPath = path.join(".sunodo", "image", "hash");
+        if (fs.existsSync(hashPath)) {
+            const hash = fs.readFileSync(hashPath).toString("hex");
             const projectName = hash.substring(0, 8);
 
-            // check if application is running
-            if (
-                (await this.getServiceState(projectName, "validator")) !==
-                "running"
-            ) {
-                throw new Error(
-                    "Cartesi application node not running, run 'sunodo run'",
-                );
+            // check if application (with machine) is running
+            const projectState = await this.getServiceState(
+                projectName,
+                "anvil",
+            );
+            if (projectState === "running") {
+                // get dapp.json content from the container
+                const { stdout } = await execa("docker", [
+                    "compose",
+                    "--project-name",
+                    projectName,
+                    "exec",
+                    "anvil", // service name
+                    "cat",
+                    "/usr/share/sunodo/dapp.json",
+                ]);
+                const dapp = JSON.parse(stdout) as DApp;
+                return dapp.address;
             }
-
-            // copy deployment files to host
-            const args = ["compose", "--project-name", projectName, "cp"];
-
-            // copy files from docker compose environment
-            await execa("docker", [
-                ...args,
-                "anvil:/usr/share/sunodo/localhost.json",
-                ".sunodo",
-            ]);
-            await execa("docker", [
-                ...args,
-                "anvil:/usr/share/sunodo/dapp.json",
-                ".sunodo",
-            ]);
         }
 
-        // parse files
-        const localhost = JSON.parse(
-            fs.readFileSync(path.join(".sunodo", "localhost.json"), "utf-8"),
-        ) as Export;
-        const dapp = JSON.parse(
-            fs.readFileSync(path.join(".sunodo", "dapp.json"), "utf-8"),
-        ) as DApp;
+        // check if there is a node running with no-backend
+        const projectName = "sunodo-node";
+        const projectState = await this.getServiceState(projectName, "anvil");
+        if (projectState === "running") {
+            // copy deployment file from container to host
+            const { stdout } = await execa("docker", [
+                "compose",
+                "--project-name",
+                projectName,
+                "exec",
+                "anvil", // service name
+                "cat",
+                "/usr/share/sunodo/dapp.json",
+            ]);
 
-        // build address book
-        const contracts = Object.entries(
-            localhost.contracts,
-        ).reduce<AddressBook>((acc, [name, { address }]) => {
-            acc[name] = address;
-            return acc;
-        }, {});
+            const dapp = JSON.parse(stdout) as DApp;
+            return dapp.address;
+        }
 
-        // add deployed dapp address
-        contracts["CartesiDApp"] = dapp.address;
+        return undefined;
+    }
+
+    protected async getAddressBook(): Promise<AddressBook> {
+        // build rollups contracts address book
+        const contracts: AddressBook = {
+            Authority: authorityAddress,
+            AuthorityFactory: authorityFactoryAddress,
+            CartesiDAppFactory: cartesiDAppFactoryAddress,
+            DAppAddressRelay: dAppAddressRelayAddress,
+            ERC1155BatchPortal: erc1155BatchPortalAddress,
+            ERC1155SinglePortal: erc1155SinglePortalAddress,
+            ERC20Portal: erc20PortalAddress,
+            ERC721Portal: erc721PortalAddress,
+            EtherPortal: etherPortalAddress,
+            InputBox: inputBoxAddress,
+            PayableDAppSystem: payableDAppSystemAddress,
+            SunodoToken: sunodoTokenAddress,
+        };
+
+        // get dapp address
+        const dapp = await this.getDAppAddress();
+        if (dapp) {
+            contracts["CartesiDApp"] = dapp;
+        }
         return contracts;
     }
 
