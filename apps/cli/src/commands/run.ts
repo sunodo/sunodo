@@ -21,7 +21,8 @@ export default class Run extends Command {
             default: 86400,
         }),
         "no-backend": Flags.boolean({
-            description: "Run a node without the application code. Application must be executed by the developer on the host machine, fetching inputs from the node running at http://localhost:5004",
+            description:
+                "Run a node without the application code. Application must be executed by the developer on the host machine, fetching inputs from the node running at http://localhost:5004",
             summary: "run a node without the application code",
             default: false,
         }),
@@ -41,9 +42,12 @@ export default class Run extends Command {
             projectName = "sunodo-node";
         } else {
             // Check if snapshot exists
-            if (!fs.existsSync(snapshot) || !fs.statSync(snapshot).isDirectory()) {
+            if (
+                !fs.existsSync(snapshot) ||
+                !fs.statSync(snapshot).isDirectory()
+            ) {
                 throw new Error(
-                    "Cartesi machine snapshot not found, run 'sunodo build'"
+                    "Cartesi machine snapshot not found, run 'sunodo build'",
                 );
             }
 
@@ -79,18 +83,20 @@ export default class Run extends Command {
             path.dirname(new URL(import.meta.url).pathname),
             "..",
             "node",
-            "docker-compose-dev.yml"
+            "docker-compose-dev.yml",
         );
         const composeFileHost = path.join(
             "--file=",
             path.dirname(new URL(import.meta.url).pathname),
             "..",
             "node",
-            "docker-compose-host.yml"
+            "docker-compose-host.yml",
         );
 
         // Use composeFileDev by default, add composeFileHost if --no-backend is defined
-        const selectedComposeFiles = flags["no-backend"] ? [composeFileDev, composeFileHost] : [composeFileDev];
+        const selectedComposeFiles = flags["no-backend"]
+            ? [composeFileDev, composeFileHost]
+            : [composeFileDev];
 
         const args = [
             "compose",
@@ -111,6 +117,11 @@ export default class Run extends Command {
                 env,
                 stdio: "inherit",
             });
+        } catch (e: any) {
+            // 130 is a graceful shutdown, so we can swallow it
+            if (e.exitCode !== 130) {
+                throw e;
+            }
         } finally {
             // shut it down, including volumes
             await execa("docker", [...args, "down", "--volumes"], {
