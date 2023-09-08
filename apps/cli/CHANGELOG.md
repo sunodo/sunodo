@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.8.0
+
+### Minor Changes
+
+-   384b808: add no-backend flag to sunodo run command
+
+### Patch Changes
+
+-   26169e2: fix error message of graceful shutdown of sunodo run
+-   57896a0: bump rollups to 1.0.1
+-   426a213: fix address-book so getting dapp address works with no-backend
+
 ## 0.7.1
 
 ### Patch Changes

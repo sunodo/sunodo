@@ -1,5 +1,15 @@
 # rollups-node
 
+## 0.4.0
+
+### Minor Changes
+
+-   cd10c36: add host-runner to rollups-node docker image
+
+### Patch Changes
+
+-   57896a0: bump rollups to 1.0.1
+
 ## 0.3.0
 
 ### Minor Changes
