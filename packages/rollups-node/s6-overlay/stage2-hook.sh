@@ -11,6 +11,7 @@ if [ ! -z ${ENABLE_SUNODO_NODE+x} ]; then
     rm /etc/s6-overlay/s6-rc.d/user/contents.d/server-manager
     rm /etc/s6-overlay/s6-rc.d/inspect-server/dependencies.d/server-manager
     rm /etc/s6-overlay/s6-rc.d/advance-runner/dependencies.d/server-manager
+    rm /etc/s6-overlay/s6-rc.d/advance-runner/dependencies.d/snapshot-provisioner
     sed -i '/server-manager/d' /usr/local/bin/is_ready
 else
     /command/s6-echo "host-runner: ENABLE_SUNODO_NODE is not set, skip the host mode..."
