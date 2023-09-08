@@ -98,6 +98,19 @@ export default class Run extends Command {
             ? [composeFileDev, composeFileHost]
             : [composeFileDev];
 
+        // use .sunodo.env if it exists
+        if (fs.existsSync(".sunodo.env")) {
+            const composeEnv = path.join(
+                "--file=",
+                path.dirname(new URL(import.meta.url).pathname),
+                "..",
+                "node",
+                "docker-compose-envfile.yml",
+            )
+
+            selectedComposeFiles.push(composeEnv);
+        }
+
         const args = [
             "compose",
             ...selectedComposeFiles,
