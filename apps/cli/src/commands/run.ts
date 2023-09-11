@@ -77,43 +77,31 @@ export default class Run extends Command {
             WS_URL: "ws://anvil:8545",
         };
 
-        // Construct the path for Docker Compose files
-        const composeFileDev = path.join(
+        const composeFiles = [];
+        const composeBasePath = path.join(
             "--file=",
             path.dirname(new URL(import.meta.url).pathname),
             "..",
-            "node",
-            "docker-compose-dev.yml",
-        );
-        const composeFileHost = path.join(
-            "--file=",
-            path.dirname(new URL(import.meta.url).pathname),
-            "..",
-            "node",
-            "docker-compose-host.yml",
-        );
+            "node"
+        )
 
-        // Use composeFileDev by default, add composeFileHost if --no-backend is defined
-        const selectedComposeFiles = flags["no-backend"]
-            ? [composeFileDev, composeFileHost]
-            : [composeFileDev];
+        const composeFileDev = path.join(composeBasePath, "docker-compose-dev.yml");
+        const composeFileHost = path.join(composeBasePath, "docker-compose-host.yml");
+        const composeFileEnvFile = path.join(composeBasePath, "docker-compose-envfile.yml");
 
-        // use .sunodo.env if it exists
-        if (fs.existsSync(".sunodo.env")) {
-            const composeEnv = path.join(
-                "--file=",
-                path.dirname(new URL(import.meta.url).pathname),
-                "..",
-                "node",
-                "docker-compose-envfile.yml",
-            )
+        composeFiles.push(composeFileDev);
 
-            selectedComposeFiles.push(composeEnv);
+        if (flags["no-backend"]) {
+            composeFiles.push(composeFileHost);
+        }
+
+        if (fs.existsSync("./.sunodo.env")) {
+            composeFiles.push(composeFileEnvFile);
         }
 
         const args = [
             "compose",
-            ...selectedComposeFiles,
+            ...composeFiles,
             "--project-directory",
             ".",
             "--project-name",
