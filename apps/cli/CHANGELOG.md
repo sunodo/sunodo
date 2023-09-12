@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.1
+
+### Patch Changes
+
+-   9d82fd7: bump rollups to 1.0.2
+
 ## 0.8.0
 
 ### Minor Changes

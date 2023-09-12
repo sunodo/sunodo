@@ -1,5 +1,11 @@
 # rollups-node
 
+## 0.4.1
+
+### Patch Changes
+
+-   9d82fd7: bump rollups to 1.0.2
+
 ## 0.4.0
 
 ### Minor Changes
