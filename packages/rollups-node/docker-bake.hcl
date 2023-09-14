@@ -2,7 +2,7 @@ target "docker-metadata-action" {}
 target "docker-platforms" {}
 
 variable "ROLLUPS_VERSION" {
-  default = "1.0.2"
+  default = "1.1.0"
 }
 
 target "default" {

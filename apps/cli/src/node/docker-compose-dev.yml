@@ -1,12 +1,5 @@
 version: "3.9"
 
-x-database-config: &database-config
-    POSTGRES_HOSTNAME: database
-    POSTGRES_PORT: "5432"
-    POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: password
-    POSTGRES_DB: postgres
-
 services:
     anvil:
         image: sunodo/devnet:1.1.0
@@ -113,7 +106,7 @@ services:
             REMOTE_CARTESI_MACHINE_LOG_LEVEL: "${REMOTE_CARTESI_MACHINE_LOG_LEVEL:-info}"
 
             ### database
-            <<: *database-config
+            POSTGRES_ENDPOINT: "${POSTGRES_ENDPOINT:-postgres://postgres:password@database:5432/postgres}"
 
             # dispatcher
             ## uses redis
@@ -129,7 +122,7 @@ services:
             TX_DEFAULT_CONFIRMATIONS: 2
 
             # state-server
-            SF_GENESIS_BLOCK: 0x1
+            SF_GENESIS_BLOCK: 1
             SF_SAFETY_MARGIN: 1
             BH_HTTP_ENDPOINT: http://anvil:8545
             BH_WS_ENDPOINT: ws://anvil:8545
@@ -141,6 +134,7 @@ services:
             ## uses session-id
             ## uses chain-id
             ## uses server-manager-endpoint
+            PROVIDER_HTTP_ENDPOINT: http://anvil:8545
             SNAPSHOT_DIR: "/var/opt/cartesi/machine-snapshots"
             SNAPSHOT_LATEST: "/var/opt/cartesi/machine-snapshots/latest"
 
