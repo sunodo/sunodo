@@ -51,7 +51,7 @@ export abstract class SunodoCommand<T extends typeof Command> extends Command {
             "json",
         ]);
         const ps = JSON.parse(stdout) as PsResponse;
-        return ps.length > 0 ? ps[0].State : undefined;
+        return ps?.State;
     }
 
     protected async getDAppAddress(): Promise<Address | undefined> {

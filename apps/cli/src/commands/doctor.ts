@@ -9,17 +9,17 @@ export default class DoctorCommand extends Command {
     static examples = ["<%= config.bin %> <%= command.id %>"];
 
     private static MINIMUM_DOCKER_VERSION = "23.0.0"; // Replace with our minimum required Docker version
-    private static MINIMUM_DOCKER_COMPOSE_VERSION = "2.16.0"; // Replace with our minimum required Docker Compose version
+    private static MINIMUM_DOCKER_COMPOSE_VERSION = "2.21.0"; // Replace with our minimum required Docker Compose version
 
     private static isDockerVersionValid(version: string): boolean {
         return semver.gte(version, DoctorCommand.MINIMUM_DOCKER_VERSION);
     }
 
     private static isDockerComposeVersionValid(version: string): boolean {
-        const cleanedVersion = version.replace(/^v/, ""); // Remove leading 'v' if present
-        return semver.gte(
-            cleanedVersion,
-            DoctorCommand.MINIMUM_DOCKER_COMPOSE_VERSION
+        const v = semver.coerce(version);
+        return (
+            v !== null &&
+            semver.gte(v, DoctorCommand.MINIMUM_DOCKER_COMPOSE_VERSION)
         );
     }
 
@@ -39,14 +39,14 @@ export default class DoctorCommand extends Command {
 
             if (!DoctorCommand.isDockerVersionValid(dockerVersion)) {
                 throw new Error(
-                    `Unsupported Docker version. Minimum required version is ${DoctorCommand.MINIMUM_DOCKER_VERSION}. Installed version is ${dockerVersion}.`
+                    `Unsupported Docker version. Minimum required version is ${DoctorCommand.MINIMUM_DOCKER_VERSION}. Installed version is ${dockerVersion}.`,
                 );
             }
 
             // Check Docker Compose version
             const { stdout: dockerComposeVersionOutput } = await execa(
                 "docker",
-                ["compose", "version", "--short"]
+                ["compose", "version", "--short"],
             );
             const dockerComposeVersion = dockerComposeVersionOutput.trim();
 
@@ -54,7 +54,7 @@ export default class DoctorCommand extends Command {
                 !DoctorCommand.isDockerComposeVersionValid(dockerComposeVersion)
             ) {
                 throw new Error(
-                    `Unsupported Docker Compose version. Minimum required version is ${DoctorCommand.MINIMUM_DOCKER_COMPOSE_VERSION}. Installed version is ${dockerComposeVersion}.`
+                    `Unsupported Docker Compose version. Minimum required version is ${DoctorCommand.MINIMUM_DOCKER_COMPOSE_VERSION}. Installed version is ${dockerComposeVersion}.`,
                 );
             }
 
@@ -68,7 +68,7 @@ export default class DoctorCommand extends Command {
 
             if (!buildxRiscv64Supported) {
                 throw new Error(
-                    "Your system does not support riscv64 architecture."
+                    "Your system does not support riscv64 architecture.",
                 );
             }
 
