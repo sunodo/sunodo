@@ -20,4 +20,4 @@ export type ServicePublisher = {
     Protocol: string;
 };
 
-export type PsResponse = ServiceStatus[];
+export type PsResponse = ServiceStatus;
