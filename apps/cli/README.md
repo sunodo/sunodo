@@ -25,7 +25,7 @@ $ npm install -g @sunodo/cli
 $ sunodo COMMAND
 running command...
 $ sunodo (--version)
-@sunodo/cli/0.8.1 linux-x64 node-v20.6.1
+@sunodo/cli/0.8.2 linux-x64 node-v20.7.0
 $ sunodo --help [COMMAND]
 USAGE
   $ sunodo COMMAND
@@ -72,7 +72,7 @@ EXAMPLES
   $ sunodo address-book
 ```
 
-_See code: [dist/commands/address-book.ts](https://github.com/sunodo/sunodo/blob/v0.8.1/dist/commands/address-book.ts)_
+_See code: [dist/commands/address-book.ts](https://github.com/sunodo/sunodo/blob/v0.8.2/dist/commands/address-book.ts)_
 
 ## `sunodo build`
 
@@ -111,7 +111,7 @@ FLAG DESCRIPTIONS
     machine is not the last stage, use this parameter to specify the target stage.
 ```
 
-_See code: [dist/commands/build.ts](https://github.com/sunodo/sunodo/blob/v0.8.1/dist/commands/build.ts)_
+_See code: [dist/commands/build.ts](https://github.com/sunodo/sunodo/blob/v0.8.2/dist/commands/build.ts)_
 
 ## `sunodo clean`
 
@@ -130,7 +130,7 @@ EXAMPLES
   $ sunodo clean
 ```
 
-_See code: [dist/commands/clean.ts](https://github.com/sunodo/sunodo/blob/v0.8.1/dist/commands/clean.ts)_
+_See code: [dist/commands/clean.ts](https://github.com/sunodo/sunodo/blob/v0.8.2/dist/commands/clean.ts)_
 
 ## `sunodo create NAME`
 
@@ -156,7 +156,7 @@ EXAMPLES
   $ sunodo create
 ```
 
-_See code: [dist/commands/create.ts](https://github.com/sunodo/sunodo/blob/v0.8.1/dist/commands/create.ts)_
+_See code: [dist/commands/create.ts](https://github.com/sunodo/sunodo/blob/v0.8.2/dist/commands/create.ts)_
 
 ## `sunodo doctor`
 
@@ -173,7 +173,7 @@ EXAMPLES
   $ sunodo doctor
 ```
 
-_See code: [dist/commands/doctor.ts](https://github.com/sunodo/sunodo/blob/v0.8.1/dist/commands/doctor.ts)_
+_See code: [dist/commands/doctor.ts](https://github.com/sunodo/sunodo/blob/v0.8.2/dist/commands/doctor.ts)_
 
 ## `sunodo help [COMMANDS]`
 
@@ -224,7 +224,7 @@ FLAG DESCRIPTIONS
     inputs from the node running at http://localhost:5004
 ```
 
-_See code: [dist/commands/run.ts](https://github.com/sunodo/sunodo/blob/v0.8.1/dist/commands/run.ts)_
+_See code: [dist/commands/run.ts](https://github.com/sunodo/sunodo/blob/v0.8.2/dist/commands/run.ts)_
 
 ## `sunodo send`
 
@@ -243,7 +243,7 @@ EXAMPLES
   $ sunodo send
 ```
 
-_See code: [dist/commands/send/index.ts](https://github.com/sunodo/sunodo/blob/v0.8.1/dist/commands/send/index.ts)_
+_See code: [dist/commands/send/index.ts](https://github.com/sunodo/sunodo/blob/v0.8.2/dist/commands/send/index.ts)_
 
 ## `sunodo send dapp-address`
 
@@ -280,7 +280,7 @@ FLAG DESCRIPTIONS
     the address of the DApp, defaults to the deployed DApp address if application is running.
 ```
 
-_See code: [dist/commands/send/dapp-address.ts](https://github.com/sunodo/sunodo/blob/v0.8.1/dist/commands/send/dapp-address.ts)_
+_See code: [dist/commands/send/dapp-address.ts](https://github.com/sunodo/sunodo/blob/v0.8.2/dist/commands/send/dapp-address.ts)_
 
 ## `sunodo send erc20`
 
@@ -319,7 +319,7 @@ FLAG DESCRIPTIONS
     the address of the DApp, defaults to the deployed DApp address if application is running.
 ```
 
-_See code: [dist/commands/send/erc20.ts](https://github.com/sunodo/sunodo/blob/v0.8.1/dist/commands/send/erc20.ts)_
+_See code: [dist/commands/send/erc20.ts](https://github.com/sunodo/sunodo/blob/v0.8.2/dist/commands/send/erc20.ts)_
 
 ## `sunodo send erc721`
 
@@ -358,7 +358,7 @@ FLAG DESCRIPTIONS
     the address of the DApp, defaults to the deployed DApp address if application is running.
 ```
 
-_See code: [dist/commands/send/erc721.ts](https://github.com/sunodo/sunodo/blob/v0.8.1/dist/commands/send/erc721.ts)_
+_See code: [dist/commands/send/erc721.ts](https://github.com/sunodo/sunodo/blob/v0.8.2/dist/commands/send/erc721.ts)_
 
 ## `sunodo send ether`
 
@@ -397,7 +397,7 @@ FLAG DESCRIPTIONS
     the address of the DApp, defaults to the deployed DApp address if application is running.
 ```
 
-_See code: [dist/commands/send/ether.ts](https://github.com/sunodo/sunodo/blob/v0.8.1/dist/commands/send/ether.ts)_
+_See code: [dist/commands/send/ether.ts](https://github.com/sunodo/sunodo/blob/v0.8.2/dist/commands/send/ether.ts)_
 
 ## `sunodo send generic`
 
@@ -458,7 +458,7 @@ FLAG DESCRIPTIONS
     input encoding
 ```
 
-_See code: [dist/commands/send/generic.ts](https://github.com/sunodo/sunodo/blob/v0.8.1/dist/commands/send/generic.ts)_
+_See code: [dist/commands/send/generic.ts](https://github.com/sunodo/sunodo/blob/v0.8.2/dist/commands/send/generic.ts)_
 
 ## `sunodo shell [IMAGE]`
 
@@ -481,7 +481,7 @@ EXAMPLES
   $ sunodo shell
 ```
 
-_See code: [dist/commands/shell.ts](https://github.com/sunodo/sunodo/blob/v0.8.1/dist/commands/shell.ts)_
+_See code: [dist/commands/shell.ts](https://github.com/sunodo/sunodo/blob/v0.8.2/dist/commands/shell.ts)_
 
 ## `sunodo update [CHANNEL]`
 
