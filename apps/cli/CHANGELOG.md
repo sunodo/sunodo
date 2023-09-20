@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.2
+
+### Patch Changes
+
+-   9515326: bump minimum docker compose version to 2.21.0 (docker breaking change)
+
 ## 0.8.1
 
 ### Patch Changes
