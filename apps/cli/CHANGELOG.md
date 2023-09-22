@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.8.3
+
+### Patch Changes
+
+-   8710678: fix send --chain-id for local devnet
+-   5b616e7: fix regression on address-book outside a dapp directory
+
 ## 0.8.2
 
 ### Patch Changes
