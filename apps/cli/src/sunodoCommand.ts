@@ -50,7 +50,7 @@ export abstract class SunodoCommand<T extends typeof Command> extends Command {
             "--format",
             "json",
         ]);
-        const ps = JSON.parse(stdout) as PsResponse;
+        const ps = stdout ? (JSON.parse(stdout) as PsResponse) : undefined;
         return ps?.State;
     }
 
