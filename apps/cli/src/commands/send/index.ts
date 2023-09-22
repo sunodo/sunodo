@@ -28,7 +28,9 @@ export abstract class SendBaseCommand<
             char: "c",
             env: "CHAIN",
             helpGroup: "Ethereum",
-            options: supportedChains.map((c) => c.id.toString()),
+            options: supportedChains({ includeDevnet: true }).map((c) =>
+                c.id.toString(),
+            ),
         }),
         "rpc-url": Flags.string({
             description: "The RPC endpoint.",
@@ -56,7 +58,9 @@ export abstract class SendBaseCommand<
     }> {
         // create viem clients
         return createClients({
-            chain: supportedChains.find((c) => c.id == this.flags["chain-id"]),
+            chain: supportedChains({ includeDevnet: true }).find(
+                (c) => c.id == this.flags["chain-id"],
+            ),
             dev: true,
             rpcUrl: this.flags["rpc-url"],
             mnemonicPassphrase: this.flags["mnemonic-passphrase"],

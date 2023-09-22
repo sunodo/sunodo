@@ -1,6 +1,5 @@
 import { Flags } from "@oclif/core";
 import chalk from "chalk";
-import { foundry } from "viem/chains";
 
 import { DeployBaseCommand, Deployment } from "./index.js";
 import { supportedChains } from "../../wallet.js";
@@ -20,7 +19,7 @@ export default class DeployList extends DeployBaseCommand<typeof DeployList> {
     static flags = {
         "chain-id": Flags.integer({
             summary: "network to list the deployments",
-            options: supportedChains.map((c) => c.id.toString()),
+            options: supportedChains().map((c) => c.id.toString()),
         }),
     };
 
@@ -37,7 +36,7 @@ export default class DeployList extends DeployBaseCommand<typeof DeployList> {
         if (!this.jsonEnabled()) {
             if (deployments.length > 0) {
                 deployments.forEach((deployment, index) => {
-                    const chain = [...supportedChains, foundry].find(
+                    const chain = supportedChains({ includeDevnet: true }).find(
                         (c) => c.id === deployment.chainId,
                     );
 
