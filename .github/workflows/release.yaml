@@ -85,13 +85,15 @@ jobs:
     build_contracts:
         name: Build contracts
         needs: [release, packages_to_build]
-        if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), 'contracts') }}
+        if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), '@sunodo/contracts') }}
         uses: ./.github/workflows/contracts.yaml
+        with:
+            do-release: true
 
     build_cli:
         name: Build cli
         needs: [release, packages_to_build]
-        if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), 'cli') }}
+        if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), '@sunodo/cli') }}
         uses: ./.github/workflows/cli.yaml
         with:
             do-release: true

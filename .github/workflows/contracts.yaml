@@ -1,6 +1,10 @@
 name: contracts
 on:
     workflow_call:
+        inputs:
+            do-release:
+                type: boolean
+                required: false
     pull_request:
         paths:
             - .github/workflows/contracts.yaml
@@ -39,7 +43,7 @@ jobs:
               run: yarn build --filter=contracts
 
             - name: Publish package
-              if: startsWith(github.ref, 'refs/tags/@sunodo/contracts@')
+              if: ${{ inputs.do-release == 'true' }}
               run: npm publish --access public
               working-directory: packages/contracts
               env:
@@ -47,7 +51,7 @@ jobs:
 
             - name: Upload to release
               uses: softprops/action-gh-release@v1
-              if: startsWith(github.ref, 'refs/tags/@sunodo/contracts@')
+              if: ${{ inputs.do-release == 'true' }}
               with:
                   body_path: packages/contracts/CHANGELOG.md
                   files: |
