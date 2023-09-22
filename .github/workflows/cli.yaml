@@ -1,8 +1,10 @@
 name: cli
 on:
-    push:
-        tags:
-            - "@sunodo/cli@*"
+    workflow_call:
+        inputs:
+            do-release:
+                type: boolean
+                required: false
     pull_request:
         paths:
             - .github/workflows/cli.yaml
@@ -30,6 +32,7 @@ jobs:
               uses: actions/setup-node@v3
               with:
                   node-version: 20
+                  registry-url: "https://registry.npmjs.org"
                   cache: "yarn"
 
             - name: Install Foundry
@@ -40,3 +43,10 @@ jobs:
 
             - name: Build
               run: yarn build --filter @sunodo/cli
+
+            - name: Publish
+              if: ${{ inputs.do-release == 'true' }}
+              working-directory: ./apps/cli
+              run: npm publish
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
