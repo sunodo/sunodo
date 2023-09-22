@@ -74,7 +74,7 @@ export default class Deploy extends DeployBaseCommand<typeof Deploy> {
     static networkFlags = {
         "chain-id": Flags.integer({
             summary: "network to deploy to",
-            options: supportedChains.map((c) => c.id.toString()),
+            options: supportedChains().map((c) => c.id.toString()),
         }),
     };
 
@@ -145,7 +145,7 @@ export default class Deploy extends DeployBaseCommand<typeof Deploy> {
             },
             network: {
                 dev: flags.dev,
-                chain: supportedChains.find((c) => c.id == flags["chain-id"]),
+                chain: supportedChains().find((c) => c.id == flags["chain-id"]),
                 mnemonicPassphrase: flags["mnemonic-passphrase"],
                 mnemonicIndex: flags["mnemonic-index"],
             },

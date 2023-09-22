@@ -19,16 +19,46 @@ import { MetaMaskSDK } from "@metamask/sdk";
 import { EthereumProvider } from "@walletconnect/ethereum-provider";
 import qrcode from "qrcode-terminal";
 import ansiColors from "ansi-colors";
-import { arbitrumGoerli, foundry, optimismGoerli, sepolia } from "viem/chains";
+import {
+    arbitrum,
+    arbitrumGoerli,
+    foundry,
+    mainnet,
+    optimism,
+    optimismGoerli,
+    sepolia,
+} from "viem/chains";
 
 import { Choice, hexInput, selectAuto } from "./prompts.js";
 
 // list of all supported chains
-export const supportedChains: Chain[] = [
-    arbitrumGoerli,
-    optimismGoerli,
-    sepolia,
-];
+export type SupportedChainsOptions = {
+    includeDevnet?: boolean;
+    includeMainnets?: boolean;
+    includeTestnets?: boolean;
+};
+
+export const supportedChains = (options?: SupportedChainsOptions): Chain[] => {
+    options = options || {
+        includeDevnet: false, // default is not to show devnet
+        includeMainnets: true,
+        includeTestnets: true,
+    };
+    options.includeTestnets = options.includeTestnets ?? true; // default is true if not specified
+    options.includeMainnets = options.includeMainnets ?? true; // default is true if not specified
+
+    const chains: Chain[] = [];
+    if (options.includeDevnet) {
+        chains.push(foundry);
+    }
+    if (options.includeTestnets) {
+        chains.push(arbitrumGoerli, optimismGoerli, sepolia);
+    }
+    if (options.includeMainnets) {
+        chains.push(arbitrum, mainnet, optimism);
+    }
+    return chains;
+};
 
 export const DEFAULT_DEVNET_MNEMONIC =
     "test test test test test test test test test test test junk";
@@ -77,10 +107,8 @@ export type TransactionPrompt = (
 ) => Promise<Address>;
 
 const selectChain = async (options: EthereumPromptOptions): Promise<Chain> => {
-    // development mode, include foundry as an option
-    const chains = options.dev
-        ? [foundry, ...supportedChains]
-        : supportedChains;
+    // if development mode, include foundry as an option
+    const chains = supportedChains({ includeDevnet: options.dev });
 
     if (options.chain) {
         const chain = options.chain;
