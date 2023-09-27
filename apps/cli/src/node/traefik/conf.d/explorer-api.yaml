@@ -1,0 +1,17 @@
+http:
+    routers:
+        explorer-api:
+            rule: "PathPrefix(`/explorer-api`)"
+            middlewares:
+                - "remove-explorer-api-prefix"
+            service: explorer-api
+    middlewares:
+        remove-explorer-api-prefix:
+            replacePathRegex:
+                regex: "^/explorer-api/(.*)"
+                replacement: "/$1"
+    services:
+        explorer-api:
+            loadBalancer:
+                servers:
+                    - url: "http://explorer_api:4350"
