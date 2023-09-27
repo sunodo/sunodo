@@ -1,0 +1,10 @@
+http:
+    routers:
+        explorer:
+            rule: "PathPrefix(`/explorer`)"
+            service: explorer
+    services:
+        explorer:
+            loadBalancer:
+                servers:
+                    - url: "http://explorer:3000"

@@ -87,6 +87,9 @@ export default class Run extends Command {
         // dev file is always loaded
         const composeFiles = ["docker-compose-dev.yaml"];
 
+        // explorer
+        composeFiles.push("docker-compose-explorer.yaml");
+
         // load the no-backend compose file
         if (flags["no-backend"]) {
             composeFiles.push("docker-compose-host.yaml");

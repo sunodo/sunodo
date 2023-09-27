@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+    database_creator:
+        image: postgres:13-alpine
+        command: ["createdb", "squid"]
+        environment:
+            PGHOST: database
+            PGPORT: 5432
+            PGUSER: postgres
+            PGPASSWORD: password
+            PGDATABASE: postgres
+        depends_on:
+            database:
+                condition: service_healthy
+
+    explorer_api:
+        image: cartesi/rollups-explorer-api:0.1.0
+        environment:
+            DB_NAME: squid
+            DB_PORT: 5432
+            DB_HOST: database
+            DB_PASS: password
+            GQL_PORT: 4350
+        expose:
+            - 4350
+        command: ["sqd", "serve:prod"]
+        depends_on:
+            database_creator:
+                condition: service_completed_successfully
+
+    squid_processor:
+        image: cartesi/rollups-explorer-api:0.1.0
+        environment:
+            CHAIN_ID: 31337
+            RPC_ENDPOINT: http://anvil:8545
+            DB_NAME: squid
+            DB_PORT: 5432
+            DB_HOST: database
+            DB_PASS: password
+        command: ["sqd", "process:prod"]
+        depends_on:
+            database_creator:
+                condition: service_completed_successfully
+
+    explorer:
+        image: cartesi/rollups-explorer:0.1.1
+        expose:
+            - 3000
+        depends_on:
+            database_creator:
+                condition: service_completed_successfully
