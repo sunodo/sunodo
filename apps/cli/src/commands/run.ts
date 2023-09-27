@@ -82,12 +82,21 @@ export default class Run extends Command {
             "--file=",
             path.dirname(new URL(import.meta.url).pathname),
             "..",
-            "node"
-        )
+            "node",
+        );
 
-        const composeFileDev = path.join(composeBasePath, "docker-compose-dev.yml");
-        const composeFileHost = path.join(composeBasePath, "docker-compose-host.yml");
-        const composeFileEnvFile = path.join(composeBasePath, "docker-compose-envfile.yml");
+        const composeFileDev = path.join(
+            composeBasePath,
+            "docker-compose-dev.yaml",
+        );
+        const composeFileHost = path.join(
+            composeBasePath,
+            "docker-compose-host.yaml",
+        );
+        const composeFileEnvFile = path.join(
+            composeBasePath,
+            "docker-compose-envfile.yaml",
+        );
 
         composeFiles.push(composeFileDev);
 
