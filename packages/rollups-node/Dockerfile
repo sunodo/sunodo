@@ -40,23 +40,8 @@ cd -
 rm -rf "$tmp_dir"
 EOF
 
-ARG TRAEFIK_VERSION=2.10.1
-RUN <<EOF
-tmp_dir=$(mktemp -d)
-ARCH=$(dpkg --print-architecture)
-curl -sSL https://github.com/traefik/traefik/releases/download/v${TRAEFIK_VERSION}/traefik_v${TRAEFIK_VERSION}_linux_${ARCH}.tar.gz \
-    -o "$tmp_dir"/traefik_v${TRAEFIK_VERSION}_linux_${ARCH}.tar.gz
-curl -sSL https://github.com/traefik/traefik/releases/download/v${TRAEFIK_VERSION}/traefik_v${TRAEFIK_VERSION}_checksums.txt | \
-     grep "traefik_v${TRAEFIK_VERSION}_linux_${ARCH}.tar.gz" > "$tmp_dir"/traefik_v${TRAEFIK_VERSION}_checksums.txt
-sha256sum "$tmp_dir"/traefik_v${TRAEFIK_VERSION}_checksums.txt --check
-tar -xvzf "$tmp_dir"/traefik_v${TRAEFIK_VERSION}_linux_${ARCH}.tar.gz -C "$tmp_dir"/
-cp "$tmp_dir"/traefik /usr/local/bin/traefik
-rm -rf "$tmp_dir"
-EOF
-
 RUN mkdir -p /var/opt/cartesi/machine-snapshots/0_0 && ln -s /var/opt/cartesi/machine-snapshots/0_0 /var/opt/cartesi/machine-snapshots/latest
 
-COPY ./traefik /etc/traefik
 COPY ./s6-overlay/s6-rc.d /etc/s6-overlay/s6-rc.d
 COPY ./s6-overlay/stage2-hook.sh /etc/s6-overlay/scripts/stage2-hook.sh
 COPY ./is_ready /usr/local/bin/
@@ -66,5 +51,7 @@ COPY ./entrypoint.sh /entrypoint.sh
 HEALTHCHECK --interval=60s --start-period=5s --retries=5 CMD [ "/usr/local/bin/is_ready" ]
 
 WORKDIR /opt/cartesi
-EXPOSE 8080
+EXPOSE 4000
+EXPOSE 5004
+EXPOSE 5005
 ENTRYPOINT ["/entrypoint.sh"]
