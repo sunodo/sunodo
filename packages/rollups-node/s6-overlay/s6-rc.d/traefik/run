@@ -1,5 +1,0 @@
-#!/command/with-contenv sh
-/command/s6-echo "GraphQL server listening at http://localhost:8080/graphql"
-/command/s6-echo "Inspect server listening at http://localhost:8080/inspect"
-[ ! -z ${ENABLE_SUNODO_NODE+x} ] && /command/s6-echo "Host Runner listening at http://localhost:8080/host-runner"
-exec s6-setuidgid nobody traefik --configfile /etc/traefik/traefik.yaml

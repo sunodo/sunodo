@@ -16,5 +16,4 @@ if [ ! -z ${ENABLE_SUNODO_NODE+x} ]; then
 else
     /command/s6-echo "host-runner: ENABLE_SUNODO_NODE is not set, skip the host mode..."
     sed -i '/host-runner/d' /usr/local/bin/is_ready
-    rm /etc/traefik/conf.d/host-runner.yaml
 fi
