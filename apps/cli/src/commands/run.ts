@@ -58,6 +58,12 @@ export default class Run extends Command {
             projectName = hash.substring(0, 8);
         }
 
+        // path of the sunodo instalation
+        const binPath = path.join(
+            path.dirname(new URL(import.meta.url).pathname),
+            "..",
+        );
+
         // setup the environment variable used in docker compose
         const blockInterval = flags["block-time"];
         const epochDuration = flags["epoch-duration"];
@@ -74,43 +80,31 @@ export default class Run extends Command {
             RPC_URL: "http://anvil:8545",
             S6_VERBOSITY: flags.verbose ? "2" : "0",
             SERVER_MANAGER_LOG_LEVEL: flags.verbose ? "info" : "error",
+            SUNODO_BIN_PATH: binPath,
             WS_URL: "ws://anvil:8545",
         };
 
-        const composeFiles = [];
-        const composeBasePath = path.join(
-            "--file=",
-            path.dirname(new URL(import.meta.url).pathname),
-            "..",
-            "node",
-        );
+        // dev file is always loaded
+        const composeFiles = ["docker-compose-dev.yaml"];
 
-        const composeFileDev = path.join(
-            composeBasePath,
-            "docker-compose-dev.yaml",
-        );
-        const composeFileHost = path.join(
-            composeBasePath,
-            "docker-compose-host.yaml",
-        );
-        const composeFileEnvFile = path.join(
-            composeBasePath,
-            "docker-compose-envfile.yaml",
-        );
-
-        composeFiles.push(composeFileDev);
-
+        // load the no-backend compose file
         if (flags["no-backend"]) {
-            composeFiles.push(composeFileHost);
+            composeFiles.push("docker-compose-host.yaml");
         }
 
+        // add project env file loading
         if (fs.existsSync("./.sunodo.env")) {
-            composeFiles.push(composeFileEnvFile);
+            composeFiles.push("docker-compose-envfile.yaml");
         }
+
+        // create the "--file <file>" list
+        const files = composeFiles
+            .map((f) => ["--file", path.join(binPath, "node", f)])
+            .flat();
 
         const args = [
             "compose",
-            ...composeFiles,
+            ...files,
             "--project-directory",
             ".",
             "--project-name",

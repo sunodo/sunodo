@@ -1,12 +1,5 @@
 version: "3.9"
 
-x-database-config: &database-config
-    POSTGRES_HOSTNAME: database
-    POSTGRES_PORT: "5432"
-    POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: password
-    POSTGRES_DB: postgres
-
 services:
     anvil:
         image: sunodo/devnet:1.1.0
@@ -76,7 +69,7 @@ services:
             - ./.sunodo/image:/var/opt/cartesi/machine-snapshots/0_0:ro
 
     validator:
-        image: sunodo/rollups-node:0.4.1
+        image: sunodo/rollups-node:0.5.0
         depends_on:
             dapp_deployer:
                 condition: service_completed_successfully
@@ -88,8 +81,10 @@ services:
             interval: 10s
             timeout: 1s
             retries: 5
-        ports:
-            - 8080:8080
+        expose:
+            - 4000
+            - 5004
+            - 5005
         environment:
             # s6-overlay
             S6_STAGE2_HOOK: "/etc/s6-overlay/scripts/stage2-hook.sh"
@@ -113,7 +108,7 @@ services:
             REMOTE_CARTESI_MACHINE_LOG_LEVEL: "${REMOTE_CARTESI_MACHINE_LOG_LEVEL:-info}"
 
             ### database
-            <<: *database-config
+            POSTGRES_ENDPOINT: "${POSTGRES_ENDPOINT:-postgres://postgres:password@database:5432/postgres}"
 
             # dispatcher
             ## uses redis
@@ -129,7 +124,7 @@ services:
             TX_DEFAULT_CONFIRMATIONS: 2
 
             # state-server
-            SF_GENESIS_BLOCK: 0x1
+            SF_GENESIS_BLOCK: 1
             SF_SAFETY_MARGIN: 1
             BH_HTTP_ENDPOINT: http://anvil:8545
             BH_WS_ENDPOINT: ws://anvil:8545
@@ -141,6 +136,7 @@ services:
             ## uses session-id
             ## uses chain-id
             ## uses server-manager-endpoint
+            PROVIDER_HTTP_ENDPOINT: http://anvil:8545
             SNAPSHOT_DIR: "/var/opt/cartesi/machine-snapshots"
             SNAPSHOT_LATEST: "/var/opt/cartesi/machine-snapshots/latest"
 
@@ -158,6 +154,17 @@ services:
             ## uses postgres-config
             GRAPHQL_HOST: 0.0.0.0
             GRAPHQL_PORT: 4000
+
+    proxy:
+        image: traefik:v2.10
+        depends_on:
+            validator:
+                condition: service_healthy
+        ports:
+            - 8080:8080
+            - 8088:8088
+        volumes:
+            - ${SUNODO_BIN_PATH}/node/traefik:/etc/traefik
 
 volumes:
     blockchain-data: {}
