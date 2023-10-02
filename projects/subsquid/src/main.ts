@@ -1,26 +1,30 @@
-import { DataHandlerContext, EvmBatchProcessor } from "@subsquid/evm-processor";
-import { Store, TypeormDatabase } from "@subsquid/typeorm-store";
 import {
-    Address,
-    createPublicClient,
-    custom,
-    decodeEventLog,
-    encodeEventTopics,
-    getContract,
-    Hex,
-    PublicClient,
-} from "viem";
+    BlockData,
+    DataHandlerContext,
+    EvmBatchProcessor,
+} from "@subsquid/evm-processor";
+import { Store, TypeormDatabase } from "@subsquid/typeorm-store";
 
 import {
-    authorityFactoryABI,
-    authorityFactoryAddress,
-    erc20ABI,
-    payableDAppSystemABI,
-    payableDAppSystemAddress,
-} from "./abi/contracts";
-import { Authority, Factory, Token } from "./model";
+    Authority,
+    ValidatorNodeProvider,
+    Token,
+    Application,
+    ValidatorNode,
+} from "./model";
 import { configureChain } from "./chain";
 import { createDatasource } from "./datasource";
+import {
+    authorityFactoryAddress,
+    blocks,
+    cartesiDAppFactoryAddress,
+    marketplaceAddress,
+} from "./config";
+import { events as CartesiDAppFactoryEvents } from "./abi/CartesiDAppFactory";
+import { events as AuthorityFactoryEvents } from "./abi/AuthorityFactory";
+import { events as MarketplaceEvents } from "./abi/Marketplace";
+import { events as ValidatorNodeProviderEvents } from "./abi/ValidatorNodeProvider";
+import { Contract as ERC20 } from "./abi/ERC20";
 
 const chain = configureChain();
 const dataSource = createDatasource(chain);
@@ -28,113 +32,106 @@ const dataSource = createDatasource(chain);
 // finality confirmation on devnet can be 0
 const finalityConfirmation = chain.id === 31337 ? 0 : 10;
 
-// information about the deployment block of the contracts, so scan is optimized
-const blocks: Record<string, Record<string, number>> = {
-    foundry: { AuthorityFactory: 0, PayableDAppSystem: 0 },
-    sepolia: { AuthorityFactory: 3976538, PayableDAppSystem: 4058614 },
-};
-
-// topic for AuthorityCreated event
-const authorityCreatedTopics = encodeEventTopics({
-    abi: authorityFactoryABI,
-    eventName: "AuthorityCreated",
-});
-
-// topic for PayableDAppFactoryCreated event
-const payableDAppFactoryCreatedTopics = encodeEventTopics({
-    abi: payableDAppSystemABI,
-    eventName: "PayableDAppFactoryCreated",
-});
-
 const processor = new EvmBatchProcessor()
     .setDataSource(dataSource)
     .setFinalityConfirmation(finalityConfirmation)
-    .addLog({
-        address: [authorityFactoryAddress],
-        range: { from: blocks[chain.network].AuthorityFactory },
-        topic0: [authorityCreatedTopics[0]],
+    .setFields({
+        log: { topics: true, data: true },
+        transaction: { hash: true },
     })
     .addLog({
-        address: [payableDAppSystemAddress],
-        range: { from: blocks[chain.network].PayableDAppSystem },
-        topic0: [payableDAppFactoryCreatedTopics[0]],
+        address: [cartesiDAppFactoryAddress],
+        range: { from: blocks[chain.id].CartesiDAppFactory },
+        topic0: [CartesiDAppFactoryEvents.ApplicationCreated.topic],
+    })
+    .addLog({
+        address: [authorityFactoryAddress],
+        range: { from: blocks[chain.id].AuthorityFactory },
+        topic0: [AuthorityFactoryEvents.AuthorityCreated.topic],
+    })
+    .addLog({
+        address: [marketplaceAddress],
+        range: { from: blocks[chain.id].Marketplace },
+        topic0: [MarketplaceEvents.ValidatorNodeProviderCreated.topic],
+    })
+    .addLog({
+        topic0: [ValidatorNodeProviderEvents.MachineLocation.topic],
+        transaction: true,
+    })
+    .addLog({
+        topic0: [ValidatorNodeProviderEvents.FinancialRunway.topic],
+        transaction: true,
+    })
+    .addLog({
+        topic0: [ValidatorNodeProviderEvents.Paused.topic],
+        transaction: true,
+    })
+    .addLog({
+        topic0: [ValidatorNodeProviderEvents.Unpaused.topic],
+        transaction: true,
     });
-
-/**
- * Creates a viem public client using the subsquid configured chain
- * @param ctx subsquid context
- * @returns viem PublicClient
- */
-const createClient = (ctx: DataHandlerContext<Store>): PublicClient => {
-    const transport = custom({
-        request: ({ method, params }) => {
-            return ctx._chain.client.call(method, params);
-        },
-    });
-    return createPublicClient({ transport });
-};
 
 /**
  * Creates a token entity by reading token information from the blockchain
  * @param address address of IERC20 token
- * @param publicClient viem public client
  * @returns token entity
  */
 const createToken = async (
-    address: Address,
-    publicClient: PublicClient,
+    address: string,
+    ctx: DataHandlerContext<Store>,
+    block: BlockData<{}>,
 ): Promise<Token> => {
-    const token = getContract({
-        abi: erc20ABI,
-        address,
-        publicClient,
-    });
+    const token = new ERC20(ctx, block.header, address);
     return new Token({
         id: address.toString(),
-        name: await token.read.name(),
-        symbol: await token.read.symbol(),
-        decimals: await token.read.decimals(),
+        name: await token.name(),
+        symbol: await token.symbol(),
+        decimals: await token.decimals(),
     });
 };
 
+const topicNames: Record<string, string> = {
+    [CartesiDAppFactoryEvents.ApplicationCreated.topic]: "ApplicationCreated",
+    [AuthorityFactoryEvents.AuthorityCreated.topic]: "AuthorityCreated",
+    [MarketplaceEvents.ValidatorNodeProviderCreated.topic]:
+        "ValidatorNodeProviderCreated",
+    [ValidatorNodeProviderEvents.MachineLocation.topic]: "MachineLocation",
+    [ValidatorNodeProviderEvents.FinancialRunway.topic]: "FinancialRunway",
+    [ValidatorNodeProviderEvents.Paused.topic]: "Paused",
+    [ValidatorNodeProviderEvents.Unpaused.topic]: "Unpaused",
+};
+
 processor.run(new TypeormDatabase({ supportHotBlocks: true }), async (ctx) => {
-    const publicClient = createClient(ctx);
-    const authorities: Record<Address, Authority> = {};
-    const tokens: Record<Address, Token> = {};
-    const factories: Record<Address, Factory> = {};
+    const authorities: Record<string, Authority> = {};
+    const tokens: Record<string, Token> = {};
+    const applications: Record<string, Application> = {};
+    const providers: Record<string, ValidatorNodeProvider> = {};
+    const validatorNodes: Record<string, ValidatorNode> = {};
 
     for (const block of ctx.blocks) {
         for (const log of block.logs) {
+            const t0 = log.topics[0];
+            const laddr = log.address.toLowerCase();
+
             if (
-                log.address === authorityFactoryAddress.toLowerCase() &&
-                log.topics[0] === authorityCreatedTopics[0]
+                laddr === authorityFactoryAddress.toLowerCase() &&
+                t0 === AuthorityFactoryEvents.AuthorityCreated.topic
             ) {
-                const [signature, ...args] = log.topics.map((t) => t as Hex);
-                const event = decodeEventLog({
-                    abi: authorityFactoryABI,
-                    topics: [signature, ...args],
-                    data: log.data as Hex,
-                    strict: true,
-                });
-                const { authority } = event.args;
-                ctx.log.info(`saving authority ${authority}`);
+                const { authority } =
+                    AuthorityFactoryEvents.AuthorityCreated.decode(log);
+                ctx.log.info(`${authority} -> Authority`);
                 authorities[authority] = new Authority({
                     id: authority.toString(),
                 });
             }
 
             if (
-                log.address === payableDAppSystemAddress.toLowerCase() &&
-                log.topics[0] == payableDAppFactoryCreatedTopics[0]
+                laddr === marketplaceAddress.toLowerCase() &&
+                t0 === MarketplaceEvents.ValidatorNodeProviderCreated.topic
             ) {
-                const [signature, ...args] = log.topics.map((t) => t as Hex);
-                const event = decodeEventLog({
-                    abi: payableDAppSystemABI,
-                    topics: [signature, ...args],
-                    data: log.data as Hex,
-                    strict: true,
-                });
-                const { factory, token, consensus, price } = event.args;
+                let { provider, consensus, token, payee, price } =
+                    MarketplaceEvents.ValidatorNodeProviderCreated.decode(log);
+                provider = provider.toLowerCase();
 
                 authorities[consensus] =
                     authorities[consensus] ||
@@ -144,20 +141,74 @@ processor.run(new TypeormDatabase({ supportHotBlocks: true }), async (ctx) => {
                 tokens[token] =
                     tokens[token] ||
                     (await ctx.store.get(Token, token.toString())) ||
-                    (await createToken(token, publicClient));
+                    (await createToken(token, ctx, block));
 
-                ctx.log.info(`saving factory ${factory}`);
-                factories[factory] = new Factory({
-                    id: factory.toString(),
+                ctx.log.info(`${provider} -> ValidatorNodeProvider`);
+                providers[provider] = new ValidatorNodeProvider({
+                    id: provider.toString(),
                     authority: authorities[consensus],
                     token: tokens[token],
+                    payee,
                     price,
+                    paused: false,
                 });
+            }
+
+            if (
+                laddr === cartesiDAppFactoryAddress.toLowerCase() &&
+                t0 === CartesiDAppFactoryEvents.ApplicationCreated.topic
+            ) {
+                const { application } =
+                    CartesiDAppFactoryEvents.ApplicationCreated.decode(log);
+
+                ctx.log.info(`${application} -> Application`);
+                applications[application] = new Application({
+                    id: application,
+                });
+            }
+
+            ctx.log.info(`${laddr} ${topicNames[t0]}`);
+            if (providers[laddr]) {
+                const provider = providers[laddr];
+                if (t0 === ValidatorNodeProviderEvents.MachineLocation.topic) {
+                    const { dapp, location } =
+                        ValidatorNodeProviderEvents.MachineLocation.decode(log);
+                    const node =
+                        validatorNodes[`${laddr}-${dapp}`] ||
+                        new ValidatorNode({
+                            id: `${laddr}-${dapp}`,
+                            provider,
+                            application: applications[dapp],
+                        });
+                    node.location = location;
+                    validatorNodes[`${laddr}-${dapp}`] = node;
+                }
+                if (t0 === ValidatorNodeProviderEvents.FinancialRunway.topic) {
+                    const { dapp, until } =
+                        ValidatorNodeProviderEvents.FinancialRunway.decode(log);
+                    const node =
+                        validatorNodes[`${laddr}-${dapp}`] ||
+                        new ValidatorNode({
+                            id: `${laddr}-${dapp}`,
+                            provider,
+                            application: applications[dapp],
+                        });
+                    node.runway = until;
+                    validatorNodes[`${laddr}-${dapp}`] = node;
+                }
+                if (t0 === ValidatorNodeProviderEvents.Paused.topic) {
+                    provider.paused = true;
+                }
+                if (t0 === ValidatorNodeProviderEvents.Unpaused.topic) {
+                    provider.paused = false;
+                }
             }
         }
     }
 
     ctx.store.save(Object.values(authorities));
     ctx.store.save(Object.values(tokens));
-    ctx.store.save(Object.values(factories));
+    ctx.store.save(Object.values(applications));
+    ctx.store.save(Object.values(providers));
+    ctx.store.save(Object.values(validatorNodes));
 });
