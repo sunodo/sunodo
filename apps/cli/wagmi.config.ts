@@ -10,7 +10,7 @@ export default defineConfig({
             include: [
                 "**/IFinancialProtocol.json",
                 "**/IMachineProtocol.json",
-                "**/IPayableDAppFactory.json",
+                "**/IValidatorNodeProvider.json",
             ],
         }),
         hardhatDeploy({ directory: "../../packages/devnet/export/abi" }),

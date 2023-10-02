@@ -1,0 +1,19 @@
+query authorities {
+    authorities {
+        id
+    }
+}
+
+query validatorNodeProviders {
+    validatorNodeProviders {
+        id
+        token {
+            decimals
+            id
+            name
+            symbol
+        }
+        payee
+        price
+    }
+}
