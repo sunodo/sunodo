@@ -9,9 +9,38 @@ type Token @entity {
     decimals: Int!
 }
 
-type Factory @entity {
+type Application @entity @cardinality(value: 100) {
+    id: ID!
+}
+
+type ReaderNodeProvider @entity {
+    id: ID!
+    token: Token!
+    payee: String!
+    price: BigInt!
+}
+
+type ValidatorNodeProvider @entity {
     id: ID!
     authority: Authority!
     token: Token!
+    payee: String!
     price: BigInt!
+    paused: Boolean!
+}
+
+type ValidatorNode @entity {
+    id: ID!
+    application: Application!
+    provider: ValidatorNodeProvider!
+    runway: BigInt
+    location: String
+}
+
+type ReaderNode @entity {
+    id: ID!
+    application: Application!
+    provider: ReaderNodeProvider!
+    runway: BigInt
+    location: String
 }

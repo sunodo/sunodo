@@ -1,6 +1,6 @@
 manifestVersion: subsquid.io/v0.1
 name: sunodo-sepolia
-version: 1
+version: 2
 description: Indexes entities used by sunodo
 build:
 deploy:
@@ -9,7 +9,6 @@ deploy:
     processor:
         env:
             NETWORK: sepolia
-            SEPOLIA_HTTP_URL: https://rpc.ankr.com/eth_sepolia
         cmd:
             - node
             - lib/main

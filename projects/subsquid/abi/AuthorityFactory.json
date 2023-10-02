@@ -1,0 +1,114 @@
+[
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "contract Authority",
+                "name": "authority",
+                "type": "address"
+            }
+        ],
+        "name": "AuthorityCreated",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_authorityOwner",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "_salt",
+                "type": "bytes32"
+            }
+        ],
+        "name": "calculateAuthorityAddress",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "newAuthority",
+        "outputs": [
+            {
+                "internalType": "contract Authority",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "_salt",
+                "type": "bytes32"
+            }
+        ],
+        "name": "newAuthority",
+        "outputs": [
+            {
+                "internalType": "contract Authority",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_authorityOwner",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "_salt",
+                "type": "bytes32"
+            }
+        ],
+        "name": "newAuthority",
+        "outputs": [
+            {
+                "internalType": "contract Authority",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_authorityOwner",
+                "type": "address"
+            }
+        ],
+        "name": "newAuthority",
+        "outputs": [
+            {
+                "internalType": "contract Authority",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]
