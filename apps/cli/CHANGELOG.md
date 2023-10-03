@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.4
+
+### Patch Changes
+
+-   7a39ead: sunodo run will accept a .sunodo.env file
+
 ## 0.8.3
 
 ### Patch Changes
