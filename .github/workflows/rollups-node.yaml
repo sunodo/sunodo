@@ -1,6 +1,11 @@
 name: rollups-node
 on:
     workflow_call:
+        secrets:
+            DOCKERHUB_USERNAME:
+                required: true
+            DOCKERHUB_TOKEN:
+                required: true
     pull_request:
         paths:
             - .github/workflows/rollups-node.yaml

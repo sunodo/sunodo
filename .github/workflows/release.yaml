@@ -63,30 +63,35 @@ jobs:
         needs: [release, packages_to_build]
         if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), 'rollups-node') }}
         uses: ./.github/workflows/rollups-node.yaml
+        secrets: inherit
 
     build_sdk:
         name: Build sdk
         needs: [release, packages_to_build]
         if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), 'sdk') }}
         uses: ./.github/workflows/sdk.yaml
+        secrets: inherit
 
     build_anvil:
         name: Build anvil
         needs: [release, packages_to_build]
         if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), 'anvil') }}
         uses: ./.github/workflows/anvil.yaml
+        secrets: inherit
 
     build_devnet:
         name: Build devnet
         needs: [release, packages_to_build]
         if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), 'devnet') }}
         uses: ./.github/workflows/devnet.yaml
+        secrets: inherit
 
     build_contracts:
         name: Build contracts
         needs: [release, packages_to_build]
         if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), '@sunodo/contracts') }}
         uses: ./.github/workflows/contracts.yaml
+        secrets: inherit
         with:
             do-release: true
 
@@ -95,5 +100,6 @@ jobs:
         needs: [release, packages_to_build]
         if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), '@sunodo/cli') }}
         uses: ./.github/workflows/cli.yaml
+        secrets: inherit
         with:
             do-release: true
