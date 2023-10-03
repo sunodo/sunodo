@@ -1,5 +1,12 @@
 # rollups-node
 
+## 0.5.0
+
+### Minor Changes
+
+-   0306b48: use cartesi/rollups-node:1.1.0
+-   ed66480: removes traefik from the rollups-node and exposes services ports
+
 ## 0.4.1
 
 ### Patch Changes
