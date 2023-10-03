@@ -5,8 +5,6 @@ import { execa } from "execa";
 import { Address } from "abitype";
 import { PsResponse } from "./types/docker.js";
 import {
-    authorityAddress,
-    authorityFactoryAddress,
     cartesiDAppFactoryAddress,
     dAppAddressRelayAddress,
     erc1155BatchPortalAddress,
@@ -106,8 +104,6 @@ export abstract class SunodoCommand<T extends typeof Command> extends Command {
     protected async getAddressBook(): Promise<AddressBook> {
         // build rollups contracts address book
         const contracts: AddressBook = {
-            Authority: authorityAddress,
-            AuthorityFactory: authorityFactoryAddress,
             CartesiDAppFactory: cartesiDAppFactoryAddress,
             DAppAddressRelay: dAppAddressRelayAddress,
             ERC1155BatchPortal: erc1155BatchPortalAddress,
