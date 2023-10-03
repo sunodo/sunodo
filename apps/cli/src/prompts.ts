@@ -1,5 +1,5 @@
 import {
-    AsyncPromptConfig,
+    PromptConfig,
     Separator,
     confirm,
     input,
@@ -21,40 +21,17 @@ import {
 import chalk from "chalk";
 
 /**
- * Create an "and" validator from two validators
- * @param v1 first validator function
- * @param v2 second validator function
- * @returns composed validator function using 'and'
- */
-const and =
-    <T, R>(v1: (value: T) => R, v2?: (value: T) => R) =>
-    (value: T) => {
-        const r1 = v1(value);
-        if (r1 !== true) {
-            return r1;
-        }
-        if (v2) {
-            const r2 = v2(value);
-            return r2;
-        }
-        return true;
-    };
-
-/**
  * Prompt for an address value.
  * @param config inquirer config
  * @returns address
  */
-export type AddressPromptConfig = AsyncPromptConfig & { default?: Address };
+export type AddressPromptConfig = PromptConfig<{ default?: Address }>;
 export const addressInput = async (
-    config: AddressPromptConfig
+    config: AddressPromptConfig,
 ): Promise<Address> => {
     const address = await input({
         ...config,
-        validate: and(
-            (value) => isAddress(value) || "Enter a valid address",
-            config.validate
-        ),
+        validate: (value) => isAddress(value) || "Enter a valid address",
     });
     return getAddress(address);
 };
@@ -64,24 +41,21 @@ export const addressInput = async (
  * @param config inquirer config
  * @returns hex
  */
-export type HexPromptConfig = AsyncPromptConfig & { default?: Hex };
+export type HexPromptConfig = PromptConfig<{ default?: Hex }>;
 export const hexInput = async (config: HexPromptConfig): Promise<Hex> => {
     const value = await input({
         ...config,
-        validate: and(
-            (value) => isHex(value) || "Enter a valid hex value",
-            config.validate
-        ),
+        validate: (value) => isHex(value) || "Enter a valid hex value",
     });
     return value as Hex;
 };
 
-export type BigintPromptConfig = AsyncPromptConfig & {
+export type BigintPromptConfig = PromptConfig<{
     decimals: number;
     default?: bigint;
-};
+}>;
 export const bigintInput = async (
-    config: BigintPromptConfig
+    config: BigintPromptConfig,
 ): Promise<bigint> => {
     const defaultValue =
         config.default != undefined
@@ -99,7 +73,9 @@ export const bigintInput = async (
  * @param config inquirer config
  * @returns bytes as hex string
  */
-export const bytesInput = async (config: AsyncPromptConfig): Promise<Hex> => {
+export const bytesInput = async (
+    config: PromptConfig<{ message: string }>,
+): Promise<Hex> => {
     const encoding = await select({
         ...config,
         choices: [
@@ -148,7 +124,7 @@ export const bytesInput = async (config: AsyncPromptConfig): Promise<Hex> => {
  * @returns ABI encoded parameters as hex string
  */
 export const abiParamsInput = async (
-    config: AsyncPromptConfig
+    config: PromptConfig<{ message: string }>,
 ): Promise<`0x${string}`> => {
     const encoding = await input({
         message: `${config.message} (as ABI encoded https://abitype.dev/api/human.html#parseabiparameters )`,
@@ -192,7 +168,7 @@ export const abiParamsInput = async (
                                 return "Invalid number";
                             }
                         },
-                    })
+                    }),
                 );
                 break;
             case "bytes":
@@ -204,7 +180,7 @@ export const abiParamsInput = async (
                         message,
                         validate: (value) =>
                             isAddress(value) || "Invalid address",
-                    })
+                    }),
                 );
                 break;
             default:
@@ -223,14 +199,14 @@ export type Choice<Value> = {
     type?: never;
 };
 
-export type SelectConfig<Value> = AsyncPromptConfig & {
+export type SelectConfig<Value> = PromptConfig<{
     choices: ReadonlyArray<Choice<Value> | Separator>;
     pageSize?: number;
-};
+}>;
 
 export const selectAuto = <Value extends unknown>(
     config: SelectConfig<Value> & { discardDisabled?: boolean },
-    context?: Context | undefined
+    context?: Context | undefined,
 ): CancelablePromise<Value> => {
     const choices = config.choices;
 
@@ -246,11 +222,11 @@ export const selectAuto = <Value extends unknown>(
             const message: string = chalk.bold(config.message);
             output.write(
                 `${prefix} ${message} ${chalk.cyan(
-                    choice.name || choice.value
-                )}\n`
+                    choice.name || choice.value,
+                )}\n`,
             );
             return new CancelablePromise<Value>((resolve) =>
-                resolve(choice.value)
+                resolve(choice.value),
             );
         }
     }
