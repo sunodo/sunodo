@@ -110,7 +110,9 @@ export default class Run extends Command {
             "--project-name",
             projectName,
         ];
-        const attachment = flags.verbose ? [] : ["--attach", "validator"];
+        const attachment = flags.verbose
+            ? []
+            : ["--attach", "validator", "--attach", "prompt"];
 
         // XXX: need this handler, so SIGINT can still call the finally block below
         process.on("SIGINT", () => {});

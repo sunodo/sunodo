@@ -160,11 +160,30 @@ services:
         depends_on:
             validator:
                 condition: service_healthy
+        healthcheck:
+            test: ["CMD", "traefik", "healthcheck"]
+            interval: 5s
+            timeout: 1s
+            retries: 5
         ports:
             - 8080:8080
-            - 8088:8088
         volumes:
             - ${SUNODO_BIN_PATH}/node/traefik:/etc/traefik
+
+    prompt:
+        image: debian:bookworm-slim
+        command:
+            [
+                "sh",
+                "-c",
+                "ls | sort | xargs cat; trap exit INT TERM; sleep infinity & wait",
+            ]
+        working_dir: /prompt
+        volumes:
+            - ${SUNODO_BIN_PATH}/node/prompt:/prompt
+        depends_on:
+            proxy:
+                condition: service_healthy
 
 volumes:
     blockchain-data: {}
