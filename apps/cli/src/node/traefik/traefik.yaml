@@ -3,6 +3,7 @@ entryPoints:
         address: ":8080"
     traefik:
         address: ":8088"
+ping: {}
 providers:
     file:
         directory: /etc/traefik/conf.d
