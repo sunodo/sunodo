@@ -5,6 +5,11 @@ on:
             do-release:
                 type: boolean
                 required: false
+        secrets:
+            NPM_TOKEN:
+                required: true
+            TURBO_TOKEN:
+                required: true
     pull_request:
         paths:
             - .github/workflows/contracts.yaml
