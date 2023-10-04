@@ -29,8 +29,6 @@
         "start": {
             "dependsOn": ["^build"]
         },
-        "version": {
-            "dependsOn": ["^build"]
-        }
+        "version": {}
     }
 }
