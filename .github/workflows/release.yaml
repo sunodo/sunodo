@@ -39,7 +39,6 @@ jobs:
               id: changeset
               uses: changesets/action@v1
               with:
-                  version: yarn run version-packages
                   commit: "release: version packages"
                   publish: yarn run publish-packages
               env:

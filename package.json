@@ -13,7 +13,6 @@
         "dev": "turbo run dev --parallel",
         "lint": "turbo run lint",
         "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-        "version-packages": "yarn changeset version && turbo run version",
         "publish-packages": "yarn changeset tag && git push --follow-tags"
     },
     "devDependencies": {
