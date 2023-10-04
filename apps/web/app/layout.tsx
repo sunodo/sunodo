@@ -1,4 +1,4 @@
-import { NextAppDirEmotionCacheProvider } from "tss-react/next/appDir";
+import { MantineProvider } from "@mantine/core";
 
 export default function RootLayout({
     children,
@@ -8,9 +8,9 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body>
-                <NextAppDirEmotionCacheProvider options={{ key: "css" }}>
+                <MantineProvider defaultColorScheme="dark">
                     {children}
-                </NextAppDirEmotionCacheProvider>
+                </MantineProvider>
             </body>
         </html>
     );

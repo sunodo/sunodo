@@ -7,5 +7,8 @@
         "**/*.tsx",
         ".next/types/**/*.ts"
     ],
+    "compilerOptions": {
+        "plugins": [{ "name": "next" }]
+    },
     "exclude": ["node_modules"]
 }

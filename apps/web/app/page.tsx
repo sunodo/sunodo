@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import Terminal from "@nitric/react-animated-term";
 import "@nitric/react-animated-term/css/styles.css";
 
@@ -21,7 +20,7 @@ const termLines = [
         cmd: true,
     },
     {
-        text: "sunodo shell",
+        text: "sunodo run",
         cmd: true,
     },
 ];

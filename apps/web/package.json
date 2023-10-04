@@ -9,16 +9,12 @@
         "lint": "next lint"
     },
     "dependencies": {
-        "@emotion/react": "^11.10",
-        "@emotion/server": "^11.10",
-        "@mantine/core": "^6",
-        "@mantine/hooks": "^6",
-        "@mantine/next": "^6",
+        "@mantine/core": "^7",
+        "@mantine/hooks": "^7",
         "@nitric/react-animated-term": "^1.1",
-        "next": "^13.2",
-        "react": "^18.2",
-        "react-dom": "^18.2",
-        "tss-react": "^4.8",
+        "next": "^13",
+        "react": "^18",
+        "react-dom": "^18",
         "ui": "*"
     },
     "devDependencies": {
