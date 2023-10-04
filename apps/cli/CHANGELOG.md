@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.9.0
+
+### Minor Changes
+
+-   149d2ba: bump sunodo/rollups-node to 0.5.0, which uses cartesi/rollups-node 1.1.0
+-   c5cf99e: add rollups-explorer to sunodo local runtime environment
+
 ## 0.8.4
 
 ### Patch Changes
