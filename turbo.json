@@ -28,7 +28,6 @@
         },
         "start": {
             "dependsOn": ["^build"]
-        },
-        "version": {}
+        }
     }
 }
