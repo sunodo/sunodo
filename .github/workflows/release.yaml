@@ -92,7 +92,7 @@ jobs:
         uses: ./.github/workflows/contracts.yaml
         secrets: inherit
         with:
-            do-release: true
+            release: true
 
     build_cli:
         name: Build cli
@@ -101,4 +101,4 @@ jobs:
         uses: ./.github/workflows/cli.yaml
         secrets: inherit
         with:
-            do-release: true
+            release: true
