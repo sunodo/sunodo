@@ -99,7 +99,7 @@
         "posttest": "yarn lint",
         "prepack": "yarn build && oclif manifest && oclif readme",
         "test": "vitest",
-        "version": "run-s prepack"
+        "version": "oclif manifest && oclif readme"
     },
     "engines": {
         "node": ">=18.0.0"
