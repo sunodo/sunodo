@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.1
+
+### Patch Changes
+
+-   71e7c44: add docker compose snapshot volumes for different sunodo run options
+
 ## 0.9.0
 
 ### Minor Changes
