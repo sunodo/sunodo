@@ -87,12 +87,18 @@ export default class Run extends Command {
         // dev file is always loaded
         const composeFiles = ["docker-compose-dev.yaml"];
 
+        // snapshot volume
+        composeFiles.push("docker-compose-snapshot-volume.yaml");
+
         // explorer
         composeFiles.push("docker-compose-explorer.yaml");
 
         // load the no-backend compose file
         if (flags["no-backend"]) {
             composeFiles.push("docker-compose-host.yaml");
+        } else {
+            // snapshot volume
+            composeFiles.push("docker-compose-snapshot-volume.yaml");
         }
 
         // add project env file loading
