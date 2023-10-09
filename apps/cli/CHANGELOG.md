@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.2
+
+### Patch Changes
+
+-   5bda3e6: revert viem back to 1.15.4 (https://github.com/wagmi-dev/viem/issues/1323)
+
 ## 0.9.1
 
 ### Patch Changes
