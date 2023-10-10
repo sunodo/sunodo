@@ -9,7 +9,8 @@ rm -rf /var/lib/apt/lists/*
 EOF
 
 # download pre-compiled binaries
-RUN curl -sSL https://github.com/foundry-rs/foundry/releases/download/nightly/foundry_nightly_linux_$(dpkg --print-architecture).tar.gz | \
+ARG ANVIL_VERSION=e0722a10b45859892ec3b998df958a9edc77c202
+RUN curl -sSL https://github.com/foundry-rs/foundry/releases/download/nightly-${ANVIL_VERSION}/foundry_nightly_linux_$(dpkg --print-architecture).tar.gz | \
     tar -zx -C /usr/local/bin
 
 # healthcheck script using net_listening JSON-RPC method
