@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.3
+
+### Patch Changes
+
+-   b2bce2d: update anvil version
+
 ## 0.9.2
 
 ### Patch Changes
