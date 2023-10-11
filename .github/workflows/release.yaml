@@ -81,7 +81,7 @@ jobs:
     build_devnet:
         name: Build devnet
         needs: [release, packages_to_build]
-        if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), 'devnet') }}
+        if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), '@sunodo/devnet') }}
         uses: ./.github/workflows/devnet.yaml
         secrets: inherit
 
