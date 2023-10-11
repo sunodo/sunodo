@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
     anvil:
-        image: sunodo/devnet:1.1.0
+        image: sunodo/devnet:1.1.1
         command:
             [
                 "anvil",
