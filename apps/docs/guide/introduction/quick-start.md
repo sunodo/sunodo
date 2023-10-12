@@ -4,7 +4,7 @@ The following commands will get you started with a javascript project, build a c
 
 ```shell
 sunodo create my-app --template javascript
-cd my-dapp
+cd my-app
 sunodo build
 sunodo run
 ```
