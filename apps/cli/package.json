@@ -93,7 +93,7 @@
         "codegen": "run-p codegen:wagmi",
         "codegen:wagmi": "wagmi generate",
         "compile": "tsc -b",
-        "copy-files": "copyfiles -u 1 \"src/**/*.yaml\" \"src/**/*.txt\" dist",
+        "copy-files": "copyfiles -u 1 \"src/**/*.yaml\" \"src/**/*.env\" \"src/**/*.txt\" dist",
         "lint": "eslint . --ext .ts --config .eslintrc",
         "postpack": "rimraf oclif.manifest.json",
         "posttest": "yarn lint",
