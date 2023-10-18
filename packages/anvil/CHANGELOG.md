@@ -1,5 +1,11 @@
 # anvil
 
+## 3.2.0
+
+### Minor Changes
+
+-   0ae7aac: update anvil nightly version
+
 ## 3.1.0
 
 ### Minor Changes

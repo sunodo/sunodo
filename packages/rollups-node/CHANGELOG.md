@@ -1,5 +1,12 @@
 # rollups-node
 
+## 0.5.1
+
+### Patch Changes
+
+-   6f0a566: give write permission to rollups-dispatcher tx-database file
+-   44d0c38: supress messages from validator services
+
 ## 0.5.0
 
 ### Minor Changes
