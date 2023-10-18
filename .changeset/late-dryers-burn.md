@@ -1,5 +1,5 @@
 ---
-"@sunodo/cli": patch
+"anvil": minor
 ---
 
 update anvil nightly version
