@@ -1,0 +1,53 @@
+version: "3.9"
+
+services:
+    traefik-config-generator:
+        image: debian:bookworm-slim
+        environment:
+            TRAEFIK_CONFIG: |
+                http:
+                    routers:
+                        explorer-api:
+                            rule: "PathPrefix(`/explorer-api`)"
+                            middlewares:
+                                - "remove-explorer-api-prefix"
+                            service: explorer-api
+                        explorer:
+                            rule: "PathPrefix(`/explorer`)"
+                            service: explorer
+                        graphql_server:
+                            rule: "PathPrefix(`/graphql`)"
+                            service: graphql_server
+                        inspect_server:
+                            rule: "PathPrefix(`/inspect`)"
+                            service: inspect_server
+
+                    middlewares:
+                        remove-explorer-api-prefix:
+                            replacePathRegex:
+                                regex: "^/explorer-api/(.*)"
+                                replacement: "/$1"
+
+                    services:
+                        explorer-api:
+                            loadBalancer:
+                                servers:
+                                    - url: "http://explorer_api:4350"
+                        explorer:
+                            loadBalancer:
+                                servers:
+                                    - url: "http://explorer:3000"
+                        graphql_server:
+                            loadBalancer:
+                                servers:
+                                    - url: "http://validator:4000/graphql"
+                        inspect_server:
+                            loadBalancer:
+                                servers:
+                                    - url: "http://validator:5005/inspect"
+
+        command:
+            /bin/sh -c "echo \"$$TRAEFIK_CONFIG\" > /etc/traefik/conf.d/all.yaml"
+
+        volumes:
+            - traefik-conf:/etc/traefik/conf.d
