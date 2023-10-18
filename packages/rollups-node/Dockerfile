@@ -40,7 +40,12 @@ cd -
 rm -rf "$tmp_dir"
 EOF
 
-RUN mkdir -p /var/opt/cartesi/machine-snapshots/0_0 && ln -s /var/opt/cartesi/machine-snapshots/0_0 /var/opt/cartesi/machine-snapshots/latest
+RUN <<EOF
+    mkdir -p /var/opt/cartesi/machine-snapshots/0_0
+    ln -s /var/opt/cartesi/machine-snapshots/0_0 /var/opt/cartesi/machine-snapshots/latest
+    mkdir -p /var/opt/cartesi/rollups-dispatcher
+    chown -R cartesi:cartesi /var/opt/cartesi/rollups-dispatcher
+EOF
 
 COPY ./s6-overlay/s6-rc.d /etc/s6-overlay/s6-rc.d
 COPY ./s6-overlay/stage2-hook.sh /etc/s6-overlay/scripts/stage2-hook.sh
