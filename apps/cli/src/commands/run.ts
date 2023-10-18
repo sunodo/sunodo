@@ -90,6 +90,9 @@ export default class Run extends Command {
         // explorer
         composeFiles.push("docker-compose-explorer.yaml");
 
+        // traefik-config
+        composeFiles.push("docker-compose-traefik-config.yaml");
+
         // load the no-backend compose file
         if (flags["no-backend"]) {
             composeFiles.push("docker-compose-host.yaml");

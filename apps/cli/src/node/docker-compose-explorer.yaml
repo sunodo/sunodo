@@ -50,3 +50,35 @@ services:
         depends_on:
             database_creator:
                 condition: service_completed_successfully
+
+    traefik-config-generator:
+        environment:
+            TRAEFIK_CONFIG_EXPLORER_API: |
+                http:
+                    routers:
+                        explorer-api:
+                            rule: "PathPrefix(`/explorer-api`)"
+                            middlewares:
+                                - "remove-explorer-api-prefix"
+                            service: explorer-api
+                    middlewares:
+                        remove-explorer-api-prefix:
+                            replacePathRegex:
+                                regex: "^/explorer-api/(.*)"
+                                replacement: "/$1"
+                    services:
+                        explorer-api:
+                            loadBalancer:
+                                servers:
+                                    - url: "http://explorer_api:4350"
+            TRAEFIK_CONFIG_EXPLORER: |
+                http:
+                    routers:
+                        explorer:
+                            rule: "PathPrefix(`/explorer`)"
+                            service: explorer
+                    services:
+                        explorer:
+                            loadBalancer:
+                                servers:
+                                    - url: "http://explorer:3000"

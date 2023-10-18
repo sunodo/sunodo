@@ -22,3 +22,24 @@ services:
             ENABLE_SUNODO_NODE: true
             # advance-runner
             SNAPSHOT_ENABLED: false
+
+    traefik-config-generator:
+        environment:
+            TRAEFIK_CONFIG_HOST_RUNNER: |
+                http:
+                    routers:
+                        host-runner:
+                            rule: "PathPrefix(`/host-runner`)"
+                            middlewares:
+                                - "remove-host-runner-prefix"
+                            service: host-runner
+                    middlewares:
+                        remove-host-runner-prefix:
+                            replacePathRegex:
+                                regex: "^/host-runner/(.*)"
+                                replacement: "/$1"
+                    services:
+                        host-runner:
+                            loadBalancer:
+                                servers:
+                                    - url: "http://validator:5004"
