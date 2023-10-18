@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+    traefik-config-generator:
+        image: debian:bookworm-slim
+        command:
+        - /bin/bash
+        - -c
+        - |
+            for cfg_file in $${!TRAEFIK_CONFIG_*}
+            do
+                declare -n cfg_content=$$cfg_file
+                _cfg_file=$${cfg_file:15}
+                echo "$$cfg_content" > /etc/traefik/conf.d/$${_cfg_file,,}.yaml
+            done
+        volumes:
+            - traefik-conf:/etc/traefik/conf.d
