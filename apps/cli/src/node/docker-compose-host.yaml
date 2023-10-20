@@ -43,3 +43,7 @@ services:
                             loadBalancer:
                                 servers:
                                     - url: "http://validator:5004"
+
+    prompt:
+        environment:
+            PROMPT_TXT_05_HOST_RUNNER: "Host Runner running at http://localhost:8080/host-runner"
