@@ -183,15 +183,24 @@ services:
 
     prompt:
         image: debian:bookworm-slim
+        environment:
+            PROMPT_TXT_01_ANVIL: "Anvil running at http://localhost:8545"
+            PROMPT_TXT_02_GRAPHQL: "GraphQL running at http://localhost:8080/graphql"
+            PROMPT_TXT_03_INSPECT: "Inspect running at http://localhost:8080/inspect/"
+            PROMPT_TXT_04_EXPLORER: "Explorer running at http://localhost:8080/explorer/"
+            PROMPT_TXT_10_EXIT: "Press Ctrl+C to stop the node"
         command:
-            [
-                "sh",
-                "-c",
-                "ls | sort | xargs cat; trap exit INT TERM; sleep infinity & wait",
-            ]
+            - /bin/bash
+            - -c
+            - |
+                for txt_file in $${!PROMPT_TXT_*}
+                do
+                    declare -n txt_content=$$txt_file
+                    _txt_file=$${txt_file:11}
+                    echo "$$txt_content"
+                done
+                trap exit INT TERM; sleep infinity & wait
         working_dir: /prompt
-        volumes:
-            - ${SUNODO_BIN_PATH}/node/prompt:/prompt
         depends_on:
             proxy:
                 condition: service_healthy

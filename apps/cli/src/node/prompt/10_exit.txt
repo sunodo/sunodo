@@ -1,1 +1,0 @@
-Press Ctrl+C to stop the node
