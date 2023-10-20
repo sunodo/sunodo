@@ -196,6 +196,31 @@ services:
             proxy:
                 condition: service_healthy
 
+    traefik-config-generator:
+        environment:
+            TRAEFIK_CONFIG_INSPECT_SERVER: |
+                http:
+                    routers:
+                        inspect_server:
+                            rule: "PathPrefix(`/inspect`)"
+                            service: inspect_server
+                    services:
+                        inspect_server:
+                            loadBalancer:
+                                servers:
+                                    - url: "http://validator:5005/inspect"
+            TRAEFIK_CONFIG_GRAPHQL_SERVER: |
+                http:
+                    routers:
+                        graphql_server:
+                            rule: "PathPrefix(`/graphql`)"
+                            service: graphql_server
+                    services:
+                        graphql_server:
+                            loadBalancer:
+                                servers:
+                                    - url: "http://validator:4000/graphql"
+
 volumes:
     blockchain-data: {}
     traefik-conf: {}

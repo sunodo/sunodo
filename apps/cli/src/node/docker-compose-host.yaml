@@ -25,7 +25,7 @@ services:
 
     traefik-config-generator:
         environment:
-            HOST_RUNNER_TRAEFIK_CONFIG: |
+            TRAEFIK_CONFIG_HOST_RUNNER: |
                 http:
                     routers:
                         host-runner:
@@ -33,7 +33,6 @@ services:
                             middlewares:
                                 - "remove-host-runner-prefix"
                             service: host-runner
-
                     middlewares:
                         remove-host-runner-prefix:
                             replacePathRegex:
@@ -44,6 +43,3 @@ services:
                             loadBalancer:
                                 servers:
                                     - url: "http://validator:5004"
-
-        command:
-            /bin/sh -c "echo \"$$HOST_RUNNER_TRAEFIK_CONFIG\" > /etc/traefik/conf.d/host-runner.yaml && echo \"$$TRAEFIK_CONFIG\" > /etc/traefik/conf.d/all.yaml"
