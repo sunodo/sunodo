@@ -23,31 +23,19 @@ concurrency:
 permissions:
     contents: read
     packages: write
+    id-token: write
+env:
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
 jobs:
     build:
         runs-on: ubuntu-latest
-        env:
-            TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-            TURBO_TEAM: ${{ vars.TURBO_TEAM }}
         steps:
             - name: Checkout
               uses: actions/checkout@v4
 
-            - name: Setup Node.js 20
-              uses: actions/setup-node@v3
-              with:
-                  node-version: 20
-                  registry-url: "https://registry.npmjs.org"
-                  cache: "yarn"
-
-            - name: Install Foundry
-              uses: foundry-rs/foundry-toolchain@v1
-
-            - name: Install dependencies
-              run: yarn install
-
             - name: Build
-              run: yarn build --filter @sunodo/cli
+              uses: './.github/actions/cli-ci-setup'
 
             - name: Publish
               if: ${{ inputs.release }}
@@ -55,3 +43,112 @@ jobs:
               run: npm publish
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+    pack_upload_deb:
+          runs-on: ubuntu-latest
+          if: startsWith(github.ref, 'refs/tags/@sunodo/cli@')
+          steps:
+            - uses: actions/checkout@v3
+
+            - name: Setup environment
+              uses: './.github/actions/cli-ci-setup'
+
+            - name: Configure AWS Credentials
+              uses: aws-actions/configure-aws-credentials@v2
+              with:
+                  role-to-assume: ${{ secrets.IAM_ROLE_ARN }}
+                  aws-region: ${{ secrets.AWS_REGION }}
+
+            - name: Install GPG key for debian package signing
+              id: gpg_key
+              uses: crazy-max/ghaction-import-gpg@v5
+              with:
+                  gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+                  passphrase: ${{ secrets.GPG_PASSPHRASE }}
+
+            - name: Build debian package
+              run: yarn oclif pack deb --root="./apps/cli"
+              env:
+                  SUNODO_DEB_KEY: ${{ steps.gpg_key.outputs.keyid }}
+
+            - name: Upload debian packages to Github artifacts
+              uses: actions/upload-artifact@v3
+              with:
+                  name: Packages-deb
+                  path: ./apps/cli/dist/deb/*.deb
+
+            - name: Upload debian packages to S3
+              working-directory: apps/cli
+              run: |
+                yarn oclif upload deb
+
+    pack_upload_tarballs:
+      runs-on: ubuntu-latest
+      if: startsWith(github.ref, 'refs/tags/@sunodo/cli@')
+      steps:
+            - uses: actions/checkout@v3
+
+            - name: Setup environment
+              uses: './.github/actions/cli-ci-setup'
+
+            - name: Configure AWS Credentials
+              uses: aws-actions/configure-aws-credentials@v2
+              with:
+                  role-to-assume: ${{ secrets.IAM_ROLE_ARN }}
+                  aws-region: ${{ secrets.AWS_REGION }}
+
+            - name: Building tarballs
+              run: yarn oclif pack tarballs --root="./apps/cli"
+
+            - name: Upload tarball packages to Github artifacts
+              uses: actions/upload-artifact@v3
+              with:
+                  name: Packages-tarballs
+                  path: ./apps/cli/dist/*.tar.*
+
+            - name: Upload tarball packages to S3
+              working-directory: apps/cli
+              run: |
+                yarn oclif upload tarballs
+
+    promote-deb-and-tarballs:
+      needs: [pack_upload_deb, pack_upload_tarballs]
+      runs-on: ubuntu-latest
+      steps:
+            - uses: actions/checkout@v3
+
+            - name: Setup environment
+              uses: './.github/actions/cli-ci-setup'
+
+            - name: Configure AWS Credentials
+              uses: aws-actions/configure-aws-credentials@v2
+              with:
+                  role-to-assume: ${{ secrets.IAM_ROLE_ARN }}
+                  aws-region: ${{ secrets.AWS_REGION }}
+
+            - name: Download deb packages from Github artifacts
+              uses: actions/download-artifact@v3
+              with:
+                name: Packages-deb
+                path: apps/cli/dist
+
+            - name: List all the downloaded files (for debugging)
+              run: ls -R
+              working-directory: apps/cli/dist
+
+            - name: Extract version and SHA
+              id: extract_info
+              run: |
+                filename=$(find . -name '*amd64.deb' -type f)
+                version=$(echo "$filename" | sed -n 's/.*_\([0-9]*\.[0-9]*\.[0-9]*\).*-.*\.deb/\1/p')
+                sha=$(echo "$filename" | sed -n 's/.*\.\([^-]*\)-.*\.deb/\1/p')
+
+                echo "::set-output name=version::$version"
+                echo "::set-output name=sha::$sha"
+              working-directory: apps/cli/dist
+
+            - name: Promote packages to S3
+              run: |
+                yarn oclif promote --deb --xz --indexes --version=${{ steps.extract_info.outputs.version }} --sha=${{ steps.extract_info.outputs.sha }}
+                aws s3 cp  s3://cli-prod-sunodo-origin/versions/${{ steps.extract_info.outputs.version }}/${{ steps.extract_info.outputs.sha }}/apt/./ s3://cli-prod-sunodo-origin/channels/stable/apt/./ --recursive
+              working-directory: apps/cli

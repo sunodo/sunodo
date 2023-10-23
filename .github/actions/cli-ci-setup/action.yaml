@@ -1,0 +1,35 @@
+name: cli CI setup
+description: 'Sets up the environment for jobs during cli CI workflow'
+
+runs:
+  using: composite
+  steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install system deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y nsis p7zip-full awscli
+        shell: bash
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v3
+        with:
+            node-version: 20
+            cache: "yarn"
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+
+      - name: Install dependencies
+        run: yarn install
+        shell: bash
+
+      - name: Build
+        run: yarn build --filter @sunodo/cli
+        shell: bash
+
+      - name: Install oclif
+        run: yarn global add oclif
+        shell: bash
