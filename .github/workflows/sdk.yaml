@@ -40,6 +40,7 @@ jobs:
                       ghcr.io/sunodo/sdk
                   tags: |
                       type=raw,value=${{ steps.package-version.outputs.PACKAGE_VERSION }},enable=${{ github.event_name == 'push' }}
+                      type=raw,value=latest,enabled=${{ github.event_name == 'push' }}
                       type=ref,event=pr
                   labels: |
                       org.opencontainers.image.title=Sunodo SDK
