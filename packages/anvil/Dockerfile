@@ -9,7 +9,7 @@ rm -rf /var/lib/apt/lists/*
 EOF
 
 # download pre-compiled binaries
-ARG ANVIL_VERSION=b0b8cfbcef4bb39cb1759b3d25cc5132a8ee6316
+ARG ANVIL_VERSION=602460eb99e1645eab970bacc5a6d01368a07457
 RUN curl -sSL https://github.com/foundry-rs/foundry/releases/download/nightly-${ANVIL_VERSION}/foundry_nightly_linux_$(dpkg --print-architecture).tar.gz | \
     tar -zx -C /usr/local/bin
 
