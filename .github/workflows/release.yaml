@@ -60,21 +60,21 @@ jobs:
     build_rollups_node:
         name: Build rollups-node
         needs: [release, packages_to_build]
-        if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), 'rollups-node') }}
+        if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), '@sunodo/rollups-node') }}
         uses: ./.github/workflows/rollups-node.yaml
         secrets: inherit
 
     build_sdk:
         name: Build sdk
         needs: [release, packages_to_build]
-        if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), 'sdk') }}
+        if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), '@sunodo/sdk') }}
         uses: ./.github/workflows/sdk.yaml
         secrets: inherit
 
     build_anvil:
         name: Build anvil
         needs: [release, packages_to_build]
-        if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), 'anvil') }}
+        if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), '@sunodo/anvil') }}
         uses: ./.github/workflows/anvil.yaml
         secrets: inherit
 

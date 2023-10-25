@@ -1,5 +1,5 @@
 {
-    "name": "anvil",
+    "name": "@sunodo/anvil",
     "private": true,
     "version": "3.2.0",
     "scripts": {
