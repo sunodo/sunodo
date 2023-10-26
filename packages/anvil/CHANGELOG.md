@@ -1,5 +1,11 @@
 # anvil
 
+## 3.3.0
+
+### Minor Changes
+
+-   a082ee8: bump anvil nightly version
+
 ## 3.2.0
 
 ### Minor Changes

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.9.4
+
+### Patch Changes
+
+-   ff2d7ce: Remove the prompt Docker volume and use environment variables instead.
+-   8c7d10e: use env_file: over environment: at compose
+-   36c43c7: fix epoch closing
+-   8237cc3: Add traefik config generator compose file to use shared volume in traefik.
+
 ## 0.9.3
 
 ### Patch Changes
