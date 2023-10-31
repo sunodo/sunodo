@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+    ipfs:
+        image: ipfs/kubo:v0.23.0
+        volumes:
+            - ipfs-data:/data/ipfs
+        expose:
+            - 4001
+            - 5001
+            - 8080
+        restart: always
+
+    validator:
+        depends_on:
+            snapshoter:
+                condition: service_healthy
+
+    snapshoter:
+        image: endersonmaia/ipfs-snapshoter:latest
+        restart: always
+        depends_on:
+            redis:
+                condition: service_healthy
+            ipfs:
+                condition: service_started
+            dapp_deployer:
+                condition: service_completed_successfully
+        volumes:
+            - machine-snapshots:/var/opt/cartesi/machine-snapshots
+            - blockchain-data:/usr/share/sunodo
+        env_file:
+            - ${SUNODO_BIN_PATH}/node/default.env
+        healthcheck:
+            test:
+                - CMD
+                - test
+                - -f
+                - /opt/cartesi/share/snapshoter.status
+            interval: 30s
+            timeout: 30s
+            retries: 5
+
+volumes:
+    ipfs-data: {}

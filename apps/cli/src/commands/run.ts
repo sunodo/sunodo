@@ -101,6 +101,8 @@ export default class Run extends Command {
             composeFiles.push("docker-compose-envfile.yaml");
         }
 
+        composeFiles.push("docker-compose-ipfs-snapshoter.yaml");
+
         // create the "--file <file>" list
         const files = composeFiles
             .map((f) => ["--file", path.join(binPath, "node", f)])
@@ -116,7 +118,7 @@ export default class Run extends Command {
         ];
         const attachment = flags.verbose
             ? []
-            : ["--attach", "validator", "--attach", "prompt"];
+            : ["--attach", "validator", "--attach", "prompt", "--attach", "snapshoter"];
 
         // XXX: need this handler, so SIGINT can still call the finally block below
         process.on("SIGINT", () => {});
@@ -134,7 +136,11 @@ export default class Run extends Command {
             }
         } finally {
             // shut it down, including volumes
-            await execa("docker", [...args, "down", "--volumes"], {
+            await execa("docker", [...args, "down"], {
+                env,
+                stdio: "inherit",
+            });
+            await execa("docker", ["volume", "rm", `${projectName}_blockchain-data`, `${projectName}_machine-snapshots`, `${projectName}_traefik-conf`], {
                 env,
                 stdio: "inherit",
             });

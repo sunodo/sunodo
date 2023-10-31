@@ -38,6 +38,8 @@ services:
         image: redis:6-alpine
         restart: always
         command: ["--loglevel", "${REDIS_LOG_LEVEL:-warning}"]
+        volumes:
+            - redis-data:/data
         healthcheck:
             test: ["CMD", "redis-cli", "ping"]
             interval: 10s
@@ -74,6 +76,7 @@ services:
                 condition: service_completed_successfully
         volumes:
             - blockchain-data:/usr/share/sunodo:ro
+            - machine-snapshots:/var/opt/cartesi/machine-snapshots
         healthcheck:
             test: ["CMD", "is_ready"]
             interval: 10s
@@ -165,3 +168,5 @@ services:
 volumes:
     blockchain-data: {}
     traefik-conf: {}
+    machine-snapshots: {}
+    redis-data: {}
