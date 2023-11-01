@@ -5411,10 +5411,19 @@ cbor@^8.1.0:
   dependencies:
     nofilter "^3.1.0"
 
-cdk8s@^2.67.2:
-  version "2.67.2"
-  resolved "https://registry.yarnpkg.com/cdk8s/-/cdk8s-2.67.2.tgz#a191d6e20f450076a75ee9e0b7c311389658f8ce"
-  integrity sha512-io8VY6RhS+uJCMEaX/wkO3ey4RMhAdgvCGodq9+rTtckyndyzpxx1W7rsKrN3C6UjJYXxtvoiEE03ymyKK2Y+g==
+cdk8s-plus-27@^2:
+  version "2.7.50"
+  resolved "https://registry.yarnpkg.com/cdk8s-plus-27/-/cdk8s-plus-27-2.7.50.tgz#8ae9d6361cffb67405e823434b9dbe7407c1de10"
+  integrity sha512-M2bsB9RaRW4678qzoEtDhj6MqKWqXRzkBmoMb30NwyrXr2ZQfG5+21IgxyVcmuJcwINJsKeq7Uj8X2eviE4ZjQ==
+  dependencies:
+    minimatch "^3.1.2"
+  optionalDependencies:
+    backport "8.5.0"
+
+cdk8s@^2:
+  version "2.67.6"
+  resolved "https://registry.yarnpkg.com/cdk8s/-/cdk8s-2.67.6.tgz#0ce5bcec4ce2c9b5cd258d2e4a1d973c8ed1f91a"
+  integrity sha512-GlIeZmXxnPRWNtxgMXhHOV/qPy5kyaxgA4uUpQTn9bVgBwwMnv9AmVeQKiLjRQ0Mq0DjVWHTVXnmP1mu3zjQ6Q==
   dependencies:
     fast-json-patch "^3.1.1"
     follow-redirects "^1.15.2"
