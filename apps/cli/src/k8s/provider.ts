@@ -1,6 +1,6 @@
 import { Construct } from "constructs";
 import { Chart, ChartProps } from "cdk8s";
-import { Deployment, EnvValue, Probe, Service } from "cdk8s-plus-27";
+import { Deployment, EnvValue, Ingress, Probe, Service } from "cdk8s-plus-27";
 
 export interface Web3ProviderChartProps extends ChartProps {
     forkUrl?: string;
@@ -10,6 +10,7 @@ export interface Web3ProviderChartProps extends ChartProps {
 
 export class Web3ProviderChart extends Chart {
     public readonly service: Service;
+    public readonly ingress: Ingress;
 
     constructor(scope: Construct, id: string, props: Web3ProviderChartProps) {
         super(scope, id, props);
@@ -43,9 +44,9 @@ export class Web3ProviderChart extends Chart {
         });
 
         // create service for the deployment
-        this.service = deployment.exposeViaService({ name: "service" });
+        this.service = deployment.exposeViaService();
 
         // expose service to host via ingress
-        const ingress = deployment.exposeViaIngress("/", { name: "ingress" });
+        this.ingress = this.service.exposeViaIngress("/");
     }
 }

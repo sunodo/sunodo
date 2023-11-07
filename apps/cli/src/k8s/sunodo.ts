@@ -1,6 +1,6 @@
 import { Construct } from "constructs";
 import { Chart, ChartProps } from "cdk8s";
-import { ConfigMap, Deployment, EnvValue, Probe, Service } from "cdk8s-plus-27";
+import { ConfigMap } from "cdk8s-plus-27";
 
 import { RedisChart } from "./redis.js";
 import { Web3ProviderChart } from "./provider.js";
@@ -34,7 +34,9 @@ export class SunodoChart extends Chart {
 
         if (!redisUrl) {
             // create redis instance chart
-            const redis = new RedisChart(this, "redis", { namespace: props.namespace });
+            const redis = new RedisChart(this, "redis", {
+                namespace: props.namespace,
+            });
             redisUrl = `redis://${redis.service.name}.${props.namespace}.svc.cluster.local:${redis.service.port}`;
         }
 
