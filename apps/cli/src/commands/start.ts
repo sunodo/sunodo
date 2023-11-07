@@ -1,11 +1,9 @@
-import { Args, Command, Flags } from "@oclif/core";
-import path from "path";
-import { execa } from "execa";
-import fs from "fs-extra";
+import { Command, Flags } from "@oclif/core";
 import k8s from "@kubernetes/client-node";
-import { App, Chart, ChartProps } from "cdk8s";
-import { DatabaseChart } from "../k8s/database.js";
-import { Web3ProviderChart } from "../k8s/provider.js";
+import { App } from "cdk8s";
+import dotenv from "dotenv";
+
+import { SunodoChart } from "../k8s/sunodo.js";
 
 export default class Start extends Command {
     static description = "Start a sunodo node in the background";
@@ -21,11 +19,21 @@ export default class Start extends Command {
         "cluster-config-file": Flags.file({
             description: "path of kubernetes cluster config file",
         }),
+        "redis-url": Flags.string({
+            description: "Redis endpoint.",
+            env: "REDIS_URL",
+        }),
         "rpc-url": Flags.string({
-            description: "The RPC endpoint.",
-            char: "r",
+            description: "The Ethereum RPC endpoint.",
             env: "ETH_RPC_URL",
             helpGroup: "Ethereum",
+            dependsOn: ["ws-url"],
+        }),
+        "ws-url": Flags.string({
+            description: "The Ethereum Websocket endpoint.",
+            env: "ETH_WS_URL",
+            helpGroup: "Ethereum",
+            dependsOn: ["rpc-url"],
         }),
     };
 
@@ -47,14 +55,20 @@ export default class Start extends Command {
         const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
 
         const app = new App();
-        // new DatabaseChart(app, "sunodo", "nginx");
 
-        // create web3 provider chart
-        const provider = new Web3ProviderChart(app, "provider", {
-            url: flags["rpc-url"],
+        // load .env to inject into a configMap
+        const env = {};
+        dotenv.config({ processEnv: env });
+
+        // create infrastructure chart
+        new SunodoChart(app, "sunodo", {
+            namespace,
+            injectedEnv: env,
+            redisUrl: flags["redis-url"],
+            rpcUrl: flags["rpc-url"],
+            wsUrl: flags["ws-url"],
         });
 
-        app.synth();
         this.log(app.synthYaml());
     }
 }
