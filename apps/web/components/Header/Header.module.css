@@ -1,0 +1,17 @@
+.wrapper {
+  position: fixed;
+  top: 0;
+  height: var(--header-height);
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: var(--z-100);
+  transition: background-color 200ms ease;
+}
+
+.scrolled {
+  background-color: var(--mantine-color-body);
+  box-shadow: var(--mantine-shadow-xs);
+}

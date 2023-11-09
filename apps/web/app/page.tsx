@@ -1,35 +1,25 @@
-"use client";
-import Image from "next/image";
-import Terminal from "@nitric/react-animated-term";
-import "@nitric/react-animated-term/css/styles.css";
+import { Hero } from '@/components/Homepage/Hero/Hero';
+import { Welcome } from '@/components/Homepage/Welcome';
+import { Discover } from '@/components/Homepage/Discover/Discover';
+import { Gaming } from '@/components/Homepage/Gaming';
+import { CtaGetStarted } from '@/components/Homepage/CtaGetStarted';
+import { Features } from '@/components/Homepage/Features';
+import { Metadata } from 'next';
 
-const termLines = [
-    {
-        text: "brew install sunodo/tap/sunodo",
-        cmd: true,
-    },
-    {
-        text: "sunodo create <app> --template [javascript | python]",
-        cmd: true,
-    },
-    {
-        text: "cd <app>",
-        cmd: true,
-    },
-    {
-        text: "sunodo build",
-        cmd: true,
-    },
-    {
-        text: "sunodo shell",
-        cmd: true,
-    },
-];
+export const metadata: Metadata = {
+  title: 'Sunodo - Deploy verifiable Linux VMs with a click of a button',
+  description: 'Build and test fully managed Cartesi Rollups on a modular stack.',
+};
 
-export default function Page() {
-    return (
-        <>
-            <Terminal lines={termLines} interval={40} replay={false} />
-        </>
-    );
+export default function HomePage() {
+  return (
+    <>
+      <Hero />
+      <Welcome />
+      <Features />
+      <Discover />
+      <Gaming />
+      <CtaGetStarted />
+    </>
+  );
 }
