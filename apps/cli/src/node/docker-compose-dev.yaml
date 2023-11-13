@@ -34,16 +34,6 @@ services:
         environment:
             - POSTGRES_PASSWORD=password
 
-    redis:
-        image: redis:6-alpine
-        restart: always
-        command: ["--loglevel", "${REDIS_LOG_LEVEL:-warning}"]
-        healthcheck:
-            test: ["CMD", "redis-cli", "ping"]
-            interval: 10s
-            timeout: 5s
-            retries: 5
-
     dapp_deployer:
         image: cartesi/rollups-cli:1.0.2
         restart: on-failure
