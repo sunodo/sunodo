@@ -74,10 +74,9 @@ export const apply = async (
 
 export const delete_ = async (
     client: KubernetesObjectApi,
-    specPath: string,
+    specString: string,
     namespace: string
 ): Promise<(V1Status | undefined)[]> => {
-    const specString = fs.readFileSync(specPath, { encoding: "utf-8" });
     const specs = yaml.loadAll(specString) as KubernetesObject[];
     const validSpecs = specs.filter((o) => o && o.metadata && o.metadata.name);
     return Promise.all(
