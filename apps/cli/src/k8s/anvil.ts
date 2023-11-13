@@ -2,17 +2,17 @@ import { Construct } from "constructs";
 import { Chart, ChartProps } from "cdk8s";
 import { Deployment, EnvValue, Ingress, Probe, Service } from "cdk8s-plus-27";
 
-export interface Web3ProviderChartProps extends ChartProps {
+export interface AnvilProps extends ChartProps {
     forkUrl?: string;
     blockTime?: number;
     port?: number;
 }
 
-export class Web3ProviderChart extends Chart {
+export class Anvil extends Chart {
     public readonly service: Service;
     public readonly ingress: Ingress;
 
-    constructor(scope: Construct, id: string, props: Web3ProviderChartProps) {
+    constructor(scope: Construct, id: string, props: AnvilProps) {
         super(scope, id, props);
 
         const port = props.port ?? 8545;

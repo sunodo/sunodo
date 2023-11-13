@@ -2,14 +2,14 @@ import { Construct } from "constructs";
 import { Chart, ChartProps } from "cdk8s";
 import { ConfigMap } from "cdk8s-plus-27";
 
-import { RedisChart } from "./redis.js";
-import { Web3ProviderChart } from "./provider.js";
+import { AnvilChart } from "./anvil.js";
 
 type Env = {
     [name: string]: string;
 };
 
 export interface SunodoChartProps extends ChartProps {
+    databaseUrl?: string;
     epochDuration?: number;
     injectedEnv: Env;
     redisUrl?: string;
@@ -20,6 +20,7 @@ export interface SunodoChartProps extends ChartProps {
 export class SunodoChart extends Chart {
     constructor(scope: Construct, id: string, props: SunodoChartProps) {
         super(scope, id, props);
+        let databaseUrl = props.databaseUrl;
         let redisUrl = props.redisUrl;
         let rpcUrl = props.rpcUrl;
         let wsUrl = props.wsUrl;
@@ -27,24 +28,29 @@ export class SunodoChart extends Chart {
 
         if (!rpcUrl || !wsUrl) {
             // create web3 provider chart
-            const provider = new Web3ProviderChart(this, "provider", {});
-            rpcUrl = `http://${provider.service.name}.${props.namespace}.svc.cluster.local:${provider.service.port}`;
-            wsUrl = `ws://${provider.service.name}.${props.namespace}.svc.cluster.local:${provider.service.port}`;
+            const provider = new AnvilChart(this, "provider", {});
+            rpcUrl = `http://${provider.service.name}:${provider.service.port}`;
+            wsUrl = `ws://${provider.service.name}:${provider.service.port}`;
         }
 
-        if (!redisUrl) {
+        /*if (!redisUrl) {
             // create redis instance chart
             const redis = new RedisChart(this, "redis", {
                 namespace: props.namespace,
             });
-            redisUrl = `redis://${redis.service.name}.${props.namespace}.svc.cluster.local:${redis.service.port}`;
+            redisUrl = `redis://${redis.service.name}:${redis.service.port}`;
+            // XXX: cluster support
+        }*/
+
+        if (!databaseUrl) {
         }
 
         // create config map for other services
         // DAPP_CONTRACT_ADDRESS_FILE=/usr/share/sunodo/dapp.json
         const sharedConfig = new ConfigMap(this, "shared-config", {
             data: {
-                REDIS_ENDPOINT: redisUrl,
+                REDIS_ENDPOINT: redisUrl!,
+                // REDIS_CLUSTER_ENDPOINTS: "", // XXX: redis cluster support
                 SESSION_ID: "default_session_id",
                 CHAIN_ID: "31337", // XXX: possibly use chain id of provided provider
                 TX_CHAIN_ID: "31337", // XXX: possibly use chain id of provided provider
@@ -68,6 +74,50 @@ export class SunodoChart extends Chart {
                 TX_DEFAULT_CONFIRMATIONS: (confirmations + 1).toString(),
             },
         });
+
+        const stateServerConfig = new ConfigMap(this, "state-server-config", {
+            data: {
+                SF_GENESIS_BLOCK: "1",
+                SF_SAFETY_MARGIN: "1",
+                BH_HTTP_ENDPOINT: rpcUrl,
+                BH_WS_ENDPOINT: wsUrl,
+                BH_BLOCK_TIMEOUT: "8", // XXX: depends on network
+            },
+        });
+
+        const advanceRunnerConfig = new ConfigMap(
+            this,
+            "advance-runner-config",
+            {
+                data: {
+                    PROVIDER_HTTP_ENDPOINT: rpcUrl,
+                    SNAPSHOT_DIR: "/var/opt/cartesi/machine-snapshots",
+                    SNAPSHOT_LATEST:
+                        "/var/opt/cartesi/machine-snapshots/latest",
+                },
+            }
+        );
+
+        const inspectServerConfig = new ConfigMap(
+            this,
+            "inspect-server-config",
+            {
+                data: {
+                    INSPECT_SERVER_ADDRESS: "0.0.0.0:5005",
+                },
+            }
+        );
+
+        const graphqlServerConfig = new ConfigMap(
+            this,
+            "graphql-server-config",
+            {
+                data: {
+                    GRAPHQL_HOST: "0.0.0.0",
+                    GRAPHQL_PORT: "4000",
+                },
+            }
+        );
 
         if (Object.keys(props.injectedEnv).length > 0) {
             // loaded .env, create configMap with that
