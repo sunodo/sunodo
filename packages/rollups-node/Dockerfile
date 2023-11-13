@@ -43,8 +43,8 @@ EOF
 RUN <<EOF
     mkdir -p /var/opt/cartesi/machine-snapshots/0_0
     ln -s /var/opt/cartesi/machine-snapshots/0_0 /var/opt/cartesi/machine-snapshots/latest
-    mkdir -p /var/opt/cartesi/rollups-dispatcher
-    chown -R cartesi:cartesi /var/opt/cartesi/rollups-dispatcher
+    mkdir -p /var/opt/cartesi/rollups-authority-claimer
+    chown -R cartesi:cartesi /var/opt/cartesi/rollups-authority-claimer
 EOF
 
 COPY ./s6-overlay/s6-rc.d /etc/s6-overlay/s6-rc.d

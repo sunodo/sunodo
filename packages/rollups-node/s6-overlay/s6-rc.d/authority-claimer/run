@@ -1,0 +1,5 @@
+#!/command/with-contenv sh
+exec s6-notifyoncheck -w 500 -t 500 -n 5 \
+    s6-setuidgid cartesi cartesi-rollups-authority-claimer \
+        --tx-database-path=/var/opt/cartesi/rollups-authority-claimer/tx-manager.db \
+        --http-server-port=8086
