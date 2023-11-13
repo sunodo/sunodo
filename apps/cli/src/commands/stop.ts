@@ -5,6 +5,8 @@ import { DefaultRenderer, Listr, ListrTaskWrapper } from "listr2";
 import path from "path";
 
 import { delete_ } from "../k8s/index.js";
+import { App } from "cdk8s";
+import { Anvil } from "../k8s/anvil.js";
 
 export default class Stop extends Command {
     static description = "Stop the sunodo server";
@@ -73,6 +75,14 @@ export default class Stop extends Command {
             }
         };
 
+        const deleteApp = async (
+            app: App,
+            _task: ListrTaskWrapper<any, typeof DefaultRenderer, any>
+        ) => {
+            const specString = app.synthYaml();
+            await delete_(objectApi, specString, namespace);
+        };
+
         const base = path.join(
             path.dirname(new URL(import.meta.url).pathname),
             "..",
@@ -121,6 +131,17 @@ export default class Stop extends Command {
             },
         ]);
 
+        tasks.add([
+            {
+                title: "Stopping anvil...",
+                task: async (_ctx, task) => {
+                    const app = new App();
+                    new Anvil(app, "anvil", { namespace });
+                    await deleteApp(app, task);
+                    task.title = "Anvil stopped";
+                },
+            },
+        ]);
         await tasks.run();
     }
 }
