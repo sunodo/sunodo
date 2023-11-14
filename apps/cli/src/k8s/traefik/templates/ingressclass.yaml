@@ -7,7 +7,7 @@ metadata:
     ingressclass.kubernetes.io/is-default-class: "true"
   labels:
     app.kubernetes.io/name: traefik
-    app.kubernetes.io/instance: traefik-default
+    app.kubernetes.io/instance: traefik-sunodo-31337
     helm.sh/chart: traefik-25.0.0
     app.kubernetes.io/managed-by: Helm
   name: traefik

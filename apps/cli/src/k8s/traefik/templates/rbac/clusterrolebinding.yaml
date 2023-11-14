@@ -3,17 +3,17 @@
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: traefik-default
+  name: traefik-sunodo-31337
   labels:
     app.kubernetes.io/name: traefik
-    app.kubernetes.io/instance: traefik-default
+    app.kubernetes.io/instance: traefik-sunodo-31337
     helm.sh/chart: traefik-25.0.0
     app.kubernetes.io/managed-by: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: traefik-default
+  name: traefik-sunodo-31337
 subjects:
   - kind: ServiceAccount
     name: traefik
-    namespace: default
+    namespace: sunodo-31337
