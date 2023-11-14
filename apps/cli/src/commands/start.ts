@@ -113,7 +113,7 @@ export default class Start extends Command {
 
         // create namespace, if needed
         try {
-            coreApi.readNamespace(namespace);
+            await coreApi.readNamespace(namespace);
         } catch (e) {
             await coreApi.createNamespace({ metadata: { name: namespace } });
         }
