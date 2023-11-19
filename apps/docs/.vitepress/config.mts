@@ -1,4 +1,5 @@
 import { DefaultTheme, defineConfig } from "vitepress";
+import { fileURLToPath, URL } from "node:url";
 
 const guideSidebar = (): DefaultTheme.SidebarItem[] => {
     return [
@@ -130,17 +131,19 @@ export default defineConfig({
     cleanUrls: true,
     themeConfig: {
         // https://vitepress.dev/reference/default-theme-config
+        logo: "/logo.svg",
+        siteTitle: false,
         nav: [
             {
                 text: "Guide",
                 link: "/guide/introduction/what-is-sunodo",
                 activeMatch: "/guide/",
             },
-            { text: "Reference", link: "/reference/contracts/" },
+            /*{ text: "Reference", link: "/reference/contracts/" },*/
         ],
         sidebar: {
             "/guide/": guideSidebar(),
-            "/reference/": referenceSidebar(),
+            /*"/reference/": referenceSidebar(),*/
         },
         editLink: {
             pattern:
@@ -162,5 +165,61 @@ export default defineConfig({
     },
     sitemap: {
         hostname: "https://docs.sunodo.io",
+    },
+    head: [
+        ["link", { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" }],
+        [
+            "link",
+            {
+                rel: "stylesheet",
+                href: "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap",
+            },
+        ],
+        ["link", { rel: "preconnect", href: "https://fonts.gstatic.com" }],
+        ["link", { rel: "preconnect", href: "https://fonts.googleapis.com" }],
+        [
+            "script",
+            {
+                async: "",
+                src: "https://www.googletagmanager.com/gtag/js?id=G-WZBKP7577W",
+            },
+        ],
+        [
+            "script",
+            {},
+            `window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-WZBKP7577W');`,
+        ],
+    ],
+    // Custom Home
+    vite: {
+        resolve: {
+            alias: [
+                {
+                    find: /^.*\/VPHome\.vue$/,
+                    replacement: fileURLToPath(
+                        new URL(
+                            "./theme/components/VPHome.vue",
+                            import.meta.url,
+                        ),
+                    ),
+                },
+            ],
+        },
+        build: {
+            rollupOptions: {
+                external: [
+                    "vp-button",
+                    fileURLToPath(
+                        new URL(
+                            "vitepress/dist/client/theme-default/components/vpbutton.vue",
+                            import.meta.url,
+                        ),
+                    ),
+                ],
+            },
+        },
     },
 });
