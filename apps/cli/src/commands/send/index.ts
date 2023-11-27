@@ -15,7 +15,7 @@ export type Args<T extends typeof Command> = Interfaces.InferredArgs<T["args"]>;
 
 // base command for sending input to the application
 export abstract class SendBaseCommand<
-    T extends typeof Command,
+    T extends typeof Command
 > extends SunodoCommand<typeof SendBaseCommand> {
     static baseFlags = {
         dapp: CustomFlags.address({
@@ -29,7 +29,7 @@ export abstract class SendBaseCommand<
             env: "CHAIN",
             helpGroup: "Ethereum",
             options: supportedChains({ includeDevnet: true }).map((c) =>
-                c.id.toString(),
+                c.id.toString()
             ),
         }),
         "rpc-url": Flags.string({
@@ -49,8 +49,8 @@ export abstract class SendBaseCommand<
         }),
     };
 
-    protected flags!: Flags<T>;
-    protected args!: Args<T>;
+    protected declare flags: Flags<T>;
+    protected declare args: Args<T>;
 
     private async connect(): Promise<{
         publicClient: PublicClient;
@@ -59,7 +59,7 @@ export abstract class SendBaseCommand<
         // create viem clients
         return createClients({
             chain: supportedChains({ includeDevnet: true }).find(
-                (c) => c.id == this.flags["chain-id"],
+                (c) => c.id == this.flags["chain-id"]
             ),
             dev: true,
             rpcUrl: this.flags["rpc-url"],
@@ -101,7 +101,7 @@ export abstract class SendBaseCommand<
 
     protected abstract send(
         publicClient: PublicClient,
-        walletClient: WalletClient,
+        walletClient: WalletClient
     ): Promise<Address>;
 
     public async run(): Promise<void> {
@@ -124,7 +124,7 @@ export default class Send extends Command {
     public async run(): Promise<void> {
         // get all send sub-commands
         const sendCommands = this.config.commands.filter((command) =>
-            command.id.startsWith("send:"),
+            command.id.startsWith("send:")
         );
 
         // select the send sub-command

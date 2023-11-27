@@ -1,0 +1,4 @@
+language: typescript
+imports:
+    - src/k8s/traefik/traefik.containo.us.yaml
+    - src/k8s/traefik/traefik.io.yaml

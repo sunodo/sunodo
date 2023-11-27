@@ -9,3 +9,5 @@ node_modules
 oclif.manifest.json
 src/contracts.ts
 src/graphql/
+src/k8s/traefik.containo.us.ts
+src/k8s/traefik.io.ts
