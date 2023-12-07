@@ -23,3 +23,13 @@ if [ ! -z ${ENABLE_STREAM_CLEANUP+x} ];then
     touch /etc/s6-overlay/s6-rc.d/dispatcher/dependencies.d/stream-cleanup
     touch /etc/s6-overlay/s6-rc.d/indexer/dependencies.d/stream-cleanup
 fi
+
+# disable redis dependency
+if [ ! -z ${DISABLE_REDIS+x} ];then
+    rm /etc/s6-overlay/s6-rc.d/advance-runner/dependencies.d/redis
+    rm /etc/s6-overlay/s6-rc.d/authority-claimer/dependencies.d/redis
+    rm /etc/s6-overlay/s6-rc.d/dispatcher/dependencies.d/redis
+    rm /etc/s6-overlay/s6-rc.d/indexer/dependencies.d/redis
+    rm /etc/s6-overlay/s6-rc.d/stream-cleanup/dependencies.d/redis
+fi
+
