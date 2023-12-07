@@ -16,6 +16,7 @@ apt-get install -y --no-install-recommends \
     curl \
     jq \
     libpq5 \
+    redis-server \
     xz-utils
 rm -rf /var/lib/apt/lists/*
 EOF
@@ -46,6 +47,8 @@ RUN <<EOF
     mkdir -p /var/opt/cartesi/rollups-authority-claimer
     chown -R cartesi:cartesi /var/opt/cartesi/rollups-authority-claimer
 EOF
+
+RUN sed -i 's/daemonize yes/daemonize no/' /etc/redis/redis.conf
 
 COPY ./s6-overlay/s6-rc.d /etc/s6-overlay/s6-rc.d
 COPY ./s6-overlay/stage2-hook.sh /etc/s6-overlay/scripts/stage2-hook.sh
