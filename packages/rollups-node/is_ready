@@ -8,5 +8,6 @@ set -e
 /etc/s6-overlay/s6-rc.d/host-runner/data/check
 /etc/s6-overlay/s6-rc.d/indexer/data/check
 /etc/s6-overlay/s6-rc.d/inspect-server/data/check
+/etc/s6-overlay/s6-rc.d/redis/data/check
 /etc/s6-overlay/s6-rc.d/server-manager/data/check
 /etc/s6-overlay/s6-rc.d/state-server/data/check
