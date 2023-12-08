@@ -1,0 +1,4 @@
+{
+    "extends": ["//"],
+    "globalEnv": ["CARTESI_SNAPSHOT_DIR"]
+}
