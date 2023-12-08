@@ -1,0 +1,40 @@
+{
+    "name": "@sunodo/node",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "build": "run-s clean codegen compile",
+        "build:esbuild": "esbuild src/cli.ts --bundle --platform=node --target=node20 --format=cjs --outfile=dist/cli.js",
+        "clean": "rimraf dist",
+        "codegen": "tsx openapi.ts",
+        "compile": "tsc -b",
+        "dev": "tsx src/cli.ts",
+        "test": "vitest"
+    },
+    "dependencies": {
+        "@commander-js/extra-typings": "^11",
+        "commander": "^11",
+        "dotenv": "^16",
+        "download": "^8",
+        "execa": "^8",
+        "fastify": "^4",
+        "viem": "^1"
+    },
+    "devDependencies": {
+        "@types/download": "^8",
+        "esbuild": "^0.19",
+        "eslint-config-custom": "*",
+        "npm-run-all": "^4",
+        "openapi-typescript": "^6",
+        "rimraf": "^5",
+        "ts-node": "^10",
+        "tsconfig": "*",
+        "tsx": "^4",
+        "typescript": "^5",
+        "vitest": "^1"
+    },
+    "bin": {
+        "sunodo-node": "./dist/cli.js"
+    }
+}
