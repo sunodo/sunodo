@@ -2,14 +2,19 @@
   "name": "sepolia",
   "chainId": "11155111",
   "contracts": {
-    "Authority": {
-      "address": "0x595E0864Ae328CC442068758eeceFb8B5d697a64",
+    "Marketplace": {
+      "address": "0x9731c5667e8e1373Ebe0Ee2990d0320182bae58a",
       "abi": [
         {
           "inputs": [
             {
-              "internalType": "address",
-              "name": "_owner",
+              "internalType": "contract ENS",
+              "name": "_ens",
+              "type": "address"
+            },
+            {
+              "internalType": "contract ICartesiDAppFactory",
+              "name": "_factory",
               "type": "address"
             }
           ],
@@ -17,95 +22,79 @@
           "type": "constructor"
         },
         {
-          "inputs": [],
-          "name": "AuthorityWithdrawalFailed",
-          "type": "error"
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "contract IReaderNodeProvider",
+              "name": "provider",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "contract IERC20",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "payee",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "price",
+              "type": "uint256"
+            }
+          ],
+          "name": "ReaderNodeProviderCreated",
+          "type": "event"
         },
         {
           "anonymous": false,
           "inputs": [
             {
               "indexed": false,
-              "internalType": "address",
-              "name": "application",
+              "internalType": "contract IValidatorNodeProvider",
+              "name": "provider",
               "type": "address"
-            }
-          ],
-          "name": "ApplicationJoined",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
+            },
             {
               "indexed": false,
-              "internalType": "contract IHistory",
-              "name": "history",
-              "type": "address"
-            }
-          ],
-          "name": "NewHistory",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "previousOwner",
+              "internalType": "contract IConsensus",
+              "name": "consensus",
               "type": "address"
             },
             {
-              "indexed": true,
-              "internalType": "address",
-              "name": "newOwner",
-              "type": "address"
-            }
-          ],
-          "name": "OwnershipTransferred",
-          "type": "event"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "_dapp",
+              "indexed": false,
+              "internalType": "contract IERC20",
+              "name": "token",
               "type": "address"
             },
             {
-              "internalType": "bytes",
-              "name": "_proofContext",
-              "type": "bytes"
-            }
-          ],
-          "name": "getClaim",
-          "outputs": [
-            {
-              "internalType": "bytes32",
-              "name": "",
-              "type": "bytes32"
+              "indexed": false,
+              "internalType": "address",
+              "name": "payee",
+              "type": "address"
             },
             {
+              "indexed": false,
               "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "",
+              "name": "price",
               "type": "uint256"
             }
           ],
-          "stateMutability": "view",
-          "type": "function"
+          "name": "ValidatorNodeProviderCreated",
+          "type": "event"
         },
         {
           "inputs": [],
-          "name": "getHistory",
+          "name": "ens",
           "outputs": [
             {
-              "internalType": "contract IHistory",
+              "internalType": "contract ENS",
               "name": "",
               "type": "address"
             }
@@ -115,81 +104,15 @@
         },
         {
           "inputs": [],
-          "name": "join",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "_consensus",
-              "type": "address"
-            }
-          ],
-          "name": "migrateHistoryToConsensus",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "owner",
+          "name": "factory",
           "outputs": [
             {
-              "internalType": "address",
+              "internalType": "contract ICartesiDAppFactory",
               "name": "",
               "type": "address"
             }
           ],
           "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "renounceOwnership",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "contract IHistory",
-              "name": "_history",
-              "type": "address"
-            }
-          ],
-          "name": "setHistory",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "bytes",
-              "name": "_claimData",
-              "type": "bytes"
-            }
-          ],
-          "name": "submitClaim",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "newOwner",
-              "type": "address"
-            }
-          ],
-          "name": "transferOwnership",
-          "outputs": [],
-          "stateMutability": "nonpayable",
           "type": "function"
         },
         {
@@ -201,68 +124,19 @@
             },
             {
               "internalType": "address",
-              "name": "_recipient",
+              "name": "_payee",
               "type": "address"
             },
             {
               "internalType": "uint256",
-              "name": "_amount",
+              "name": "_price",
               "type": "uint256"
             }
           ],
-          "name": "withdrawERC20Tokens",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        }
-      ]
-    },
-    "AuthorityFactory": {
-      "address": "0x519421Bd7843e0D1E2F280490962850e31c86087",
-      "abi": [
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "contract Authority",
-              "name": "authority",
-              "type": "address"
-            }
-          ],
-          "name": "AuthorityCreated",
-          "type": "event"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "_authorityOwner",
-              "type": "address"
-            },
-            {
-              "internalType": "bytes32",
-              "name": "_salt",
-              "type": "bytes32"
-            }
-          ],
-          "name": "calculateAuthorityAddress",
+          "name": "newReaderNodeProvider",
           "outputs": [
             {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "newAuthority",
-          "outputs": [
-            {
-              "internalType": "contract Authority",
+              "internalType": "contract IReaderNodeProvider",
               "name": "",
               "type": "address"
             }
@@ -273,241 +147,34 @@
         {
           "inputs": [
             {
-              "internalType": "bytes32",
-              "name": "_salt",
-              "type": "bytes32"
-            }
-          ],
-          "name": "newAuthority",
-          "outputs": [
-            {
-              "internalType": "contract Authority",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "_authorityOwner",
-              "type": "address"
-            },
-            {
-              "internalType": "bytes32",
-              "name": "_salt",
-              "type": "bytes32"
-            }
-          ],
-          "name": "newAuthority",
-          "outputs": [
-            {
-              "internalType": "contract Authority",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "_authorityOwner",
-              "type": "address"
-            }
-          ],
-          "name": "newAuthority",
-          "outputs": [
-            {
-              "internalType": "contract Authority",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        }
-      ]
-    },
-    "History": {
-      "address": "0x55a62B15719119725d0e8763F69c1d17c7946673",
-      "abi": [
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "_owner",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "nonpayable",
-          "type": "constructor"
-        },
-        {
-          "inputs": [],
-          "name": "InvalidClaimIndex",
-          "type": "error"
-        },
-        {
-          "inputs": [],
-          "name": "InvalidInputIndices",
-          "type": "error"
-        },
-        {
-          "inputs": [],
-          "name": "UnclaimedInputs",
-          "type": "error"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "dapp",
-              "type": "address"
-            },
-            {
-              "components": [
-                {
-                  "internalType": "bytes32",
-                  "name": "epochHash",
-                  "type": "bytes32"
-                },
-                {
-                  "internalType": "uint128",
-                  "name": "firstIndex",
-                  "type": "uint128"
-                },
-                {
-                  "internalType": "uint128",
-                  "name": "lastIndex",
-                  "type": "uint128"
-                }
-              ],
-              "indexed": false,
-              "internalType": "struct History.Claim",
-              "name": "claim",
-              "type": "tuple"
-            }
-          ],
-          "name": "NewClaimToHistory",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "previousOwner",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "newOwner",
-              "type": "address"
-            }
-          ],
-          "name": "OwnershipTransferred",
-          "type": "event"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "_dapp",
-              "type": "address"
-            },
-            {
-              "internalType": "bytes",
-              "name": "_proofContext",
-              "type": "bytes"
-            }
-          ],
-          "name": "getClaim",
-          "outputs": [
-            {
-              "internalType": "bytes32",
-              "name": "",
-              "type": "bytes32"
-            },
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
+              "internalType": "contract IConsensus",
               "name": "_consensus",
               "type": "address"
-            }
-          ],
-          "name": "migrateToConsensus",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "owner",
-          "outputs": [
+            },
+            {
+              "internalType": "contract IERC20",
+              "name": "_token",
+              "type": "address"
+            },
             {
               "internalType": "address",
+              "name": "_payee",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_price",
+              "type": "uint256"
+            }
+          ],
+          "name": "newValidatorNodeProvider",
+          "outputs": [
+            {
+              "internalType": "contract IValidatorNodeProvider",
               "name": "",
               "type": "address"
             }
           ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "renounceOwnership",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "bytes",
-              "name": "_claimData",
-              "type": "bytes"
-            }
-          ],
-          "name": "submitClaim",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "newOwner",
-              "type": "address"
-            }
-          ],
-          "name": "transferOwnership",
-          "outputs": [],
           "stateMutability": "nonpayable",
           "type": "function"
         }
@@ -786,6 +453,245 @@
             }
           ],
           "stateMutability": "pure",
+          "type": "function"
+        }
+      ]
+    },
+    "AuthorityFactory": {
+      "address": "0xf26a5b278C25D8D41A136d22Ad719EACEd9c3e63",
+      "abi": [
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "authorityOwner",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "contract Authority",
+              "name": "authority",
+              "type": "address"
+            }
+          ],
+          "name": "AuthorityCreated",
+          "type": "event"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_authorityOwner",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "_salt",
+              "type": "bytes32"
+            }
+          ],
+          "name": "calculateAuthorityAddress",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_authorityOwner",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "_salt",
+              "type": "bytes32"
+            }
+          ],
+          "name": "newAuthority",
+          "outputs": [
+            {
+              "internalType": "contract Authority",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_authorityOwner",
+              "type": "address"
+            }
+          ],
+          "name": "newAuthority",
+          "outputs": [
+            {
+              "internalType": "contract Authority",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        }
+      ]
+    },
+    "AuthorityHistoryPairFactory": {
+      "address": "0x3890A047Cf9Af60731E80B2105362BbDCD70142D",
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "contract IAuthorityFactory",
+              "name": "_authorityFactory",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IHistoryFactory",
+              "name": "_historyFactory",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "contract IAuthorityFactory",
+              "name": "authorityFactory",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "contract IHistoryFactory",
+              "name": "historyFactory",
+              "type": "address"
+            }
+          ],
+          "name": "AuthorityHistoryPairFactoryCreated",
+          "type": "event"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_authorityOwner",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "_salt",
+              "type": "bytes32"
+            }
+          ],
+          "name": "calculateAuthorityHistoryAddressPair",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "authorityAddress_",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "historyAddress_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "getAuthorityFactory",
+          "outputs": [
+            {
+              "internalType": "contract IAuthorityFactory",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "getHistoryFactory",
+          "outputs": [
+            {
+              "internalType": "contract IHistoryFactory",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_authorityOwner",
+              "type": "address"
+            }
+          ],
+          "name": "newAuthorityHistoryPair",
+          "outputs": [
+            {
+              "internalType": "contract Authority",
+              "name": "authority_",
+              "type": "address"
+            },
+            {
+              "internalType": "contract History",
+              "name": "history_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_authorityOwner",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "_salt",
+              "type": "bytes32"
+            }
+          ],
+          "name": "newAuthorityHistoryPair",
+          "outputs": [
+            {
+              "internalType": "contract Authority",
+              "name": "authority_",
+              "type": "address"
+            },
+            {
+              "internalType": "contract History",
+              "name": "history_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
           "type": "function"
         }
       ]
@@ -1270,6 +1176,97 @@
         }
       ]
     },
+    "HistoryFactory": {
+      "address": "0x1f158b5320BBf677FdA89F9a438df99BbE560A26",
+      "abi": [
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "historyOwner",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "contract History",
+              "name": "history",
+              "type": "address"
+            }
+          ],
+          "name": "HistoryCreated",
+          "type": "event"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_historyOwner",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "_salt",
+              "type": "bytes32"
+            }
+          ],
+          "name": "calculateHistoryAddress",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_historyOwner",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "_salt",
+              "type": "bytes32"
+            }
+          ],
+          "name": "newHistory",
+          "outputs": [
+            {
+              "internalType": "contract History",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_historyOwner",
+              "type": "address"
+            }
+          ],
+          "name": "newHistory",
+          "outputs": [
+            {
+              "internalType": "contract History",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        }
+      ]
+    },
     "InputBox": {
       "address": "0x59b22D57D4f067708AB0c00552767405926dc768",
       "abi": [
@@ -1374,95 +1371,6 @@
             }
           ],
           "stateMutability": "view",
-          "type": "function"
-        }
-      ]
-    },
-    "PayableDAppSystem": {
-      "address": "0xEBc7b046e7781cCBF75A4Aa32A40eB3932c1813E",
-      "abi": [
-        {
-          "inputs": [
-            {
-              "internalType": "contract ICartesiDAppFactory",
-              "name": "_factory",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "nonpayable",
-          "type": "constructor"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "contract IPayableDAppFactory",
-              "name": "factory",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "contract IERC20",
-              "name": "token",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "contract IConsensus",
-              "name": "consensus",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "price",
-              "type": "uint256"
-            }
-          ],
-          "name": "PayableDAppFactoryCreated",
-          "type": "event"
-        },
-        {
-          "inputs": [],
-          "name": "factory",
-          "outputs": [
-            {
-              "internalType": "contract ICartesiDAppFactory",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "contract IERC20",
-              "name": "_token",
-              "type": "address"
-            },
-            {
-              "internalType": "contract IConsensus",
-              "name": "_consensus",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256",
-              "name": "_price",
-              "type": "uint256"
-            }
-          ],
-          "name": "newPayableDAppFactory",
-          "outputs": [
-            {
-              "internalType": "contract IPayableDAppFactory",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "nonpayable",
           "type": "function"
         }
       ]
