@@ -1,5 +1,6 @@
-#!/usr/bin/env sh
+#!/command/with-contenv sh
 set -e
 
-cp --recursive /tmp/machine-snapshots/0_0/* /var/opt/cartesi/machine-snapshots/0_0/
-chown --recursive cartesi:cartesi /var/opt/cartesi/machine-snapshots
+mkdir -p "$CARTESI_SNAPSHOT_DIR"
+cp --recursive /tmp/snapshot/* "$CARTESI_SNAPSHOT_DIR"
+chown --recursive cartesi:cartesi "$CARTESI_SNAPSHOT_DIR"

@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-redis-cli ping 1> /dev/null

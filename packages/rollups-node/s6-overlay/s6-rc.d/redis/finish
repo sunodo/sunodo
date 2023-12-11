@@ -1,2 +1,0 @@
-#!/command/with-contenv sh
-s6-setuidgid redis redis-cli shutdown

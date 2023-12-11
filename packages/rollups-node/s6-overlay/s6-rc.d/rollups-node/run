@@ -1,0 +1,3 @@
+#!/command/with-contenv sh
+set -e
+exec s6-setuidgid cartesi cartesi-rollups-node
