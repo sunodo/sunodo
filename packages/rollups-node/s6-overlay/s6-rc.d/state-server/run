@@ -1,3 +1,0 @@
-#!/command/with-contenv sh
-exec s6-notifyoncheck -w 500 -t 500 -n 5 -s 500 \
-    s6-setuidgid cartesi cartesi-rollups-state-server
