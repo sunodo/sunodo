@@ -1,5 +1,16 @@
 # rollups-node
 
+## 0.6.0
+
+### Minor Changes
+
+-   bf29044: adapt to cartesi/rollups-node:1.2.0
+-   79f675c: add redis service
+
+### Patch Changes
+
+-   856fa28: fix stream-cleanup oneshot service
+
 ## 0.5.1
 
 ### Patch Changes

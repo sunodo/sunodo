@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.5
+
+### Patch Changes
+
+-   320df7b: sync advance-runner and s6-rc timeouts
+
 ## 0.9.4
 
 ### Patch Changes
