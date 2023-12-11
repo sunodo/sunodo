@@ -23,7 +23,7 @@
         "tsc": "tsc"
     },
     "dependencies": {
-        "@cartesi/rollups": "1.0.0",
+        "@cartesi/rollups": "1.1.0",
         "@ensdomains/ens-contracts": "0.0.22"
     },
     "devDependencies": {
