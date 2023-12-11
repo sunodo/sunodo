@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.10.0
+
+### Minor Changes
+
+-   90a783b: adapt to sunodo/rollups-node:0.6.0
+
+### Patch Changes
+
+-   cb3c899: fix .sunodo/ permission during build
+
 ## 0.9.5
 
 ### Patch Changes
