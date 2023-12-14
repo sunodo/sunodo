@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.1
+
+### Patch Changes
+
+-   887649c: fix sunodo/rollups-node version
+
 ## 0.10.0
 
 ### Minor Changes
