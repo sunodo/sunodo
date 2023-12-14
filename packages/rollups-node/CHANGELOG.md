@@ -1,5 +1,11 @@
 # rollups-node
 
+## 0.6.1
+
+### Patch Changes
+
+-   86fc756: fix port collision when using `run --no-backend`
+
 ## 0.6.0
 
 ### Minor Changes
