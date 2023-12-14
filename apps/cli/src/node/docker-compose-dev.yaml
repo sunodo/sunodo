@@ -58,7 +58,7 @@ services:
             - blockchain-data:/usr/share/sunodo
 
     validator:
-        image: sunodo/rollups-node:0.5.1
+        image: sunodo/rollups-node:0.6.0
         depends_on:
             dapp_deployer:
                 condition: service_completed_successfully
