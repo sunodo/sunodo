@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.2
+
+### Patch Changes
+
+-   f52ec03: bump to sunodo/rollups-node:0.6.1
+
 ## 0.10.1
 
 ### Patch Changes
