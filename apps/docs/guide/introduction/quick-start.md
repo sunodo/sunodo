@@ -1,6 +1,6 @@
 # Quick start
 
-The following commands will get you started with a javascript project, build a cartesi machine and run a local node for the application:
+The following commands will get you started with a javascript project, build a Cartesi machine and run a local node for the application:
 
 ```shell
 sunodo create my-app --template javascript
