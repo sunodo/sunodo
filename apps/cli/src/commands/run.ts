@@ -82,6 +82,9 @@ export default class Run extends Command {
         // dev file is always loaded
         const composeFiles = ["docker-compose-dev.yaml"];
 
+        // database
+        composeFiles.push("docker-compose-database.yaml");
+
         // proxy
         composeFiles.push("docker-compose-proxy.yaml");
 
