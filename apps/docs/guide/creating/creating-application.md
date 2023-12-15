@@ -1,6 +1,6 @@
 # Creating application
 
-One of `sunodo`'s goal is to be the easiest way to create new [Cartesi](https://cartesi.io) DApps from scratch.
+One of `sunodo`'s goal is to be the easiest way to create new [Cartesi](https://cartesi.io) applications from scratch.
 
 To create a new application from a basic javascript template, run:
 

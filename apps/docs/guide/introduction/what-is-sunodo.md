@@ -5,9 +5,9 @@ Sunodo is a [Cartesi](https://cartesi.io) Rollups as a Service platform and a se
 The main tool is the `sunodo` command line interface (CLI) that can be used to:
 
 -   create applications from templates;
--   build applications from source to a cartesi machine;
+-   build applications from source to a Cartesi machine;
 -   run applications in a local development environment;
--   test applications running inside a cartesi machine;
+-   test applications running inside a Cartesi machine;
 -   deploy applications to a public or private network;
 -   monitor applications already running.
 

@@ -11,7 +11,7 @@ Sunodo deployment supports all networks officially supported by the Cartesi roll
     -   Testnet: `sepolia`
 -   Arbitrum
     -   Mainnet: `arbitrum`
-    -   Testnet: `arbitrum-goerli`
+    -   Testnet: `arbitrum-sepolia`
 -   Optimism
     -   Mainnet: `optimism`
-    -   Testnet: `optimism-goerli`
+    -   Testnet: `optimism-sepolia`

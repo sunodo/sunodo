@@ -14,4 +14,4 @@ Building consists of the following intermediate steps:
 2. assembling a Cartesi Machine using a Linux distribution
 3. booting the machine with the application entrypoint until it yields successfully for the first time.
 
-The end result of this process is a _cartesi machine snapshot_, which is a cartesi machine image ready to receive inputs.
+The end result of this process is a _Cartesi machine snapshot_, which is a Cartesi machine image ready to receive inputs.
