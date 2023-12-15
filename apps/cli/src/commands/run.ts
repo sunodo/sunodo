@@ -79,8 +79,8 @@ export default class Run extends Command {
             SUNODO_BIN_PATH: binPath,
         };
 
-        // dev file is always loaded
-        const composeFiles = ["docker-compose-dev.yaml"];
+        // validator
+        const composeFiles = ["docker-compose-validator.yaml"];
 
         // database
         composeFiles.push("docker-compose-database.yaml");
