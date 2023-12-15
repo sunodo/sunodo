@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.3
+
+### Patch Changes
+
+-   d67a529: refactor docker compose files
+
 ## 0.10.2
 
 ### Patch Changes
