@@ -1,5 +1,11 @@
 # anvil
 
+## 3.4.0
+
+### Minor Changes
+
+-   6f3ae9d: bump anvil version
+
 ## 3.3.0
 
 ### Minor Changes
