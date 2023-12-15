@@ -1,5 +1,15 @@
 # @sunodo/devnet
 
+## 1.2.0
+
+### Minor Changes
+
+-   2b2ad2e: bump @sunodo/contracts
+
+### Patch Changes
+
+-   209a1a5: bump anvil version
+
 ## 1.1.1
 
 ### Patch Changes
