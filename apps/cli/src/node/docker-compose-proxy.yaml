@@ -1,0 +1,47 @@
+version: "3.9"
+
+services:
+    traefik-config-generator:
+        image: debian:bookworm-slim
+        command:
+        - /bin/bash
+        - -c
+        - |
+            for cfg_file in $${!TRAEFIK_CONFIG_*}
+            do
+                declare -n cfg_content=$$cfg_file
+                _cfg_file=$${cfg_file:15}
+                echo "$$cfg_content" > /etc/traefik/conf.d/$${_cfg_file,,}.yaml
+            done
+        volumes:
+            - traefik-conf:/etc/traefik/conf.d
+
+    proxy:
+        image: traefik:v2.10
+        depends_on:
+            validator:
+                condition: service_healthy
+            traefik-config-generator:
+                condition: service_completed_successfully
+        healthcheck:
+            test: ["CMD", "traefik", "healthcheck", "--ping"]
+            interval: 5s
+            timeout: 1s
+            retries: 5
+        command:
+            [
+                "--ping=true",
+                "--entryPoints.web.address=:8088",
+                "--entryPoints.traefik.address=:8080",
+                "--metrics.prometheus=true",
+                "--metrics.prometheus.addServicesLabels=true",
+                "--providers.file.directory=/etc/traefik/conf.d",
+                "--providers.file.watch=true"
+            ]
+        ports:
+            - 8080:8088
+        volumes:
+            - traefik-conf:/etc/traefik/conf.d
+
+volumes:
+    traefik-conf: {}

@@ -30,33 +30,6 @@ services:
         env_file:
             - ${SUNODO_BIN_PATH}/node/default.env
 
-    proxy:
-        image: traefik:v2.10
-        depends_on:
-            validator:
-                condition: service_healthy
-            traefik-config-generator:
-                condition: service_completed_successfully
-        healthcheck:
-            test: ["CMD", "traefik", "healthcheck", "--ping"]
-            interval: 5s
-            timeout: 1s
-            retries: 5
-        command:
-            [
-                "--ping=true",
-                "--entryPoints.web.address=:8088",
-                "--entryPoints.traefik.address=:8080",
-                "--metrics.prometheus=true",
-                "--metrics.prometheus.addServicesLabels=true",
-                "--providers.file.directory=/etc/traefik/conf.d",
-                "--providers.file.watch=true"
-            ]
-        ports:
-            - 8080:8088
-        volumes:
-            - traefik-conf:/etc/traefik/conf.d
-
     prompt:
         image: debian:bookworm-slim
         environment:
@@ -106,5 +79,3 @@ services:
                                 servers:
                                     - url: "http://validator:4000/graphql"
 
-volumes:
-    traefik-conf: {}

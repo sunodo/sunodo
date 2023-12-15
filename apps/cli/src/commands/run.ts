@@ -82,14 +82,14 @@ export default class Run extends Command {
         // dev file is always loaded
         const composeFiles = ["docker-compose-dev.yaml"];
 
+        // proxy
+        composeFiles.push("docker-compose-proxy.yaml");
+
         // anvil
         composeFiles.push("docker-compose-anvil.yaml");
 
         // explorer
         composeFiles.push("docker-compose-explorer.yaml");
-
-        // traefik-config
-        composeFiles.push("docker-compose-traefik-config.yaml");
 
         // load the no-backend compose file
         if (flags["no-backend"]) {
