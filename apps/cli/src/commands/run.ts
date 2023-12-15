@@ -82,6 +82,9 @@ export default class Run extends Command {
         // dev file is always loaded
         const composeFiles = ["docker-compose-dev.yaml"];
 
+        // anvil
+        composeFiles.push("docker-compose-anvil.yaml");
+
         // explorer
         composeFiles.push("docker-compose-explorer.yaml");
 
