@@ -27,7 +27,7 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
     const { CartesiDAppFactory } = await deployments.all();
 
     // deploy the factory of of payable deploys using ERC-20
-    await deployments.deploy("PayableDAppSystem", {
+    await deployments.deploy("Marketplace", {
         ...opts,
         args: [ensAddress, CartesiDAppFactory.address],
     });

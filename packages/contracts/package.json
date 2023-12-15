@@ -30,7 +30,7 @@
         "@ensdomains/ens": "^0.6",
         "@ensdomains/resolver": "^0.3",
         "@ethereum-waffle/ens": "^4",
-        "@nomicfoundation/hardhat-verify": "^1",
+        "@nomicfoundation/hardhat-verify": "^2",
         "@nomiclabs/hardhat-ethers": "^2",
         "@safe-global/safe-singleton-factory": "^1",
         "viem": "^1",
