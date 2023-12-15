@@ -1,29 +1,6 @@
 version: "3.9"
 
 services:
-    anvil:
-        image: sunodo/devnet:1.1.1
-        command:
-            [
-                "anvil",
-                "--block-time",
-                "${BLOCK_TIME:-5}",
-                "--load-state",
-                "/usr/share/sunodo/anvil_state.json",
-                "${ANVIL_VERBOSITY:---silent}",
-            ]
-        healthcheck:
-            test: ["CMD", "eth_isready"]
-            interval: 10s
-            timeout: 1s
-            retries: 5
-        environment:
-            ANVIL_IP_ADDR: 0.0.0.0
-        volumes:
-            - blockchain-data:/usr/share/sunodo
-        ports:
-            - 8545:8545
-
     database:
         image: postgres:13-alpine
         healthcheck:
@@ -33,29 +10,6 @@ services:
             retries: 5
         environment:
             - POSTGRES_PASSWORD=password
-
-    dapp_deployer:
-        image: cartesi/rollups-cli:1.0.2
-        restart: on-failure
-        depends_on:
-            anvil:
-                condition: service_started
-        command:
-            [
-                "create",
-                "--rpc",
-                "http://anvil:8545",
-                "--deploymentFile",
-                "/usr/share/sunodo/localhost.json",
-                "--mnemonic",
-                "test test test test test test test test test test test junk",
-                "--templateHashFile",
-                "/var/opt/cartesi/machine-snapshots/0_0/hash",
-                "--outputFile",
-                "/usr/share/sunodo/dapp.json",
-            ]
-        volumes:
-            - blockchain-data:/usr/share/sunodo
 
     validator:
         image: sunodo/rollups-node:0.6.1
@@ -153,5 +107,4 @@ services:
                                     - url: "http://validator:4000/graphql"
 
 volumes:
-    blockchain-data: {}
     traefik-conf: {}
