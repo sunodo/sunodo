@@ -1,5 +1,11 @@
 # @sunodo/token
 
+## 0.4.0
+
+### Minor Changes
+
+-   30690a3: migrate to openzeppeling v5
+
 ## 0.3.0
 
 ### Minor Changes
