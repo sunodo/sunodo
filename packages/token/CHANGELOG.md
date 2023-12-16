@@ -1,5 +1,11 @@
 # @sunodo/token
 
+## 0.3.0
+
+### Minor Changes
+
+-   df3916c: deprecating goerli versions of arbitrum and optimism
+
 ## 0.2.0
 
 ### Minor Changes

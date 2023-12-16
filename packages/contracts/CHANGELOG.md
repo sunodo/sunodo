@@ -1,5 +1,11 @@
 # @sunodo/contracts
 
+## 0.4.0
+
+### Minor Changes
+
+-   bdce223: deprecating goerli versions of arbitrum and optimism
+
 ## 0.3.0
 
 ### Minor Changes
