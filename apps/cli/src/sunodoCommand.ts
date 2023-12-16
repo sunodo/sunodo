@@ -129,6 +129,7 @@ export abstract class SunodoCommand<T extends typeof Command> extends Command {
             flags: this.ctor.flags,
             baseFlags: (super.ctor as typeof SunodoCommand).baseFlags,
             args: this.ctor.args,
+            enableJsonFlag: this.ctor.enableJsonFlag,
             strict: this.ctor.strict,
         });
         this.flags = flags as Flags<T>;
