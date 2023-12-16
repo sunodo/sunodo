@@ -1,40 +1,45 @@
 // SPDX-License-Identifier: Apache-2.0
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
-import "@openzeppelin/contracts/security/Pausable.sol";
-import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Pausable.sol";
+import "@openzeppelin/contracts/access/manager/AccessManaged.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 
 /// @custom:security-contact admin@sunodo.io
-contract SunodoToken is ERC20, ERC20Burnable, Pausable, AccessControl {
-    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
-    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
-
-    constructor(address admin) ERC20("Sunodo Token", "SUN") {
-        _grantRole(DEFAULT_ADMIN_ROLE, admin);
-        _grantRole(PAUSER_ROLE, admin);
-        _mint(admin, 1000000000 * 10 ** decimals());
-        _grantRole(MINTER_ROLE, admin);
+contract SunodoToken is
+    ERC20,
+    ERC20Burnable,
+    ERC20Pausable,
+    AccessManaged,
+    ERC20Permit
+{
+    constructor(
+        address initialAuthority
+    )
+        ERC20("SunodoToken", "SUN")
+        AccessManaged(initialAuthority)
+        ERC20Permit("SunodoToken")
+    {
+        _mint(msg.sender, 1000000000 * 10 ** decimals());
     }
 
-    function pause() public onlyRole(PAUSER_ROLE) {
+    function pause() public restricted {
         _pause();
     }
 
-    function unpause() public onlyRole(PAUSER_ROLE) {
+    function unpause() public restricted {
         _unpause();
     }
 
-    function mint(address to, uint256 amount) public onlyRole(MINTER_ROLE) {
-        _mint(to, amount);
-    }
+    // The following functions are overrides required by Solidity.
 
-    function _beforeTokenTransfer(
+    function _update(
         address from,
         address to,
-        uint256 amount
-    ) internal override whenNotPaused {
-        super._beforeTokenTransfer(from, to, amount);
+        uint256 value
+    ) internal override(ERC20, ERC20Pausable) {
+        super._update(from, to, value);
     }
 }

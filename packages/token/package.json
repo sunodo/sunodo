@@ -37,7 +37,7 @@
         "typescript": "^5"
     },
     "dependencies": {
-        "@openzeppelin/contracts": "4.9.3"
+        "@openzeppelin/contracts": "5.0.1"
     },
     "files": [
         "contracts",
