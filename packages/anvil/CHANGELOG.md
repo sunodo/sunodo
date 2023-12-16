@@ -1,5 +1,11 @@
 # anvil
 
+## 3.5.0
+
+### Minor Changes
+
+-   2bea98c: bump anvil nightly version
+
 ## 3.4.0
 
 ### Minor Changes
