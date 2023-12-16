@@ -7,10 +7,10 @@ import "hardhat-deploy";
 import {
     Chain,
     arbitrum,
-    arbitrumGoerli,
+    arbitrumSepolia,
     mainnet,
     optimism,
-    optimismGoerli,
+    optimismSepolia,
     sepolia,
 } from "viem/chains";
 
@@ -37,8 +37,8 @@ const networkConfig = (chain: Chain): HttpNetworkUserConfig => {
         accounts: mnemonic
             ? { mnemonic }
             : privateKey
-            ? [privateKey]
-            : undefined,
+              ? [privateKey]
+              : undefined,
     };
 };
 
@@ -54,16 +54,16 @@ const config: HardhatUserConfig = {
             accounts: mnemonic
                 ? { mnemonic }
                 : privateKey
-                ? [privateKey]
-                : {
-                      mnemonic: DEFAULT_DEVNET_MNEMONIC,
-                  },
+                  ? [privateKey]
+                  : {
+                        mnemonic: DEFAULT_DEVNET_MNEMONIC,
+                    },
         },
-        arbitrum_goerli: networkConfig(arbitrumGoerli),
+        arbitrum_sepolia: networkConfig(arbitrumSepolia),
         arbitrum: networkConfig(arbitrum),
         mainnet: networkConfig(mainnet),
         optimism: networkConfig(optimism),
-        optimism_goerli: networkConfig(optimismGoerli),
+        optimism_sepolia: networkConfig(optimismSepolia),
         sepolia: networkConfig(sepolia),
     },
     namedAccounts: {
