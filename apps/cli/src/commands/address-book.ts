@@ -24,7 +24,7 @@ export default class AddressBook extends SunodoCommand<typeof AddressBook> {
                     name,
                     address,
                 })),
-                { name: { header: "Contract" }, address: {} }
+                { name: { header: "Contract" }, address: {} },
             );
         }
         // return (as json)

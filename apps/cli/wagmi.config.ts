@@ -7,7 +7,7 @@ export default defineConfig({
     plugins: [
         hardhat({
             project: "../../packages/contracts",
-            include: [],
+            include: ["**/IValidatorNodeProvider.json"],
         }),
         hardhatDeploy({ directory: "../../packages/devnet/export/abi" }),
         erc(),

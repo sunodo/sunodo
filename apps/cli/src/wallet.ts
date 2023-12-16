@@ -94,7 +94,6 @@ const walletChoices = (chain: Chain): Choice<WalletType>[] => {
 };
 
 export interface EthereumPromptOptions {
-    dev?: boolean;
     chain?: Chain;
     rpcUrl?: string;
     mnemonicPassphrase?: string;
@@ -108,7 +107,7 @@ export type TransactionPrompt = (
 
 const selectChain = async (options: EthereumPromptOptions): Promise<Chain> => {
     // if development mode, include foundry as an option
-    const chains = supportedChains({ includeDevnet: options.dev });
+    const chains = supportedChains({ includeDevnet: true });
 
     if (options.chain) {
         const chain = options.chain;
