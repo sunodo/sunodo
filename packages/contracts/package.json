@@ -24,7 +24,8 @@
     },
     "dependencies": {
         "@cartesi/rollups": "1.2.0",
-        "@ensdomains/ens-contracts": "1.0.0"
+        "@ensdomains/ens-contracts": "1.0.0",
+        "@openzeppelin/contracts": "4.9.3"
     },
     "devDependencies": {
         "@ensdomains/ens": "^0.6",
