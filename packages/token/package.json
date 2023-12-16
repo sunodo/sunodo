@@ -1,6 +1,6 @@
 {
     "name": "@sunodo/token",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "Sunodo Utility Token",
     "main": "src/index.ts",
     "author": "Danilo Tuler",
