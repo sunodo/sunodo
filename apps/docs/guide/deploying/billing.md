@@ -6,11 +6,11 @@ This is still under development and will be available in a future release.
 
 The deployment of an application is done through a `ValidatorNodeProvider` smart contract.
 
-The contract defines which ERC-20 token is accepted as payment and the price of application execution per unit of time (second). In the current design, the price is fixed, and cannot be changed by the validator.
+The contract defines an ERC-20 token which is accepted as payment and the price of application execution per unit of time (second). In the current design, the price is fixed, and cannot be changed by the validator.
 
-During the deployment of the application, the developer can choose the amount of time he wants to pre-fund the execution of its node, in seconds. That determines the initial token cost, which can be calculated by calling the `cost` view function of the selected `ValidatorNodeProvider` contract. The pre-fund can be zero, which will register the application, but will not deploy a node for it.
+During the deployment of the application, the developer can choose the amount of time he wants to pre-fund the execution of its node, in seconds. That determines the initial token cost, which can be calculated by calling the `cost` view function of the selected `ValidatorNodeProvider` contract. The pre-fund can also be zero, which will register the application, but will not immediately run a node for it.
 
-After an application is deployed, it can be funded by anyone by calling the `extendRunway` function of the `ValidatorNodeProvider`, specifying the application to be funded and the amount of time. Again, the token cost can be calculated by calling the `cost` view function of the `ValidatorNodeProvider` contract.
+After an application is deployed, it can be funded by anyone by calling the `extendRunway` function of the `ValidatorNodeProvider`, specifying the application to be funded and the amount of time.
 
 Before funding an application, either during deployment or later, the user must approve the `ValidatorNodeProvider` payee to spend the tokens on his behalf. This is done by calling the `approve` function of the ERC-20 token contract.
 
