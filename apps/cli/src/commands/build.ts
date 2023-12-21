@@ -29,6 +29,10 @@ const SUNODO_LABEL_PREFIX = "io.sunodo";
 const SUNODO_LABEL_SDK_VERSION = `${SUNODO_LABEL_PREFIX}.sdk_version`;
 const SUNODO_DEFAULT_SDK_VERSION = "0.2.0";
 
+const SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH = path.join(".sunodo", `image`);
+const SUNODO_DEFAULT_TAR_PATH = path.join(".sunodo", `image.tar`);;
+const SUNODO_DEFAULT_EXT2_PATH = path.join(".sunodo", `image.ext2`);;
+
 export default class BuildApplication extends Command {
     static summary = "Build application.";
 
@@ -148,43 +152,40 @@ export default class BuildApplication extends Command {
         await execa("docker", ["rm", cid]);
     }
 
-    private async createExt2(
-        sdkImage: string,
-        info: ImageInfo,
+    private async getBuildContainer(
+        image: string,
         tarPath: string,
     ): Promise<string> {
-        // extract base name of tar file
-        const tarName = path.basename(tarPath, path.extname(tarPath));
+        const { stdout: cid } = await execa("docker", [
+            "container",
+            "run",
+            "--detach",
+            "--init",
+            `--volume=${tarPath}:/tmp/${SUNODO_DEFAULT_TAR_PATH}`,
+            image,
+            "sleep",
+            "infinity"
+        ]);
 
-        const containerDir = "/mnt";
-        const bind = `${path.resolve(path.dirname(tarPath))}:${containerDir}`;
-        const tar = path.join(containerDir, tarName + ".tar");
-        const ext2 = path.join(containerDir, tarName + ".ext2");
+        return cid;
+    }
 
-        // su, variables to run container as current user
-        const user = os.userInfo();
-        const su = [
-            "--env",
-            `USER=${user.username}`,
-            "--env",
-            `GROUP=container-group-${user.gid}`,
-            "--env",
-            `UID=${user.uid}`,
-            "--env",
-            `GID=${user.gid}`,
-        ];
+    private async stopBuildContainer(container: string): Promise<void> {
+        await execa("docker", ["container", "stop", container]);
+        await execa("docker", ["container", "rm", container]);
+    }
 
+    private async createExt2(
+        info: ImageInfo,
+        container: string,
+    ): Promise<void> {
         // re-tar as gnu format, issue with locale
         await execa("docker", [
             "container",
-            "run",
-            "--rm",
-            ...su,
-            "--volume",
-            bind,
-            sdkImage,
+            "exec",
+            container,
             "retar",
-            tar,
+            `/tmp/${SUNODO_DEFAULT_TAR_PATH}`,
         ]);
 
         // calculate extra size
@@ -193,45 +194,33 @@ export default class BuildApplication extends Command {
         const extraBlocks = Math.ceil(extraBytes / blockSize);
         const extraSize = `+${extraBlocks}`;
 
+        //create ext2
         await execa(
             "docker",
             [
                 "container",
-                "run",
-                "--rm",
-                "--volume",
-                bind,
-                sdkImage,
+                "exec",
+                container,
                 "genext2fs",
                 "--tarball",
-                tar,
+                `/tmp/${SUNODO_DEFAULT_TAR_PATH}`,
                 "--block-size",
                 blockSize.toString(),
                 "--faketime",
                 "-r",
                 extraSize,
-                ext2,
+                `/tmp/${SUNODO_DEFAULT_EXT2_PATH}`,
             ],
             { stdio: "inherit" },
         );
-        return path.join(path.dirname(tarPath), tarName + ".ext2");
     }
 
     private async createMachineSnapshot(
-        sdkImage: string,
         info: ImageInfo,
-        ext2Path: string,
+        container: string
     ): Promise<void> {
-        // extract base name of tar file
-        const name = path.basename(ext2Path, path.extname(ext2Path));
-
-        const containerDir = "/mnt";
-        const absolutePath = path.resolve(path.dirname(ext2Path));
-        const bind = `${absolutePath}:${containerDir}`;
-        const ext2 = path.join(containerDir, name + ".ext2");
         const ramSize = info.ramSize;
         const driveLabel = "root"; // XXX: does this need to be customizable?
-        const outDir = path.join(containerDir, name);
 
         // su, variables to run container as current user
         const user = os.userInfo();
@@ -270,30 +259,57 @@ export default class BuildApplication extends Command {
         const bootargs = [cwd, [env, entrypoint_cmd].join(" ")].join(";");
         this.log(bootargs);
 
+        // create machine snapshot
         await execa(
             "docker",
             [
                 "container",
-                "run",
-                "--rm",
-                "--volume",
-                bind,
-                sdkImage,
+                "exec",
+                container,
                 "cartesi-machine",
                 "--assert-rolling-template",
                 `--ram-length=${ramSize}`,
                 "--rollup",
-                `--flash-drive=label:${driveLabel},filename:${ext2}`,
+                `--flash-drive=label:${driveLabel},filename:/tmp/${SUNODO_DEFAULT_EXT2_PATH}`,
                 "--final-hash",
-                `--store=${outDir}`,
+                `--store=/tmp/${SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH}`,
                 "--",
                 bootargs,
             ],
             { stdio: "inherit" },
         );
+    }
 
-        // change image directory permission to 755
-        await fs.chmod(path.join(absolutePath, name), 0o755);
+    private async exportExt2(
+        container: string, 
+        path: string,
+    ): Promise<void> {
+        await execa(
+            "docker",
+            [
+                "container",
+                "cp",
+                `${container}:/tmp/${SUNODO_DEFAULT_EXT2_PATH}`,
+                path,
+            ],
+            { stdio: "inherit" },
+        );
+    }
+
+    private async exportMachineSnapshot(
+        container: string, 
+        path: string,
+    ): Promise<void> {
+        await execa(
+            "docker",
+            [
+                "container",
+                "cp",
+                `${container}:/tmp/${SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH}`,
+                SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH,
+            ],
+            { stdio: "inherit" },
+        );
     }
 
     public async run(): Promise<void> {
@@ -305,21 +321,24 @@ export default class BuildApplication extends Command {
         // use pre-existing image or build dapp image
         const image = flags["from-image"] || (await this.buildDAppImage(flags));
 
-        // get and validate image info
-        const imageInfo = await this.getImageInfo(image);
-
-        // resolve sdk version
-        const sdkImage = `sunodo/sdk:${imageInfo.sdkVersion}`;
-
         // export dapp image as rootfs tar
         await fs.emptyDir(".sunodo"); // XXX: make it less error prone
-        const tarPath = path.join(".sunodo", `image.tar`);
-        await this.exportImageTar(image, tarPath);
+        await this.exportImageTar(image, SUNODO_DEFAULT_TAR_PATH);
 
-        // create ext2 drive
-        const ext2Path = await this.createExt2(sdkImage, imageInfo, tarPath);
+        // get and validate image info
+        const imageInfo = await this.getImageInfo(image);
+        // resolve sdk version
+        const sdkImage = `sunodo/sdk:${imageInfo.sdkVersion}`;
+ 
+        // create ext2 and machine snapshot
+        const container = await this.getBuildContainer(sdkImage, path.join(process.cwd(), SUNODO_DEFAULT_TAR_PATH));
 
-        // execute the machine and save snapshot
-        await this.createMachineSnapshot(sdkImage, imageInfo, ext2Path);
+        await this.createExt2(imageInfo, container);
+        await this.exportExt2(container, SUNODO_DEFAULT_EXT2_PATH);
+
+        await this.createMachineSnapshot(imageInfo, container);
+        await this.exportMachineSnapshot(container, SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH);
+
+        await this.stopBuildContainer(container);
     }
 }
