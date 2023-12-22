@@ -1,4 +1,4 @@
-FROM cartesi/rollups-node:1.3.1
+FROM cartesi/rollups-node:1.4.0-rc.1
 ENV CARTESI_SNAPSHOT_DIR=/usr/share/rollups-node/snapshot
 ENV CARTESI_HTTP_ADDRESS=0.0.0.0
 COPY --chown=cartesi:cartesi . ${CARTESI_SNAPSHOT_DIR}

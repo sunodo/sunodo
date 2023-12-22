@@ -32,7 +32,7 @@ const SUNODO_DEFAULT_SDK_VERSION = "0.3.0";
 const SUNODO_PATH = path.join(".sunodo");
 const SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH = path.join(SUNODO_PATH, "image");
 const SUNODO_DEFAULT_TAR_PATH = path.join(SUNODO_PATH, "image.tar");
-const SUNODO_DEFAULT_RETAR_TAR_PATH = path.join(SUNODO_PATH, "image-retar.tar");
+const SUNODO_DEFAULT_RETAR_TAR_PATH = path.join(SUNODO_PATH, "image.gnutar");
 const SUNODO_DEFAULT_EXT2_PATH = path.join(SUNODO_PATH, "image.ext2");
 
 export default class BuildApplication extends Command {
@@ -193,16 +193,18 @@ LABEL io.sunodo.sdk_version=${SUNODO_DEFAULT_SDK_VERSION}
         await fs.remove(SUNODO_DEFAULT_TAR_PATH);
     }
 
-    // creates the rootfs tyar from the image
+    // creates the rootfs tar from the image
     private async createRootfsTar(container: string): Promise<void> {
-        // ensure tar reproducibility
+        // retar as gnutar
         await execa("docker", [
             "container",
             "exec",
             container,
-            "retar",
-            `/tmp/${SUNODO_DEFAULT_TAR_PATH}`,
+            "bsdtar",
+            "-cf",
             `/tmp/${SUNODO_DEFAULT_RETAR_TAR_PATH}`,
+            "--format=gnutar",
+            `@/tmp/${SUNODO_DEFAULT_TAR_PATH}`,
         ]);
     }
 
@@ -223,7 +225,7 @@ LABEL io.sunodo.sdk_version=${SUNODO_DEFAULT_SDK_VERSION}
                 "container",
                 "exec",
                 container,
-                "genext2fs",
+                "xgenext2fs",
                 "--tarball",
                 `/tmp/${SUNODO_DEFAULT_RETAR_TAR_PATH}`,
                 "--block-size",
@@ -257,28 +259,15 @@ LABEL io.sunodo.sdk_version=${SUNODO_DEFAULT_SDK_VERSION}
         const driveLabel = "root"; // XXX: does this need to be customizable?
 
         // list of environment variables of docker image
-        // XXX: we can't include all of them because cartesi-machine command has length limits
-        const envs = info.env.filter((variable) => {
-            if (variable.startsWith("ROLLUP_HTTP_SERVER_URL=")) {
-                return true;
-            } else if (variable.startsWith("PATH=")) {
-                return true;
-            } else {
-                this.warn(`ommiting environment variable ${variable}`);
-                return false;
-            }
-        });
-        const env = envs.join(" ");
+        const envs = info.env.map(
+            (variable) => `--append-entrypoint=export ${variable}`,
+        );
 
         // ENTRYPOINT and CMD as a space separated string
-        const entrypoint_cmd = [...info.entrypoint, ...info.cmd].join(" ");
+        const entrypoint = [...info.entrypoint, ...info.cmd].join(" ");
 
         // command to change working directory if WORKDIR is defined
-        const cwd = info.workdir ? `cd ${info.workdir}` : "";
-
-        // join everything
-        const bootargs = [cwd, [env, entrypoint_cmd].join(" ")].join(";");
-        this.log(bootargs);
+        const cwd = info.workdir ? `--append-init=WORKDIR=${info.workdir}` : "";
 
         // create machine snapshot
         await execa(
@@ -290,12 +279,13 @@ LABEL io.sunodo.sdk_version=${SUNODO_DEFAULT_SDK_VERSION}
                 "cartesi-machine",
                 "--assert-rolling-template",
                 `--ram-length=${ramSize}`,
-                "--rollup",
                 `--flash-drive=label:${driveLabel},filename:/tmp/${SUNODO_DEFAULT_EXT2_PATH}`,
                 "--final-hash",
                 `--store=/tmp/${SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH}`,
-                "--",
-                bootargs,
+                "--append-bootargs=no4lvl",
+                cwd,
+                ...envs,
+                `--append-entrypoint=${entrypoint}`,
             ],
             { stdio: "inherit" },
         );

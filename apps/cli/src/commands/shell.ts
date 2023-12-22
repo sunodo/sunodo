@@ -1,6 +1,7 @@
 import { Args, Command, Flags } from "@oclif/core";
 import { execa } from "execa";
 import fs from "fs-extra";
+import { lookpath } from "lookpath";
 import path from "path";
 
 export default class Shell extends Command {
@@ -31,7 +32,7 @@ export default class Shell extends Command {
         const ext2 = path.join(containerDir, path.basename(ext2Path));
         const ramSize = "128Mi";
         const driveLabel = "root";
-        const sdkImage = "sunodo/sdk:0.2.0"; // XXX: how to resolve sdk version?
+        const sdkImage = "sunodo/sdk:0.4.0"; // XXX: how to resolve sdk version?
         const args = [
             "run",
             "--interactive",
@@ -41,12 +42,17 @@ export default class Shell extends Command {
             sdkImage,
             "cartesi-machine",
             `--ram-length=${ramSize}`,
-            "--rollup",
             `--flash-drive=label:${driveLabel},filename:${ext2}`,
-            "-i",
         ];
+
         if (runAsRoot) {
-            args.push("--append-rom-bootargs='single=yes'");
+            args.push("--append-init=USER=root");
+        }
+
+        if (!(await lookpath("stty"))) {
+            args.push("-i");
+        } else {
+            args.push("-it");
         }
 
         await execa("docker", [...args, "--", "/bin/bash"], {
