@@ -3,6 +3,7 @@ services:
     validator:
         environment:
             CARTESI_FEATURE_HOST_MODE: true
+        command: ["cartesi-rollups-node"]
 
     traefik-config-generator:
         environment:

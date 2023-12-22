@@ -62,6 +62,9 @@ importers:
       giget:
         specifier: ^1.2.3
         version: 1.2.3
+      lookpath:
+        specifier: ^1.2.2
+        version: 1.2.2
       open:
         specifier: ^10.1.0
         version: 10.1.0
@@ -17571,6 +17574,12 @@ packages:
       ansi-fragments: 0.2.1
       dayjs: 1.11.10
       yargs: 15.4.1
+
+  /lookpath@1.2.2:
+    resolution: {integrity: sha512-k2Gmn8iV6qdME3ztZC2spubmQISimFOPLuQKiPaLcVdRz0IpdxrNClVepMlyTJlhodm/zG/VfbkWERm3kUIh+Q==}
+    engines: {npm: '>=6.13.4'}
+    hasBin: true
+    dev: false
 
   /loose-envify@1.4.0:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
