@@ -37,6 +37,7 @@
         "fs-extra": "^11",
         "giget": "^1.1",
         "lokijs": "^1.5",
+        "lookpath": "^1.2.2",
         "node-fetch": "3.3",
         "open": "^10.0.3",
         "ora": "^8.0.1",
