@@ -53,7 +53,7 @@ contract Vault is IVault, IFinancialProtocol, Ownable, Pausable {
         // calculate the token cost of the runway time
         uint256 _cost = cost(_time);
 
-        // transfer tokens from sender to this contract
+        // transfer tokens from sender to payee
         token.safeTransferFrom(_msgSender, payee, _cost);
 
         uint256 currentRunway = runway[_application];
