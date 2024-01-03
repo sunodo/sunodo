@@ -22,7 +22,7 @@ contract SunodoToken is
         AccessManaged(initialAuthority)
         ERC20Permit("SunodoToken")
     {
-        _mint(msg.sender, 1000000000 * 10 ** decimals());
+        _mint(initialAuthority, 1000000000 * 10 ** decimals());
     }
 
     function pause() public restricted {
