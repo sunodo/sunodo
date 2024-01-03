@@ -1,4 +1,6 @@
+import { CarWriter } from "@ipld/car/writer";
 import cliProgress from "cli-progress";
+import { filesFromPaths } from "files-from-path";
 import fs from "fs-extra";
 import {
     createDirectoryEncoderStream,
@@ -6,9 +8,10 @@ import {
     FileLike,
 } from "ipfs-car";
 import { create } from "kubo-rpc-client";
+import { CID } from "multiformats/cid";
 import path from "path";
 import progress from "progress-stream";
-import { Readable } from "stream";
+import { Readable, Writable } from "stream";
 import zlib from "zlib";
 
 import { IPFSOptions } from "./deploy.js";
@@ -34,6 +37,37 @@ export const testConnection = async (
             return "failed";
         }
     }
+};
+
+export const packageDirectory = async (
+    directory: string,
+    output: string,
+): Promise<string> => {
+    const files = await filesFromPaths(directory);
+
+    // Root CID written in CAR file header before it is updated with the real root CID.
+    const placeholderCID = CID.parse(
+        "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi",
+    );
+    let rootCID: CID;
+    await createDirectoryEncoderStream(files)
+        .pipeThrough(
+            new TransformStream({
+                transform: (block, controller) => {
+                    rootCID = block.cid as CID;
+                    controller.enqueue(block);
+                },
+            }),
+        )
+        .pipeThrough(new CAREncoderStream([placeholderCID]))
+        .pipeTo(Writable.toWeb(fs.createWriteStream(output)));
+
+    // update roots in CAR header
+    const fd = await fs.promises.open(output, "r+");
+    await CarWriter.updateRootsInFile(fd, [rootCID!]);
+    await fd.close();
+
+    return rootCID!.toString();
 };
 
 export const importDirectory = async (
