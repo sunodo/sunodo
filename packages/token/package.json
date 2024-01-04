@@ -30,11 +30,11 @@
     },
     "devDependencies": {
         "@safe-global/safe-singleton-factory": "^1",
-        "viem": "^1",
         "hardhat": "^2",
         "hardhat-deploy": "^0.11",
         "npm-run-all": "^4",
-        "typescript": "^5"
+        "typescript": "^5",
+        "viem": "^1"
     },
     "dependencies": {
         "@openzeppelin/contracts": "5.0.1"
