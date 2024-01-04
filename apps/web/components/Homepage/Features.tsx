@@ -1,18 +1,18 @@
 import {
+    Box,
     Container,
-    Title,
-    Text,
     Grid,
     GridCol,
-    Box,
-    Stack,
     Group,
     Space,
+    Stack,
+    Text,
+    Title,
 } from "@mantine/core";
-
 import { IconSquareRoundedX } from "@tabler/icons-react";
-import { Section } from "@/components/Section/Section";
+
 import { Card } from "../Card/Card";
+import { Section } from "../Section/Section";
 
 export function Features() {
     return (

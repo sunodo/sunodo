@@ -1,14 +1,21 @@
 "use client";
 
-import { Container, Stack, Title, Group, Button, Text } from "@mantine/core";
-
-import NextImage from "next/image";
-import { Image } from "@mantine/core";
-import Link from "next/link";
-import { IconChevronRight } from "@tabler/icons-react";
-import classes from "./Hero.module.css";
-import { BelowHeaderWrapper } from "@/components/BelowHeaderWrapper/BelowHeaderWrapper";
+import {
+    Button,
+    Container,
+    Group,
+    Image,
+    Stack,
+    Text,
+    Title,
+} from "@mantine/core";
 import { useMouse } from "@mantine/hooks";
+import { IconChevronRight } from "@tabler/icons-react";
+import NextImage from "next/image";
+import Link from "next/link";
+
+import { BelowHeaderWrapper } from "../../BelowHeaderWrapper/BelowHeaderWrapper";
+import classes from "./Hero.module.css";
 
 export function Hero() {
     const { ref, x, y } = useMouse();

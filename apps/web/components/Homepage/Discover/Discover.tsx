@@ -1,21 +1,22 @@
 import {
-    Container,
-    Title,
-    Text,
-    Paper,
     Box,
-    Stack,
+    Container,
     Flex,
-    Space,
-    Group,
     Grid,
     GridCol,
+    Image,
+    Paper,
+    Space,
+    Stack,
+    Text,
+    Title,
 } from "@mantine/core";
-import { Section } from "@/components/Section/Section";
-import { Card } from "../../Card/Card";
-import classes from "./Discover.module.css";
 import NextImage from "next/image";
-import { Image } from "@mantine/core";
+
+import { Card } from "../../Card/Card";
+import { Section } from "../../Section/Section";
+import classes from "./Discover.module.css";
+
 export function Discover() {
     return (
         <Section>

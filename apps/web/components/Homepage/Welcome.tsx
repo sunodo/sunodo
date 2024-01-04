@@ -1,21 +1,22 @@
 import {
-    Container,
-    Title,
+    Box,
     Button,
-    Text,
+    Center,
+    Container,
     Grid,
     GridCol,
-    Box,
+    Group,
+    Image,
     Paper,
     Stack,
-    Group,
-    Center,
+    Text,
+    Title,
 } from "@mantine/core";
-
-import { Section } from "@/components/Section/Section";
-import Link from "next/link";
 import NextImage from "next/image";
-import { Image } from "@mantine/core";
+import Link from "next/link";
+
+import { Section } from "../Section/Section";
+
 export function Welcome() {
     return (
         <Section id="meet-sunodo">

@@ -1,9 +1,10 @@
 "use client";
 
-import { useDisclosure } from "@mantine/hooks";
 import { Burger, Drawer, Group, Stack } from "@mantine/core";
-import { NavigationMenu } from "./NavigationMenu";
+import { useDisclosure } from "@mantine/hooks";
 import Image from "next/image";
+
+import { NavigationMenu } from "./NavigationMenu";
 
 type Props = {
     isDark?: boolean;

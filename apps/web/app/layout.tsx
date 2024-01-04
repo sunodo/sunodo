@@ -1,15 +1,13 @@
-import "@mantine/core/styles.css";
-import classes from "./layout.module.css";
-
-import { Plus_Jakarta_Sans } from "next/font/google";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+import "@mantine/core/styles.css";
+import { Plus_Jakarta_Sans } from "next/font/google";
 
-import { theme, variablesResolver } from "@/theme/theme";
-
-import { Header } from "@/components/Header/Header";
-import { Footer } from "@/components/Footer";
-import { Content } from "@/components/Content/Content";
-import { Gtm } from "@/components/Gtm";
+import { Content } from "../components/Content/Content";
+import { Footer } from "../components/Footer";
+import { Gtm } from "../components/Gtm";
+import { Header } from "../components/Header/Header";
+import { theme, variablesResolver } from "../theme/theme";
+import classes from "./layout.module.css";
 
 export const metadata = {
     title: "Sunodo",
