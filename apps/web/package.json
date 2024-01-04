@@ -14,9 +14,12 @@
         "@mantine/hooks": "^7",
         "@sunodo/ui": "*",
         "@tabler/icons-react": "^2",
+        "@rainbow-me/rainbowkit": "^1",
         "next": "^14",
         "react": "^18",
-        "react-dom": "^18"
+        "react-dom": "^18",
+        "viem": "^1",
+        "wagmi": "^1"
     },
     "devDependencies": {
         "@babel/core": "^7",
