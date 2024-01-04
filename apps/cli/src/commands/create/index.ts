@@ -1,7 +1,5 @@
-import { Address } from "abitype";
 import { Command, Flags, Interfaces } from "@oclif/core";
 import { PublicClient, WalletClient } from "viem";
-import ora from "ora";
 
 import { SunodoCommand } from "../../sunodoCommand.js";
 import createClients, { supportedChains } from "../../wallet.js";

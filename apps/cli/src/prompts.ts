@@ -99,18 +99,20 @@ export const bytesInput = async (
         ],
     });
     switch (encoding) {
-        case "hex":
+        case "hex": {
             const valueHex = await hexInput({
                 ...config,
                 message: `${config.message} (as hex-string)`,
             });
             return valueHex as `0x${string}`;
-        case "string":
+        }
+        case "string": {
             const valueString = await input({
                 ...config,
                 message: `${config.message} (as string)`,
             });
             return stringToHex(valueString);
+        }
         case "abi":
             return await abiParamsInput(config);
         default:
