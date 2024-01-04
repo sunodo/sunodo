@@ -1,18 +1,19 @@
 import {
+    Box,
     Container,
-    Title,
-    Text,
     Grid,
     GridCol,
-    Box,
-    Stack,
     Group,
+    Image,
+    Stack,
+    Text,
+    Title,
 } from "@mantine/core";
-
-import { Image } from "@mantine/core";
-import { Section } from "@/components/Section/Section";
-import { Card } from "../Card/Card";
 import NextImage from "next/image";
+
+import { Card } from "../Card/Card";
+import { Section } from "../Section/Section";
+
 export function Gaming() {
     return (
         <Section>

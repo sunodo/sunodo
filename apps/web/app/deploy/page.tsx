@@ -1,10 +1,10 @@
 import { Box, Button, Container, Stack, Text, Title } from "@mantine/core";
-import { Section } from "@/components/Section/Section";
+import { Metadata } from "next";
 import Link from "next/link";
 
+import { Card } from "../../components/Card/Card";
+import { Section } from "../../components/Section/Section";
 import classes from "./page.module.css";
-import { Card } from "@/components/Card/Card";
-import { Metadata } from "next";
 
 export const metadata: Metadata = {
     title: "Sunodo - Deploy",

@@ -1,8 +1,8 @@
-import { Container, Title, Text, Button, Stack } from "@mantine/core";
-
-import { Section } from "@/components/Section/Section";
-import { Card } from "../Card/Card";
+import { Button, Container, Stack, Title } from "@mantine/core";
 import Link from "next/link";
+
+import { Card } from "../Card/Card";
+import { Section } from "../Section/Section";
 
 export function CtaGetStarted() {
     return (
