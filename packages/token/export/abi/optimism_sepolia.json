@@ -1,6 +1,6 @@
 {
-  "name": "sepolia",
-  "chainId": "11155111",
+  "name": "optimism_sepolia",
+  "chainId": "11155420",
   "contracts": {
     "SunodoToken": {
       "address": "0xE15E2ADD14c26b9ae1E735bF5B444CCB11B0bd15",
