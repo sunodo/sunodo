@@ -1,15 +1,15 @@
 .section {
-  padding: 3rem 0;
+    padding: 3rem 0;
 
-  @media (min-width: $mantine-breakpoint-sm) {
-    padding: 4rem 0;
-  }
+    @media (min-width: $mantine-breakpoint-sm) {
+        padding: 4rem 0;
+    }
 
-  @media (min-width: $mantine-breakpoint-lg) {
-    padding: 8rem 0;
-  }
+    @media (min-width: $mantine-breakpoint-lg) {
+        padding: 8rem 0;
+    }
 }
 
 .section + .section {
-  padding-top: 0;
+    padding-top: 0;
 }
