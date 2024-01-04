@@ -3,12 +3,14 @@
 import {
     CSSVariablesResolver,
     Container,
+    DEFAULT_THEME,
     Title,
     createTheme,
+    mergeMantineTheme,
 } from "@mantine/core";
-import { variantColorResolver } from "./variantColorResolver";
 import { colors } from "./colors";
 import { variables } from "./variables";
+import { variantColorResolver } from "./variantColorResolver";
 
 export const variablesResolver: CSSVariablesResolver = () => ({
     variables,
@@ -19,7 +21,7 @@ export const variablesResolver: CSSVariablesResolver = () => ({
     dark: {},
 });
 
-export const theme = createTheme({
+const themeOverride = createTheme({
     primaryColor: "primary",
     primaryShade: 6,
     white: "#fff",
@@ -83,3 +85,5 @@ export const theme = createTheme({
 
     variantColorResolver,
 });
+
+export const theme = mergeMantineTheme(DEFAULT_THEME, themeOverride);
