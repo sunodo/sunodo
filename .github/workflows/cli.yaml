@@ -15,7 +15,7 @@ on:
             - .github/workflows/cli.yaml
             - apps/cli/**
             - packages/contracts/**
-            - packages/eslint-config-custom/**
+            - packages/eslint-config/**
             - packages/tsconfig/**
 concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
