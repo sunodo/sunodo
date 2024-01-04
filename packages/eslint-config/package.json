@@ -1,0 +1,24 @@
+{
+    "name": "@sunodo/eslint-config",
+    "version": "0.0.0",
+    "main": "index.js",
+    "license": "Apache-2.0",
+    "private": true,
+    "devDependencies": {
+        "@typescript-eslint/parser": "^6",
+        "@typescript-eslint/eslint-plugin": "^6",
+        "@vercel/style-guide": "^5",
+        "eslint-config-turbo": "^1",
+        "eslint-config-prettier": "^9",
+        "eslint-plugin-only-warn": "^1",
+        "typescript": "^5"
+    },
+    "files": [
+        "library.js",
+        "next.js",
+        "react-internal.js"
+    ],
+    "publishConfig": {
+        "access": "public"
+    }
+}
