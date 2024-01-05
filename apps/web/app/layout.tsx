@@ -1,6 +1,5 @@
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
-import { Plus_Jakarta_Sans } from "next/font/google";
 import "./global.css";
 
 import { Content } from "../components/Content/Content";
@@ -18,15 +17,9 @@ export const metadata = {
         "The easiest way to build, deploy and manage Cartesi Rollups DApps",
 };
 
-const font = Plus_Jakarta_Sans({
-    display: "swap",
-    weight: ["400", "700"],
-    subsets: ["latin-ext"],
-});
-
 export default function RootLayout({ children }: { children: any }) {
     return (
-        <html lang="en" className={font.className}>
+        <html lang="en">
             <head>
                 <ColorSchemeScript defaultColorScheme="light" />
                 <link rel="shortcut icon" href="/favicon.svg" />
