@@ -37,7 +37,7 @@ services:
                 "--providers.file.watch=true"
             ]
         ports:
-            - 8080:8088
+            - ${SUNODO_LISTEN_PORT:-8080}:8088
         volumes:
             - traefik-conf:/etc/traefik/conf.d
 

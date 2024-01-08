@@ -30,6 +30,10 @@ export default class Run extends Command {
             default: false,
             char: "v",
         }),
+        "listen-port": Flags.integer({
+            description: "port to listen for incoming connections",
+            default: 8080,
+        }),
     };
 
     public async run(): Promise<void> {
@@ -66,6 +70,7 @@ export default class Run extends Command {
         // setup the environment variable used in docker compose
         const blockInterval = flags["block-time"];
         const epochDuration = flags["epoch-duration"];
+        const listenPort = flags["listen-port"];
         const env: NodeJS.ProcessEnv = {
             ANVIL_VERBOSITY: flags.verbose ? "--steps-tracing" : "--silent",
             BLOCK_TIME: blockInterval.toString(),
@@ -77,6 +82,7 @@ export default class Run extends Command {
             S6_VERBOSITY: flags.verbose ? "2" : "0",
             SERVER_MANAGER_LOG_LEVEL: flags.verbose ? "info" : "error",
             SUNODO_BIN_PATH: binPath,
+            SUNODO_LISTEN_PORT: listenPort.toString(),
         };
 
         // validator

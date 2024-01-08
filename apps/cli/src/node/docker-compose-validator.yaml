@@ -28,8 +28,8 @@ services:
     prompt:
         image: debian:bookworm-slim
         environment:
-            PROMPT_TXT_02_GRAPHQL: "GraphQL running at http://localhost:8080/graphql"
-            PROMPT_TXT_03_INSPECT: "Inspect running at http://localhost:8080/inspect/"
+            PROMPT_TXT_02_GRAPHQL: "GraphQL running at http://localhost:${SUNODO_LISTEN_PORT}/graphql"
+            PROMPT_TXT_03_INSPECT: "Inspect running at http://localhost:${SUNODO_LISTEN_PORT}/inspect/"
 
     traefik-config-generator:
         environment:
