@@ -5,22 +5,19 @@ services:
         image: postgres:15-alpine
         command: ["createdb", "squid"]
         environment:
-            PGHOST: database
-            PGPORT: 5432
-            PGUSER: postgres
-            PGPASSWORD: password
-            PGDATABASE: postgres
-        depends_on:
-            database:
-                condition: service_healthy
+            PGHOST: ${SUNODO_DB_HOST:-database}
+            PGPORT: ${SUNODO_DB_PORT:-5432}
+            PGUSER: ${SUNODO_DB_USER:-postgres}
+            PGPASSWORD: ${SUNODO_DB_PASS:-password}
+            PGDATABASE: ${SUNODO_DB_NAME:-postgres}
 
     explorer_api:
         image: cartesi/rollups-explorer-api:0.1.0
         environment:
-            DB_NAME: squid
-            DB_PORT: 5432
-            DB_HOST: database
-            DB_PASS: password
+            DB_NAME: ${SUNODO_SQUID_DB_NAME:-squid}
+            DB_PORT: ${SUNODO_DB_PORT:-5432}
+            DB_HOST: ${SUNODO_DB_HOST:-database}
+            DB_PASS: ${SUNODO_DB_PASS:-password}
             GQL_PORT: 4350
         expose:
             - 4350
@@ -32,12 +29,12 @@ services:
     squid_processor:
         image: cartesi/rollups-explorer-api:0.1.0
         environment:
-            CHAIN_ID: 31337
-            RPC_ENDPOINT: http://anvil:8545
-            DB_NAME: squid
-            DB_PORT: 5432
-            DB_HOST: database
-            DB_PASS: password
+            CHAIN_ID: ${CHAIN_ID:-31337}
+            RPC_ENDPOINT: ${RPC_URL:-http://anvil:8545}
+            DB_NAME: ${SUNODO_SQUID_DB_NAME:-squid}
+            DB_PORT: ${SUNODO_DB_PORT:-5432}
+            DB_HOST: ${SUNODO_DB_HOST:-database}
+            DB_PASS: ${SUNODO_DB_PASS:-password}
         command: ["sqd", "process:prod"]
         depends_on:
             database_creator:
