@@ -51,7 +51,7 @@ services:
     prompt:
         image: debian:bookworm-slim
         environment:
-            PROMPT_TXT_04_EXPLORER: "Explorer running at http://localhost:8080/explorer/"
+            PROMPT_TXT_04_EXPLORER: "Explorer running at http://localhost:${SUNODO_LISTEN_PORT}/explorer/"
 
     traefik-config-generator:
         environment:

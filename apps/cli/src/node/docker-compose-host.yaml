@@ -46,4 +46,4 @@ services:
 
     prompt:
         environment:
-            PROMPT_TXT_05_HOST_RUNNER: "Host Runner running at http://localhost:8080/host-runner"
+            PROMPT_TXT_05_HOST_RUNNER: "Host Runner running at http://localhost:${SUNODO_LISTEN_PORT}/host-runner"
