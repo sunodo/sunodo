@@ -48,6 +48,11 @@ services:
             database_creator:
                 condition: service_completed_successfully
 
+    prompt:
+        image: debian:bookworm-slim
+        environment:
+            PROMPT_TXT_04_EXPLORER: "Explorer running at http://localhost:8080/explorer/"
+
     traefik-config-generator:
         environment:
             TRAEFIK_CONFIG_EXPLORER_API: |
