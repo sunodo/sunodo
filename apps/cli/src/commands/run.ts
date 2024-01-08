@@ -82,6 +82,9 @@ export default class Run extends Command {
         // validator
         const composeFiles = ["docker-compose-validator.yaml"];
 
+        // prompt
+        composeFiles.push("docker-compose-prompt.yaml");
+
         // database
         composeFiles.push("docker-compose-database.yaml");
 

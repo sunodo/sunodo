@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+    prompt:
+        image: debian:bookworm-slim
+        environment:
+            PROMPT_TXT_10_EXIT: "Press Ctrl+C to stop the node"
+        command:
+            - /bin/bash
+            - -c
+            - |
+                for txt_file in $${!PROMPT_TXT_*}
+                do
+                    declare -n txt_content=$$txt_file
+                    _txt_file=$${txt_file:11}
+                    echo "$$txt_content"
+                done
+                trap exit INT TERM; sleep infinity & wait
+        working_dir: /prompt

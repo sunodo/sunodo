@@ -47,5 +47,10 @@ services:
         volumes:
             - blockchain-data:/usr/share/sunodo
 
+    prompt:
+        image: debian:bookworm-slim
+        environment:
+            PROMPT_TXT_01_ANVIL: "Anvil running at http://localhost:8545"
+
 volumes:
     blockchain-data: {}
