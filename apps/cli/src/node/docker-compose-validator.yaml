@@ -20,6 +20,11 @@ services:
         env_file:
             - ${SUNODO_BIN_PATH}/node/default.env
 
+    proxy:
+        depends_on:
+            validator:
+                condition: service_healthy
+
     prompt:
         image: debian:bookworm-slim
         environment:

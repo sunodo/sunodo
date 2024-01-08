@@ -19,8 +19,6 @@ services:
     proxy:
         image: traefik:v2.10
         depends_on:
-            validator:
-                condition: service_healthy
             traefik-config-generator:
                 condition: service_completed_successfully
         healthcheck:
@@ -42,6 +40,11 @@ services:
             - 8080:8088
         volumes:
             - traefik-conf:/etc/traefik/conf.d
+
+    prompt:
+        depends_on:
+            proxy:
+                condition: service_healthy
 
 volumes:
     traefik-conf: {}
