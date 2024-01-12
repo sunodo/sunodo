@@ -109,7 +109,7 @@ export function Welcome() {
                     <GridCol span={{ base: 12, sm: 6, md: 4 }}>
                         <Group wrap="nowrap" align="flex-start" gap="lg">
                             <Paper
-                                bg="primary.0"
+                                bg="brand.0"
                                 p="md"
                                 radius="lg"
                                 style={{
@@ -140,7 +140,7 @@ export function Welcome() {
                     <GridCol span={{ base: 12, sm: 6, md: 4 }}>
                         <Group wrap="nowrap" align="flex-start" gap="lg">
                             <Paper
-                                bg="primary.0"
+                                bg="brand.0"
                                 p="md"
                                 radius="lg"
                                 style={{
@@ -171,7 +171,7 @@ export function Welcome() {
                     <GridCol span={{ base: 12, sm: 6, md: 4 }}>
                         <Group wrap="nowrap" align="flex-start" gap="lg">
                             <Paper
-                                bg="primary.0"
+                                bg="brand.0"
                                 p="md"
                                 radius="lg"
                                 style={{
@@ -202,7 +202,7 @@ export function Welcome() {
                     <GridCol span={{ base: 12, sm: 6, md: 4 }}>
                         <Group wrap="nowrap" align="flex-start" gap="lg">
                             <Paper
-                                bg="primary.0"
+                                bg="brand.0"
                                 p="md"
                                 radius="lg"
                                 style={{
@@ -231,7 +231,7 @@ export function Welcome() {
                     <GridCol span={{ base: 12, sm: 6, md: 4 }}>
                         <Group wrap="nowrap" align="flex-start" gap="lg">
                             <Paper
-                                bg="primary.0"
+                                bg="brand.0"
                                 p="md"
                                 radius="lg"
                                 style={{
@@ -261,7 +261,7 @@ export function Welcome() {
                     <GridCol span={{ base: 12, sm: 6, md: 4 }}>
                         <Group wrap="nowrap" align="flex-start" gap="lg">
                             <Paper
-                                bg="primary.0"
+                                bg="brand.0"
                                 p="md"
                                 radius="lg"
                                 style={{

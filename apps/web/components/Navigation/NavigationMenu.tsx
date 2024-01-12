@@ -29,7 +29,7 @@ export function NavigationMenu({ isDark }: Props) {
                 key={label}
                 component={Link}
                 href={href}
-                variant="filled"
+                variant="secondary"
                 c={isDark ? "gray.9" : ""}
                 bg={isDark ? "white" : ""}
                 ml={{

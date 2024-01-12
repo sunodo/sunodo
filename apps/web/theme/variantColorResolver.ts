@@ -11,16 +11,25 @@ export const variantColorResolver: VariantColorsResolver = (input) => {
         theme: input.theme,
     });
 
-    // Override button to use dark text on primary color
-    if (
-        parsedColor.isThemeColor &&
-        parsedColor.color === "primary" &&
-        input.variant === "filled"
-    ) {
-        return {
-            ...defaultResolvedColors,
-            color: "var(--mantine-color-black)",
-        };
+    // Add custom color for a secondary based on the brand color
+    if (input.variant === "secondary") {
+        if (parsedColor.color === "brand") {
+            return {
+                ...defaultResolvedColors,
+                color: "var(--mantine-color-black)",
+                hover: "var(--mantine-color-brand-7)",
+                background: "var(--mantine-color-brand-6)",
+            };
+        }
+
+        if (parsedColor.color === "dark") {
+            return {
+                ...defaultResolvedColors,
+                color: "var(--mantine-color-white)",
+                hover: "var(--mantine-color-dark-4)",
+                background: "var(--mantine-color-dark-3)",
+            };
+        }
     }
 
     return defaultResolvedColors;
