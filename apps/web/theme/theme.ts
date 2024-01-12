@@ -4,54 +4,40 @@ import {
     CSSVariablesResolver,
     Container,
     DEFAULT_THEME,
+    Progress,
+    Rating,
+    SegmentedControl,
+    Slider,
+    Stepper,
+    Switch,
     Title,
     createTheme,
     mergeMantineTheme,
 } from "@mantine/core";
 import { colors } from "./colors";
+import { typography } from "./typography";
 import { variables } from "./variables";
 import { variantColorResolver } from "./variantColorResolver";
 
 export const variablesResolver: CSSVariablesResolver = () => ({
     variables,
     light: {
-        "--mantine-color-text": "var(--mantine-color-gray-7)",
-        "--mantine-color-anchor": "var(--mantine-color-primary-9)",
+        "--mantine-color-text": "#737277",
+        "--mantine-color-anchor": "var(--mantine-color-brand-9)",
     },
     dark: {},
 });
 
 const themeOverride = createTheme({
-    primaryColor: "primary",
-    primaryShade: 6,
+    primaryColor: "brand",
+    primaryShade: 9,
     white: "#fff",
-    black: "var(--mantine-color-gray-9)",
+    black: "#1A191C",
     defaultRadius: "sm",
 
-    colors,
-
     fontFamily: "inherit",
-    headings: {
-        fontFamily: "inherit",
-        sizes: {
-            h1: {
-                fontSize: "var(--font-size-h1)",
-                lineHeight: "1.2",
-            },
-            h2: { fontSize: "var(--font-size-h2)", lineHeight: "1.2" },
-            h3: { fontSize: "var(--font-size-h3)", lineHeight: "1.2" },
-            h4: { fontSize: "var(--font-size-h4)" },
-            h5: { fontSize: "var(--font-size-h5)" },
-        },
-    },
-
-    fontSizes: {
-        h1: "var(--font-size-h1)",
-        h2: "var(--font-size-h2)",
-        h3: "var(--font-size-h3)",
-        h4: "var(--font-size-h4)",
-        h5: "var(--font-size-h5)",
-    },
+    ...typography,
+    colors,
 
     // TODO: not working in gap prop... Investigate
     spacing: {
@@ -78,6 +64,47 @@ const themeOverride = createTheme({
             styles: {
                 root: {
                     color: "var(--mantine-color-gray-9)",
+                },
+            },
+        }),
+        Rating: Rating.extend({
+            defaultProps: {
+                color: "var(--mantine-color-brand-6)",
+            },
+        }),
+        SegmentedControl: SegmentedControl.extend({
+            styles: {
+                root: {
+                    backgroundColor: "var(--mantine-color-brand-0)",
+                },
+            },
+        }),
+        Slider: Slider.extend({
+            styles: {
+                root: {
+                    "--slider-track-bg": "var(--mantine-color-brand-0)",
+                    "--slider-color": "var(--mantine-color-brand-9)",
+                },
+            },
+        }),
+        Switch: Switch.extend({
+            styles: {
+                root: {
+                    "--mantine-color-gray-2": "var(--mantine-color-brand-0)",
+                },
+            },
+        }),
+        Stepper: Stepper.extend({
+            styles: {
+                root: {
+                    "--mantine-color-gray-1": "var(--mantine-color-brand-0)",
+                },
+            },
+        }),
+        Progress: Progress.extend({
+            styles: {
+                root: {
+                    "--mantine-color-gray-2": "var(--mantine-color-brand-0)",
                 },
             },
         }),

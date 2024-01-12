@@ -20,7 +20,7 @@ export default function LaunchpadPage() {
                     <Title order={1} fz="h2" ta="center" mb={"xl"}>
                         Deploy
                     </Title>
-                    <Card bg="primary.0">
+                    <Card bg="brand.0">
                         <Stack align="center">
                             <Box>
                                 <svg
@@ -50,7 +50,6 @@ export default function LaunchpadPage() {
                                 you asap.
                             </Text>
                             <Button
-                                variant="filled"
                                 color="dark"
                                 size="lg"
                                 mt="lg"

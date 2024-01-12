@@ -1,6 +1,6 @@
-import { MantineColorsTuple, DefaultMantineColor } from "@mantine/core";
+import { DefaultMantineColor, MantineColorsTuple } from "@mantine/core";
 
-type ExtendedCustomColors = "primary" | DefaultMantineColor;
+type ExtendedCustomColors = "brand" | DefaultMantineColor;
 type ExtendedCustomFontSizes = "h1" | "h2" | "h3" | "h4" | "h5";
 
 declare module "@mantine/core" {

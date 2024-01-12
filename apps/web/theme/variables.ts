@@ -21,4 +21,5 @@ export const variables = {
         "clamp(1.25rem, calc(1.25rem + ((1vw - 0.36rem) * 0.2404)), 1.375rem)",
     "--font-size-h5":
         "clamp(1rem, calc(1rem + ((1vw - 0.36rem) * 0.2404)), 1.125rem)",
+    "--font-size-h6": "0.875rem",
 };

@@ -55,7 +55,7 @@ export function Discover() {
                             }}
                             radius="lg"
                         >
-                            <Title order={4} c="primary">
+                            <Title order={4} c="brand.6">
                                 1000x more computation
                             </Title>
                             <Text>
@@ -80,7 +80,7 @@ export function Discover() {
                                 align={"center"}
                             >
                                 <Box>
-                                    <Title order={4} c="primary">
+                                    <Title order={4} c="brand.6">
                                         Develop with the tools that you love
                                     </Title>
                                     <Text>
@@ -142,7 +142,7 @@ export function Discover() {
                                             lg: "xl",
                                         }}
                                     >
-                                        <Title order={4} c="primary">
+                                        <Title order={4} c="brand.6">
                                             Flexible deployment
                                         </Title>
                                         <Text>

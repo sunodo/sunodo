@@ -38,7 +38,7 @@ export function Hero() {
                     <Stack gap="lg" align="center">
                         <Title order={1} ta="center" c="white">
                             Deploy{" "}
-                            <Text span c="primary" fz="inherit" fw="inherit">
+                            <Text span c="brand.6" fz="inherit" fw="inherit">
                                 verifiable Linux VMs
                             </Text>{" "}
                             with a click of a button
@@ -58,8 +58,7 @@ export function Hero() {
                             <Button
                                 component={Link}
                                 href="/deploy"
-                                variant="filled"
-                                color="primary"
+                                variant="secondary"
                                 size="lg"
                             >
                                 Get started
