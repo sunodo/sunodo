@@ -6,6 +6,7 @@ import {
 
 export const variantColorResolver: VariantColorsResolver = (input) => {
     const defaultResolvedColors = defaultVariantColorsResolver(input);
+
     const parsedColor = parseThemeColor({
         color: input.color || input.theme.primaryColor,
         theme: input.theme,
@@ -22,12 +23,12 @@ export const variantColorResolver: VariantColorsResolver = (input) => {
             };
         }
 
-        if (parsedColor.color === "dark") {
+        if (parsedColor.color === "gray" || parsedColor.color === "dark") {
             return {
                 ...defaultResolvedColors,
                 color: "var(--mantine-color-white)",
                 hover: "var(--mantine-color-dark-4)",
-                background: "var(--mantine-color-dark-3)",
+                background: "var(--mantine-color-dark-5)",
             };
         }
     }

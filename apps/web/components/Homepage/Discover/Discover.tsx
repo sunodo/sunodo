@@ -28,14 +28,14 @@ export function Discover() {
                         lg: "3xl",
                     }}
                 >
-                    <Title order={2} ta="center">
+                    <Title order={2} ta="center" maw={"25ch"} mx={"auto"}>
                         Go beyond simple smart contracts and build complex
                         systems
                     </Title>
                 </Stack>
-                <Card isDark>
+                <Card isDark filled>
                     <Box>
-                        <Title order={3} mb="lg" c="white" ta="center">
+                        <Title order={3} mb="lg" ta="center" c="white">
                             Powered by Linux, and the entire Ethereum ecosystem
                         </Title>
                         <Text ta="center">
@@ -55,13 +55,16 @@ export function Discover() {
                             }}
                             radius="lg"
                         >
-                            <Title order={4} c="brand.6">
-                                1000x more computation
-                            </Title>
-                            <Text>
-                                Build more complex DApps using app-specific
-                                rollups without facing block space constraints.
-                            </Text>
+                            <Stack gap="xs">
+                                <Title order={4} c="brand.6">
+                                    1000x more computation
+                                </Title>
+                                <Text>
+                                    Build more complex DApps using app-specific
+                                    rollups without facing block space
+                                    constraints.
+                                </Text>
+                            </Stack>
                         </Paper>
                         <Paper
                             className={classes.card}
@@ -79,7 +82,7 @@ export function Discover() {
                                 gap={"xl"}
                                 align={"center"}
                             >
-                                <Box>
+                                <Stack gap="xs">
                                     <Title order={4} c="brand.6">
                                         Develop with the tools that you love
                                     </Title>
@@ -89,7 +92,7 @@ export function Discover() {
                                         programming languages compatible with
                                         Linux out of the box.
                                     </Text>
-                                </Box>
+                                </Stack>
                                 <Grid>
                                     {[
                                         "cpp",
@@ -135,7 +138,8 @@ export function Discover() {
                                         sm: 6,
                                     }}
                                 >
-                                    <Box
+                                    <Stack
+                                        gap="xs"
                                         className={classes.withBorderInCard}
                                         pr={{
                                             base: "lg",
@@ -151,7 +155,7 @@ export function Discover() {
                                             abstracting away complexities from
                                             developers.
                                         </Text>
-                                    </Box>
+                                    </Stack>
                                 </GridCol>
                                 <GridCol
                                     span={{

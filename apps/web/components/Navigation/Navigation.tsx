@@ -2,10 +2,10 @@
 
 import { Burger, Drawer, Group, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import cx from "clsx";
 import Image from "next/image";
-
-import { NavigationMenu } from "./NavigationMenu";
-
+import { NavigationMenu } from "../NavigationMenu/NavigationMenu";
+import classes from "./Navigation.module.css";
 type Props = {
     isDark?: boolean;
 };
@@ -23,7 +23,7 @@ export function Navigation({ isDark }: Props) {
                 hiddenFrom="sm"
                 onClick={open}
                 aria-label="Toggle navigation"
-                color={isDark ? "white" : "dark"}
+                className={cx(isDark ? classes.dark : classes.light)}
             />
             <Drawer opened={opened} onClose={close}>
                 <Stack>

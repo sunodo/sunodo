@@ -1,10 +1,11 @@
 import { Divider, Paper, PaperProps } from "@mantine/core";
+import cx from "clsx";
 import classes from "./Card.module.css";
-
 type Props = {
     children?: React.ReactNode;
     withBorder?: boolean;
     isDark?: boolean;
+    filled?: boolean;
 };
 
 const padding = {
@@ -20,17 +21,21 @@ export function Card({
     children,
     withBorder,
     isDark,
+    filled,
     ...rest
 }: Props & PaperProps) {
-    const { bg, c, className, ...other } = rest;
+    const { className, ...other } = rest;
 
     return (
         <Paper
             radius="xl"
             p={padding}
-            bg={isDark ? "black" : bg}
-            c={isDark ? "gray.0" : c}
-            className={withBorder ? classes.border : className}
+            className={cx(
+                filled && isDark && classes.dark,
+                filled && !isDark && classes.light,
+                withBorder && classes.border,
+                className,
+            )}
             {...other}
         >
             {children}

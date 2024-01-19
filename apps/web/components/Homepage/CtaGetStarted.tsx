@@ -8,7 +8,7 @@ export function CtaGetStarted() {
     return (
         <Section>
             <Container>
-                <Card bg="brand.0">
+                <Card filled>
                     <Stack
                         gap="xl"
                         align="center"
@@ -25,7 +25,7 @@ export function CtaGetStarted() {
                         <Button
                             component={Link}
                             href="/deploy"
-                            color="dark"
+                            color="gray"
                             size="lg"
                         >
                             Get started

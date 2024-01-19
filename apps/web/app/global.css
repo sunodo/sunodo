@@ -1,0 +1,89 @@
+.mantine-Button-root {
+    @mixin dark {
+        --mantine-color-gray-filled: var(--mantine-color-dark-4);
+    }
+}
+
+.mantine-Title-root {
+    @mixin light {
+        color: var(--mantine-color-dark-9);
+    }
+
+    @mixin dark {
+        color: var(--mantine-color-white);
+    }
+}
+
+.mantine-Rating-starSymbol {
+    @mixin light {
+        --rating-color: var(--mantine-color-brand-9);
+    }
+
+    @mixin dark {
+        --rating-color: var(--mantine-color-brand-6);
+    }
+
+    &:not([data-filled]) {
+        @mixin light {
+            --_star-color: var(--mantine-color-brand-0);
+            fill: darken(var(--_star-color), 5%);
+            stroke: darken(var(--_star-color), 5%);
+        }
+    }
+}
+
+.mantine-SegmentedControl-root {
+    @mixin light {
+        background-color: var(--mantine-color-brand-0);
+    }
+
+    @mixin dark {
+        background-color: var(--mantine-color-dark-9);
+    }
+}
+
+.mantine-Slider-root {
+    @mixin light {
+        --slider-track-bg: var(--mantine-color-brand-0) !important;
+
+        --slider-track-disabled-bg: var(--mantine-color-brand-2);
+        --slider-color: var(--mantine-color-brand-9);
+    }
+
+    @mixin dark {
+        --slider-track-bg: var(--mantine-color-dark-9);
+        --slider-color: var(--mantine-color-brand-9);
+    }
+}
+
+.mantine-Slider-mark {
+    @mixin light {
+        border-color: var(--mantine-color-brand-9);
+    }
+}
+
+.mantine-Switch-root {
+    .mantine-Switch-input:not(:checked) + .mantine-Switch-track {
+        @mixin light {
+            background-color: var(--mantine-color-brand-0);
+        }
+
+        @mixin dark {
+            background-color: var(--mantine-color-dark-9);
+        }
+    }
+}
+
+.mantine-Stepper-root {
+    @mixin light {
+        .mantine-Stepper-stepIcon:not([data-completed]) {
+            background-color: var(--mantine-color-brand-0);
+        }
+    }
+}
+
+.mantine-Progress-root {
+    @mixin light {
+        background-color: var(--mantine-color-brand-0);
+    }
+}

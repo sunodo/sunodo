@@ -1,7 +1,6 @@
 import { Box, Button, Container, Stack, Text, Title } from "@mantine/core";
 import { Metadata } from "next";
 import Link from "next/link";
-
 import { Card } from "../../components/Card/Card";
 import { Section } from "../../components/Section/Section";
 import classes from "./page.module.css";
@@ -20,7 +19,7 @@ export default function LaunchpadPage() {
                     <Title order={1} fz="h2" ta="center" mb={"xl"}>
                         Deploy
                     </Title>
-                    <Card bg="brand.0">
+                    <Card filled>
                         <Stack align="center">
                             <Box>
                                 <svg
@@ -50,7 +49,7 @@ export default function LaunchpadPage() {
                                 you asap.
                             </Text>
                             <Button
-                                color="dark"
+                                color="gray"
                                 size="lg"
                                 mt="lg"
                                 component={Link}

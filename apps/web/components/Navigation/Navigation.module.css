@@ -1,0 +1,19 @@
+.dark {
+    @mixin dark {
+        --burger-color: var(--mantine-color-white);
+    }
+
+    @mixin light {
+        --burger-color: var(--mantine-color-white);
+    }
+}
+
+.light {
+    @mixin light {
+        --burger-color: var(--mantine-color-black);
+    }
+
+    @mixin dark {
+        --burger-color: var(--mantine-color-white);
+    }
+}
