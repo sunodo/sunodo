@@ -1,5 +1,7 @@
 import { Button } from "@mantine/core";
+import cx from "clsx";
 import Link from "next/link";
+import classes from "./NavigationMenu.module.css";
 
 type Props = {
     isDark?: boolean;
@@ -47,7 +49,7 @@ export function NavigationMenu({ isDark }: Props) {
                 component={Link}
                 href={href}
                 variant="transparent"
-                c={isDark ? "white" : "black"}
+                className={cx(isDark ? classes.dark : classes.light)}
                 target={external ? "_blank" : ""}
                 rel={external ? "noopener noreferrer" : ""}
             >

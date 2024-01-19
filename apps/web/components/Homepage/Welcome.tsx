@@ -1,5 +1,4 @@
 import {
-    Box,
     Button,
     Center,
     Container,
@@ -7,7 +6,6 @@ import {
     GridCol,
     Group,
     Image,
-    Paper,
     Stack,
     Text,
     Title,
@@ -15,6 +13,7 @@ import {
 import NextImage from "next/image";
 import Link from "next/link";
 
+import { Card } from "../Card/Card";
 import { Section } from "../Section/Section";
 
 export function Welcome() {
@@ -108,8 +107,8 @@ export function Welcome() {
                 >
                     <GridCol span={{ base: 12, sm: 6, md: 4 }}>
                         <Group wrap="nowrap" align="flex-start" gap="lg">
-                            <Paper
-                                bg="brand.0"
+                            <Card
+                                filled
                                 p="md"
                                 radius="lg"
                                 style={{
@@ -123,8 +122,8 @@ export function Welcome() {
                                     width="32"
                                     height="32"
                                 />
-                            </Paper>
-                            <Box>
+                            </Card>
+                            <Stack gap={"xs"}>
                                 <Title order={4} fz="h5">
                                     1. Choose preferred template
                                 </Title>
@@ -134,13 +133,13 @@ export function Welcome() {
                                     many templates developed (C++, Rust, Python,
                                     Go etc).
                                 </Text>
-                            </Box>
+                            </Stack>
                         </Group>
                     </GridCol>
                     <GridCol span={{ base: 12, sm: 6, md: 4 }}>
                         <Group wrap="nowrap" align="flex-start" gap="lg">
-                            <Paper
-                                bg="brand.0"
+                            <Card
+                                filled
                                 p="md"
                                 radius="lg"
                                 style={{
@@ -154,8 +153,8 @@ export function Welcome() {
                                     width="32"
                                     height="32"
                                 />
-                            </Paper>
-                            <Box>
+                            </Card>
+                            <Stack gap={"xs"}>
                                 <Title order={4} fz="h5">
                                     2. Code your application
                                 </Title>
@@ -165,13 +164,13 @@ export function Welcome() {
                                     and tools to develop your decentralized
                                     application.
                                 </Text>
-                            </Box>
+                            </Stack>
                         </Group>
                     </GridCol>
                     <GridCol span={{ base: 12, sm: 6, md: 4 }}>
                         <Group wrap="nowrap" align="flex-start" gap="lg">
-                            <Paper
-                                bg="brand.0"
+                            <Card
+                                filled
                                 p="md"
                                 radius="lg"
                                 style={{
@@ -185,8 +184,8 @@ export function Welcome() {
                                     width="32"
                                     height="32"
                                 />
-                            </Paper>
-                            <Box>
+                            </Card>
+                            <Stack gap={"xs"}>
                                 <Title order={4} fz="h5">
                                     3. Test your application
                                 </Title>
@@ -196,13 +195,13 @@ export function Welcome() {
                                     application deployed in a single command
                                     using Sunodo.
                                 </Text>
-                            </Box>
+                            </Stack>
                         </Group>
                     </GridCol>
                     <GridCol span={{ base: 12, sm: 6, md: 4 }}>
                         <Group wrap="nowrap" align="flex-start" gap="lg">
-                            <Paper
-                                bg="brand.0"
+                            <Card
+                                filled
                                 p="md"
                                 radius="lg"
                                 style={{
@@ -216,8 +215,8 @@ export function Welcome() {
                                     width="32"
                                     height="32"
                                 />
-                            </Paper>
-                            <Box>
+                            </Card>
+                            <Stack gap={"xs"}>
                                 <Title order={4} fz="h5">
                                     4. Make your application available for
                                     deployment
@@ -225,13 +224,13 @@ export function Welcome() {
                                 <Text>
                                     Upload your Cartesi Virtual Machine to IPFS.
                                 </Text>
-                            </Box>
+                            </Stack>
                         </Group>
                     </GridCol>
                     <GridCol span={{ base: 12, sm: 6, md: 4 }}>
                         <Group wrap="nowrap" align="flex-start" gap="lg">
-                            <Paper
-                                bg="brand.0"
+                            <Card
+                                filled
                                 p="md"
                                 radius="lg"
                                 style={{
@@ -245,8 +244,8 @@ export function Welcome() {
                                     width="32"
                                     height="32"
                                 />
-                            </Paper>
-                            <Box>
+                            </Card>
+                            <Stack gap={"xs"}>
                                 <Title order={4} fz="h5">
                                     5. Select a network to deploy on
                                 </Title>
@@ -255,13 +254,13 @@ export function Welcome() {
                                     network from available options, including
                                     mainnet and testnet.
                                 </Text>
-                            </Box>
+                            </Stack>
                         </Group>
                     </GridCol>
                     <GridCol span={{ base: 12, sm: 6, md: 4 }}>
                         <Group wrap="nowrap" align="flex-start" gap="lg">
-                            <Paper
-                                bg="brand.0"
+                            <Card
+                                filled
                                 p="md"
                                 radius="lg"
                                 style={{
@@ -275,8 +274,8 @@ export function Welcome() {
                                     width="32"
                                     height="32"
                                 />
-                            </Paper>
-                            <Box>
+                            </Card>
+                            <Stack gap={"xs"}>
                                 <Title order={4} fz="h5">
                                     6. Pay and launch your application
                                 </Title>
@@ -284,14 +283,14 @@ export function Welcome() {
                                     Pay for deployment and pre-fund your
                                     application. Anyone can keep funding.
                                 </Text>
-                            </Box>
+                            </Stack>
                         </Group>
                     </GridCol>
                 </Grid>
                 <Center>
                     <Button
                         variant="filled"
-                        color="dark"
+                        color="gray"
                         size="lg"
                         mt="2xl"
                         mb="xl"

@@ -25,7 +25,7 @@ export function Gaming() {
                         lg: "3xl",
                     }}
                 >
-                    <Title order={2} ta="center">
+                    <Title order={2} ta="center" maw={"25ch"} mx={"auto"}>
                         Expand your design space across different verticals
                     </Title>
                 </Stack>
@@ -62,7 +62,7 @@ export function Gaming() {
                                             width="96"
                                             height="96"
                                         />
-                                        <Box>
+                                        <Stack gap="xs">
                                             <Title order={4} fz="h5">
                                                 World Arcade
                                             </Title>
@@ -71,7 +71,7 @@ export function Gaming() {
                                                 game competition platform for
                                                 fully verifiable on-chain games.
                                             </Text>
-                                        </Box>
+                                        </Stack>
                                     </Group>
                                     <Group
                                         align="flex-start"
@@ -85,7 +85,7 @@ export function Gaming() {
                                             width="96"
                                             height="96"
                                         />
-                                        <div>
+                                        <Stack gap="xs">
                                             <Title order={4} fz="h5">
                                                 Dazzle
                                             </Title>
@@ -97,7 +97,7 @@ export function Gaming() {
                                                 of puzzle games with RPG
                                                 elements.
                                             </Text>
-                                        </div>
+                                        </Stack>
                                     </Group>
                                     <Group
                                         align="flex-start"
@@ -111,7 +111,7 @@ export function Gaming() {
                                             width="96"
                                             height="96"
                                         />
-                                        <Box>
+                                        <Stack gap="xs">
                                             <Title order={4} fz="h5">
                                                 UltraChess
                                             </Title>
@@ -122,7 +122,7 @@ export function Gaming() {
                                                 deploy their own chess bots to
                                                 compete in AI chess battles.
                                             </Text>
-                                        </Box>
+                                        </Stack>
                                     </Group>
                                 </Stack>
                             </GridCol>
@@ -164,7 +164,7 @@ export function Gaming() {
                                             width="96"
                                             height="96"
                                         />
-                                        <Box>
+                                        <Stack gap="xs">
                                             <Title order={4} fz="h5">
                                                 Lilium
                                             </Title>
@@ -176,7 +176,7 @@ export function Gaming() {
                                                 trading of verified carbon
                                                 credits.
                                             </Text>
-                                        </Box>
+                                        </Stack>
                                     </Group>
                                 </Stack>
                             </GridCol>

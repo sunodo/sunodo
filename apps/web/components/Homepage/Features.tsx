@@ -18,7 +18,7 @@ export function Features() {
     return (
         <Section>
             <Container>
-                <Card bg="brand.0">
+                <Card filled>
                     <Stack gap="lg">
                         <Title order={2} fz="h3" ta="center">
                             Today, traditional developers need to make a huge

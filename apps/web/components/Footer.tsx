@@ -1,4 +1,3 @@
-import Link from "next/link";
 import {
     Anchor,
     Container,
@@ -8,9 +7,10 @@ import {
     Paper,
     Stack,
 } from "@mantine/core";
-import { Logo } from "./Logo";
+import Link from "next/link";
+import { Logo } from "./Logo/Logo";
 
-import { IconBrandX, IconBrandGithub } from "@tabler/icons-react";
+import { IconBrandGithub, IconBrandX } from "@tabler/icons-react";
 
 export function Footer() {
     const items = [

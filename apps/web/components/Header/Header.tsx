@@ -1,12 +1,13 @@
 "use client";
 
-import { Container, Flex } from "@mantine/core";
+import { Container, Flex, Group } from "@mantine/core";
 import { useWindowScroll } from "@mantine/hooks";
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
 
 import Link from "next/link";
-import { Logo } from "../Logo";
+import { ColorSchemeToggle } from "../ColorSchemeToggle/ColorSchemeToggle";
+import { Logo } from "../Logo/Logo";
 import { Navigation } from "../Navigation/Navigation";
 import classes from "./Header.module.css";
 
@@ -31,7 +32,10 @@ export function Header() {
                     <Link href="/">
                         <Logo isDark={isDarkHeader} />
                     </Link>
-                    <Navigation isDark={isDarkHeader} />
+                    <Group>
+                        <Navigation isDark={isDarkHeader} />
+                        <ColorSchemeToggle />
+                    </Group>
                 </Flex>
             </Container>
         </header>
