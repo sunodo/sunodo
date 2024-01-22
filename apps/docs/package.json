@@ -10,6 +10,6 @@
     "devDependencies": {
         "@algolia/client-search": "^4",
         "@sunodo/contracts": "*",
-        "vitepress": "^1.0.0-rc.10"
+        "vitepress": "^1.0.0-rc.40"
     }
 }
