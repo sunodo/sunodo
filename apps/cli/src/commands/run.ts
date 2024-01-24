@@ -124,7 +124,7 @@ export default class Run extends Command {
             .map((f) => ["--file", path.join(binPath, "node", f)])
             .flat();
 
-        const args = [
+        const compose_args = [
             "compose",
             ...files,
             "--project-directory",
@@ -132,16 +132,21 @@ export default class Run extends Command {
             "--project-name",
             projectName,
         ];
-        const attachment = flags.verbose
-            ? []
-            : ["--attach", "validator", "--attach", "prompt"];
+
+        const up_args = [];
+
+        if (!flags.verbose) {
+            compose_args.push("--progress", "quiet");
+            up_args.push("--attach", "validator");
+            up_args.push("--attach", "prompt");
+        }
 
         // XXX: need this handler, so SIGINT can still call the finally block below
         process.on("SIGINT", () => {});
 
         try {
             // run compose environment
-            await execa("docker", [...args, "up", ...attachment], {
+            await execa("docker", [...compose_args, "up", ...up_args], {
                 env,
                 stdio: "inherit",
             });
@@ -152,7 +157,7 @@ export default class Run extends Command {
             }
         } finally {
             // shut it down, including volumes
-            await execa("docker", [...args, "down", "--volumes"], {
+            await execa("docker", [...compose_args, "down", "--volumes"], {
                 env,
                 stdio: "inherit",
             });
