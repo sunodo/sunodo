@@ -1,5 +1,12 @@
 # @sunodo/contracts
 
+## 0.5.0
+
+### Minor Changes
+
+-   5f0506f: deploy to testnets
+-   a087bd7: fix vault comment
+
 ## 0.4.0
 
 ### Minor Changes

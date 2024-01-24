@@ -1,5 +1,12 @@
 # @sunodo/token
 
+## 0.5.0
+
+### Minor Changes
+
+-   cd3eae1: change initial mint to the initial authority
+-   5f0506f: deploy to testnets
+
 ## 0.4.0
 
 ### Minor Changes

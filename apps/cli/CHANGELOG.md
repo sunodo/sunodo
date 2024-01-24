@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.10.4
+
+### Patch Changes
+
+-   e4e6837: fix .sunodo/ files permissions (#352)
+-   2176d01: prepare to enable external database
+-   fcfa06a: extract prompt service to its own compose file
+-   74d62da: invert service dependency on compose files
+-   fe7e52f: add --listen-port to run command
+-   121efc2: fix --json command flag
+
 ## 0.10.3
 
 ### Patch Changes
