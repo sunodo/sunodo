@@ -18,6 +18,6 @@ Before funding an application, either during deployment or later, the user must 
 
 Suppose a `ValidatorNodeProvider` uses USDC as a payment token, and the price of application execution is set at 0.000033052248677249 USDC per second.
 
-When the developer deploys the application, if he chooses to pre-pay for 1 week of execution, the cost will be roughly 19.99 USDC, which is the price per second times the number of seconds in a week ($60 \times 60 \times 24 \times 7$). He must approve that amount to the `ValidatorNodeProvider` payee before deploying the application.
+When the developer deploys the application, if he chooses to pre-pay for 1 week of execution, the cost will be roughly 19.99 USDC, which is the price per second times the number of seconds in a week (60 \* 60 \* 24 \* 7). He must approve that amount to the `ValidatorNodeProvider` payee before deploying the application.
 
 If later someone chooses to extend the execution for two more weeks he must approve 39.98 USDC and call the `extendRunway` function of the `ValidatorNodeProvider` contract, specifying the application to be funded and the amount of time in seconds, 1,209,600 seconds in this case.
