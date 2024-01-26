@@ -1,4 +1,4 @@
-# syntax=docker.io/docker/dockerfile:1.4
+# syntax=docker.io/docker/dockerfile:1
 ARG BASE_IMAGE
 ARG MACHINE_EMULATOR_VERSION
 ARG LINUX_VERSION
@@ -38,6 +38,12 @@ curl -sL https://github.com/ncopa/su-exec/archive/f85e5bde1afef399021fbc2a99c837
 make
 EOF
 
+# undocker
+FROM golang:1.21-bookworm as undocker
+ADD --keep-git-dir=true https://git.jakstys.lt/motiejus/undocker.git#v1.2.0 /undocker
+WORKDIR /undocker
+RUN make undocker
+
 # sdk image
 FROM cartesi/machine-emulator:$MACHINE_EMULATOR_VERSION
 ARG MACHINE_EMULATOR_VERSION
@@ -65,6 +71,8 @@ COPY entrypoint.sh /usr/local/bin/
 COPY retar /usr/local/bin/
 COPY --from=genext2fs /usr/local/bin/genext2fs /usr/bin/
 COPY --from=su-exec /usr/local/src/su-exec /usr/local/bin/
+COPY --from=undocker /undocker/undocker /usr/local/bin/
+RUN mkdir -p /tmp/.sunodo && chmod 1777 /tmp/.sunodo
 
 ADD --chmod=644 \
     https://github.com/cartesi/image-kernel/releases/download/v$LINUX_VERSION/linux-$LINUX_KERNEL_VERSION.bin \
