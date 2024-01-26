@@ -9,6 +9,7 @@ FROM ${BASE_IMAGE} as builder
 
 WORKDIR /usr/local/src
 RUN <<EOF
+set -e
 apt-get update
 apt-get install -y --no-install-recommends autoconf automake build-essential ca-certificates curl libarchive-dev libtool
 rm -rf /var/lib/apt/lists/*
@@ -19,6 +20,7 @@ FROM builder as genext2fs
 WORKDIR /usr/local/src
 ARG GENEXT2FS_VERSION=1.5.2
 RUN <<EOF
+set -e
 curl -sL https://github.com/cartesi/genext2fs/archive/refs/tags/v${GENEXT2FS_VERSION}.tar.gz | tar --strip-components=1 -zxvf -
 ./autogen.sh
 ./configure --enable-libarchive
@@ -31,6 +33,7 @@ FROM builder as su-exec
 # v0.2 -> f85e5bde1afef399021fbc2a99c837cf851ceafa
 WORKDIR /usr/local/src
 RUN <<EOF
+set -e
 curl -sL https://github.com/ncopa/su-exec/archive/f85e5bde1afef399021fbc2a99c837cf851ceafa.tar.gz | tar --strip-components=1 -zxvf -
 make
 EOF
@@ -44,6 +47,7 @@ ARG ROM_VERSION
 
 USER root
 RUN <<EOF
+set -e
 apt-get update
 apt-get install -y --no-install-recommends curl libarchive-tools locales xz-utils
 rm -rf /var/lib/apt/lists/*
