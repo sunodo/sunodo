@@ -1,10 +1,9 @@
 import { Command, Flags } from "@oclif/core";
-import fs from "fs-extra";
-import os from "os";
-import path from "path";
-import { execa } from "execa";
-import tmp from "tmp";
 import bytes from "bytes";
+import { execa } from "execa";
+import fs from "fs-extra";
+import path from "path";
+import tmp from "tmp";
 
 type ImageBuildOptions = {
     target?: string;
@@ -27,11 +26,16 @@ const CARTESI_DEFAULT_RAM_SIZE = "128Mi";
 
 const SUNODO_LABEL_PREFIX = "io.sunodo";
 const SUNODO_LABEL_SDK_VERSION = `${SUNODO_LABEL_PREFIX}.sdk_version`;
-const SUNODO_DEFAULT_SDK_VERSION = "0.2.0";
+const SUNODO_DEFAULT_SDK_VERSION = "0.3.0";
 
-const SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH = path.join(".sunodo", `image`);
-const SUNODO_DEFAULT_TAR_PATH = path.join(".sunodo", `image.tar`);;
-const SUNODO_DEFAULT_EXT2_PATH = path.join(".sunodo", `image.ext2`);;
+const SUNODO_PATH = path.join(".sunodo");
+const SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH = path.join(SUNODO_PATH, "image");
+const SUNODO_DEFAULT_DOCKER_TAR_PATH = path.join(
+    SUNODO_PATH,
+    "docker-image.tar",
+);
+const SUNODO_DEFAULT_TAR_PATH = path.join(SUNODO_PATH, "image.tar");
+const SUNODO_DEFAULT_EXT2_PATH = path.join(SUNODO_PATH, "image.ext2");
 
 export default class BuildApplication extends Command {
     static summary = "Build application.";
@@ -63,7 +67,7 @@ export default class BuildApplication extends Command {
      * Build DApp image (linux/riscv64). Returns image id.
      * @param directory path of context containing Dockerfile
      */
-    private async buildDAppImage(options: ImageBuildOptions): Promise<string> {
+    private async buildImage(options: ImageBuildOptions): Promise<string> {
         const buildResult = tmp.tmpNameSync();
         this.debug(
             `building docker image and writing result to ${buildResult}`,
@@ -132,39 +136,33 @@ export default class BuildApplication extends Command {
         return info;
     }
 
-    private async exportImageTar(
-        image: string,
-        tarPath: string,
-    ): Promise<void> {
-        // create container
-        const { stdout: cid } = await execa("docker", [
-            "container",
-            "create",
-            "--platform",
-            "linux/riscv64",
-            image,
-        ]);
-
-        // export container rootfs to tar
-        await execa("docker", ["export", "-o", tarPath, cid]);
-
-        // remove container
-        await execa("docker", ["rm", cid]);
-    }
-
-    private async getBuildContainer(
-        image: string,
-        tarPath: string,
+    private async startBuildContainer(
+        appImage: string,
+        builderImage: string,
     ): Promise<string> {
+        await execa(
+            "docker",
+            [
+                "image",
+                "save",
+                appImage,
+                "--output",
+                SUNODO_DEFAULT_DOCKER_TAR_PATH,
+            ],
+            {
+                stdio: "inherit",
+            },
+        );
+
         const { stdout: cid } = await execa("docker", [
             "container",
             "run",
             "--detach",
             "--init",
-            `--volume=${tarPath}:/tmp/${SUNODO_DEFAULT_TAR_PATH}`,
-            image,
+            `--volume=./${SUNODO_DEFAULT_DOCKER_TAR_PATH}:/tmp/${SUNODO_DEFAULT_DOCKER_TAR_PATH}`,
+            builderImage,
             "sleep",
-            "infinity"
+            "infinity",
         ]);
 
         return cid;
@@ -173,6 +171,38 @@ export default class BuildApplication extends Command {
     private async stopBuildContainer(container: string): Promise<void> {
         await execa("docker", ["container", "stop", container]);
         await execa("docker", ["container", "rm", container]);
+
+        // delete docker-image.tar
+        await fs.remove(SUNODO_DEFAULT_DOCKER_TAR_PATH);
+    }
+
+    // creates the rootfs tyar from the image
+    private async createRootfsTar(container: string): Promise<void> {
+        // create rootfs tar from docker tarball using undocker (https://git.jakstys.lt/motiejus/undocker.git#v1.2.0)
+        await execa(
+            "docker",
+            [
+                "container",
+                "exec",
+                container,
+                "undocker",
+                `/tmp/${SUNODO_DEFAULT_DOCKER_TAR_PATH}`,
+                `/tmp/${SUNODO_DEFAULT_TAR_PATH}`,
+            ],
+            { stdio: "inherit" },
+        );
+
+        // copy rootfs tar to host filesystem
+        await execa(
+            "docker",
+            [
+                "container",
+                "cp",
+                `${container}:/tmp/${SUNODO_DEFAULT_TAR_PATH}`,
+                SUNODO_DEFAULT_TAR_PATH,
+            ],
+            { stdio: "inherit" },
+        );
     }
 
     private async createExt2(
@@ -194,7 +224,7 @@ export default class BuildApplication extends Command {
         const extraBlocks = Math.ceil(extraBytes / blockSize);
         const extraSize = `+${extraBlocks}`;
 
-        //create ext2
+        // create ext2
         await execa(
             "docker",
             [
@@ -213,11 +243,26 @@ export default class BuildApplication extends Command {
             ],
             { stdio: "inherit" },
         );
+
+        // export ext2 to host filesystem
+        await execa(
+            "docker",
+            [
+                "container",
+                "cp",
+                `${container}:/tmp/${SUNODO_DEFAULT_EXT2_PATH}`,
+                SUNODO_DEFAULT_EXT2_PATH,
+            ],
+            { stdio: "inherit" },
+        );
+
+        // delete image.tar (if exists)
+        await fs.remove(SUNODO_DEFAULT_TAR_PATH);
     }
 
     private async createMachineSnapshot(
         info: ImageInfo,
-        container: string
+        container: string,
     ): Promise<void> {
         const ramSize = info.ramSize;
         const driveLabel = "root"; // XXX: does this need to be customizable?
@@ -265,28 +310,8 @@ export default class BuildApplication extends Command {
             ],
             { stdio: "inherit" },
         );
-    }
 
-    private async exportExt2(
-        container: string, 
-        path: string,
-    ): Promise<void> {
-        await execa(
-            "docker",
-            [
-                "container",
-                "cp",
-                `${container}:/tmp/${SUNODO_DEFAULT_EXT2_PATH}`,
-                path,
-            ],
-            { stdio: "inherit" },
-        );
-    }
-
-    private async exportMachineSnapshot(
-        container: string, 
-        path: string,
-    ): Promise<void> {
+        // export machine snapshot to host filesystem
         await execa(
             "docker",
             [
@@ -297,6 +322,8 @@ export default class BuildApplication extends Command {
             ],
             { stdio: "inherit" },
         );
+
+        // XXX: should we delete image.ext2, or leave there for shell?
     }
 
     public async run(): Promise<void> {
@@ -306,26 +333,32 @@ export default class BuildApplication extends Command {
         tmp.setGracefulCleanup();
 
         // use pre-existing image or build dapp image
-        const image = flags["from-image"] || (await this.buildDAppImage(flags));
+        const appImage = flags["from-image"] || (await this.buildImage(flags));
 
-        // export dapp image as rootfs tar
-        await fs.emptyDir(".sunodo"); // XXX: make it less error prone
-        await this.exportImageTar(image, SUNODO_DEFAULT_TAR_PATH);
+        // prapare .sunodo directory
+        await fs.emptyDir(SUNODO_PATH); // XXX: make it less error prone
 
         // get and validate image info
-        const imageInfo = await this.getImageInfo(image);
+        const imageInfo = await this.getImageInfo(appImage);
+
         // resolve sdk version
         const sdkImage = `sunodo/sdk:${imageInfo.sdkVersion}`;
- 
-        // create ext2 and machine snapshot
-        const container = await this.getBuildContainer(sdkImage, path.join(process.cwd(), SUNODO_DEFAULT_TAR_PATH));
 
-        await this.createExt2(imageInfo, container);
-        await this.exportExt2(container, SUNODO_DEFAULT_EXT2_PATH);
+        // get SDK build container
+        const container = await this.startBuildContainer(appImage, sdkImage);
 
-        await this.createMachineSnapshot(imageInfo, container);
-        await this.exportMachineSnapshot(container, SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH);
+        try {
+            // create rootfs tar
+            await this.createRootfsTar(container);
 
-        await this.stopBuildContainer(container);
+            // create ext2
+            await this.createExt2(imageInfo, container);
+
+            // create machine snapshot
+            await this.createMachineSnapshot(imageInfo, container);
+        } finally {
+            // stop build container
+            await this.stopBuildContainer(container);
+        }
     }
 }
