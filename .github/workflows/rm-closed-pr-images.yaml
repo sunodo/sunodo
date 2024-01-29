@@ -18,7 +18,7 @@ jobs:
                     - rollups-node
                     - sdk
         steps:
-            - uses: vlaurin/action-ghcr-prune@v0.5.0
+            - uses: vlaurin/action-ghcr-prune@v0.6.0
               with:
                   organization: sunodo
                   container: ${{ matrix.image }}
