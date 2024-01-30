@@ -26,7 +26,7 @@ const CARTESI_DEFAULT_RAM_SIZE = "128Mi";
 
 const SUNODO_LABEL_PREFIX = "io.sunodo";
 const SUNODO_LABEL_SDK_VERSION = `${SUNODO_LABEL_PREFIX}.sdk_version`;
-const SUNODO_DEFAULT_SDK_VERSION = "0.2.1";
+const SUNODO_DEFAULT_SDK_VERSION = "0.3.0";
 
 const SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH = path.join(".sunodo", `image`);
 const SUNODO_DEFAULT_DOCKER_TAR_PATH = path.join(".sunodo", `docker-image.tar`);;
