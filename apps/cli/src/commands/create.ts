@@ -1,10 +1,10 @@
-import ora from "ora";
-import c from "ansi-colors";
 import { Args, Command, Flags } from "@oclif/core";
-import { DownloadTemplateResult, downloadTemplate } from "giget";
+import c from "ansi-colors";
 import type { TemplateProvider } from "giget";
+import { DownloadTemplateResult, downloadTemplate } from "giget";
+import ora from "ora";
 
-const DEFAULT_TEMPLATES_BRANCH = "sdk-0.2";
+const DEFAULT_TEMPLATES_BRANCH = "sdk-0.3";
 
 export default class CreateCommand extends Command {
     static description = "Create application";
