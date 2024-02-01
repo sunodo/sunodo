@@ -3,6 +3,7 @@ import bytes from "bytes";
 import { execa } from "execa";
 import fs from "fs-extra";
 import path from "path";
+import semver from "semver";
 import tmp from "tmp";
 
 type ImageBuildOptions = {
@@ -111,6 +112,22 @@ export default class BuildApplication extends Command {
 
         if (!info.entrypoint && !info.cmd) {
             throw new Error("Undefined image ENTRYPOINT or CMD");
+        }
+
+        // fail if using unsupported sdk version
+        if (!semver.valid(info.sdkVersion)) {
+            this.warn("sunodo sdk version is not a valid semver");
+        } else if (semver.lt(info.sdkVersion, SUNODO_DEFAULT_SDK_VERSION)) {
+            throw new Error(`Unsupported sunodo sdk version.
+
+Make sure you defined \`io.sunodo.sdk_version\` label at your Dockerfile.
+
+It shoud be >= ${SUNODO_DEFAULT_SDK_VERSION}.
+
+Eg.:
+
+LABEL io.sunodo.sdk_version=${SUNODO_DEFAULT_SDK_VERSION}
+`);
         }
 
         // warn for using default values
