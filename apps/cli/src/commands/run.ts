@@ -1,6 +1,5 @@
 import { Command, Flags } from "@oclif/core";
 import { CLIWrapper } from "@sunodo/cli-wrapper";
-import { execa } from "execa";
 import fs from "fs-extra";
 import path from "path";
 
@@ -112,9 +111,8 @@ export default class Run extends Command {
             compose.withArgs(["--file", "docker-compose-envfile.yaml"]);
         }
 
-        let composeUp = composeProject;
-        composeUp.withCmd("up");
-        const attachment = flags.verbose
+        let composeUp = composeProject.withCmd("up");
+        flags.verbose
             ? []
             : composeUp.withArgs([
                   "--attach",
@@ -128,7 +126,7 @@ export default class Run extends Command {
 
         try {
             // run compose environment
-            await execa(composeUp.builtCmd(), {
+            await composeUp.exec({
                 env,
                 stdio: "inherit",
             });
@@ -139,9 +137,7 @@ export default class Run extends Command {
             }
         } finally {
             // shut it down, including volumes
-            let composeDown = composeProject;
-            composeDown.withCmd("down").withArgs(["--volumes"]);
-            await execa(composeDown.builtCmd(), {
+            await composeProject.withCmd("down").withArgs(["--volumes"]).exec({
                 env,
                 stdio: "inherit",
             });
