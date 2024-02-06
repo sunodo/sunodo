@@ -7,7 +7,7 @@ export class CLIWrapper {
         this.builtCmd = "";
     }
 
-    withArgs(args: string[]) {
+    withArgs(args: string[]): CLIWrapper {
         if (!this.commandSet) {
             throw new Error("Command not set");
         }
@@ -16,7 +16,7 @@ export class CLIWrapper {
         return this;
     }
 
-    withCmd(cmd: string) {
+    withCmd(cmd: string): CLIWrapper {
         if (this.commandSet) {
             this.builtCmd += " ";
             if (!this.allowSubCommand) {
@@ -29,7 +29,9 @@ export class CLIWrapper {
         return this;
     }
 
-    build() {
+    build(): string {
         return this.builtCmd;
     }
+
+    //TODO: implement exec method
 }
