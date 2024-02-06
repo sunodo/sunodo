@@ -1,7 +1,8 @@
 import { Command, Flags } from "@oclif/core";
-import path from "path";
-import fs from "fs-extra";
+import { CLIWrapper } from "@sunodo/cli-wrapper";
 import { execa } from "execa";
+import fs from "fs-extra";
+import path from "path";
 
 export default class Run extends Command {
     static summary = "Run application node.";
@@ -40,6 +41,8 @@ export default class Run extends Command {
         const { flags } = await this.parse(Run);
         const snapshot = path.join(".sunodo", "image");
         let projectName: string;
+        let compose: CLIWrapper = new CLIWrapper();
+        compose.allowSubCommand = true;
 
         if (flags["no-backend"]) {
             projectName = "sunodo-node";
@@ -85,60 +88,47 @@ export default class Run extends Command {
             SUNODO_LISTEN_PORT: listenPort.toString(),
         };
 
-        // validator
-        const composeFiles = ["docker-compose-validator.yaml"];
-
-        // prompt
-        composeFiles.push("docker-compose-prompt.yaml");
-
-        // database
-        composeFiles.push("docker-compose-database.yaml");
-
-        // proxy
-        composeFiles.push("docker-compose-proxy.yaml");
-
-        // anvil
-        composeFiles.push("docker-compose-anvil.yaml");
-
-        // explorer
-        composeFiles.push("docker-compose-explorer.yaml");
+        let composeProject = compose
+            .withCmd("docker compose")
+            .withArgs(["--project-directory", "."])
+            .withArgs(["--project-name", projectName])
+            .withArgs(["--file", "docker-compose-validator.yaml"])
+            .withArgs(["--file", "docker-compose-prompt.yaml"])
+            .withArgs(["--file", "docker-compose-database.yaml"])
+            .withArgs(["--file", "docker-compose-proxy.yaml"])
+            .withArgs(["--file", "docker-compose-anvil.yaml"])
+            .withArgs(["--file", "docker-compose-explorer.yaml"]);
 
         // load the no-backend compose file
         if (flags["no-backend"]) {
-            composeFiles.push("docker-compose-host.yaml");
+            compose.withArgs(["--file", "docker-compose-host.yaml"]);
         } else {
             // snapshot volume
-            composeFiles.push("docker-compose-snapshot-volume.yaml");
+            compose.withArgs(["-file", "docker-compose-snapshot-volume.yaml"]);
         }
 
         // add project env file loading
         if (fs.existsSync("./.sunodo.env")) {
-            composeFiles.push("docker-compose-envfile.yaml");
+            compose.withArgs(["--file", "docker-compose-envfile.yaml"]);
         }
 
-        // create the "--file <file>" list
-        const files = composeFiles
-            .map((f) => ["--file", path.join(binPath, "node", f)])
-            .flat();
-
-        const args = [
-            "compose",
-            ...files,
-            "--project-directory",
-            ".",
-            "--project-name",
-            projectName,
-        ];
+        let composeUp = composeProject;
+        composeUp.withCmd("up");
         const attachment = flags.verbose
             ? []
-            : ["--attach", "validator", "--attach", "prompt"];
+            : composeUp.withArgs([
+                  "--attach",
+                  "validator",
+                  "--attach",
+                  "prompt",
+              ]);
 
         // XXX: need this handler, so SIGINT can still call the finally block below
         process.on("SIGINT", () => {});
 
         try {
             // run compose environment
-            await execa("docker", [...args, "up", ...attachment], {
+            await execa(composeUp.builtCmd(), {
                 env,
                 stdio: "inherit",
             });
@@ -149,7 +139,9 @@ export default class Run extends Command {
             }
         } finally {
             // shut it down, including volumes
-            await execa("docker", [...args, "down", "--volumes"], {
+            let composeDown = composeProject;
+            composeDown.withCmd("down").withArgs(["--volumes"]);
+            await execa(composeDown.builtCmd(), {
                 env,
                 stdio: "inherit",
             });

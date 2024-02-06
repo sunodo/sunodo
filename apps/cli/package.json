@@ -42,7 +42,8 @@
         "qrcode-terminal": "^0.12",
         "semver": "^7.5",
         "tmp": "^0.2",
-        "viem": "1.15.4"
+        "viem": "1.15.4",
+        "@sunodo/cli-wrapper": "*"
     },
     "devDependencies": {
         "@oclif/test": "^3.0",
