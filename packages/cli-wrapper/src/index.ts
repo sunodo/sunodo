@@ -1,3 +1,5 @@
+import { ExecaChildProcess, execa } from "execa";
+
 export class CLIWrapper {
     private builtCmd: string = "";
     private commandSet: boolean = false;
@@ -33,5 +35,9 @@ export class CLIWrapper {
         return this.builtCmd;
     }
 
-    //TODO: implement exec method
+    exec(args?: {}): ExecaChildProcess | ExecaChildProcess<Buffer> {
+        const cmd_file = this.build().split(" ")[0];
+        const cmd_args = this.build().split(" ").slice(1);
+        return execa(cmd_file, cmd_args, args);
+    }
 }
