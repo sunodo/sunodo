@@ -1,16 +1,16 @@
 import {
     Collapse,
-    Grid,
     Group,
     NumberInput,
     Stack,
     Text,
     TextInput,
+    Timeline,
     Title,
 } from "@mantine/core";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import * as isIPFS from "is-ipfs";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { getAddress, isAddress, isHash, zeroAddress } from "viem";
 import { useAccount, useBalance } from "wagmi";
 
@@ -112,90 +112,145 @@ const Deploy: FC<DeployProps> = (props) => {
         provider !== undefined &&
         address !== undefined;
 
+    const active = useMemo(() => {
+        if (!machine.hash) return 0;
+        if (!provider) return 1;
+        if (canDeploy) return 2;
+        return 0;
+    }, [machine.hash, provider, canDeploy]);
+
     return (
-        <Stack>
+        <Stack maw={960} mx={"auto"} gap={"xl"} pb="xl">
             <Title order={3}>Deploy</Title>
+
             <MachineInstructions />
-            <TextInput
-                {...form.getInputProps("location")}
-                label="Cartesi Machine CID"
-                description="IPFS CID of the Cartesi machine snapshot"
-                required
-                withAsterisk
-            />
-            <Collapse in={!!machine.hash}>
-                <Grid>
-                    <MachineCard machine={machine} />
-                </Grid>
-            </Collapse>
 
-            <Stack gap={0}>
-                <Group gap={2}>
-                    <Text size="sm">Base Layer</Text>
-                    <Text c="red">*</Text>
-                </Group>
-                <Text size="xs" mb={5}>
-                    Select the base layer and deployer account of the
-                    application chain
-                </Text>
-                <ConnectButton />
-            </Stack>
-            <TextInput
-                {...form.getInputProps("providerAddress")}
-                label="Provider"
-                withAsterisk
-                description="Address of a validator node provider smart contract"
-            />
-            <Collapse in={!!provider}>
-                <Grid>
-                    <ProviderCard provider={provider} />
-                </Grid>
-            </Collapse>
+            <Timeline active={active} bulletSize={18} lineWidth={2}>
+                <Timeline.Item title="Cartesi Machine CID" pl={"lg"} pb={"lg"}>
+                    <Stack gap={"xl"} pt={"xl"}>
+                        <Stack gap={0}>
+                            <Group gap={2} pb={"xs"}>
+                                <Title order={5}>
+                                    IPFS CID of the Cartesi machine snapshot
+                                </Title>
+                                <Text c="red">*</Text>
+                            </Group>
 
-            <NumberInput
-                {...form.getInputProps("days")}
-                label="Pre-payment period"
-                description="Number of days to pre-pay for node execution"
-                suffix={days > 1 ? " days" : " day"}
-                withAsterisk
-                allowNegative={false}
-            />
+                            <TextInput
+                                {...form.getInputProps("location")}
+                                required
+                                size="md"
+                            />
+                        </Stack>
 
-            {approvalNeeded && (
-                <Approval
-                    allowance={allowance}
-                    amount={provider?.price}
-                    approving={execute.isPending || receipt.isRefetching}
-                    balance={balance.value}
-                    ethBalance={ethBalance?.value}
-                    nativeCurrency={nativeCurrency}
-                    spender={provider?.address}
-                    token={provider?.token}
-                    error={execute.error?.message}
-                    onApprove={() =>
-                        simulate.data &&
-                        execute.writeContract(simulate.data.request)
-                    }
-                />
-            )}
+                        <Collapse in={!!machine.hash}>
+                            <MachineCard machine={machine} />
+                        </Collapse>
+                    </Stack>
+                </Timeline.Item>
 
-            {canDeploy && (
-                <DeployTransaction
-                    disabled={!simulateDeploy.data?.request}
-                    error={executeDeploy.error?.message}
-                    loading={executeDeploy.isPending}
-                    onDeploy={() =>
-                        simulateDeploy.data &&
-                        executeDeploy.writeContract(simulateDeploy.data.request)
-                    }
-                />
-            )}
-            {applicationAddress && provider && (
-                <Application
-                    applicationAddress={applicationAddress}
-                    provider={provider}
-                />
-            )}
+                <Timeline.Item
+                    title="Base Layer & Node provider"
+                    pl={"lg"}
+                    pb={"lg"}
+                >
+                    <Stack gap={"xl"} pt={"xl"}>
+                        <Stack gap={0}>
+                            <Group gap={2} pb={"xs"}>
+                                <Title order={5}>
+                                    Select the base layer and deployer account
+                                    of the application chain
+                                </Title>
+                                <Text c="red">*</Text>
+                            </Group>
+
+                            <ConnectButton />
+                        </Stack>
+
+                        <Stack gap={0}>
+                            <Title order={5}>
+                                <Group gap={2}>
+                                    <Title order={5}>Provider</Title>
+                                    <Text c="red">*</Text>
+                                </Group>
+                            </Title>
+                            <Text size="sm" mb={5}>
+                                Address of a validator node provider smart
+                                contract
+                            </Text>
+                            <TextInput
+                                size="md"
+                                {...form.getInputProps("providerAddress")}
+                            />
+                        </Stack>
+
+                        <Collapse in={!!provider}>
+                            <ProviderCard provider={provider} />
+                        </Collapse>
+
+                        <Stack gap={0}>
+                            <Group gap={2}>
+                                <Title order={5}>Pre-payment period</Title>
+                                <Text c="red">*</Text>
+                            </Group>
+                            <Text size="sm" mb={5}>
+                                Number of days to pre-pay for node execution
+                            </Text>
+                            <NumberInput
+                                {...form.getInputProps("days")}
+                                suffix={days > 1 ? " days" : " day"}
+                                allowNegative={false}
+                                size="md"
+                                w={"160"}
+                            />
+                        </Stack>
+                        {approvalNeeded && (
+                            <Approval
+                                allowance={allowance}
+                                amount={provider?.price}
+                                approving={
+                                    execute.isPending || receipt.isRefetching
+                                }
+                                balance={balance.value}
+                                ethBalance={ethBalance?.value}
+                                nativeCurrency={nativeCurrency}
+                                spender={provider?.address}
+                                token={provider?.token}
+                                error={execute.error?.message}
+                                onApprove={() =>
+                                    simulate.data &&
+                                    execute.writeContract(simulate.data.request)
+                                }
+                            />
+                        )}
+                    </Stack>
+                </Timeline.Item>
+
+                <Timeline.Item title="Deploy" pl={"lg"} pb={"lg"}>
+                    <Stack gap={"xl"} pt={"xl"}>
+                        {canDeploy && (
+                            <DeployTransaction
+                                disabled={!simulateDeploy.data?.request}
+                                error={executeDeploy.error?.message}
+                                loading={executeDeploy.isPending}
+                                onDeploy={() =>
+                                    simulateDeploy.data &&
+                                    executeDeploy.writeContract(
+                                        simulateDeploy.data.request,
+                                    )
+                                }
+                            />
+                        )}
+
+                        {applicationAddress && provider && (
+                            <Application
+                                applicationAddress={applicationAddress}
+                                provider={provider}
+                            />
+                        )}
+                    </Stack>
+                </Timeline.Item>
+            </Timeline>
         </Stack>
     );
 };

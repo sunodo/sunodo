@@ -1,7 +1,16 @@
 "use client";
 
-import { Collapse, Grid, Stack, Switch, Text } from "@mantine/core";
+import {
+    ActionIcon,
+    Collapse,
+    Grid,
+    Group,
+    Stack,
+    Text,
+    Tooltip,
+} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { IconChevronDown } from "@tabler/icons-react";
 import bytes from "bytes";
 import { FC } from "react";
 import { CartesiMachineData } from "../../src/hooks/cartesiMachineHash";
@@ -21,39 +30,47 @@ const MachineCard: FC<MachineCardProps> = ({ machine }) => {
     const [details, { toggle }] = useDisclosure(false);
 
     return (
-        <>
-            <Grid.Col span={9}>
-                <Stack gap={0}>
-                    <Text size="sm">Cartesi Machine Hash</Text>
-                    <Text size="lg" fw={600}>
-                        {machine.hash ?? "<unknown>"}
-                    </Text>
-                </Stack>
-            </Grid.Col>
-            <Grid.Col span={2}>
-                <Stack gap={0}>
-                    <Text size="sm">Size</Text>
-                    <Text size="lg" fw={600}>
-                        {bytes(size)}
-                    </Text>
-                </Stack>
-            </Grid.Col>
-            <Grid.Col span={1}>
-                <Stack gap={6}>
-                    <Text size="sm">Details</Text>
-                    <Switch
-                        checked={details}
-                        onChange={toggle}
-                        disabled={loading}
-                    />
-                </Stack>
-            </Grid.Col>
-            <Grid.Col span={12}>
+        <Stack gap={"lg"}>
+            <Grid>
+                <Grid.Col span={{ base: 6, sm: 9 }} w={0}>
+                    <Stack gap={0}>
+                        <Text size="xs">Cartesi Machine Hash</Text>
+                        <Tooltip withArrow label={machine.hash ?? "<unknown>"}>
+                            <Text truncate fw={600}>
+                                {machine.hash ?? "<unknown>"}
+                            </Text>
+                        </Tooltip>
+                    </Stack>
+                </Grid.Col>
+                <Grid.Col span={{ base: 4, sm: 2 }}>
+                    <Stack gap={0}>
+                        <Text size="xs">Size</Text>
+                        <Text fw={600}>{bytes(size)}</Text>
+                    </Stack>
+                </Grid.Col>
+                <Grid.Col span={{ base: 2, sm: 1 }}>
+                    <Group justify="flex-end">
+                        <ActionIcon
+                            variant="transparent"
+                            onClick={toggle}
+                            disabled={loading}
+                        >
+                            <IconChevronDown
+                                style={{
+                                    rotate: details ? "180deg" : "0deg",
+                                }}
+                            />
+                        </ActionIcon>
+                    </Group>
+                </Grid.Col>
+            </Grid>
+
+            <Stack gap={0} miw={0} flex={"1 0 0"}>
                 <Collapse in={details}>
                     <MachineFiles entries={entries} />
                 </Collapse>
-            </Grid.Col>
-        </>
+            </Stack>
+        </Stack>
     );
 };
 

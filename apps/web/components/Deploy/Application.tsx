@@ -10,6 +10,7 @@ import {
     sepolia,
 } from "viem/chains";
 
+import { IconCircleCheck } from "@tabler/icons-react";
 import Link from "next/link";
 import { useAccount } from "wagmi";
 import { ValidatorNodeProvider } from "../../app/deploy/form";
@@ -33,10 +34,10 @@ export const Application: FC<ApplicationProps> = (props) => {
     const { chain } = useAccount();
 
     let node = (
-        <Text>
+        <>
             Contact the node provider to know the address of the application
             node.
-        </Text>
+        </>
     );
 
     if (provider.baseUrl && chain) {
@@ -66,7 +67,8 @@ export const Application: FC<ApplicationProps> = (props) => {
     return (
         <Alert
             variant="light"
-            color="green"
+            icon={<IconCircleCheck />}
+            color="orange"
             title={`Application deployed: ${applicationAddress}`}
         >
             {node}

@@ -6,6 +6,7 @@ import {
     ScrollArea,
     Stack,
     Text,
+    Title,
 } from "@mantine/core";
 import { IconExclamationCircle } from "@tabler/icons-react";
 import { FC } from "react";
@@ -56,11 +57,18 @@ export const Approval: FC<ApprovalProps> = (props) => {
     return (
         <Collapse in={!completed}>
             <Stack gap={0}>
-                <Text>Approve ERC-20 spending</Text>
+                <Title order={5}>Approve ERC-20 spending</Title>
                 {visible && (
                     <Text size="sm">
                         You need to approve a spending of {amountStr} by{" "}
-                        {spenderStr}
+                        <Text
+                            style={{
+                                wordBreak: "break-all",
+                            }}
+                            component="span"
+                        >
+                            {spenderStr}
+                        </Text>
                     </Text>
                 )}
                 <Text size="sm">
@@ -95,6 +103,7 @@ export const Approval: FC<ApprovalProps> = (props) => {
                     {visible && (
                         <Button
                             mt={10}
+                            size="md"
                             disabled={disabled}
                             onClick={props.onApprove}
                             loading={approving}

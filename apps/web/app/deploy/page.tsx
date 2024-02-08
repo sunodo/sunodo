@@ -24,7 +24,7 @@ const Deploy: FC = () => {
 
 const DeployPage: FC = () => {
     return (
-        <Section>
+        <Section size="sm">
             <Container>
                 <Suspense>
                     <Deploy />

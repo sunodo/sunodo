@@ -24,24 +24,27 @@ export type AddressProps = TextProps & {
 };
 
 const AddressText: FC<AddressProps> = (props) => {
-    const { href, icon, iconSize, shorten } = props;
+    const { href, icon, iconSize, shorten, ...rest } = props;
     const value = getAddress(props.value);
     const text = shorten ? `${value.slice(0, 8)}...${value.slice(-6)}` : value;
 
     const label = shorten ? (
         <Tooltip label={value} withArrow>
-            <Text {...props}>{text}</Text>
+            <Text {...rest}>{text}</Text>
         </Tooltip>
     ) : (
-        <Text {...props}>{text}</Text>
+        <Text {...rest}>{text}</Text>
     );
+
     return (
-        <Group gap={10}>
+        <Group gap={6} wrap="nowrap" align="center">
             {icon && (
-                <Jazzicon
-                    diameter={iconSize ?? 20}
-                    seed={jsNumberForAddress(value)}
-                />
+                <Group flex={0}>
+                    <Jazzicon
+                        diameter={iconSize ?? 20}
+                        seed={jsNumberForAddress(value)}
+                    />
+                </Group>
             )}
 
             {href ? (

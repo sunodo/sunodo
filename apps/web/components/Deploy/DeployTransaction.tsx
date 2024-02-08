@@ -1,4 +1,4 @@
-import { Alert, Button, Group, ScrollArea, Stack, Text } from "@mantine/core";
+import { Alert, Button, Group, ScrollArea, Stack, Title } from "@mantine/core";
 import { IconExclamationCircle } from "@tabler/icons-react";
 import { FC } from "react";
 
@@ -14,7 +14,7 @@ export const DeployTransaction: FC<DeployTransactionProps> = (props) => {
 
     return (
         <Stack gap={0}>
-            <Text>Deployment to the base layer</Text>
+            <Title order={5}>Deployment to the base layer</Title>
             <Group>
                 {error && (
                     <ScrollArea>
@@ -31,6 +31,7 @@ export const DeployTransaction: FC<DeployTransactionProps> = (props) => {
                 )}
                 <Button
                     mt={10}
+                    size="md"
                     onClick={onDeploy}
                     disabled={disabled}
                     loading={loading}
