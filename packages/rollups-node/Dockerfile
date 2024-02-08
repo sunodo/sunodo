@@ -20,7 +20,7 @@ apt-get install -y --no-install-recommends \
 rm -rf /var/lib/apt/lists/*
 EOF
 
-ARG S6_OVERLAY_VERSION=3.1.5.0
+ARG S6_OVERLAY_VERSION
 RUN <<EOF
 tmp_dir=$(mktemp -d)
 ARCH=$(arch)
