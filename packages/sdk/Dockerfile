@@ -38,13 +38,6 @@ curl -sL https://github.com/ncopa/su-exec/archive/f85e5bde1afef399021fbc2a99c837
 make
 EOF
 
-# undocker
-# v1.2.2 -> aca5cd2888497df02a89fbd5d27d57699e971d74
-FROM golang:1.22-bookworm as undocker
-ADD --keep-git-dir=true https://github.com/endersonmaia/undocker.git#aca5cd2888497df02a89fbd5d27d57699e971d74 /undocker
-WORKDIR /undocker
-RUN make undocker
-
 # sdk image
 FROM cartesi/machine-emulator:$MACHINE_EMULATOR_VERSION
 ARG MACHINE_EMULATOR_VERSION
@@ -72,7 +65,6 @@ COPY entrypoint.sh /usr/local/bin/
 COPY retar /usr/local/bin/
 COPY --from=genext2fs /usr/local/bin/genext2fs /usr/bin/
 COPY --from=su-exec /usr/local/src/su-exec /usr/local/bin/
-COPY --from=undocker /undocker/undocker /usr/local/bin/
 RUN mkdir -p /tmp/.sunodo && chmod 1777 /tmp/.sunodo
 
 ADD --chmod=644 \
