@@ -39,8 +39,9 @@ make
 EOF
 
 # undocker
-FROM golang:1.21-bookworm as undocker
-ADD --keep-git-dir=true https://git.jakstys.lt/motiejus/undocker.git#v1.2.0 /undocker
+# v1.2.2 -> aca5cd2888497df02a89fbd5d27d57699e971d74
+FROM golang:1.22-bookworm as undocker
+ADD --keep-git-dir=true https://github.com/endersonmaia/undocker.git#aca5cd2888497df02a89fbd5d27d57699e971d74 /undocker
 WORKDIR /undocker
 RUN make undocker
 
