@@ -31,11 +31,8 @@ const SUNODO_DEFAULT_SDK_VERSION = "0.3.0";
 
 const SUNODO_PATH = path.join(".sunodo");
 const SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH = path.join(SUNODO_PATH, "image");
-const SUNODO_DEFAULT_DOCKER_TAR_PATH = path.join(
-    SUNODO_PATH,
-    "docker-image.tar",
-);
 const SUNODO_DEFAULT_TAR_PATH = path.join(SUNODO_PATH, "image.tar");
+const SUNODO_DEFAULT_RETAR_TAR_PATH = path.join(SUNODO_PATH, "image-retar.tar");
 const SUNODO_DEFAULT_EXT2_PATH = path.join(SUNODO_PATH, "image.ext2");
 
 export default class BuildApplication extends Command {
@@ -157,26 +154,30 @@ LABEL io.sunodo.sdk_version=${SUNODO_DEFAULT_SDK_VERSION}
         appImage: string,
         builderImage: string,
     ): Promise<string> {
-        await execa(
-            "docker",
-            [
-                "image",
-                "save",
-                appImage,
-                "--output",
-                SUNODO_DEFAULT_DOCKER_TAR_PATH,
-            ],
-            {
-                stdio: "inherit",
-            },
-        );
+        // create docker tarball from app image
+        const { stdout: appCid } = await execa("docker", [
+            "container",
+            "create",
+            "--platform",
+            "linux/riscv64",
+            appImage,
+        ]);
 
+        await execa("docker", [
+            "container",
+            "export",
+            "-o",
+            SUNODO_DEFAULT_TAR_PATH,
+            appCid,
+        ]);
+
+        // start build container
         const { stdout: cid } = await execa("docker", [
             "container",
             "run",
             "--detach",
             "--init",
-            `--volume=./${SUNODO_DEFAULT_DOCKER_TAR_PATH}:/tmp/${SUNODO_DEFAULT_DOCKER_TAR_PATH}`,
+            `--volume=./${SUNODO_DEFAULT_TAR_PATH}:/tmp/${SUNODO_DEFAULT_TAR_PATH}`,
             builderImage,
             "sleep",
             "infinity",
@@ -188,53 +189,27 @@ LABEL io.sunodo.sdk_version=${SUNODO_DEFAULT_SDK_VERSION}
     private async stopBuildContainer(container: string): Promise<void> {
         await execa("docker", ["container", "stop", container]);
         await execa("docker", ["container", "rm", container]);
-
-        // delete docker-image.tar
-        await fs.remove(SUNODO_DEFAULT_DOCKER_TAR_PATH);
+        // delete image.tar (if exists)
+        await fs.remove(SUNODO_DEFAULT_TAR_PATH);
     }
 
     // creates the rootfs tyar from the image
     private async createRootfsTar(container: string): Promise<void> {
-        // create rootfs tar from docker tarball using undocker (https://git.jakstys.lt/motiejus/undocker.git#v1.2.0)
-        await execa(
-            "docker",
-            [
-                "container",
-                "exec",
-                container,
-                "undocker",
-                `/tmp/${SUNODO_DEFAULT_DOCKER_TAR_PATH}`,
-                `/tmp/${SUNODO_DEFAULT_TAR_PATH}`,
-            ],
-            { stdio: "inherit" },
-        );
-
-        // copy rootfs tar to host filesystem
-        await execa(
-            "docker",
-            [
-                "container",
-                "cp",
-                `${container}:/tmp/${SUNODO_DEFAULT_TAR_PATH}`,
-                SUNODO_DEFAULT_TAR_PATH,
-            ],
-            { stdio: "inherit" },
-        );
-    }
-
-    private async createExt2(
-        info: ImageInfo,
-        container: string,
-    ): Promise<void> {
-        // re-tar as gnu format, issue with locale
+        // ensure tar reproducibility
         await execa("docker", [
             "container",
             "exec",
             container,
             "retar",
             `/tmp/${SUNODO_DEFAULT_TAR_PATH}`,
+            `/tmp/${SUNODO_DEFAULT_RETAR_TAR_PATH}`,
         ]);
+    }
 
+    private async createExt2(
+        info: ImageInfo,
+        container: string,
+    ): Promise<void> {
         // calculate extra size
         const blockSize = 4096;
         const extraBytes = bytes.parse(info.dataSize);
@@ -250,7 +225,7 @@ LABEL io.sunodo.sdk_version=${SUNODO_DEFAULT_SDK_VERSION}
                 container,
                 "genext2fs",
                 "--tarball",
-                `/tmp/${SUNODO_DEFAULT_TAR_PATH}`,
+                `/tmp/${SUNODO_DEFAULT_RETAR_TAR_PATH}`,
                 "--block-size",
                 blockSize.toString(),
                 "--faketime",
@@ -272,9 +247,6 @@ LABEL io.sunodo.sdk_version=${SUNODO_DEFAULT_SDK_VERSION}
             ],
             { stdio: "inherit" },
         );
-
-        // delete image.tar (if exists)
-        await fs.remove(SUNODO_DEFAULT_TAR_PATH);
     }
 
     private async createMachineSnapshot(
