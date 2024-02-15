@@ -1,8 +1,8 @@
 # Available templates
 
-All available templates are hosted at the [templates public repository](https://github.com/sunodo/sunodo-templates).
+Sunodo provides basic templates for different programming languages and runtimes. These templates are designed to be a starting point for your application, and can be customized to fit your needs.
 
-These are the templates currently available:
+The official templates below are hosted at the [templates public repository](https://github.com/sunodo/sunodo-templates).
 
 -   `cpp`: C++ template
 -   `cpp-low-level`: C++ template using the low level API, instead of the HTTP server
@@ -13,3 +13,12 @@ These are the templates currently available:
 -   `ruby`: ruby template
 -   `rust`: rust template
 -   [`typescript`](https://github.com/sunodo/sunodo-templates/blob/main/typescript/README.md): TypeScript template
+
+## Community templates
+
+The community has also created a number of templates that you can use to get started with Sunodo and Cartesi. These templates are not officially maintained by the Sunodo team, but are maintained by their respective authors and the community.
+
+-   [Deroll](https://github.com/tuler/deroll-template)
+-   [Typescript + SQLite](https://github.com/doiim/cartesi-ts-sqlite)
+
+If you want to add a template to the list above, please [edit this page](https://github.com/sunodo/sunodo/edit/main/apps/docs/guide/creating/available-templates.md) and open a pull request.
