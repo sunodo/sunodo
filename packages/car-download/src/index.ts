@@ -57,7 +57,7 @@ const link = (filename: string, cid: CID, output: string) => {
     fs.ensureSymlinkSync(source, target);
 };
 
-export async function* download(
+async function* download(
     file: UnixFSFile | RawNode,
     output: string,
 ): AsyncGenerator<FileProgress, void> {
