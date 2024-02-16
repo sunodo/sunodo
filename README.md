@@ -20,6 +20,7 @@ It helps developers to:
 -   `web`: a [next.js](https://nextjs.org/) app for Sunodo website, deployed at [https://sunodo.io](https://sunodo.io)
 -   `app`: a [next.js](https://nextjs.org/) app for Sunodo dashboard, deployed at [https://app.sunodo.io](https://app.sunodo.io)
 -   `anvil`: Docker image of [anvil](https://book.getfoundry.sh/reference/anvil/), multi-arch;
+-   `car-download`: Utility library and CLI to download IPFS CAR to local filesystem;
 -   `rollups-node`: Docker image of a Cartesi node for a local devnet execution;
 -   `sdk`: Docker image to help with Cartesi build and execution;
 -   `contracts`: smart contracts for application deployment;

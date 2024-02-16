@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "composite": false,
+        "declaration": true,
+        "declarationMap": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "importHelpers": true,
+        "inlineSources": false,
+        "isolatedModules": true,
+        "lib": ["ES2023"],
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "outDir": "dist",
+        "preserveWatchOutput": true,
+        "rootDir": "src",
+        "skipLibCheck": true,
+        "strict": true,
+        "target": "ESNext"
+    },
+    "include": ["src/**/*.ts"],
+    "exclude": ["dist", "node_modules"]
+}
