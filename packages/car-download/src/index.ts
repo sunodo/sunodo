@@ -118,7 +118,15 @@ async function* recursive(
     }
 }
 
-export const carfs = (ipfs: UnixFS) => ({
+export interface CARFS {
+    ls: (cid: CID) => AsyncGenerator<UnixFSFile | RawNode>;
+    save: (
+        file: UnixFSFile | RawNode,
+        output: string,
+    ) => AsyncGenerator<FileProgress>;
+}
+
+export const carfs = (ipfs: UnixFS): CARFS => ({
     ls: async function* (cid: CID): AsyncGenerator<UnixFSFile | RawNode> {
         for await (const entry of ipfs.ls(cid)) {
             yield* recursive(entry);
