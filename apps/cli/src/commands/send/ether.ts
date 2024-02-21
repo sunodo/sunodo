@@ -1,9 +1,9 @@
+import { input } from "@inquirer/prompts";
 import { Address } from "abitype";
 import { parseEther, PublicClient, WalletClient } from "viem";
-import { input } from "@inquirer/prompts";
 
-import * as CustomFlags from "../../flags.js";
 import { etherPortalABI, etherPortalAddress } from "../../contracts.js";
+import * as CustomFlags from "../../flags.js";
 import { SendBaseCommand } from "./index.js";
 
 export default class SendEther extends SendBaseCommand<typeof SendEther> {
@@ -24,7 +24,7 @@ export default class SendEther extends SendBaseCommand<typeof SendEther> {
 
     public async send(
         publicClient: PublicClient,
-        walletClient: WalletClient
+        walletClient: WalletClient,
     ): Promise<Address> {
         // get dapp address from local node, or ask
         const dapp = await super.getDAppAddress();

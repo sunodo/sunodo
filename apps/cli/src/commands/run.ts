@@ -1,7 +1,7 @@
 import { Command, Flags } from "@oclif/core";
-import path from "path";
-import fs from "fs-extra";
 import { execa } from "execa";
+import fs from "fs-extra";
+import path from "path";
 
 export default class Run extends Command {
     static summary = "Run application node.";

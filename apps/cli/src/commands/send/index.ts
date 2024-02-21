@@ -1,11 +1,11 @@
-import { Address } from "abitype";
-import { Command, Flags, Interfaces } from "@oclif/core";
-import { isAddress, PublicClient, WalletClient } from "viem";
 import { input, select } from "@inquirer/prompts";
+import { Command, Flags, Interfaces } from "@oclif/core";
+import { Address } from "abitype";
 import ora from "ora";
+import { PublicClient, WalletClient, isAddress } from "viem";
 
-import { SunodoCommand } from "../../sunodoCommand.js";
 import * as CustomFlags from "../../flags.js";
+import { SunodoCommand } from "../../sunodoCommand.js";
 import createClients, { supportedChains } from "../../wallet.js";
 
 export type Flags<T extends typeof Command> = Interfaces.InferredFlags<

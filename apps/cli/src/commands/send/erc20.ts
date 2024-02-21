@@ -1,14 +1,14 @@
+import { input } from "@inquirer/prompts";
 import { Address } from "abitype";
 import { isAddress, parseEther, PublicClient, WalletClient } from "viem";
-import { input } from "@inquirer/prompts";
 
 import {
     erc20ABI,
     erc20PortalABI,
     erc20PortalAddress,
 } from "../../contracts.js";
-import { SendBaseCommand } from "./index.js";
 import * as CustomFlags from "../../flags.js";
+import { SendBaseCommand } from "./index.js";
 
 type ERC20Token = {
     name: string;
@@ -31,7 +31,7 @@ export default class SendERC20 extends SendBaseCommand<typeof SendERC20> {
 
     private async readToken(
         publicClient: PublicClient,
-        address: Address
+        address: Address,
     ): Promise<ERC20Token> {
         const args = { abi: erc20ABI, address };
         const symbol = await publicClient.readContract({
@@ -55,13 +55,13 @@ export default class SendERC20 extends SendBaseCommand<typeof SendERC20> {
 
     public async send(
         publicClient: PublicClient,
-        walletClient: WalletClient
+        walletClient: WalletClient,
     ): Promise<Address> {
         // get dapp address from local node, or ask
         const dapp = await super.getDAppAddress();
 
         const ercValidator = async (
-            value: string
+            value: string,
         ): Promise<string | boolean> => {
             if (!isAddress(value)) {
                 return "Invalid address";

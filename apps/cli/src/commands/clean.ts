@@ -1,6 +1,6 @@
 import { Command } from "@oclif/core";
-import path from "path";
 import fs from "fs-extra";
+import path from "path";
 
 export default class Clean extends Command {
     static summary = "Clean build artifacts of application.";
