@@ -9,12 +9,12 @@
         "lint": "TIMING=1 eslint \"**/*.ts*\""
     },
     "devDependencies": {
-        "@sunodo/eslint-config": "*",
+        "@sunodo/eslint-config": "workspace:*",
         "@types/react": "^18",
         "@types/react-dom": "^18",
         "eslint": "^8",
         "react": "^18",
-        "tsconfig": "*",
+        "tsconfig": "workspace:*",
         "typescript": "^5"
     }
 }

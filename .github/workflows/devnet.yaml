@@ -23,21 +23,22 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
+            - uses: pnpm/action-setup@v3
 
             - name: Setup Node.js 20
               uses: actions/setup-node@v4
               with:
                   node-version: 20
-                  cache: "yarn"
+                  cache: "pnpm"
 
             - name: Install Foundry
               uses: foundry-rs/foundry-toolchain@v1
 
             - name: Install dependencies
-              run: yarn install
+              run: pnpm install
 
             - name: Build
-              run: yarn build --filter @sunodo/devnet
+              run: pnpm build --filter @sunodo/devnet
 
             - name: Get package tag/version
               id: package-version
