@@ -12,8 +12,9 @@
         "@mantine/core": "^7",
         "@mantine/form": "^7",
         "@mantine/hooks": "^7",
-        "@sunodo/ui": "*",
+        "@sunodo/ui": "workspace:*",
         "@tabler/icons-react": "^2",
+        "clsx": "^2.1.0",
         "next": "^14",
         "react": "^18",
         "react-dom": "^18"
@@ -22,6 +23,7 @@
         "@babel/core": "^7",
         "@next/bundle-analyzer": "^14",
         "@next/eslint-plugin-next": "^14",
+        "@sunodo/eslint-config": "workspace:*",
         "@types/node": "^20",
         "@types/react": "^18",
         "@types/react-dom": "^18",
@@ -31,7 +33,6 @@
         "eslint": "^8",
         "eslint-config-airbnb": "^19",
         "eslint-config-airbnb-typescript": "^17",
-        "eslint-config-custom": "*",
         "eslint-config-mantine": "^3",
         "eslint-config-next": "^14",
         "eslint-plugin-import": "^2",
@@ -42,7 +43,7 @@
         "postcss-preset-mantine": "^1",
         "postcss-simple-vars": "^7",
         "prettier": "^3",
-        "tsconfig": "*",
+        "tsconfig": "workspace:*",
         "typescript": "^5"
     }
 }

@@ -20,12 +20,14 @@
     "devDependencies": {
         "@nomiclabs/hardhat-ethers": "^2",
         "@safe-global/safe-singleton-factory": "^1",
-        "@sunodo/contracts": "*",
-        "@sunodo/token": "*",
+        "@sunodo/contracts": "workspace:*",
+        "@sunodo/token": "workspace:*",
         "hardhat": "^2",
         "hardhat-abi-exporter": "^2",
         "hardhat-deploy": "^0.11",
-        "npm-run-all": "^4"
+        "npm-run-all": "^4",
+        "tsconfig": "workspace:*",
+        "typescript": "^5"
     },
     "files": [
         "deployments/*/*.json",

@@ -14,7 +14,7 @@
     },
     "devDependencies": {
         "@changesets/cli": "^2",
-        "@sunodo/eslint-config": "*",
+        "@sunodo/eslint-config": "workspace:*",
         "prettier": "^3",
         "turbo": "^1"
     },

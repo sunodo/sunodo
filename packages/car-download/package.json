@@ -14,10 +14,12 @@
         "ipfs-unixfs-exporter": "^13.5.0",
         "ipfs-unixfs-importer": "^15.2.4",
         "log-update": "^6.0.0",
+        "multiformats": "^13.1.0",
         "ora": "^8.0.1"
     },
     "devDependencies": {
-        "@sunodo/eslint-config": "*",
+        "@sunodo/eslint-config": "workspace:*",
+        "@types/fs-extra": "^11",
         "eslint": "^8.56.0",
         "npm-run-all": "^4",
         "tsup": "^8.0.2",

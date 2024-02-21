@@ -9,7 +9,7 @@
     },
     "devDependencies": {
         "@algolia/client-search": "^4",
-        "@sunodo/contracts": "*",
+        "@sunodo/contracts": "workspace:*",
         "vitepress": "^1.0.0-rc.40"
     }
 }
