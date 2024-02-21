@@ -1,7 +1,7 @@
-import path from "path";
+import { getSingletonFactoryInfo } from "@safe-global/safe-singleton-factory";
 import { HardhatUserConfig } from "hardhat/config";
 import { HttpNetworkUserConfig } from "hardhat/types";
-import { getSingletonFactoryInfo } from "@safe-global/safe-singleton-factory";
+import path from "path";
 
 import "@nomicfoundation/hardhat-verify";
 import "@nomiclabs/hardhat-ethers";
@@ -49,8 +49,8 @@ const networkConfig = (chain: Chain): HttpNetworkUserConfig => {
         accounts: mnemonic
             ? { mnemonic }
             : privateKey
-              ? [privateKey]
-              : undefined,
+            ? [privateKey]
+            : undefined,
     };
 };
 
