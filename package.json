@@ -16,7 +16,7 @@
         "@changesets/cli": "^2",
         "@sunodo/eslint-config": "workspace:*",
         "prettier": "^3",
-        "turbo": "^1"
+        "turbo": "^1.12.4"
     },
     "engines": {
         "node": ">=18.0.0"
