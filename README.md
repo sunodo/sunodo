@@ -38,7 +38,7 @@ To build all apps and packages, run the following command:
 
 ```shell
 cd sunodo
-yarn run build
+pnpm run build
 ```
 
 ## Develop
@@ -47,5 +47,5 @@ To develop all apps and packages, run the following command:
 
 ```shell
 cd sunodo
-yarn run dev
+pnpm run dev
 ```
