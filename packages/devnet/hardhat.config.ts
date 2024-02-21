@@ -1,6 +1,6 @@
-import path from "path";
-import { HardhatUserConfig } from "hardhat/config";
 import { getSingletonFactoryInfo } from "@safe-global/safe-singleton-factory";
+import { HardhatUserConfig } from "hardhat/config";
+import path from "path";
 
 import "@nomiclabs/hardhat-ethers";
 import "hardhat-abi-exporter";
