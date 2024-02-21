@@ -1,0 +1,27 @@
+name: lint
+on:
+    pull_request:
+permissions:
+    contents: read
+jobs:
+    lint:
+        runs-on: ubuntu-latest
+        env:
+            TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+            TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js 20
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  registry-url: "https://registry.npmjs.org"
+                  cache: "yarn"
+
+            - name: Install dependencies
+              run: yarn install
+
+            - name: Lint
+              run: yarn lint
