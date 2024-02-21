@@ -1,7 +1,7 @@
-import { HardhatRuntimeEnvironment } from "hardhat/types";
-import { DeployFunction, DeployOptions } from "hardhat-deploy/types";
-import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { deployENS } from "@ethereum-waffle/ens";
+import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+import { DeployFunction, DeployOptions } from "hardhat-deploy/types";
+import { HardhatRuntimeEnvironment } from "hardhat/types";
 
 const deployEns = async (deployer: SignerWithAddress) => {
     const ens = await deployENS(deployer);
