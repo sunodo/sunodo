@@ -1,7 +1,7 @@
 import { Args, Command, Flags } from "@oclif/core";
-import path from "path";
 import { execa } from "execa";
 import fs from "fs-extra";
+import path from "path";
 
 export default class Shell extends Command {
     static description = "Start a shell in cartesi machine of application";

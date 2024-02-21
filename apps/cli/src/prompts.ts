@@ -6,6 +6,7 @@ import {
     select,
 } from "@inquirer/prompts";
 import { CancelablePromise, Context } from "@inquirer/type";
+import chalk from "chalk";
 import {
     Address,
     Hex,
@@ -18,7 +19,6 @@ import {
     parseUnits,
     stringToHex,
 } from "viem";
-import chalk from "chalk";
 
 /**
  * Prompt for an address value.

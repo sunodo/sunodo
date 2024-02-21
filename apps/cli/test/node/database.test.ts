@@ -1,6 +1,6 @@
-import { describe, expect, test } from "vitest";
-import { tmpNameSync } from "tmp";
 import { rmSync } from "fs";
+import { tmpNameSync } from "tmp";
+import { describe, expect, test } from "vitest";
 
 import { Database } from "../../src/node/database";
 

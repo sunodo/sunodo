@@ -17,7 +17,7 @@ export default class SendAddress extends SendBaseCommand<typeof SendAddress> {
 
     public async send(
         publicClient: PublicClient,
-        walletClient: WalletClient
+        walletClient: WalletClient,
     ): Promise<Address> {
         // get dapp address from local node, or ask
         const dapp = await super.getDAppAddress();

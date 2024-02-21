@@ -1,9 +1,8 @@
+import { Command, Interfaces } from "@oclif/core";
+import { Address } from "abitype";
+import { execa } from "execa";
 import fs from "fs";
 import path from "path";
-import { Command, Interfaces } from "@oclif/core";
-import { execa } from "execa";
-import { Address } from "abitype";
-import { PsResponse } from "./types/docker.js";
 import {
     cartesiDAppFactoryAddress,
     dAppAddressRelayAddress,
@@ -15,6 +14,7 @@ import {
     inputBoxAddress,
     sunodoTokenAddress,
 } from "./contracts.js";
+import { PsResponse } from "./types/docker.js";
 
 export type Flags<T extends typeof Command> = Interfaces.InferredFlags<
     (typeof SunodoCommand)["baseFlags"] & T["flags"]

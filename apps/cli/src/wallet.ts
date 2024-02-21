@@ -1,24 +1,24 @@
 import { input } from "@inquirer/prompts";
-import { Address } from "abitype";
-import chalk from "chalk";
-import {
-    Chain,
-    createPublicClient as viemCreatePublicClient,
-    createWalletClient as viemCreateWalletClient,
-    formatUnits,
-    http,
-    HttpTransport,
-    PublicClient,
-    WalletClient,
-    custom,
-    Account,
-    Transport,
-} from "viem";
-import { mnemonicToAccount, privateKeyToAccount } from "viem/accounts";
 import { MetaMaskSDK } from "@metamask/sdk";
 import { EthereumProvider } from "@walletconnect/ethereum-provider";
-import qrcode from "qrcode-terminal";
+import { Address } from "abitype";
 import ansiColors from "ansi-colors";
+import chalk from "chalk";
+import qrcode from "qrcode-terminal";
+import {
+    Account,
+    Chain,
+    HttpTransport,
+    PublicClient,
+    Transport,
+    WalletClient,
+    custom,
+    formatUnits,
+    http,
+    createPublicClient as viemCreatePublicClient,
+    createWalletClient as viemCreateWalletClient,
+} from "viem";
+import { mnemonicToAccount, privateKeyToAccount } from "viem/accounts";
 import {
     arbitrum,
     arbitrumGoerli,
