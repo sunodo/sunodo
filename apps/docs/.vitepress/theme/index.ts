@@ -1,8 +1,8 @@
 import DefaultTheme from "vitepress/theme";
-import VPHomeHero from "./components/VPHomeHero.vue";
-import VPHomeFeatures from "./components/VPHomeFeatures.vue";
 import VPHomeCta from "./components/VPHomeCta.vue";
+import VPHomeFeatures from "./components/VPHomeFeatures.vue";
 import VPHomeFooter from "./components/VPHomeFooter.vue";
+import VPHomeHero from "./components/VPHomeHero.vue";
 
 import type { Theme } from "vitepress";
 
