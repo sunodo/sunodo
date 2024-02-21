@@ -1,6 +1,6 @@
-import { HttpNetworkUserConfig } from "hardhat/types";
-import { HardhatUserConfig } from "hardhat/config";
 import { getSingletonFactoryInfo } from "@safe-global/safe-singleton-factory";
+import { HardhatUserConfig } from "hardhat/config";
+import { HttpNetworkUserConfig } from "hardhat/types";
 
 import "hardhat-deploy";
 
@@ -37,8 +37,8 @@ const networkConfig = (chain: Chain): HttpNetworkUserConfig => {
         accounts: mnemonic
             ? { mnemonic }
             : privateKey
-              ? [privateKey]
-              : undefined,
+            ? [privateKey]
+            : undefined,
     };
 };
 
@@ -54,10 +54,10 @@ const config: HardhatUserConfig = {
             accounts: mnemonic
                 ? { mnemonic }
                 : privateKey
-                  ? [privateKey]
-                  : {
-                        mnemonic: DEFAULT_DEVNET_MNEMONIC,
-                    },
+                ? [privateKey]
+                : {
+                      mnemonic: DEFAULT_DEVNET_MNEMONIC,
+                  },
         },
         arbitrum_sepolia: networkConfig(arbitrumSepolia),
         arbitrum: networkConfig(arbitrum),
