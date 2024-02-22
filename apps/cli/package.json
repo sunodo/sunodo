@@ -18,7 +18,7 @@
         "/oclif.manifest.json"
     ],
     "dependencies": {
-        "@inquirer/prompts": "^3.0",
+        "@inquirer/prompts": "^4.1.0",
         "@inquirer/type": "^1.2.0",
         "@ledgerhq/hw-app-eth": "^6",
         "@ledgerhq/hw-transport-node-hid": "^6",
