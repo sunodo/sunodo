@@ -29,11 +29,8 @@
         "@openzeppelin/contracts": "4.9.3"
     },
     "devDependencies": {
-        "@ensdomains/ens": "^0.6",
-        "@ensdomains/resolver": "^0.3",
-        "@ethereum-waffle/ens": "^4",
         "@nomicfoundation/hardhat-verify": "^2",
-        "@nomiclabs/hardhat-ethers": "^2",
+        "@nomicfoundation/hardhat-viem": "^2.0.0",
         "@safe-global/safe-singleton-factory": "^1",
         "hardhat": "^2",
         "hardhat-abi-exporter": "^2",
