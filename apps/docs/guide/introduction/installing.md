@@ -11,6 +11,12 @@ The CLI heavily uses [Docker](https://docker.com) under the hood, so you must ha
 
 The highly recommended way to have all of these installed is to install [Docker Desktop](https://www.docker.com/products/docker-desktop/).
 
+If not using Docker Desktop, Docker RISC-V support can be installed by running the following command:
+
+```shell
+docker run --privileged --rm tonistiigi/binfmt:riscv
+```
+
 ## macOS
 
 MacOS [Homebrew](https://brew.sh) users can install sunodo with:
