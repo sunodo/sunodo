@@ -28,7 +28,7 @@
         "@oclif/plugin-plugins": "^3.3",
         "@oclif/plugin-update": "^3.1",
         "@walletconnect/ethereum-provider": "^2.9",
-        "abitype": "^0.9",
+        "abitype": "^1.0.0",
         "ansi-colors": "^4",
         "bytes": "^3.1",
         "chalk": "^5.3.0",
@@ -44,7 +44,7 @@
         "qrcode-terminal": "^0.12",
         "semver": "^7.5",
         "tmp": "^0.2",
-        "viem": "1.15.4"
+        "viem": "^2.7.12"
     },
     "devDependencies": {
         "@oclif/test": "^3.0",
@@ -52,7 +52,7 @@
         "@sunodo/devnet": "workspace:*",
         "@sunodo/eslint-config": "workspace:*",
         "@sunodo/token": "workspace:*",
-        "@sunodo/wagmi-plugin-hardhat-deploy": "^0.2",
+        "@sunodo/wagmi-plugin-hardhat-deploy": "^0.3.0",
         "@types/bytes": "^3.1",
         "@types/fs-extra": "^11",
         "@types/inquirer": "^9",
@@ -63,7 +63,7 @@
         "@types/qrcode-terminal": "^0.12",
         "@types/semver": "^7.5.7",
         "@types/tmp": "^0.2",
-        "@wagmi/cli": "^1.4",
+        "@wagmi/cli": "^2.1.1",
         "copyfiles": "^2",
         "eslint": "^8",
         "eslint-config-oclif": "^5",
