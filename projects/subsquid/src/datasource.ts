@@ -5,11 +5,11 @@ import { Chain } from "viem/chains";
 /**
  * Archives supported by Subsquid Aquarium
  */
-const archives: Record<string, string> = {
-    arbitrum: lookupArchive("arbitrum"),
-    "arbitrum-goerli": lookupArchive("arbitrum-goerli"),
-    homestead: lookupArchive("eth-mainnet"),
-    sepolia: lookupArchive("sepolia"),
+const archives: Record<number, string> = {
+    42161: lookupArchive("arbitrum"),
+    421613: lookupArchive("arbitrum-goerli"),
+    1: lookupArchive("eth-mainnet"),
+    11155111: lookupArchive("sepolia"),
     // there is no support for optimism yet
 };
 
@@ -27,16 +27,14 @@ const chainURL = (chain: Chain): string | undefined => {
         // return an infura URL as there is a secret INFURA_ID defined and chain supports infura
         return `${chain.rpcUrls.alchemy.http[0]}/${process.env.ALCHEMY_ID}`;
     } else {
-        const envName = `${chain.network
-            .replace("-", "_")
-            .toUpperCase()}_HTTP_URL`;
+        const envName = `PROVIDER_HTTP_URL_${chain.id}`;
         return process.env[envName] || chain.rpcUrls.public.http[0];
     }
 };
 
 export const createDatasource = (chain: Chain): DataSource => {
     return {
-        archive: archives[chain.network],
+        archive: archives[chain.id],
         chain: chainURL(chain),
     };
 };

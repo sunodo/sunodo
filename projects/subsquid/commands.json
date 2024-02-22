@@ -41,8 +41,13 @@
             "cmd": ["squid-typeorm-codegen"]
         },
         "typegen": {
-            "description": "Generate data access classes using @wagmi/cli",
-            "cmd": ["npx", "wagmi", "generate"]
+            "description": "Generate data access classes for an ABI file(s) in the ./abi folder",
+            "cmd": [
+                "squid-evm-typegen",
+                "./src/abi",
+                { "glob": "./abi/*.json" },
+                "--multicall"
+            ]
         },
         "process": {
             "description": "Load .env and start the squid processor",

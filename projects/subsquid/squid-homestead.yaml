@@ -1,6 +1,6 @@
 manifestVersion: subsquid.io/v0.1
 name: sunodo-homestead
-version: 1
+version: 2
 description: Indexes entities used by sunodo
 build:
 deploy:
