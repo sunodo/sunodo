@@ -1,0 +1,98 @@
+{
+    "author": "Danilo Tuler <tuler@pobox.com>",
+    "bin": {
+        "sunodo-node": "./bin/run.js"
+    },
+    "dependencies": {
+        "@inquirer/prompts": "^3",
+        "@inquirer/type": "^1",
+        "@metamask/sdk": "^0.14",
+        "@oclif/core": "^3",
+        "@oclif/plugin-help": "^6",
+        "@oclif/plugin-plugins": "^4",
+        "@walletconnect/ethereum-provider": "^2",
+        "abitype": "^1",
+        "chalk": "^5",
+        "dotenv": "^16",
+        "download": "^8",
+        "execa": "^8",
+        "fs-extra": "^11",
+        "multiformats": "^13",
+        "ora": "^8",
+        "qrcode-terminal": "^0.12",
+        "viem": "^2"
+    },
+    "description": "Sunodo Node CLI",
+    "devDependencies": {
+        "@oclif/test": "^3",
+        "@sunodo/devnet": "workspace:*",
+        "@sunodo/wagmi-plugin-hardhat-deploy": "^0.3",
+        "@types/chai": "^4",
+        "@types/download": "^8",
+        "@types/fs-extra": "^11",
+        "@types/mocha": "^9",
+        "@types/node": "^18",
+        "@types/qrcode-terminal": "^0.12",
+        "@wagmi/cli": "^2",
+        "chai": "^4",
+        "eslint": "^8",
+        "eslint-config-oclif": "^5",
+        "eslint-config-oclif-typescript": "^3",
+        "eslint-config-prettier": "^9",
+        "mocha": "^10",
+        "npm-run-all": "^4",
+        "oclif": "^4",
+        "rimraf": "^5",
+        "shx": "^0.3.3",
+        "ts-node": "^10",
+        "tsconfig": "workspace:*",
+        "typescript": "^5"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "exports": "./dist/index.js",
+    "files": [
+        "/bin",
+        "/dist",
+        "/oclif.manifest.json"
+    ],
+    "homepage": "https://github.com/sunodo/sunodo",
+    "license": "Apache-2.0",
+    "main": "dist/index.js",
+    "name": "@sunodo/node-cli",
+    "oclif": {
+        "bin": "sunodo-node",
+        "dirname": "sunodo-node",
+        "commands": "./dist/commands",
+        "plugins": [
+            "@oclif/plugin-help",
+            "@oclif/plugin-plugins"
+        ],
+        "topicSeparator": " ",
+        "topics": {
+            "create": {
+                "description": "Create support smart contracts"
+            }
+        }
+    },
+    "scripts": {
+        "build": "run-s clean codegen compile",
+        "clean": "rimraf dist src/contracts.ts",
+        "codegen": "wagmi generate",
+        "compile": "shx rm -rf dist && tsc -b",
+        "lint": "eslint . --ext .ts",
+        "postpack": "shx rm -f oclif.manifest.json",
+        "posttest": "pnpm lint",
+        "prepack": "pnpm build && oclif manifest && oclif readme",
+        "prepare": "pnpm build",
+        "test": "mocha --forbid-only \"test/**/*.test.ts\"",
+        "version": "oclif readme && git add README.md"
+    },
+    "version": "0.0.0",
+    "keywords": [
+        "oclif"
+    ],
+    "type": "module",
+    "types": "dist/index.d.ts"
+}
