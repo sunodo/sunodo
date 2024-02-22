@@ -34,7 +34,7 @@ jobs:
               uses: foundry-rs/foundry-toolchain@v1
 
             - name: Install Dependencies
-              run: pnpm
+              run: pnpm install
 
             - name: Create Release Pull Request
               id: changeset
