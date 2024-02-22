@@ -2,7 +2,7 @@ import { input } from "@inquirer/prompts";
 import { Address } from "abitype";
 import { parseEther, PublicClient, WalletClient } from "viem";
 
-import { etherPortalABI, etherPortalAddress } from "../../contracts.js";
+import { etherPortalAbi, etherPortalAddress } from "../../contracts.js";
 import * as CustomFlags from "../../flags.js";
 import { SendBaseCommand } from "./index.js";
 
@@ -34,7 +34,7 @@ export default class SendEther extends SendBaseCommand<typeof SendEther> {
 
         const { request } = await publicClient.simulateContract({
             address: etherPortalAddress,
-            abi: etherPortalABI,
+            abi: etherPortalAbi,
             functionName: "depositEther",
             args: [dapp, this.flags.execLayerData],
             value: parseEther(amount as `${number}`),

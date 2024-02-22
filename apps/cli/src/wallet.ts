@@ -141,7 +141,7 @@ const selectTransport = async (
     } else {
         const url = await input({
             message: "RPC URL",
-            default: chain.rpcUrls.public.http[0],
+            default: chain.rpcUrls.default.http[0],
         });
         return http(url);
     }

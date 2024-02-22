@@ -1,12 +1,14 @@
 import { input } from "@inquirer/prompts";
 import { Address } from "abitype";
-import { isAddress, parseEther, PublicClient, WalletClient } from "viem";
-
 import {
-    erc20ABI,
-    erc20PortalABI,
-    erc20PortalAddress,
-} from "../../contracts.js";
+    erc20Abi,
+    isAddress,
+    parseEther,
+    PublicClient,
+    WalletClient,
+} from "viem";
+
+import { erc20PortalAbi, erc20PortalAddress } from "../../contracts.js";
 import * as CustomFlags from "../../flags.js";
 import { SendBaseCommand } from "./index.js";
 
@@ -33,7 +35,7 @@ export default class SendERC20 extends SendBaseCommand<typeof SendERC20> {
         publicClient: PublicClient,
         address: Address,
     ): Promise<ERC20Token> {
-        const args = { abi: erc20ABI, address };
+        const args = { abi: erc20Abi, address };
         const symbol = await publicClient.readContract({
             ...args,
             functionName: "symbol",
@@ -86,7 +88,7 @@ export default class SendERC20 extends SendBaseCommand<typeof SendERC20> {
 
         const { request } = await publicClient.simulateContract({
             address: erc20PortalAddress,
-            abi: erc20PortalABI,
+            abi: erc20PortalAbi,
             functionName: "depositERC20Tokens",
             args: [tokenAddress, dapp, parseEther(amount as `${number}`), "0x"],
             account: walletClient.account,

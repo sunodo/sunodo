@@ -10,7 +10,7 @@ import {
     stringToHex,
 } from "viem";
 
-import { inputBoxABI, inputBoxAddress } from "../../contracts.js";
+import { inputBoxAbi, inputBoxAddress } from "../../contracts.js";
 import { bytesInput } from "../../prompts.js";
 import { SendBaseCommand } from "./index.js";
 
@@ -129,7 +129,7 @@ export default class SendGeneric extends SendBaseCommand<typeof SendGeneric> {
             (await this.getInput()) || (await bytesInput({ message: "Input" }));
         const { request } = await publicClient.simulateContract({
             address: inputBoxAddress,
-            abi: inputBoxABI,
+            abi: inputBoxAbi,
             functionName: "addInput",
             args: [dapp, payload],
             account: walletClient.account,

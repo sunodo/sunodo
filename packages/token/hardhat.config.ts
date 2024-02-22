@@ -22,7 +22,7 @@ const DEFAULT_DEVNET_MNEMONIC =
     "test test test test test test test test test test test junk";
 
 const networkConfig = (chain: Chain): HttpNetworkUserConfig => {
-    let url = chain.rpcUrls.public.http.at(0);
+    let url = chain.rpcUrls.default.http.at(0);
 
     // support for infura and alchemy URLs through env variables
     if (process.env.INFURA_ID && chain.rpcUrls.infura?.http) {

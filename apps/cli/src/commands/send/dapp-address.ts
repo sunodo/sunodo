@@ -2,7 +2,7 @@ import { Address } from "abitype";
 import { PublicClient, WalletClient } from "viem";
 
 import {
-    dAppAddressRelayABI,
+    dAppAddressRelayAbi,
     dAppAddressRelayAddress,
 } from "../../contracts.js";
 import { SendBaseCommand } from "./index.js";
@@ -24,7 +24,7 @@ export default class SendAddress extends SendBaseCommand<typeof SendAddress> {
 
         const { request } = await publicClient.simulateContract({
             address: dAppAddressRelayAddress,
-            abi: dAppAddressRelayABI,
+            abi: dAppAddressRelayAbi,
             functionName: "relayDAppAddress",
             args: [dapp],
             account: walletClient.account,
