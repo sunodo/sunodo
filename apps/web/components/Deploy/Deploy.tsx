@@ -15,8 +15,8 @@ import { getAddress, isAddress, isHash, zeroAddress } from "viem";
 import { useAccount, useBalance } from "wagmi";
 
 import { useForm } from "@mantine/form";
-import { useCartesiMachine } from "../../src/hooks/cartesiMachineHash";
 import { useDeployApplication } from "../../src/hooks/deploy";
+import { useCartesiMachine } from "../../src/hooks/machine";
 import { useValidatorNodeProvider } from "../../src/hooks/provider";
 import { useTokenApproval } from "../../src/hooks/token";
 import { Application } from "./Application";
@@ -143,9 +143,7 @@ const Deploy: FC<DeployProps> = (props) => {
                             />
                         </Stack>
 
-                        <Collapse in={!!machine.hash}>
-                            <MachineCard machine={machine} />
-                        </Collapse>
+                        <MachineCard machine={machine} />
                     </Stack>
                 </Timeline.Item>
 

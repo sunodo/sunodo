@@ -6,6 +6,7 @@ import { FC, Suspense } from "react";
 
 import DeployComponent from "../../components/Deploy/Deploy";
 import { Section } from "../../components/Section/Section";
+import { HeliaProvider } from "../../providers/HeliaProvider";
 
 const Deploy: FC = () => {
     const searchParams = useSearchParams();
@@ -24,13 +25,15 @@ const Deploy: FC = () => {
 
 const DeployPage: FC = () => {
     return (
-        <Section size="sm">
-            <Container>
-                <Suspense>
-                    <Deploy />
-                </Suspense>
-            </Container>
-        </Section>
+        <HeliaProvider>
+            <Section size="sm">
+                <Container>
+                    <Suspense>
+                        <Deploy />
+                    </Suspense>
+                </Container>
+            </Section>
+        </HeliaProvider>
     );
 };
 

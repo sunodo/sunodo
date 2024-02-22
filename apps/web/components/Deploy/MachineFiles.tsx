@@ -1,10 +1,11 @@
 import { Center, Table, Text } from "@mantine/core";
 import bytes from "bytes";
 import { FC } from "react";
-import { CarEntry } from "../../src/hooks/cartesiMachineHash";
+
+import { CartesiMachineEntry } from "../../src/hooks/machine";
 
 type MachineFilesProps = {
-    entries: CarEntry[];
+    entries: CartesiMachineEntry[];
 };
 
 const MachineFiles: FC<MachineFilesProps> = ({ entries }) => {
@@ -14,7 +15,7 @@ const MachineFiles: FC<MachineFilesProps> = ({ entries }) => {
                 <Table.Thead>
                     <Table.Tr>
                         <Table.Th></Table.Th>
-                        <Table.Th>Path</Table.Th>
+                        <Table.Th>Name</Table.Th>
                         <Table.Th>CID</Table.Th>
                         <Table.Th align="right">Size</Table.Th>
                     </Table.Tr>
@@ -23,10 +24,10 @@ const MachineFiles: FC<MachineFilesProps> = ({ entries }) => {
                     {entries.map((entry, index) => (
                         <Table.Tr key={index}>
                             <Table.Td>{index}</Table.Td>
-                            <Table.Td>{entry.path}</Table.Td>
-                            <Table.Td>{entry.cid}</Table.Td>
+                            <Table.Td>{entry.name}</Table.Td>
+                            <Table.Td>{entry.cid.toString()}</Table.Td>
                             <Table.Td align="right">
-                                {bytes(entry.size)}
+                                {bytes(Number(entry.size))}
                             </Table.Td>
                         </Table.Tr>
                     ))}
