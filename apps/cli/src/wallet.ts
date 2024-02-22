@@ -8,6 +8,7 @@ import qrcode from "qrcode-terminal";
 import {
     Account,
     Chain,
+    Hex,
     HttpTransport,
     PublicClient,
     Transport,
@@ -91,7 +92,6 @@ const walletChoices = (
         {
             name: `Private Key${dev ? "" : ansiColors.red(" (UNSAFE)")}`,
             value: "private-key",
-            disabled: dev && "(not available)", // do not offer this wallets if chain is local foundry
         },
     ];
 };
@@ -102,6 +102,7 @@ export interface EthereumPromptOptions {
     rpcUrl?: string;
     mnemonicPassphrase?: string;
     mnemonicIndex?: number;
+    privateKey?: Hex;
 }
 
 export type TransactionPrompt = (
@@ -202,7 +203,15 @@ const createWalletClient = async (
     publicClient: PublicClient,
     publicTransport: Transport,
 ): Promise<WalletClient> => {
-    if (options.mnemonicPassphrase) {
+    if (options.privateKey) {
+        // private key specified
+        const account = privateKeyToAccount(options.privateKey);
+        return viemCreateWalletClient({
+            account,
+            transport: publicTransport,
+            chain,
+        });
+    } else if (options.mnemonicPassphrase) {
         // mnemonic specified
         const account = mnemonicToAccount(options.mnemonicPassphrase, {
             addressIndex: options.mnemonicIndex,
