@@ -34,7 +34,7 @@
         "hardhat-deploy": "^0.11",
         "npm-run-all": "^4",
         "typescript": "^5",
-        "viem": "^2.7.12"
+        "viem": "^2.7.13"
     },
     "dependencies": {
         "@openzeppelin/contracts": "5.0.1"

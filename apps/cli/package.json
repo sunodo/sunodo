@@ -23,7 +23,7 @@
         "@ledgerhq/hw-app-eth": "^6",
         "@ledgerhq/hw-transport-node-hid": "^6",
         "@metamask/sdk": "^0.15.0",
-        "@oclif/core": "^3.0",
+        "@oclif/core": "^3.19.5",
         "@oclif/plugin-help": "^6.0.14",
         "@oclif/plugin-plugins": "^4.2.5",
         "@oclif/plugin-update": "^4.1.14",
@@ -44,7 +44,7 @@
         "qrcode-terminal": "^0.12",
         "semver": "^7.5",
         "tmp": "^0.2",
-        "viem": "^2.7.12"
+        "viem": "^2.7.13"
     },
     "devDependencies": {
         "@oclif/test": "^3.0",
@@ -56,7 +56,7 @@
         "@types/bytes": "^3.1",
         "@types/fs-extra": "^11",
         "@types/inquirer": "^9",
-        "@types/node": "^20",
+        "@types/node": "^20.11.20",
         "@types/node-fetch": "^2.6",
         "@types/progress-stream": "^2.0",
         "@types/prompts": "^2.4",
