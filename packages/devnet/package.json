@@ -18,7 +18,7 @@
         "tsc": "tsc"
     },
     "devDependencies": {
-        "@nomiclabs/hardhat-ethers": "^2",
+        "@nomicfoundation/hardhat-viem": "^2.0.0",
         "@safe-global/safe-singleton-factory": "^1",
         "@sunodo/contracts": "workspace:*",
         "@sunodo/token": "workspace:*",

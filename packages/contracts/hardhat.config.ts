@@ -4,7 +4,7 @@ import { HttpNetworkUserConfig } from "hardhat/types";
 import path from "path";
 
 import "@nomicfoundation/hardhat-verify";
-import "@nomiclabs/hardhat-ethers";
+import "@nomicfoundation/hardhat-viem";
 import "hardhat-abi-exporter";
 import "hardhat-deploy";
 import "solidity-docgen";

@@ -2,7 +2,7 @@ import { getSingletonFactoryInfo } from "@safe-global/safe-singleton-factory";
 import { HardhatUserConfig } from "hardhat/config";
 import path from "path";
 
-import "@nomiclabs/hardhat-ethers";
+import "@nomicfoundation/hardhat-viem";
 import "hardhat-abi-exporter";
 import "hardhat-deploy";
 import "./src/tasks/deploy-anvil";
