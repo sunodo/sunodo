@@ -1,10 +1,4 @@
-import {
-    PromptConfig,
-    Separator,
-    confirm,
-    input,
-    select,
-} from "@inquirer/prompts";
+import { Separator, confirm, input, select } from "@inquirer/prompts";
 import { CancelablePromise, Context } from "@inquirer/type";
 import chalk from "chalk";
 import {
@@ -20,12 +14,15 @@ import {
     stringToHex,
 } from "viem";
 
+type InputConfig = Parameters<typeof input>[0];
+type SelectConfig<ValueType> = Parameters<typeof select<ValueType>>[0];
+
 /**
  * Prompt for an address value.
  * @param config inquirer config
  * @returns address
  */
-export type AddressPromptConfig = PromptConfig<{ default?: Address }>;
+export type AddressPromptConfig = InputConfig & { default?: Address };
 export const addressInput = async (
     config: AddressPromptConfig,
 ): Promise<Address> => {
@@ -41,7 +38,7 @@ export const addressInput = async (
  * @param config inquirer config
  * @returns hex
  */
-export type HexPromptConfig = PromptConfig<{ default?: Hex }>;
+export type HexPromptConfig = InputConfig & { default?: Hex };
 export const hexInput = async (config: HexPromptConfig): Promise<Hex> => {
     const value = await input({
         ...config,
@@ -50,10 +47,10 @@ export const hexInput = async (config: HexPromptConfig): Promise<Hex> => {
     return value as Hex;
 };
 
-export type BigintPromptConfig = PromptConfig<{
+export type BigintPromptConfig = InputConfig & {
     decimals: number;
     default?: bigint;
-}>;
+};
 export const bigintInput = async (
     config: BigintPromptConfig,
 ): Promise<bigint> => {
@@ -74,7 +71,7 @@ export const bigintInput = async (
  * @returns bytes as hex string
  */
 export const bytesInput = async (
-    config: PromptConfig<{ message: string }>,
+    config: InputConfig & { message: string },
 ): Promise<Hex> => {
     const encoding = await select({
         ...config,
@@ -99,18 +96,23 @@ export const bytesInput = async (
         ],
     });
     switch (encoding) {
-        case "hex":
+        case "hex": {
             const valueHex = await hexInput({
                 ...config,
+                default: "0x",
                 message: `${config.message} (as hex-string)`,
             });
             return valueHex as `0x${string}`;
-        case "string":
+        }
+
+        case "string": {
             const valueString = await input({
                 ...config,
                 message: `${config.message} (as string)`,
             });
             return stringToHex(valueString);
+        }
+
         case "abi":
             return await abiParamsInput(config);
         default:
@@ -124,7 +126,7 @@ export const bytesInput = async (
  * @returns ABI encoded parameters as hex string
  */
 export const abiParamsInput = async (
-    config: PromptConfig<{ message: string }>,
+    config: InputConfig & { message: string },
 ): Promise<`0x${string}`> => {
     const encoding = await input({
         message: `${config.message} (as ABI encoded https://abitype.dev/api/human.html#parseabiparameters )`,
@@ -191,23 +193,23 @@ export const abiParamsInput = async (
 };
 
 // types below should be exported by @inquirer/select
-export type Choice<Value> = {
-    value: Value;
+export type Choice<ValueType> = {
+    value: ValueType;
     name?: string;
     description?: string;
     disabled?: boolean | string;
     type?: never;
 };
 
-export type SelectConfig<Value> = PromptConfig<{
-    choices: ReadonlyArray<Choice<Value> | Separator>;
+export type SelectAutoConfig<ValueType> = SelectConfig<ValueType> & {
+    choices: ReadonlyArray<Choice<ValueType> | Separator>;
     pageSize?: number;
-}>;
+};
 
-export const selectAuto = <Value extends unknown>(
-    config: SelectConfig<Value> & { discardDisabled?: boolean },
+export const selectAuto = <ValueType extends unknown>(
+    config: SelectAutoConfig<ValueType> & { discardDisabled?: boolean },
     context?: Context | undefined,
-): CancelablePromise<Value> => {
+): CancelablePromise<ValueType> => {
     const choices = config.choices;
 
     const list = config.discardDisabled
@@ -225,7 +227,7 @@ export const selectAuto = <Value extends unknown>(
                     choice.name || choice.value,
                 )}\n`,
             );
-            return new CancelablePromise<Value>((resolve) =>
+            return new CancelablePromise<ValueType>((resolve) =>
                 resolve(choice.value),
             );
         }
