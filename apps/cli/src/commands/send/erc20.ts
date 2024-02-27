@@ -26,7 +26,7 @@ export default class SendERC20 extends SendBaseCommand<typeof SendERC20> {
 
     static flags = {
         token: CustomFlags.address({ description: "token address" }),
-        amount: CustomFlags.number({ description: "amount", default: "1" }),
+        amount: CustomFlags.number({ description: "amount" }),
     };
 
     static examples = ["<%= config.bin %> <%= command.id %>"];
