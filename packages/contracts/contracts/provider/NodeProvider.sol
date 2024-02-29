@@ -115,4 +115,43 @@ contract ValidatorNodeProvider is
 
         return application;
     }
+
+    /// @dev This function deploys a new application deterministically, and registers it with the payment system
+    function deploy(
+        address _owner,
+        bytes32 _templateHash,
+        string calldata _location,
+        uint256 _initialRunway,
+        bytes32 _salt
+    ) external override whenNotPaused returns (CartesiDApp) {
+        // delegate call to factory
+        CartesiDApp application = factory.newApplication(
+            consensus,
+            _owner,
+            _templateHash,
+            _salt
+        );
+
+        // emit event with machine location
+        emit MachineLocation(address(application), _location);
+
+        // set initial runway
+        _extendRunway(msg.sender, application, _initialRunway);
+
+        return application;
+    }
+
+    /// @dev This function calculates the application deterministically
+    function calculateApplicationAddress(
+        address _owner,
+        bytes32 _templateHash,
+        bytes32 _salt
+    ) external view returns (address) {
+        return factory.calculateApplicationAddress(
+            consensus,
+            _owner,
+            _templateHash,
+            _salt
+        );
+    }
 }
