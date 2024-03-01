@@ -55,6 +55,38 @@ export default class SendERC20 extends SendBaseCommand<typeof SendERC20> {
         };
     }
 
+    private async setAllowance(
+            publicClient: PublicClient,
+            walletClient: WalletClient,
+            amount: bigint,
+            tokenAddress: Address) {
+
+        const allowance = await publicClient.readContract({
+            address: tokenAddress,
+            abi: erc20Abi,  
+            functionName: "allowance",
+            args: [walletClient.account?.address as `0x${string}`, erc20PortalAddress],
+            account: walletClient.account
+        }) 
+        
+    
+        if (allowance < amount) {
+            const allowanceNeeded = amount - allowance
+
+            const { request } = await publicClient.simulateContract({
+                address: tokenAddress,
+                abi: erc20Abi,  
+                functionName: "approve",
+                args: [erc20PortalAddress,  allowanceNeeded],
+                account: walletClient.account
+            
+            }) 
+
+            return await walletClient.writeContract(request)  
+
+        }
+    }
+
     public async send(
         publicClient: PublicClient,
         walletClient: WalletClient,
@@ -83,14 +115,15 @@ export default class SendERC20 extends SendBaseCommand<typeof SendERC20> {
                 validate: ercValidator,
             })) as Address);
 
-        const amount =
-            this.flags.amount || (await input({ message: "Amount" }));
+        const amount = parseEther((this.flags.amount || (await input({ message: "Amount" }))) as `${number}`);
+
+        await this.setAllowance(publicClient, walletClient, amount, tokenAddress)
 
         const { request } = await publicClient.simulateContract({
             address: erc20PortalAddress,
             abi: erc20PortalAbi,
             functionName: "depositERC20Tokens",
-            args: [tokenAddress, dapp, parseEther(amount as `${number}`), "0x"],
+            args: [tokenAddress, dapp, amount, "0x"],
             account: walletClient.account,
         });
 
