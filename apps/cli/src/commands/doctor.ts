@@ -10,6 +10,7 @@ export default class DoctorCommand extends Command {
 
     private static MINIMUM_DOCKER_VERSION = "23.0.0"; // Replace with our minimum required Docker version
     private static MINIMUM_DOCKER_COMPOSE_VERSION = "2.21.0"; // Replace with our minimum required Docker Compose version
+    private static MINIMUM_ANVIL_VERSION = "0.2.0"; // Replace with our minimum required Anvil version
 
     private static isDockerVersionValid(version: string): boolean {
         return semver.gte(version, DoctorCommand.MINIMUM_DOCKER_VERSION);
@@ -21,6 +22,10 @@ export default class DoctorCommand extends Command {
             v !== null &&
             semver.gte(v, DoctorCommand.MINIMUM_DOCKER_COMPOSE_VERSION)
         );
+    }
+
+    private static isAnvilVersionValid(version: string): boolean {
+        return semver.gte(version, DoctorCommand.MINIMUM_ANVIL_VERSION);
     }
 
     private static isBuildxRiscv64Supported(buildxOutput: string): boolean {
@@ -69,6 +74,19 @@ export default class DoctorCommand extends Command {
             if (!buildxRiscv64Supported) {
                 throw new Error(
                     "Your system does not support riscv64 architecture.",
+                );
+            }
+
+            // Check Anvil version
+            const { stdout: anvilVersionOutput } = await execa("anvil", [
+                "--version",
+            ]);
+            const parts = anvilVersionOutput.trim().split(" "); // Split the output by spaces
+            const anvilVersion = parts.length >= 2 ? parts[1] : "";
+
+            if (!DoctorCommand.isAnvilVersionValid(anvilVersion)) {
+                throw new Error(
+                    `Unsupported Anvil version. Minimum required version is ${DoctorCommand.MINIMUM_ANVIL_VERSION}. Installed version is ${anvilVersion}.`,
                 );
             }
 
