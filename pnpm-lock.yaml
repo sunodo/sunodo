@@ -228,6 +228,9 @@ importers:
 
   apps/node-cli:
     dependencies:
+      '@helia/unixfs':
+        specifier: ^3.0.0
+        version: 3.0.0
       '@inquirer/prompts':
         specifier: ^3
         version: 3.3.2
@@ -246,6 +249,9 @@ importers:
       '@oclif/plugin-plugins':
         specifier: ^4
         version: 4.2.5
+      '@sunodo/car-download':
+        specifier: workspace:*
+        version: link:../../packages/car-download
       '@walletconnect/ethereum-provider':
         specifier: ^2
         version: 2.11.2(react@18.2.0)
@@ -267,6 +273,9 @@ importers:
       fs-extra:
         specifier: ^11
         version: 11.2.0
+      helia:
+        specifier: ^4.0.1
+        version: 4.0.1(react-native@0.73.4)
       multiformats:
         specifier: ^13
         version: 13.1.0
@@ -12759,7 +12768,7 @@ packages:
       eslint: 8.56.0
       eslint-import-resolver-node: 0.3.9
       eslint-module-utils: 2.8.0(@typescript-eslint/parser@6.21.0)(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1)(eslint@8.56.0)
-      hasown: 2.0.1
+      hasown: 2.0.0
       is-core-module: 2.13.1
       is-glob: 4.0.3
       minimatch: 3.1.2
