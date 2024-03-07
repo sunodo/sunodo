@@ -3,6 +3,7 @@ module.exports = {
     extends: ["@sunodo/eslint-config/library.js"],
     parser: "@typescript-eslint/parser",
     parserOptions: {
-        project: true,
+        project: ["./tsconfig.eslint.json", "./tsconfig.json"],
+        tsconfigRootDir: __dirname,
     },
 };
