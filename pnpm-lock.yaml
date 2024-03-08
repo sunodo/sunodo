@@ -413,6 +413,9 @@ importers:
       npm-run-all:
         specifier: ^4
         version: 4.1.5
+      rimraf:
+        specifier: ^5
+        version: 5.0.5
       solidity-docgen:
         specifier: ^0.6.0-beta.36
         version: 0.6.0-beta.36(hardhat@2.20.1)
@@ -449,6 +452,9 @@ importers:
       npm-run-all:
         specifier: ^4
         version: 4.1.5
+      rimraf:
+        specifier: ^5
+        version: 5.0.5
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -502,6 +508,9 @@ importers:
       npm-run-all:
         specifier: ^4
         version: 4.1.5
+      rimraf:
+        specifier: ^5
+        version: 5.0.5
       typescript:
         specifier: ^5
         version: 5.3.3
@@ -15387,11 +15396,6 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /lru-cache@10.0.1:
-    resolution: {integrity: sha512-IJ4uwUTi2qCccrioU6g9g/5rvvVl13bsdczUUcqbciD9iLr095yj8DQKdObriEvuNSx325N1rV1O0sJFszx75g==}
-    engines: {node: 14 || >=16.14}
-    dev: true
-
   /lru-cache@10.2.0:
     resolution: {integrity: sha512-2bIM8x+VAf6JT4bKAljS1qUWgMsqZRPGJS6FSahIMPVvctcNhyVp7AJu7quxOW9jwkryBReKZY5tY5JYv2n/7Q==}
     engines: {node: 14 || >=16.14}
@@ -17426,7 +17430,7 @@ packages:
     resolution: {integrity: sha512-MkhCqzzBEpPvxxQ71Md0b1Kk51W01lrYvlMzSUaIzNsODdd7mqhiimSZlr+VegAz5Z6Vzt9Xg2ttE//XBhH3EQ==}
     engines: {node: '>=16 || 14 >=14.17'}
     dependencies:
-      lru-cache: 10.0.1
+      lru-cache: 10.2.0
       minipass: 7.0.4
     dev: true
 
