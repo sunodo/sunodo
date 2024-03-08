@@ -16,7 +16,7 @@ export default class HashCommand extends Command {
 
         if (!this.jsonEnabled()) {
             process.stdout.write(
-                `${chalk.green("?")} Cartesi Machine templateHash ${chalk.cyan(hash)}\n`,
+                `${chalk.green("?")} Cartesi machine templateHash ${chalk.cyan(hash)}\n`,
             );
             return;
         }
