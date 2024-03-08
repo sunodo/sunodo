@@ -17,7 +17,7 @@ export default class Run extends Command {
         }),
         "epoch-duration": Flags.integer({
             description: "duration of an epoch (in seconds)",
-            default: 86400,
+            default: 3600,
         }),
         "no-backend": Flags.boolean({
             description:
