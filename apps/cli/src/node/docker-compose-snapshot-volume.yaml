@@ -3,8 +3,8 @@ version: "3.9"
 services:
     dapp_deployer:
         volumes:
-            - ./.sunodo/image:/var/opt/cartesi/machine-snapshots/0_0:ro
+            - ./.sunodo/image:/usr/share/cartesi/snapshot:ro
 
     validator:
         volumes:
-            - ./.sunodo/image:/tmp/machine-snapshots/0_0:ro
+            - ./.sunodo/image:/tmp/snapshot:ro

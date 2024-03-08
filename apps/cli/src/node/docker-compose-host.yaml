@@ -1,8 +1,7 @@
 version: "3.9"
 services:
     dapp_deployer:
-        command:
-            [
+        command: [
                 "create",
                 "--rpc",
                 "http://anvil:8545",
@@ -19,9 +18,7 @@ services:
 
     validator:
         environment:
-            ENABLE_SUNODO_NODE: true
-            # advance-runner
-            SNAPSHOT_ENABLED: false
+            CARTESI_FEATURE_HOST_MODE: true
 
     traefik-config-generator:
         environment:
@@ -31,18 +28,18 @@ services:
                         host-runner:
                             rule: "PathPrefix(`/host-runner`)"
                             middlewares:
-                                - "remove-host-runner-prefix"
+                                - "replace-host-runner-prefix"
                             service: host-runner
                     middlewares:
-                        remove-host-runner-prefix:
+                        replace-host-runner-prefix:
                             replacePathRegex:
                                 regex: "^/host-runner/(.*)"
-                                replacement: "/$1"
+                                replacement: "/rollup/$1"
                     services:
                         host-runner:
                             loadBalancer:
                                 servers:
-                                    - url: "http://validator:5004"
+                                    - url: "http://validator:10000"
 
     prompt:
         environment:
