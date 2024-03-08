@@ -65,11 +65,13 @@ export default class CreateCommand extends Command {
         const { args, flags } = await this.parse(CreateCommand);
         const spinner = ora("Creating application...").start();
         try {
-            const { dir } = await this.download(
+            const { dir, commit } = await this.download(
                 flags.template,
                 flags.branch,
                 args.name,
             );
+
+            spinner.succeed(`Creating from sunodo-templates/${flags.template} (${flags.branch}@${commit}) ...`)
             spinner.succeed(`Application created at ${c.cyan(dir)}`);
         } catch (e: any) {
             spinner.fail(`Error creating application: ${c.red(e.message)}`);
