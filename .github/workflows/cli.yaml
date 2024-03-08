@@ -56,3 +56,10 @@ jobs:
               run: pnpm publish
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+            - name: Call homebrew-tap Repository Dispatch
+              uses: peter-evans/repository-dispatch@v2
+              with:
+                token: ${{ secrets.HOMEBREW_TAP_PAT }}
+                repository: sunodo/homebrew-tap
+                event-type: update-package
