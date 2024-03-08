@@ -2,21 +2,19 @@ version: "3.9"
 
 services:
     validator:
-        image: sunodo/rollups-node:0.6.1
+        image: sunodo/rollups-node:0.7.0
         depends_on:
             dapp_deployer:
                 condition: service_completed_successfully
         volumes:
             - blockchain-data:/usr/share/sunodo:ro
+        expose:
+            - "10000"
         healthcheck:
-            test: ["CMD", "is_ready"]
+            test: ["CMD", "curl", "-f", "http://localhost:10000/healthz"]
             interval: 10s
             timeout: 1s
             retries: 5
-        expose:
-            - 4000
-            - 5004
-            - 5005
         env_file:
             - ${SUNODO_BIN_PATH}/node/default.env
 
@@ -43,7 +41,7 @@ services:
                         inspect_server:
                             loadBalancer:
                                 servers:
-                                    - url: "http://validator:5005/inspect"
+                                    - url: "http://validator:10000/inspect"
             TRAEFIK_CONFIG_GRAPHQL_SERVER: |
                 http:
                     routers:
@@ -54,5 +52,4 @@ services:
                         graphql_server:
                             loadBalancer:
                                 servers:
-                                    - url: "http://validator:4000/graphql"
-
+                                    - url: "http://validator:10000/graphql"

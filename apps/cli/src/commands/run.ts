@@ -75,14 +75,17 @@ export default class Run extends Command {
             ANVIL_VERBOSITY: flags.verbose ? "--steps-tracing" : "--silent",
             BLOCK_TIME: blockInterval.toString(),
             BLOCK_TIMEOUT: (blockInterval + 3).toString(),
-            RD_EPOCH_DURATION: epochDuration.toString(),
-            REDIS_LOG_LEVEL: flags.verbose ? "verbose" : "warning",
-            REMOTE_CARTESI_MACHINE_LOG_LEVEL: flags.verbose ? "info" : "error",
-            RUST_LOG: flags.verbose ? "info" : "error",
+            CARTESI_EPOCH_DURATION: epochDuration.toString(),
+            CARTESI_LOG_LEVEL: flags.verbose ? "info" : "error",
             S6_VERBOSITY: flags.verbose ? "2" : "0",
-            SERVER_MANAGER_LOG_LEVEL: flags.verbose ? "info" : "error",
             SUNODO_BIN_PATH: binPath,
             SUNODO_LISTEN_PORT: listenPort.toString(),
+            CARTESI_EXPERIMENTAL_DISABLE_CONFIG_LOG: flags.verbose
+                ? "false"
+                : "true",
+            CARTESI_EXPERIMENTAL_SERVER_MANAGER_BYPASS_LOG: flags.verbose
+                ? "false"
+                : "true",
         };
 
         // validator

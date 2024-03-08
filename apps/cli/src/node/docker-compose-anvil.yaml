@@ -40,7 +40,7 @@ services:
                 "--mnemonic",
                 "test test test test test test test test test test test junk",
                 "--templateHashFile",
-                "/var/opt/cartesi/machine-snapshots/0_0/hash",
+                "/usr/share/cartesi/snapshot/hash",
                 "--outputFile",
                 "/usr/share/sunodo/dapp.json",
             ]
