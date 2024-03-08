@@ -1,11 +1,9 @@
 ---
-
 name: ⬆️ Update Dependencies
 about: Template for updating dependencies
-title: ''
+title: ""
 labels: chore
-assignees: ''
-
+assignees: ""
 ---
 
 ## 📚 Context
