@@ -20,6 +20,7 @@ The community has also created a number of templates that you can use to get sta
 
 -   [Deroll](https://github.com/tuler/deroll-template)
 -   [Typescript + SQLite](https://github.com/doiim/cartesi-ts-sqlite)
+-   [Cartesify](https://github.com/Calindra/cartesify-template)
 -   [Rollmelette](https://github.com/gligneul/rollmelette-template)
 
 If you want to add a template to the list above, please [edit this page](https://github.com/sunodo/sunodo/edit/main/apps/docs/guide/creating/available-templates.md) and open a pull request.

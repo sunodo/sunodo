@@ -32,6 +32,11 @@ It helps developers to:
 
 Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
+## Dependencies
+
+Sunodo uses Anvil commands. To install Anvil, you need to follow the instructions [here](https://book.getfoundry.sh/getting-started/installation#using-foundryup)
+
+
 ## Build
 
 To build all apps and packages, run the following command:
