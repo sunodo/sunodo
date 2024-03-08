@@ -32,6 +32,6 @@ export default class HashCommand extends Command {
             return this.getHash(hashPath);
         }
 
-        this.error("Hash file not found");
+        this.error("Cartesi machine snapshot not found, run 'sunodo build'");
     }
 }
