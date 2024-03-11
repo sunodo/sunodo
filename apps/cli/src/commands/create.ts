@@ -71,8 +71,12 @@ export default class CreateCommand extends Command {
                 args.name,
             );
             spinner.succeed(`Application created at ${c.cyan(dir)}`);
-        } catch (e: any) {
-            spinner.fail(`Error creating application: ${c.red(e.message)}`);
+        } catch (e: unknown) {
+            spinner.fail(
+                e instanceof Error
+                    ? `Error creating application: ${c.red(e.message)}`
+                    : String(e),
+            );
         }
     }
 }
