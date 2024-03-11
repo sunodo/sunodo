@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
     anvil:
-        image: sunodo/devnet:1.1.1
+        image: sunodo/devnet:1.4.0
         command:
             [
                 "anvil",
@@ -19,33 +19,30 @@ services:
             retries: 5
         environment:
             ANVIL_IP_ADDR: 0.0.0.0
-        volumes:
-            - blockchain-data:/usr/share/sunodo
         ports:
             - 8545:8545
 
     dapp_deployer:
-        image: cartesi/rollups-cli:1.0.2
+        image: sunodo/devnet:1.4.0
         restart: on-failure
         depends_on:
             anvil:
                 condition: service_started
         command:
             [
-                "create",
-                "--rpc",
+                "cast",
+                "send",
+                "--rpc-url",
                 "http://anvil:8545",
-                "--deploymentFile",
-                "/usr/share/sunodo/localhost.json",
-                "--mnemonic",
-                "test test test test test test test test test test test junk",
-                "--templateHashFile",
-                "/usr/share/cartesi/snapshot/hash",
-                "--outputFile",
-                "/usr/share/sunodo/dapp.json",
+                "--private-key",
+                "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80",
+                "0x1a71aE5dd62D1a5B8cB2cd9669F939F035601c5C",
+                "newApplication(address,address,bytes32,bytes32)",
+                "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+                "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+                "0x0000000000000000000000000000000000000000000000000000000000000000",
+                "0x0000000000000000000000000000000000000000000000000000000000000000",
             ]
-        volumes:
-            - blockchain-data:/usr/share/sunodo
 
     prompt:
         image: debian:bookworm-slim

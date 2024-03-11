@@ -27,7 +27,7 @@ export default class SendEther extends SendBaseCommand<typeof SendEther> {
         walletClient: WalletClient,
     ): Promise<Address> {
         // get dapp address from local node, or ask
-        const dapp = await super.getDAppAddress();
+        const applicationAddress = await super.getApplicationAddress();
 
         const amount =
             this.flags.amount || (await input({ message: "Amount" }));
@@ -36,7 +36,7 @@ export default class SendEther extends SendBaseCommand<typeof SendEther> {
             address: etherPortalAddress,
             abi: etherPortalAbi,
             functionName: "depositEther",
-            args: [dapp, this.flags.execLayerData],
+            args: [applicationAddress, this.flags.execLayerData],
             value: parseEther(amount as `${number}`),
             account: walletClient.account,
         });

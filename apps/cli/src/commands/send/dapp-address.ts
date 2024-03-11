@@ -20,13 +20,13 @@ export default class SendAddress extends SendBaseCommand<typeof SendAddress> {
         walletClient: WalletClient,
     ): Promise<Address> {
         // get dapp address from local node, or ask
-        const dapp = await super.getDAppAddress();
+        const address = await super.getApplicationAddress();
 
         const { request } = await publicClient.simulateContract({
             address: dAppAddressRelayAddress,
             abi: dAppAddressRelayAbi,
             functionName: "relayDAppAddress",
-            args: [dapp],
+            args: [address],
             account: walletClient.account,
         });
 

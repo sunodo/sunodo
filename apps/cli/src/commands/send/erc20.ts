@@ -60,7 +60,7 @@ export default class SendERC20 extends SendBaseCommand<typeof SendERC20> {
         walletClient: WalletClient,
     ): Promise<Address> {
         // get dapp address from local node, or ask
-        const dapp = await super.getDAppAddress();
+        const applicationAddress = await super.getApplicationAddress();
 
         const ercValidator = async (
             value: string,
@@ -90,7 +90,12 @@ export default class SendERC20 extends SendBaseCommand<typeof SendERC20> {
             address: erc20PortalAddress,
             abi: erc20PortalAbi,
             functionName: "depositERC20Tokens",
-            args: [tokenAddress, dapp, parseEther(amount as `${number}`), "0x"],
+            args: [
+                tokenAddress,
+                applicationAddress,
+                parseEther(amount as `${number}`),
+                "0x",
+            ],
             account: walletClient.account,
         });
 

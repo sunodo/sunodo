@@ -123,7 +123,7 @@ export default class SendGeneric extends SendBaseCommand<typeof SendGeneric> {
         walletClient: WalletClient,
     ): Promise<Address> {
         // get dapp address from local node, or ask
-        const dapp = await super.getDAppAddress();
+        const applicationAddress = await super.getApplicationAddress();
 
         const payload =
             (await this.getInput()) || (await bytesInput({ message: "Input" }));
@@ -131,7 +131,7 @@ export default class SendGeneric extends SendBaseCommand<typeof SendGeneric> {
             address: inputBoxAddress,
             abi: inputBoxAbi,
             functionName: "addInput",
-            args: [dapp, payload],
+            args: [applicationAddress, payload],
             account: walletClient.account,
         });
 
