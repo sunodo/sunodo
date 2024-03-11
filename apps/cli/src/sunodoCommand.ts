@@ -1,8 +1,6 @@
 import { Command, Interfaces } from "@oclif/core";
 import { Address } from "abitype";
 import { execa } from "execa";
-import fs from "fs";
-import path from "path";
 import {
     cartesiDAppFactoryAddress,
     dAppAddressRelayAddress,
@@ -51,54 +49,9 @@ export abstract class SunodoCommand<T extends typeof Command> extends Command {
         return ps?.State;
     }
 
-    protected async getDAppAddress(): Promise<Address | undefined> {
-        // read hash of the cartesi machine snapshot, if one exists
-        const hashPath = path.join(".sunodo", "image", "hash");
-        if (fs.existsSync(hashPath)) {
-            const hash = fs.readFileSync(hashPath).toString("hex");
-            const projectName = hash.substring(0, 8);
-
-            // check if application (with machine) is running
-            const projectState = await this.getServiceState(
-                projectName,
-                "anvil",
-            );
-            if (projectState === "running") {
-                // get dapp.json content from the container
-                const { stdout } = await execa("docker", [
-                    "compose",
-                    "--project-name",
-                    projectName,
-                    "exec",
-                    "anvil", // service name
-                    "cat",
-                    "/usr/share/sunodo/dapp.json",
-                ]);
-                const dapp = JSON.parse(stdout) as DApp;
-                return dapp.address;
-            }
-        }
-
-        // check if there is a node running with no-backend
-        const projectName = "sunodo-node";
-        const projectState = await this.getServiceState(projectName, "anvil");
-        if (projectState === "running") {
-            // copy deployment file from container to host
-            const { stdout } = await execa("docker", [
-                "compose",
-                "--project-name",
-                projectName,
-                "exec",
-                "anvil", // service name
-                "cat",
-                "/usr/share/sunodo/dapp.json",
-            ]);
-
-            const dapp = JSON.parse(stdout) as DApp;
-            return dapp.address;
-        }
-
-        return undefined;
+    protected async getApplicationAddress(): Promise<Address | undefined> {
+        // fixed value, as we do deterministic deployment with a zero hash
+        return "0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e";
     }
 
     protected async getAddressBook(): Promise<AddressBook> {
@@ -116,7 +69,7 @@ export abstract class SunodoCommand<T extends typeof Command> extends Command {
         };
 
         // get dapp address
-        const dapp = await this.getDAppAddress();
+        const dapp = await this.getApplicationAddress();
         if (dapp) {
             contracts["CartesiDApp"] = dapp;
         }

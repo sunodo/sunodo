@@ -68,23 +68,23 @@ export abstract class SendBaseCommand<
         });
     }
 
-    protected async getDAppAddress(): Promise<Address> {
+    protected async getApplicationAddress(): Promise<Address> {
         if (this.flags.dapp) {
             // honor the flag
             return this.flags.dapp;
         }
 
         // get the running container dapp address
-        const nodeAddress = await super.getDAppAddress();
+        const nodeAddress = await super.getApplicationAddress();
 
         // query for the address
-        const dapp = await input({
-            message: "DApp address",
+        const applicationAddress = await input({
+            message: "Application address",
             validate: (value) => isAddress(value) || "Invalid address",
             default: nodeAddress,
         });
 
-        return dapp as Address;
+        return applicationAddress as Address;
     }
 
     public async init(): Promise<void> {

@@ -48,7 +48,7 @@ export default class SendERC721 extends SendBaseCommand<typeof SendERC721> {
         walletClient: WalletClient,
     ): Promise<Address> {
         // get dapp address from local node, or ask
-        const dapp = await super.getDAppAddress();
+        const applicationAddress = await super.getApplicationAddress();
 
         const ercValidator = async (
             value: string,
@@ -89,7 +89,7 @@ export default class SendERC721 extends SendBaseCommand<typeof SendERC721> {
             address: erc721PortalAddress,
             abi: erc721PortalAbi,
             functionName: "depositERC721Token",
-            args: [token, dapp, BigInt(tokenId), "0x", "0x"],
+            args: [token, applicationAddress, BigInt(tokenId), "0x", "0x"],
             account: walletClient.account,
         });
         // XXX: add support for baseLayerData and execLayerData
