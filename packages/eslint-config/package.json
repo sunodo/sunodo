@@ -5,13 +5,13 @@
     "license": "Apache-2.0",
     "private": true,
     "devDependencies": {
-        "@typescript-eslint/eslint-plugin": "^7.0.2",
-        "@typescript-eslint/parser": "^7.0.2",
-        "@vercel/style-guide": "^5",
+        "@typescript-eslint/eslint-plugin": "^7.2.0",
+        "@typescript-eslint/parser": "^7.2.0",
+        "@vercel/style-guide": "^6.0.0",
         "eslint-config-prettier": "^9",
-        "eslint-config-turbo": "^1",
+        "eslint-config-turbo": "^1.12.5",
         "eslint-plugin-only-warn": "^1",
-        "typescript": "^5"
+        "typescript": "^5.4.2"
     },
     "files": [
         "library.js",
