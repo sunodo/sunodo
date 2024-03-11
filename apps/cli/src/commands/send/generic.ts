@@ -60,7 +60,7 @@ export default class SendGeneric extends SendBaseCommand<typeof SendGeneric> {
                 }
                 const abiParameters = parseAbiParameters(abiParams);
                 // TODO: decode values
-                const values: any[] = input.split(",").map((v, index) => {
+                const values = input.split(",").map((v, index) => {
                     if (index >= abiParameters.length) {
                         throw new Error(
                             `Too many values, expected ${abiParameters.length} values based on --input-abi-params '${abiParams}', parsing value at index ${index} from input '${input}'`,

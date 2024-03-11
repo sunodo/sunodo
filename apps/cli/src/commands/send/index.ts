@@ -1,5 +1,5 @@
 import { input, select } from "@inquirer/prompts";
-import { Command, Flags, Interfaces } from "@oclif/core";
+import { Command, Interfaces, Flags as StandardFlags } from "@oclif/core";
 import { Address } from "abitype";
 import ora from "ora";
 import { PublicClient, WalletClient, isAddress } from "viem";
@@ -23,7 +23,7 @@ export abstract class SendBaseCommand<
             description:
                 "the address of the DApp, defaults to the deployed DApp address if application is running.",
         }),
-        "chain-id": Flags.integer({
+        "chain-id": StandardFlags.integer({
             description: "The EIP-155 chain ID.",
             char: "c",
             env: "CHAIN",
@@ -32,17 +32,17 @@ export abstract class SendBaseCommand<
                 c.id.toString(),
             ),
         }),
-        "rpc-url": Flags.string({
+        "rpc-url": StandardFlags.string({
             description: "The RPC endpoint.",
             char: "r",
             env: "ETH_RPC_URL",
             helpGroup: "Ethereum",
         }),
-        "mnemonic-passphrase": Flags.string({
+        "mnemonic-passphrase": StandardFlags.string({
             description: "Use a BIP39 passphrase for the mnemonic.",
             helpGroup: "Wallet",
         }),
-        "mnemonic-index": Flags.integer({
+        "mnemonic-index": StandardFlags.integer({
             description: "Use the private key from the given mnemonic index.",
             helpGroup: "Wallet",
             default: 0,

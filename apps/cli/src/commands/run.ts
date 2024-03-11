@@ -150,9 +150,9 @@ export default class Run extends Command {
                 env,
                 stdio: "inherit",
             });
-        } catch (e: any) {
+        } catch (e: unknown) {
             // 130 is a graceful shutdown, so we can swallow it
-            if (e.exitCode !== 130) {
+            if ((e as any).exitCode !== 130) {
                 throw e;
             }
         } finally {

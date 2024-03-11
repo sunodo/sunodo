@@ -140,7 +140,7 @@ export const abiParamsInput = async (
         },
     });
     const abiParameters = parseAbiParameters(encoding);
-    const values: any[] = [];
+    const values = [];
     for (const param of abiParameters) {
         const message = `${config.message} -> ${param.type} ${
             param.name ?? ""
@@ -206,7 +206,7 @@ export type SelectAutoConfig<ValueType> = SelectConfig<ValueType> & {
     pageSize?: number;
 };
 
-export const selectAuto = <ValueType extends unknown>(
+export const selectAuto = <ValueType>(
     config: SelectAutoConfig<ValueType> & { discardDisabled?: boolean },
     context?: Context | undefined,
 ): CancelablePromise<ValueType> => {
