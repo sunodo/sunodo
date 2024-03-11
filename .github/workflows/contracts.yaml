@@ -56,7 +56,7 @@ jobs:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
             - name: Upload to release
-              uses: softprops/action-gh-release@v1
+              uses: softprops/action-gh-release@v2
               if: ${{ inputs.release }}
               with:
                   body_path: packages/contracts/CHANGELOG.md
