@@ -17,18 +17,25 @@
         "prepack": "run-s build tsc",
         "tsc": "tsc"
     },
+    "dependencies": {
+        "@cartesi/rollups": "1.2.0",
+        "@cartesi/util": "6.1.0",
+        "@ensdomains/ens-contracts": "1.0.0",
+        "@openzeppelin/contracts": "4.9.2",
+        "@sunodo/contracts": "workspace:*",
+        "@sunodo/token": "workspace:*"
+    },
     "devDependencies": {
         "@nomicfoundation/hardhat-viem": "^2.0.0",
         "@safe-global/safe-singleton-factory": "^1",
-        "@sunodo/contracts": "workspace:*",
-        "@sunodo/token": "workspace:*",
         "hardhat": "^2.21.0",
         "hardhat-abi-exporter": "^2",
         "hardhat-deploy": "^0.12",
         "npm-run-all": "^4",
         "rimraf": "^5",
         "tsconfig": "workspace:*",
-        "typescript": "^5"
+        "typescript": "^5.4.2",
+        "viem": "^2.8.4"
     },
     "files": [
         "deployments/*/*.json",
