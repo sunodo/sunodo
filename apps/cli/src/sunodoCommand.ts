@@ -2,6 +2,7 @@ import { Command, Interfaces } from "@oclif/core";
 import { Address } from "abitype";
 import { execa } from "execa";
 import {
+    authorityHistoryPairFactoryAddress,
     cartesiDAppFactoryAddress,
     dAppAddressRelayAddress,
     erc1155BatchPortalAddress,
@@ -10,6 +11,8 @@ import {
     erc721PortalAddress,
     etherPortalAddress,
     inputBoxAddress,
+    marketplaceAddress,
+    selfHostedApplicationFactoryAddress,
     sunodoTokenAddress,
 } from "./contracts.js";
 import { PsResponse } from "./types/docker.js";
@@ -57,6 +60,7 @@ export abstract class SunodoCommand<T extends typeof Command> extends Command {
     protected async getAddressBook(): Promise<AddressBook> {
         // build rollups contracts address book
         const contracts: AddressBook = {
+            AuthorityHistoryPairFactory: authorityHistoryPairFactoryAddress,
             CartesiDAppFactory: cartesiDAppFactoryAddress,
             DAppAddressRelay: dAppAddressRelayAddress,
             ERC1155BatchPortal: erc1155BatchPortalAddress,
@@ -65,13 +69,15 @@ export abstract class SunodoCommand<T extends typeof Command> extends Command {
             ERC721Portal: erc721PortalAddress,
             EtherPortal: etherPortalAddress,
             InputBox: inputBoxAddress,
+            Marketplace: marketplaceAddress,
+            SelfHostedApplicationFactory: selfHostedApplicationFactoryAddress,
             SunodoToken: sunodoTokenAddress,
         };
 
         // get dapp address
-        const dapp = await this.getApplicationAddress();
-        if (dapp) {
-            contracts["CartesiDApp"] = dapp;
+        const applicationAddress = await this.getApplicationAddress();
+        if (applicationAddress) {
+            contracts["CartesiDApp"] = applicationAddress;
         }
         return contracts;
     }
