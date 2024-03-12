@@ -3,7 +3,7 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { zeroAddress } from "viem";
 
 const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
-    const { deployments, getNamedAccounts, network, viem } = hre;
+    const { deployments, getNamedAccounts, viem } = hre;
     const { deployer } = await getNamedAccounts();
 
     const opts: DeployOptions = {
