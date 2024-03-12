@@ -1,9 +1,11 @@
-import { Command, Flags } from "@oclif/core";
+import { Flags } from "@oclif/core";
 import { execa } from "execa";
 import fs from "fs-extra";
 import path from "path";
 
-export default class Run extends Command {
+import { SunodoCommand } from "../sunodoCommand.js";
+
+export default class Run extends SunodoCommand<typeof Run> {
     static summary = "Run application node.";
 
     static description = "Run a local cartesi node for the application.";
@@ -38,27 +40,20 @@ export default class Run extends Command {
 
     public async run(): Promise<void> {
         const { flags } = await this.parse(Run);
-        const snapshot = path.join(".sunodo", "image");
         let projectName: string;
 
         if (flags["no-backend"]) {
             projectName = "sunodo-node";
         } else {
+            // get machine hash
+            const hash = this.getMachineHash();
             // Check if snapshot exists
-            if (
-                !fs.existsSync(snapshot) ||
-                !fs.statSync(snapshot).isDirectory()
-            ) {
+            if (!hash) {
                 throw new Error(
                     "Cartesi machine snapshot not found, run 'sunodo build'",
                 );
             }
-
-            // Read hash of the cartesi machine snapshot
-            const hash = fs
-                .readFileSync(path.join(snapshot, "hash"))
-                .toString("hex");
-            projectName = hash.substring(0, 8);
+            projectName = hash.substring(2, 10);
         }
 
         // path of the sunodo instalation
