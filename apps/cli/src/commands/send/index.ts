@@ -61,7 +61,6 @@ export abstract class SendBaseCommand<
             chain: supportedChains({ includeDevnet: true }).find(
                 (c) => c.id == this.flags["chain-id"],
             ),
-            dev: true,
             rpcUrl: this.flags["rpc-url"],
             mnemonicPassphrase: this.flags["mnemonic-passphrase"],
             mnemonicIndex: this.flags["mnemonic-index"],

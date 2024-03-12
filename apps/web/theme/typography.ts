@@ -1,5 +1,13 @@
+import { Plus_Jakarta_Sans } from "next/font/google";
+
+const font = Plus_Jakarta_Sans({
+    display: "swap",
+    weight: ["400", "700"],
+    subsets: ["latin-ext"],
+});
+
 const headings = {
-    fontFamily: "inherit",
+    fontFamily: font.style.fontFamily,
 
     sizes: {
         h1: { fontSize: "var(--font-size-h1)", lineHeight: "1.2" },

@@ -1,12 +1,34 @@
 .section {
-    padding: 3rem 0;
+    &.lg {
+        padding: 3rem 0;
 
-    @media (min-width: $mantine-breakpoint-sm) {
-        padding: 4rem 0;
+        @media (min-width: $mantine-breakpoint-sm) {
+            padding: 4rem 0;
+        }
+
+        @media (min-width: $mantine-breakpoint-lg) {
+            padding: 8rem 0;
+        }
     }
 
-    @media (min-width: $mantine-breakpoint-lg) {
-        padding: 8rem 0;
+    &.md {
+        padding: 2rem 0;
+
+        @media (min-width: $mantine-breakpoint-sm) {
+            padding: 3rem 0;
+        }
+
+        @media (min-width: $mantine-breakpoint-lg) {
+            padding: 4rem 0;
+        }
+    }
+
+    &.sm {
+        padding: 1rem 0;
+
+        @media (min-width: $mantine-breakpoint-sm) {
+            padding: 2rem 0;
+        }
     }
 }
 

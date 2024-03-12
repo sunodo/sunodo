@@ -7,6 +7,7 @@ import {
     createTheme,
     mergeMantineTheme,
 } from "@mantine/core";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import { colors } from "./colors";
 import { typography } from "./typography";
 import { variables } from "./variables";
@@ -24,6 +25,12 @@ export const variablesResolver: CSSVariablesResolver = ({ colors }) => ({
     },
 });
 
+const font = Plus_Jakarta_Sans({
+    display: "swap",
+    weight: ["400", "700"],
+    subsets: ["latin-ext"],
+});
+
 const themeOverride = createTheme({
     primaryColor: "brand",
     primaryShade: {
@@ -34,7 +41,7 @@ const themeOverride = createTheme({
     black: colors.dark[9],
 
     defaultRadius: "sm",
-    fontFamily: "inherit",
+    fontFamily: font.style.fontFamily,
     ...typography,
     colors,
 

@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "declaration": true,
+        "module": "Node16",
+        "outDir": "dist",
+        "rootDir": "src",
+        "strict": true,
+        "target": "ES2022",
+        "moduleResolution": "node16"
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules"],
+    "extends": "tsconfig/base.json",
+    "ts-node": {
+        "esm": true
+    }
+}

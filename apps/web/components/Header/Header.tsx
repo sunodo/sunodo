@@ -28,7 +28,7 @@ export function Header() {
             }`}
         >
             <Container>
-                <Flex justify="space-between">
+                <Flex justify="space-between" align={"center"}>
                     <Link href="/">
                         <Logo isDark={isDarkHeader} />
                     </Link>
