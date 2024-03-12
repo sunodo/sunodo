@@ -1,6 +1,9 @@
 import { Command, Interfaces } from "@oclif/core";
-import { Address } from "abitype";
 import { execa } from "execa";
+import fs from "fs";
+import path from "path";
+import { Address, Hash, isHash } from "viem";
+
 import {
     authorityHistoryPairFactoryAddress,
     cartesiDAppFactoryAddress,
@@ -50,6 +53,18 @@ export abstract class SunodoCommand<T extends typeof Command> extends Command {
         ]);
         const ps = stdout ? (JSON.parse(stdout) as PsResponse) : undefined;
         return ps?.State;
+    }
+
+    protected getMachineHash(): Hash | undefined {
+        // read hash of the cartesi machine snapshot, if one exists
+        const hashPath = path.join(".sunodo", "image", "hash");
+        if (fs.existsSync(hashPath)) {
+            const hash = fs.readFileSync(hashPath).toString("hex");
+            if (isHash(`0x${hash}`)) {
+                return `0x${hash}`;
+            }
+        }
+        return undefined;
     }
 
     protected async getApplicationAddress(): Promise<Address | undefined> {
