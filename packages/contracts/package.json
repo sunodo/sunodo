@@ -29,17 +29,17 @@
         "@openzeppelin/contracts": "4.9.3"
     },
     "devDependencies": {
-        "@nomicfoundation/hardhat-verify": "^2",
+        "@nomicfoundation/hardhat-verify": "^2.0.5",
         "@nomicfoundation/hardhat-viem": "^2.0.0",
         "@safe-global/safe-singleton-factory": "^1",
-        "hardhat": "^2.21.0",
+        "hardhat": "^2.22.0",
         "hardhat-abi-exporter": "^2",
         "hardhat-deploy": "^0.12.2",
         "npm-run-all": "^4",
         "rimraf": "^5",
         "solidity-docgen": "^0.6.0-beta.36",
-        "typescript": "^5",
-        "viem": "^2.7.13"
+        "typescript": "^5.4.2",
+        "viem": "^2.8.6"
     },
     "files": [
         "contracts",

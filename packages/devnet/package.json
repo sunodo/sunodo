@@ -22,7 +22,7 @@
         "@safe-global/safe-singleton-factory": "^1",
         "@sunodo/contracts": "workspace:*",
         "@sunodo/token": "workspace:*",
-        "hardhat": "^2.21.0",
+        "hardhat": "^2.22.0",
         "hardhat-abi-exporter": "^2",
         "hardhat-deploy": "^0.12.2",
         "npm-run-all": "^4",
