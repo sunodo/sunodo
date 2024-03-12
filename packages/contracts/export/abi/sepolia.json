@@ -3,7 +3,7 @@
   "chainId": "11155111",
   "contracts": {
     "Marketplace": {
-      "address": "0xB6dd5307629186A5d16611AAC1A14CdE9EA49f57",
+      "address": "0x6d4015D78907fD36D6c14AEf6f5a1d01A4E5CdA0",
       "abi": [
         {
           "inputs": [

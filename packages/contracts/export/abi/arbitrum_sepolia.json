@@ -2,6 +2,184 @@
   "name": "arbitrum_sepolia",
   "chainId": "421614",
   "contracts": {
+    "Marketplace": {
+      "address": "0x096E188c6eFdD291c6735EF33BF5F3c17D3929ae",
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "contract ENS",
+              "name": "_ens",
+              "type": "address"
+            },
+            {
+              "internalType": "contract ICartesiDAppFactory",
+              "name": "_factory",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "contract IReaderNodeProvider",
+              "name": "provider",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "contract IERC20",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "payee",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "price",
+              "type": "uint256"
+            }
+          ],
+          "name": "ReaderNodeProviderCreated",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "contract IValidatorNodeProvider",
+              "name": "provider",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "contract IConsensus",
+              "name": "consensus",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "contract IERC20",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "payee",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "price",
+              "type": "uint256"
+            }
+          ],
+          "name": "ValidatorNodeProviderCreated",
+          "type": "event"
+        },
+        {
+          "inputs": [],
+          "name": "ens",
+          "outputs": [
+            {
+              "internalType": "contract ENS",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "factory",
+          "outputs": [
+            {
+              "internalType": "contract ICartesiDAppFactory",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "contract IERC20",
+              "name": "_token",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_payee",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_price",
+              "type": "uint256"
+            }
+          ],
+          "name": "newReaderNodeProvider",
+          "outputs": [
+            {
+              "internalType": "contract IReaderNodeProvider",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "contract IConsensus",
+              "name": "_consensus",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IERC20",
+              "name": "_token",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_payee",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_price",
+              "type": "uint256"
+            }
+          ],
+          "name": "newValidatorNodeProvider",
+          "outputs": [
+            {
+              "internalType": "contract IValidatorNodeProvider",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        }
+      ]
+    },
     "Bitmask": {
       "address": "0xF5B2d8c81cDE4D6238bBf20D3D77DB37df13f735",
       "abi": []
@@ -1193,184 +1371,6 @@
             }
           ],
           "stateMutability": "view",
-          "type": "function"
-        }
-      ]
-    },
-    "Marketplace": {
-      "address": "0xB6dd5307629186A5d16611AAC1A14CdE9EA49f57",
-      "abi": [
-        {
-          "inputs": [
-            {
-              "internalType": "contract ENS",
-              "name": "_ens",
-              "type": "address"
-            },
-            {
-              "internalType": "contract ICartesiDAppFactory",
-              "name": "_factory",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "nonpayable",
-          "type": "constructor"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "contract IReaderNodeProvider",
-              "name": "provider",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "contract IERC20",
-              "name": "token",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "payee",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "price",
-              "type": "uint256"
-            }
-          ],
-          "name": "ReaderNodeProviderCreated",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "contract IValidatorNodeProvider",
-              "name": "provider",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "contract IConsensus",
-              "name": "consensus",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "contract IERC20",
-              "name": "token",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "payee",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "price",
-              "type": "uint256"
-            }
-          ],
-          "name": "ValidatorNodeProviderCreated",
-          "type": "event"
-        },
-        {
-          "inputs": [],
-          "name": "ens",
-          "outputs": [
-            {
-              "internalType": "contract ENS",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "factory",
-          "outputs": [
-            {
-              "internalType": "contract ICartesiDAppFactory",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "contract IERC20",
-              "name": "_token",
-              "type": "address"
-            },
-            {
-              "internalType": "address",
-              "name": "_payee",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256",
-              "name": "_price",
-              "type": "uint256"
-            }
-          ],
-          "name": "newReaderNodeProvider",
-          "outputs": [
-            {
-              "internalType": "contract IReaderNodeProvider",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "contract IConsensus",
-              "name": "_consensus",
-              "type": "address"
-            },
-            {
-              "internalType": "contract IERC20",
-              "name": "_token",
-              "type": "address"
-            },
-            {
-              "internalType": "address",
-              "name": "_payee",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256",
-              "name": "_price",
-              "type": "uint256"
-            }
-          ],
-          "name": "newValidatorNodeProvider",
-          "outputs": [
-            {
-              "internalType": "contract IValidatorNodeProvider",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "nonpayable",
           "type": "function"
         }
       ]
