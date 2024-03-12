@@ -1,4 +1,5 @@
 import { Command, Interfaces } from "@oclif/core";
+import chalk from "chalk";
 import { execa } from "execa";
 import fs from "fs";
 import path from "path";
@@ -65,6 +66,10 @@ export abstract class SunodoCommand<T extends typeof Command> extends Command {
             }
         }
         return undefined;
+    }
+
+    protected logPrompt({ title, value }: { title: string; value: string }) {
+        this.log(`${chalk.green("?")} ${title} ${chalk.cyan(value)}`);
     }
 
     protected async getApplicationAddress(): Promise<Address | undefined> {
