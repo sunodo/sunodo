@@ -386,8 +386,8 @@ importers:
         specifier: 6.1.0
         version: 6.1.0
       '@ensdomains/ens-contracts':
-        specifier: 1.0.0
-        version: 1.0.0
+        specifier: 1.1.4
+        version: 1.1.4
       '@openzeppelin/contracts':
         specifier: 4.9.3
         version: 4.9.3
@@ -3390,6 +3390,15 @@ packages:
 
   /@ensdomains/ens-contracts@1.0.0:
     resolution: {integrity: sha512-NB5fig+TuaAkdW3uVshO/vuI/BNWus8MkpdDCzx6S797j7gRrDbKfcVHHDH5rBmj8Yp0/jCR1LU4DHaU5oxO0Q==}
+    dependencies:
+      '@ensdomains/buffer': 0.1.1
+      '@ensdomains/solsha1': 0.0.3
+      '@openzeppelin/contracts': 4.9.3
+      dns-packet: 5.6.1
+    dev: false
+
+  /@ensdomains/ens-contracts@1.1.4:
+    resolution: {integrity: sha512-kjdcjaznMtE2lwjAVTX2irs8mgNgJCVuB5hnhFhiMaO8dR/tlHQ5UhtZjhSYRhkZd0hLXYrMkXp6thnwpG+ltg==}
     dependencies:
       '@ensdomains/buffer': 0.1.1
       '@ensdomains/solsha1': 0.0.3
