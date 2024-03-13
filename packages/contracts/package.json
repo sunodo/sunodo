@@ -20,6 +20,7 @@
         "docgen": "hardhat docgen",
         "export": "hardhat export-artifacts export/artifacts --hide-sources --including-empty-bytecode --including-no-public-functions",
         "prepack": "run-s build tsc",
+        "test": "hardhat test",
         "tsc": "tsc"
     },
     "dependencies": {
@@ -32,9 +33,13 @@
         "@nomicfoundation/hardhat-verify": "^2.0.5",
         "@nomicfoundation/hardhat-viem": "^2.0.0",
         "@safe-global/safe-singleton-factory": "^1",
+        "@types/chai": "^4.3.12",
+        "@types/mocha": ">=9.1.0",
+        "chai": "^4.2.0",
         "hardhat": "^2.22.0",
         "hardhat-abi-exporter": "^2",
         "hardhat-deploy": "^0.12.2",
+        "mocha": "^10.0.0",
         "npm-run-all": "^4",
         "rimraf": "^5",
         "solidity-docgen": "^0.6.0-beta.36",
