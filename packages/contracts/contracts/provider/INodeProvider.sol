@@ -28,19 +28,6 @@ interface IValidatorNodeProvider is IReaderNodeProvider {
     /// @notice The consensus wired to the provider
     function consensus() external view returns (IConsensus);
 
-    /// @notice Deploy a new application
-    /// @param _owner The address that will own the application
-    /// @param _templateHash The hash of the initial state of the Cartesi Machine
-    /// @param _location The Cartesi machine snapshot location
-    /// @param _initialRunway The initial runway of the application in seconds
-    /// @return The application
-    function deploy(
-        address _owner,
-        bytes32 _templateHash,
-        string calldata _location,
-        uint256 _initialRunway
-    ) external returns (CartesiDApp);
-
     /// @notice Deploy a new application deterministically
     /// @param _owner The address that will own the application
     /// @param _templateHash The hash of the initial state of the Cartesi Machine
