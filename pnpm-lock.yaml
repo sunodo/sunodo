@@ -389,8 +389,8 @@ importers:
         specifier: 1.1.4
         version: 1.1.4
       '@openzeppelin/contracts':
-        specifier: 4.9.3
-        version: 4.9.3
+        specifier: 4.9.6
+        version: 4.9.6
     devDependencies:
       '@nomicfoundation/hardhat-verify':
         specifier: ^2.0.5
@@ -505,8 +505,8 @@ importers:
   packages/token:
     dependencies:
       '@openzeppelin/contracts':
-        specifier: 5.0.1
-        version: 5.0.1
+        specifier: 4.9.6
+        version: 4.9.6
     devDependencies:
       '@safe-global/safe-singleton-factory':
         specifier: ^1
@@ -3405,7 +3405,7 @@ packages:
     dependencies:
       '@ensdomains/buffer': 0.1.1
       '@ensdomains/solsha1': 0.0.3
-      '@openzeppelin/contracts': 4.9.3
+      '@openzeppelin/contracts': 4.9.6
       dns-packet: 5.6.1
     dev: false
 
@@ -6256,12 +6256,8 @@ packages:
     resolution: {integrity: sha512-mO+y6JaqXjWeMh9glYVzVu8HYPGknAAnWyxTRhGeckOruyXQMNnlcW6w/Dx9ftLeIQk6N+ZJFuVmTwF7lEIFrg==}
     dev: false
 
-  /@openzeppelin/contracts@4.9.3:
-    resolution: {integrity: sha512-He3LieZ1pP2TNt5JbkPA4PNT9WC3gOTOlDcFGJW4Le4QKqwmiNJCRt44APfxMxvq7OugU/cqYuPcSBzOw38DAg==}
-    dev: false
-
-  /@openzeppelin/contracts@5.0.1:
-    resolution: {integrity: sha512-yQJaT5HDp9hYOOp4jTYxMsR02gdFZFXhewX5HW9Jo4fsqSVqqyIO/xTHdWDaKX5a3pv1txmf076Lziz+sO7L1w==}
+  /@openzeppelin/contracts@4.9.6:
+    resolution: {integrity: sha512-xSmezSupL+y9VkHZJGDoCBpmnB2ogM13ccaYDWqJTfS3dbuHkgjuwDFUmaFauBCboQMGB/S5UqUl2y54X99BmA==}
     dev: false
 
   /@parcel/watcher-android-arm64@2.4.0:
