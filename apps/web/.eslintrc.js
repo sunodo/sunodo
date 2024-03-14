@@ -1,5 +1,8 @@
 module.exports = {
     root: true,
+    env: {
+        browser: true,
+    },
     extends: [
         "@sunodo/eslint-config/next.js",
         "plugin:@typescript-eslint/recommended",
