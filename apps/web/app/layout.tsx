@@ -7,6 +7,7 @@ import { Content } from "../components/Content/Content";
 import { Footer } from "../components/Footer";
 import { Gtm } from "../components/Gtm";
 import { Header } from "../components/Header/Header";
+import WalletProvider from "../providers/walletProvider";
 import { theme, variablesResolver } from "../theme/theme";
 
 import classes from "./layout.module.css";
@@ -40,9 +41,11 @@ export default function RootLayout({ children }: { children: any }) {
                     theme={theme}
                     cssVariablesResolver={variablesResolver}
                 >
-                    <Header />
-                    <Content>{children}</Content>
-                    <Footer />
+                    <WalletProvider>
+                        <Header />
+                        <Content>{children}</Content>
+                        <Footer />
+                    </WalletProvider>
                 </MantineProvider>
             </body>
         </html>
