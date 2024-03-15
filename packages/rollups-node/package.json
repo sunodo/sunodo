@@ -1,8 +1,0 @@
-{
-    "name": "@sunodo/rollups-node",
-    "private": true,
-    "version": "0.6.1",
-    "scripts": {
-        "build": "docker buildx bake --load"
-    }
-}

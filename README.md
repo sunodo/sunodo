@@ -22,7 +22,6 @@ It helps developers to:
 -   `app`: a [next.js](https://nextjs.org/) app for Sunodo dashboard, deployed at [https://app.sunodo.io](https://app.sunodo.io)
 -   `anvil`: Docker image of [anvil](https://book.getfoundry.sh/reference/anvil/), multi-arch;
 -   `car-download`: Utility library and CLI to download IPFS CAR to local filesystem;
--   `rollups-node`: Docker image of a Cartesi node for a local devnet execution;
 -   `sdk`: Docker image to help with Cartesi build and execution;
 -   `contracts`: smart contracts for application deployment;
 -   `token`: ERC-20 token smart contract for testing;
@@ -36,7 +35,6 @@ Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 ## Dependencies
 
 Sunodo uses Anvil commands. To install Anvil, you need to follow the instructions [here](https://book.getfoundry.sh/getting-started/installation#using-foundryup)
-
 
 ## Build
 
