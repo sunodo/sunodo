@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
     validator:
-        image: sunodo/rollups-node:0.7.0
+        image: cartesi/rollups-node:1.3.1
         depends_on:
             dapp_deployer:
                 condition: service_completed_successfully
@@ -13,6 +13,14 @@ services:
             interval: 10s
             timeout: 1s
             retries: 5
+        command:
+            - /bin/bash
+            - -c
+            - |
+                mkdir -p "$CARTESI_SNAPSHOT_DIR"
+                cp --recursive /tmp/snapshot/* "$CARTESI_SNAPSHOT_DIR"
+                exec cartesi-rollups-node
+
         env_file:
             - ${SUNODO_BIN_PATH}/node/default.env
 

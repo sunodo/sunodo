@@ -300,6 +300,16 @@ LABEL io.sunodo.sdk_version=${SUNODO_DEFAULT_SDK_VERSION}
             { stdio: "inherit" },
         );
 
+        // change snapshot directory permission to read for all
+        await execa("docker", [
+            "container",
+            "exec",
+            container,
+            "chmod",
+            "755",
+            `/tmp/${SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH}`,
+        ]);
+
         // export machine snapshot to host filesystem
         await execa(
             "docker",

@@ -76,16 +76,16 @@ export default class Run extends Command {
             BLOCK_TIME: blockInterval.toString(),
             BLOCK_TIMEOUT: (blockInterval + 3).toString(),
             CARTESI_EPOCH_DURATION: epochDuration.toString(),
-            CARTESI_LOG_LEVEL: flags.verbose ? "info" : "error",
-            S6_VERBOSITY: flags.verbose ? "2" : "0",
-            SUNODO_BIN_PATH: binPath,
-            SUNODO_LISTEN_PORT: listenPort.toString(),
             CARTESI_EXPERIMENTAL_DISABLE_CONFIG_LOG: flags.verbose
                 ? "false"
                 : "true",
             CARTESI_EXPERIMENTAL_SERVER_MANAGER_BYPASS_LOG: flags.verbose
                 ? "false"
                 : "true",
+            CARTESI_LOG_LEVEL: flags.verbose ? "info" : "error",
+            CARTESI_SNAPSHOT_DIR: "/usr/share/rollups-node/snapshot",
+            SUNODO_BIN_PATH: binPath,
+            SUNODO_LISTEN_PORT: listenPort.toString(),
         };
 
         // validator
