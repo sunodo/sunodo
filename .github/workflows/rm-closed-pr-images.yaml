@@ -15,7 +15,6 @@ jobs:
                 image:
                     - anvil
                     - devnet
-                    - rollups-node
                     - sdk
         steps:
             - uses: vlaurin/action-ghcr-prune@v0.6.0
