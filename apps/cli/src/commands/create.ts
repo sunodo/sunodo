@@ -5,6 +5,7 @@ import { DownloadTemplateResult, downloadTemplate } from "giget";
 import ora from "ora";
 
 const DEFAULT_TEMPLATES_BRANCH = "sdk-0.2";
+const DEFAULT_TEMPLATE_REPOSITORY = "https://github.com/sunodo/sunodo-templates";
 
 export default class CreateCommand extends Command {
     static description = "Create application";
@@ -34,23 +35,23 @@ export default class CreateCommand extends Command {
                 "typescript",
             ],
         }),
-        branch: Flags.string({
-            description: `sunodo/sunodo-templates repository branch name to use`,
-            default: DEFAULT_TEMPLATES_BRANCH,
-        }),
+        repository: Flags.string({
+            description: `custom template repository to use`,
+            default: DEFAULT_TEMPLATE_REPOSITORY
+        })
     };
 
     private async download(
         template: string,
-        branch: string,
         out: string,
+        repository: string
     ): Promise<DownloadTemplateResult> {
         const sunodoProvider: TemplateProvider = async (input) => {
             return {
                 name: "sunodo",
                 subdir: input,
-                url: "https://github.com/sunodo/sunodo-templates",
-                tar: `https://codeload.github.com/sunodo/sunodo-templates/tar.gz/refs/heads/${branch}`,
+                url: repository,
+                tar: this.getTarUrl(repository),
             };
         };
 
@@ -61,14 +62,26 @@ export default class CreateCommand extends Command {
         });
     }
 
+    private getRepoCodeLoadUrl(repository: string) {
+        return repository.replace("github.com", "codeload.github.com");
+    }
+
+    private getTarUrl(repository: string) {
+        if (repository === DEFAULT_TEMPLATE_REPOSITORY) {
+            return `${this.getRepoCodeLoadUrl(repository)}/tar.gz/refs/heads/${DEFAULT_TEMPLATES_BRANCH}`;
+        }
+        return `${this.getRepoCodeLoadUrl(repository)}/tar.gz/refs/heads/main`;
+    }
+
     public async run(): Promise<void> {
         const { args, flags } = await this.parse(CreateCommand);
         const spinner = ora("Creating application...").start();
         try {
+
             const { dir } = await this.download(
                 flags.template,
-                flags.branch,
                 args.name,
+                flags.repository,
             );
             spinner.succeed(`Application created at ${c.cyan(dir)}`);
         } catch (e: any) {
