@@ -1,5 +1,5 @@
+import { URL, fileURLToPath } from "node:url";
 import { DefaultTheme, defineConfig } from "vitepress";
-import { fileURLToPath, URL } from "node:url";
 
 const guideSidebar = (): DefaultTheme.SidebarItem[] => {
     return [
@@ -78,6 +78,20 @@ const guideSidebar = (): DefaultTheme.SidebarItem[] => {
                 {
                     text: "Deploying to a public network",
                     link: "/guide/deploying/deploying-application",
+                },
+                {
+                    text: "Self hosting the application",
+                    collapsed: true,
+                    items: [
+                        {
+                            text: "Local deployment",
+                            link: "/guide/deploying/self-hosting/local-deployment",
+                        },
+                        {
+                            text: "Deploy to fly.io",
+                            link: "/guide/deploying/self-hosting/fly-deployment",
+                        },
+                    ],
                 },
                 {
                     text: "Supported networks",
