@@ -68,13 +68,16 @@ export type WalletType =
     | "walletconnect"
     | "mnemonic"
     | "private-key";
-const walletChoices = (chain: Chain): Choice<WalletType>[] => {
+const walletChoices = (
+    chain: Chain,
+    includeMetamask: boolean,
+): Choice<WalletType>[] => {
     const dev = chain.id === foundry.id;
     return [
         {
             name: "MetaMask Mobile",
             value: "metamask",
-            disabled: dev && "(not available)", // do not offer this wallets if chain is local foundry
+            disabled: (dev || !includeMetamask) && "(not available)", // do not offer this wallets if chain is local foundry
         },
         {
             name: "WalletConnect",
@@ -212,22 +215,23 @@ const createWalletClient = async (
             chain,
         });
     } else {
-        const wallets = walletChoices(chain);
+        const metamask = new MetaMaskSDK({
+            dappMetadata: { name: "Sunodo", url: "https://sunodo.io" },
+            shouldShimWeb3: false,
+        });
+        const metamaskProvider = metamask.getProvider();
+
+        const wallets = walletChoices(chain, !!metamaskProvider);
         const wallet = await selectAuto<WalletType>({
             message: "Wallet",
             choices: wallets,
             discardDisabled: true,
         });
 
-        if (wallet === "metamask") {
-            const metamask = new MetaMaskSDK({
-                dappMetadata: { name: "Sunodo", url: "https://sunodo.io" },
-                shouldShimWeb3: false,
-            });
-
+        if (wallet === "metamask" && metamaskProvider) {
             // select account from wallet
             const client = viemCreateWalletClient({
-                transport: custom(metamask.getProvider()),
+                transport: custom(metamaskProvider),
                 chain,
             });
             const addresses = await client.requestAddresses();
@@ -246,7 +250,7 @@ const createWalletClient = async (
             // create wallet client
             return viemCreateWalletClient({
                 account,
-                transport: custom(metamask.getProvider()),
+                transport: custom(metamaskProvider),
                 chain,
             });
         } else if (wallet === "walletconnect") {
