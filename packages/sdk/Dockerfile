@@ -70,6 +70,7 @@ COPY retar /usr/local/bin/
 COPY --from=genext2fs /usr/local/bin/genext2fs /usr/bin/
 COPY --from=su-exec /usr/local/src/su-exec /usr/local/bin/
 RUN mkdir -p /tmp/.sunodo && chmod 1777 /tmp/.sunodo
+COPY scripts/ /usr/local/bin/
 
 ADD --chmod=644 \
     https://github.com/cartesi/image-kernel/releases/download/v$LINUX_VERSION/linux-$LINUX_KERNEL_VERSION.bin \
