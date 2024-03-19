@@ -21,7 +21,19 @@ $ sunodo deploy --hosting self-hosted
 
 The image produced, in this example `sha256:5c355a...0ea2ac`, can be tagged and pushed to a Docker registry of choice, like Docker Hub, or any other private or public registry.
 
-The next step is to deploy the smart contract for the application, explained at the [previous section](./deploying-application.md). The command will redirect the developer to a web application, where he can use a wallet to deploy the required smart contracts.
+The next step is to deploy the smart contract for the application. The deploy command will redirect the developer to a web application, where he can use a wallet to deploy the required smart contracts.
+
+![deploy self-hosted](./self-hosted-web.png)
+
+## Wallet
+
+The developer will need a wallet that will be used by the Cartesi rollups node to submit transactions to the base layer. This wallet should ideally be used exclusively for that purpose.
+
+A new wallet can be created using a tool like [cast](https://book.getfoundry.sh/reference/cast/cast-wallet-new-mnemonic). A wallet managed by [AWS KMS](https://aws.amazon.com/blogs/database/part1-use-aws-kms-to-securely-manage-ethereum-accounts/) is also supported for an increased level of security.
+
+::: warning
+The deploy web application need the wallet PUBLIC ADDRESS only! DON'T provide your mnemonic passphrase or private key.
+:::
 
 ## Cloud server
 
@@ -35,7 +47,7 @@ The developer can also use a service like [Fly.io](https://fly.io) to deploy the
 
 We will describe below two methods of running a rollups node, the first using Docker, which can be used as the basic information to use any cloud provider, and the second using [Fly.io](https://fly.io), a managed service for running Docker containers.
 
-### Using docker in any cloud provider
+### Using docker with any cloud provider
 
 ### Using fly.io
 
@@ -54,7 +66,5 @@ The developer can use any Web3 third-party provider, or of course run his own ba
 -   [GetBlock](https://getblock.io)
 
 Each service has its own characteristics and pricing, and the developer should choose the one that best fits his needs. Any of them should work with the rollups node, even if the first two are the most tested with.
-
-## Wallet
 
 ## Fly.io

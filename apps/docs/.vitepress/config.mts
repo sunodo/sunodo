@@ -81,7 +81,7 @@ const guideSidebar = (): DefaultTheme.SidebarItem[] => {
                 },
                 {
                     text: "Self-hosted",
-                    link: "/guide/deploying/self-hosting",
+                    link: "/guide/deploying/self-hosted",
                 },
                 {
                     text: "Using a service provider",

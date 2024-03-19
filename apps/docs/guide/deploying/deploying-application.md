@@ -27,5 +27,5 @@ The smart contract that represents the application on the base layer can be depl
 
 The following sections will describe two convenience methods to deploy an application:
 
-1. [Self-hosted deployment](./self-hosting.md): this method allows the developer to deploy the application node using their own infrastructure;
+1. [Self-hosted deployment](./self-hosted.md): this method allows the developer to deploy the application node using their own infrastructure;
 2. [Third-party service provider](./provider.md): this method allows the developer to select a service provider to run the application node on their behalf.
