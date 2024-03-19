@@ -59,6 +59,11 @@ export default class BuildApplication extends Command {
             description:
                 "if the application Dockerfile uses a multi-stage strategy, and stage of the image to be exported as a Cartesi machine is not the last stage, use this parameter to specify the target stage.",
         }),
+        verbose: Flags.boolean({
+            description: "verbose output",
+            default: false,
+            char: "v",
+        }),
     };
 
     /**
@@ -67,10 +72,19 @@ export default class BuildApplication extends Command {
      */
     private async buildImage(options: ImageBuildOptions): Promise<string> {
         const buildResult = tmp.tmpNameSync();
+        const { flags } = await this.parse(BuildApplication);
+
         this.debug(
             `building docker image and writing result to ${buildResult}`,
         );
         const args = ["buildx", "build", "--load", "--iidfile", buildResult];
+
+        if (flags.verbose) {
+            args.push("--progress", "plain");
+        } else {
+            args.push("--quiet");
+        }
+
         if (options.target) {
             args.push("--target", options.target);
         }
@@ -154,10 +168,14 @@ LABEL io.sunodo.sdk_version=${SUNODO_DEFAULT_SDK_VERSION}
         appImage: string,
         builderImage: string,
     ): Promise<string> {
+        const { flags } = await this.parse(BuildApplication);
+        const quiet = flags.verbose ? [] : ["--quiet"];
+
         // create docker tarball from app image
         const { stdout: appCid } = await execa("docker", [
             "container",
             "create",
+            ...quiet,
             "--platform",
             "linux/riscv64",
             appImage,
@@ -175,6 +193,7 @@ LABEL io.sunodo.sdk_version=${SUNODO_DEFAULT_SDK_VERSION}
         const { stdout: cid } = await execa("docker", [
             "container",
             "run",
+            ...quiet,
             "--detach",
             "--init",
             `--volume=./${SUNODO_DEFAULT_TAR_PATH}:/tmp/${SUNODO_DEFAULT_TAR_PATH}`,
@@ -210,6 +229,8 @@ LABEL io.sunodo.sdk_version=${SUNODO_DEFAULT_SDK_VERSION}
         info: ImageInfo,
         container: string,
     ): Promise<void> {
+        const { flags } = await this.parse(BuildApplication);
+        const quiet = flags.verbose ? [] : ["--quiet"];
         // calculate extra size
         const blockSize = 4096;
         const extraBytes = bytes.parse(info.dataSize);
@@ -242,6 +263,7 @@ LABEL io.sunodo.sdk_version=${SUNODO_DEFAULT_SDK_VERSION}
             [
                 "container",
                 "cp",
+                ...quiet,
                 `${container}:/tmp/${SUNODO_DEFAULT_EXT2_PATH}`,
                 SUNODO_DEFAULT_EXT2_PATH,
             ],
@@ -253,6 +275,8 @@ LABEL io.sunodo.sdk_version=${SUNODO_DEFAULT_SDK_VERSION}
         info: ImageInfo,
         container: string,
     ): Promise<void> {
+        const { flags } = await this.parse(BuildApplication);
+        const quiet = flags.verbose ? [] : ["--quiet"];
         const ramSize = info.ramSize;
         const driveLabel = "root"; // XXX: does this need to be customizable?
 
@@ -278,7 +302,8 @@ LABEL io.sunodo.sdk_version=${SUNODO_DEFAULT_SDK_VERSION}
 
         // join everything
         const bootargs = [cwd, [env, entrypoint_cmd].join(" ")].join(";");
-        this.log(bootargs);
+
+        if (flags.verbose) this.log("bootargs: ", bootargs);
 
         // create machine snapshot
         await execa(
@@ -289,6 +314,7 @@ LABEL io.sunodo.sdk_version=${SUNODO_DEFAULT_SDK_VERSION}
                 container,
                 "cartesi-machine",
                 "--assert-rolling-template",
+                ...quiet,
                 `--ram-length=${ramSize}`,
                 "--rollup",
                 `--flash-drive=label:${driveLabel},filename:/tmp/${SUNODO_DEFAULT_EXT2_PATH}`,
@@ -316,6 +342,7 @@ LABEL io.sunodo.sdk_version=${SUNODO_DEFAULT_SDK_VERSION}
             [
                 "container",
                 "cp",
+                ...quiet,
                 `${container}:/tmp/${SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH}`,
                 SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH,
             ],
