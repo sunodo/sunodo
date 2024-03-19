@@ -80,30 +80,16 @@ const guideSidebar = (): DefaultTheme.SidebarItem[] => {
                     link: "/guide/deploying/deploying-application",
                 },
                 {
-                    text: "Self hosting the application",
-                    collapsed: true,
-                    items: [
-                        {
-                            text: "Local deployment",
-                            link: "/guide/deploying/self-hosting/local-deployment",
-                        },
-                        {
-                            text: "Deploy to fly.io",
-                            link: "/guide/deploying/self-hosting/fly-deployment",
-                        },
-                    ],
+                    text: "Self-hosted",
+                    link: "/guide/deploying/self-hosting",
+                },
+                {
+                    text: "Using a service provider",
+                    link: "/guide/deploying/provider",
                 },
                 {
                     text: "Supported networks",
                     link: "/guide/deploying/supported-networks",
-                },
-                {
-                    text: "Billing system",
-                    link: "/guide/deploying/billing",
-                },
-                {
-                    text: "Becoming a Validator",
-                    link: "/guide/deploying/validator",
                 },
             ],
         },
