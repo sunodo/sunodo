@@ -90,7 +90,7 @@ The developer will need a server to host the application node and run it 24/7. T
 
 The server minimum requirements will depend on the expected usage of the application and on the specifications of the Cartesi machine in use, like its RAM size and total size. The developer will have to experiment with different configurations to find the best fit for his needs. We suggest starting with a minimum of 8GB of RAM, and scaling up vertically as needed.
 
-The Cartesi rollups node is distributed as a Docker image, so the server will need to have Docker installed. Any popular cloud provider, like AWS, GCP, Azure, Digital Ocean, or Linode, is capable of running docker containers, either manually by spawing a server and running docker, or by using a managed Docker infrastructure like Kubernetes.
+The Cartesi rollups node is distributed as a Docker image, so the server will need to have Docker installed. Any popular cloud provider, like AWS, GCP, Azure, Digital Ocean, or Linode, is capable of running docker containers, either manually by spawing a server and running docker, or by using a managed container infrastructure like Kubernetes.
 
 The developer can also use a service like [Fly.io](https://fly.io) to deploy the application node.
 
@@ -111,7 +111,7 @@ INFO rollups-node: all services are ready
 
 In the examples above the `<hash.env>` file is `0xc87999b8a93609268b10de25f2e49d35f80fad92813310edc585ed644a9805d3.env` and the `<image-id>` is `sha256:5c355a9bddc92aa08987f395a257a0b32a51552c969eb161386e46f9380ea2ac`.
 
-The developer is free to use any managed Docker solution, like Kubernetes. The rollups node is just a single container, with a single exposed port, that must be accessible from the internet.
+The developer is free to use any managed container solution, like Kubernetes. The rollups node is just a single container, with a single exposed port, that must be accessible from the internet.
 
 ### Using fly.io
 

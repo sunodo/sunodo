@@ -1,5 +1,9 @@
 # Using a service provider
 
+::: warning
+This is still under development and will be available in a future release.
+:::
+
 This method of deployment allows the developer to select a service provider to run the application node on their behalf, freeing the developer of having to manage any infrastructure on his own.
 
 The deployment of an application is done in two basic steps:
