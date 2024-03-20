@@ -1,5 +1,5 @@
+import { URL, fileURLToPath } from "node:url";
 import { DefaultTheme, defineConfig } from "vitepress";
-import { fileURLToPath, URL } from "node:url";
 
 const guideSidebar = (): DefaultTheme.SidebarItem[] => {
     return [
@@ -80,16 +80,16 @@ const guideSidebar = (): DefaultTheme.SidebarItem[] => {
                     link: "/guide/deploying/deploying-application",
                 },
                 {
+                    text: "Self-hosted",
+                    link: "/guide/deploying/self-hosted",
+                },
+                {
+                    text: "Using a service provider",
+                    link: "/guide/deploying/provider",
+                },
+                {
                     text: "Supported networks",
                     link: "/guide/deploying/supported-networks",
-                },
-                {
-                    text: "Billing system",
-                    link: "/guide/deploying/billing",
-                },
-                {
-                    text: "Becoming a Validator",
-                    link: "/guide/deploying/validator",
                 },
             ],
         },

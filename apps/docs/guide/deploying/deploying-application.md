@@ -4,50 +4,28 @@
 This is still under development and will be available in a future release.
 :::
 
-The deployment of an application is done in two basic steps:
+The deployment of a Cartesi rollups application has two main components: a Cartesi genesis machine, and a smart contract deployed to the [base layer of choice](./supported-networks.md).
 
-1. Publishing of the application Cartesi machine to the IPFS network;
-2. Registration of the application on-chain;
+## Cartesi machine
 
-The process is illustrated below:
-
-![Deploy](./deploy.png)
-
-::: info
-If you also want to be the validator of your application, you must also run a validator node. Check the [becoming a validator](./validator.md) section for further details.
-:::
-
-## Cartesi machine publishing
-
-The first step in the deployment process is to make the application Cartesi machine publicly available so the validator can download it and run the application node. Sunodo uses IPFS as a decentralized storage for the Cartesi machine.
-
-The Sunodo CLI `deploy` command will package the Cartesi machine as a [CAR file](https://docs.ipfs.tech/concepts/how-ipfs-works/#how-ipfs-represents-and-addresses-data) and upload it to an IPFS node.
+The Cartesi genesis machine is produced by the [sunodo build](../building/building-application.md) command, and must be installed alongside a Cartesi [rollups node](https://github.com/cartesi/rollups-node). The machine contains a hash that represents the initial state of the application (including the application itself). The hash can be obtained using the `sunodo hash` command:
 
 ```shell
-$ sunodo deploy
-? Machine hash 0xaf03e4964f88560ebd3818d0661c51fb067383030e4c75f8d174ea53f74dba13
-? IPFS node URL (http://127.0.0.1:5001)
-? Machine ipfs location bafybeibzfaxjtoxsgzclj4xon32rmshfmveyj4ya6kpxch7utgqn7idrxi
-? Open https://sunodo.io/deploy?cid=bafybeibzfaxjtoxsgzclj4xon32rmshfmveyj4ya6kpxch7utgqn7idrxi? (Y/n)
+$ sunodo hash
+? Cartesi machine templateHash 0xc87999b8a93609268b10de25f2e49d35f80fad92813310edc585ed644a9805d3
 ```
 
-The IPFS node URL can be provided with the `--ipfs-url` option and will default to `http://127.0.0.1:5001` if there is an IFPS node running locally. For instructions on how to install and run an IPFS node check the [IPFS Desktop](https://docs.ipfs.tech/install/ipfs-desktop/) documentation.
+Any changes to the application code will result in a different hash, and hence will require a different deployment.
 
-After the machine is uploaded the `CID` address of the machine is printed. With the `CID` in hand the developer can proceed to the next section and register the application on-chain.
+::: info
+Upgradability of applications is a research topic and requires further discussions.
+:::
 
-## Application registration
+## Smart contract
 
-After obtaining the `CID` of the Cartesi machine the developer must register the application on-chain using a `ValidatorNodeProvider` smart contract.
+The smart contract that represents the application on the base layer can be deployed using the [CartesiDAppFactory](https://github.com/cartesi/rollups-contracts/blob/v1.2.0/onchain/rollups/contracts/dapp/CartesiDAppFactory.sol) smart contract.
 
-Sunodo provides a web3 UI to interact with a `ValidatorNodeProvider` smart contract. The application can be accessed at [https://sunodo.io/deploy](https://sunodo.io/deploy), which is launched automatically at the end of the previous step.
+The following sections will describe two convenience methods to deploy an application:
 
-The `deploy` function of a `ValidatorNodeProvider` smart contract requires four parameters:
-
--   `owner`: the owner of the deployed application, which has the power to switch the validator;
--   `templateHash`: the Cartesi machine template hash;
--   `location`: the IPFS CID of the Cartesi machine uploaded to IPFS;
--   `initialRunway`: the amount of time to pre-pay for application execution;
-
-Depending on the `initialRunway` parameter the developer must `approve` a certain amount of tokens of the ERC-20 contract of the `ValidatorNodeProvider` to the `payee` of the `ValidatorNodeProvider`.
-
-The amount of tokens can be calculated using the `cost` view function of the `ValidatorNodeProvider`. For further details check the [billing](./billing.md) section.
+1. [Self-hosted deployment](./self-hosted.md): this method allows the developer to deploy the application node using their own infrastructure;
+2. [Third-party service provider](./provider.md): this method allows the developer to select a service provider to run the application node on their behalf.
