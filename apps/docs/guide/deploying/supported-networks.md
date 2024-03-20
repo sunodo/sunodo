@@ -10,4 +10,4 @@ Sunodo deployment supports all networks officially supported by the Cartesi roll
     -   Testnet: arbitrum-sepolia (chainId 421614)
 -   Optimism
     -   Mainnet: optimism (chainId 10)
-    -   Testnet: optimism-sepolia (chaindId 11155420)
+    -   Testnet: optimism-sepolia (chainId 11155420)
