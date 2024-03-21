@@ -1,5 +1,5 @@
 import { Args, Command, Flags } from "@oclif/core";
-import c from "ansi-colors";
+import chalk from "chalk";
 import type { TemplateProvider } from "giget";
 import { DownloadTemplateResult, downloadTemplate } from "giget";
 import ora from "ora";
@@ -70,11 +70,11 @@ export default class CreateCommand extends Command {
                 flags.branch,
                 args.name,
             );
-            spinner.succeed(`Application created at ${c.cyan(dir)}`);
+            spinner.succeed(`Application created at ${chalk.cyan(dir)}`);
         } catch (e: unknown) {
             spinner.fail(
                 e instanceof Error
-                    ? `Error creating application: ${c.red(e.message)}`
+                    ? `Error creating application: ${chalk.red(e.message)}`
                     : String(e),
             );
         }

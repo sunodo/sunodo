@@ -2,7 +2,6 @@ import { input } from "@inquirer/prompts";
 import { MetaMaskSDK } from "@metamask/sdk";
 import { EthereumProvider } from "@walletconnect/ethereum-provider";
 import { Address } from "abitype";
-import ansiColors from "ansi-colors";
 import chalk from "chalk";
 import qrcode from "qrcode-terminal";
 import {
@@ -86,11 +85,11 @@ const walletChoices = (
             disabled: dev && "(not available)", // do not offer this wallets if chain is local foundry
         },
         {
-            name: `Mnemonic${dev ? "" : ansiColors.red(" (UNSAFE)")}`,
+            name: `Mnemonic${dev ? "" : chalk.red(" (UNSAFE)")}`,
             value: "mnemonic",
         },
         {
-            name: `Private Key${dev ? "" : ansiColors.red(" (UNSAFE)")}`,
+            name: `Private Key${dev ? "" : chalk.red(" (UNSAFE)")}`,
             value: "private-key",
         },
     ];
