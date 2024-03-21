@@ -216,37 +216,19 @@ LABEL io.sunodo.sdk_version=${SUNODO_DEFAULT_SDK_VERSION}
         const extraBlocks = Math.ceil(extraBytes / blockSize);
         const extraSize = `+${extraBlocks}`;
 
+        // environment variables for create-ext2.sh
+        const g2fsEnvs: string[] = [];
+        g2fsEnvs.push(`G2FS_BLOCK_SIZE=${blockSize.toString()}`);
+        g2fsEnvs.push(`G2FS_EXTRA_SIZE=${extraSize}`);
+        g2fsEnvs.push(`G2FS_TAR_PATH=/tmp/${SUNODO_DEFAULT_RETAR_TAR_PATH}`);
+        g2fsEnvs.push(`G2FS_EXT2_PATH=/tmp/${SUNODO_DEFAULT_EXT2_PATH}`);
+        const execEnvs = g2fsEnvs.map((e) => ["--env", e]).flat();
+
         // create ext2
-        await execa(
-            "docker",
-            [
-                "container",
-                "exec",
-                container,
-                "genext2fs",
-                "--tarball",
-                `/tmp/${SUNODO_DEFAULT_RETAR_TAR_PATH}`,
-                "--block-size",
-                blockSize.toString(),
-                "--faketime",
-                "-r",
-                extraSize,
-                `/tmp/${SUNODO_DEFAULT_EXT2_PATH}`,
-            ],
-            { stdio: "inherit" },
-        );
+        await this.sdkExec(container, execEnvs, "create-ext2.sh");
 
         // export ext2 to host filesystem
-        await execa(
-            "docker",
-            [
-                "container",
-                "cp",
-                `${container}:/tmp/${SUNODO_DEFAULT_EXT2_PATH}`,
-                SUNODO_DEFAULT_EXT2_PATH,
-            ],
-            { stdio: "inherit" },
-        );
+        await this.copyFromContainer(container, SUNODO_DEFAULT_EXT2_PATH);
     }
 
     private async createMachineSnapshot(
@@ -280,49 +262,50 @@ LABEL io.sunodo.sdk_version=${SUNODO_DEFAULT_SDK_VERSION}
         const bootargs = [cwd, [env, entrypoint_cmd].join(" ")].join(";");
         this.log(bootargs);
 
-        // create machine snapshot
-        await execa(
-            "docker",
-            [
-                "container",
-                "exec",
-                container,
-                "cartesi-machine",
-                "--assert-rolling-template",
-                `--ram-length=${ramSize}`,
-                "--rollup",
-                `--flash-drive=label:${driveLabel},filename:/tmp/${SUNODO_DEFAULT_EXT2_PATH}`,
-                "--final-hash",
-                `--store=/tmp/${SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH}`,
-                "--",
-                bootargs,
-            ],
-            { stdio: "inherit" },
+        // parameters for create-machine-snapshot.sh
+        const cmEnvs: string[] = [];
+        cmEnvs.push(`CM_RAM_LENGTH=${ramSize}`);
+        cmEnvs.push(`CM_FLASH_DRIVE_LABEL=${driveLabel}`);
+        cmEnvs.push(`CM_FLASH_DRIVE_PATH=/tmp/${SUNODO_DEFAULT_EXT2_PATH}`);
+        cmEnvs.push(
+            `CM_STORE_PATH=/tmp/${SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH}`,
         );
+        cmEnvs.push(`CM_BOOTARGS=${bootargs}`);
+        const execEnvs = cmEnvs.map((e) => ["--env", e]).flat();
 
-        // change snapshot directory permission to read for all
-        await execa("docker", [
-            "container",
-            "exec",
-            container,
-            "chmod",
-            "755",
-            `/tmp/${SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH}`,
-        ]);
+        // create machine snapshot
+        await this.sdkExec(container, execEnvs, "create-machine-snapshot.sh");
 
         // export machine snapshot to host filesystem
-        await execa(
-            "docker",
-            [
-                "container",
-                "cp",
-                `${container}:/tmp/${SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH}`,
-                SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH,
-            ],
-            { stdio: "inherit" },
+        await this.copyFromContainer(
+            container,
+            SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH,
         );
 
         // XXX: should we delete image.ext2, or leave there for shell?
+    }
+
+    private async sdkExec(
+        container: string,
+        envs: string[],
+        cmd: string,
+    ): Promise<void> {
+        console.log("executing", cmd, "in", container, "with", envs);
+        await execa("docker", ["container", "exec", ...envs, container, cmd], {
+            stdio: "inherit",
+        });
+    }
+
+    private async copyFromContainer(
+        container: string,
+        path: string,
+    ): Promise<void> {
+        await execa("docker", [
+            "container",
+            "cp",
+            `${container}:/tmp/${path}`,
+            path,
+        ]);
     }
 
     public async run(): Promise<void> {
