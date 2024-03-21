@@ -8,6 +8,7 @@ import tmp from "tmp";
 
 type ImageBuildOptions = {
     target?: string;
+    verbose?: boolean;
 };
 
 type ImageInfo = {
@@ -72,14 +73,13 @@ export default class BuildApplication extends Command {
      */
     private async buildImage(options: ImageBuildOptions): Promise<string> {
         const buildResult = tmp.tmpNameSync();
-        const { flags } = await this.parse(BuildApplication);
 
         this.debug(
             `building docker image and writing result to ${buildResult}`,
         );
         const args = ["buildx", "build", "--load", "--iidfile", buildResult];
 
-        if (flags.verbose) {
+        if (options.verbose) {
             args.push("--progress", "plain");
         } else {
             args.push("--quiet");
@@ -167,9 +167,9 @@ LABEL io.sunodo.sdk_version=${SUNODO_DEFAULT_SDK_VERSION}
     private async startBuildContainer(
         appImage: string,
         builderImage: string,
+        verbose: boolean,
     ): Promise<string> {
-        const { flags } = await this.parse(BuildApplication);
-        const quiet = flags.verbose ? [] : ["--quiet"];
+        const quiet = verbose ? [] : ["--quiet"];
 
         // create docker tarball from app image
         const { stdout: appCid } = await execa("docker", [
@@ -228,9 +228,9 @@ LABEL io.sunodo.sdk_version=${SUNODO_DEFAULT_SDK_VERSION}
     private async createExt2(
         info: ImageInfo,
         container: string,
+        verbose: boolean,
     ): Promise<void> {
-        const { flags } = await this.parse(BuildApplication);
-        const quiet = flags.verbose ? [] : ["--quiet"];
+        const quiet = verbose ? [] : ["--quiet"];
         // calculate extra size
         const blockSize = 4096;
         const extraBytes = bytes.parse(info.dataSize);
@@ -274,9 +274,9 @@ LABEL io.sunodo.sdk_version=${SUNODO_DEFAULT_SDK_VERSION}
     private async createMachineSnapshot(
         info: ImageInfo,
         container: string,
+        verbose: boolean,
     ): Promise<void> {
-        const { flags } = await this.parse(BuildApplication);
-        const quiet = flags.verbose ? [] : ["--quiet"];
+        const quiet = verbose ? [] : ["--quiet"];
         const ramSize = info.ramSize;
         const driveLabel = "root"; // XXX: does this need to be customizable?
 
@@ -303,7 +303,7 @@ LABEL io.sunodo.sdk_version=${SUNODO_DEFAULT_SDK_VERSION}
         // join everything
         const bootargs = [cwd, [env, entrypoint_cmd].join(" ")].join(";");
 
-        if (flags.verbose) this.log("bootargs: ", bootargs);
+        if (verbose) this.log("bootargs: ", bootargs);
 
         // create machine snapshot
         await execa(
@@ -371,17 +371,25 @@ LABEL io.sunodo.sdk_version=${SUNODO_DEFAULT_SDK_VERSION}
         const sdkImage = `sunodo/sdk:${imageInfo.sdkVersion}`;
 
         // get SDK build container
-        const container = await this.startBuildContainer(appImage, sdkImage);
+        const container = await this.startBuildContainer(
+            appImage,
+            sdkImage,
+            flags.verbose,
+        );
 
         try {
             // create rootfs tar
             await this.createRootfsTar(container);
 
             // create ext2
-            await this.createExt2(imageInfo, container);
+            await this.createExt2(imageInfo, container, flags.verbose);
 
             // create machine snapshot
-            await this.createMachineSnapshot(imageInfo, container);
+            await this.createMachineSnapshot(
+                imageInfo,
+                container,
+                flags.verbose,
+            );
         } finally {
             // stop build container
             await this.stopBuildContainer(container);
