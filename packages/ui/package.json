@@ -10,11 +10,11 @@
     },
     "devDependencies": {
         "@sunodo/eslint-config": "workspace:*",
-        "@types/react": "^18",
-        "@types/react-dom": "^18",
-        "eslint": "^8",
+        "@types/react": "^18.2.71",
+        "@types/react-dom": "^18.2.22",
+        "eslint": "^8.57.0",
         "react": "^18",
         "tsconfig": "workspace:*",
-        "typescript": "^5"
+        "typescript": "^5.4.3"
     }
 }

@@ -19,16 +19,16 @@
     },
     "devDependencies": {
         "@nomicfoundation/hardhat-viem": "^2.0.0",
-        "@safe-global/safe-singleton-factory": "^1",
+        "@safe-global/safe-singleton-factory": "^1.0.21",
         "@sunodo/contracts": "workspace:*",
         "@sunodo/token": "workspace:*",
-        "hardhat": "^2.22.0",
+        "hardhat": "^2.22.2",
         "hardhat-abi-exporter": "^2",
         "hardhat-deploy": "^0.12.2",
         "npm-run-all": "^4",
         "rimraf": "^5",
         "tsconfig": "workspace:*",
-        "typescript": "^5"
+        "typescript": "^5.4.3"
     },
     "files": [
         "deployments/*/*.json",

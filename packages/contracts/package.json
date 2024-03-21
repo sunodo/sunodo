@@ -32,19 +32,19 @@
     "devDependencies": {
         "@nomicfoundation/hardhat-verify": "^2.0.5",
         "@nomicfoundation/hardhat-viem": "^2.0.0",
-        "@safe-global/safe-singleton-factory": "^1",
-        "@types/chai": "^4.3.12",
+        "@safe-global/safe-singleton-factory": "^1.0.21",
+        "@types/chai": "^4.3.14",
         "@types/mocha": ">=9.1.0",
         "chai": "^4.2.0",
-        "hardhat": "^2.22.0",
+        "hardhat": "^2.22.2",
         "hardhat-abi-exporter": "^2",
         "hardhat-deploy": "^0.12.2",
         "mocha": "^10.0.0",
         "npm-run-all": "^4",
         "rimraf": "^5",
         "solidity-docgen": "^0.6.0-beta.36",
-        "typescript": "^5.4.2",
-        "viem": "^2.8.6"
+        "typescript": "^5.4.3",
+        "viem": "^2.9.2"
     },
     "files": [
         "contracts",

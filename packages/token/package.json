@@ -29,13 +29,13 @@
         "tsc:prod": "tsc -p tsconfig.prod.json"
     },
     "devDependencies": {
-        "@safe-global/safe-singleton-factory": "^1",
-        "hardhat": "^2.22.0",
+        "@safe-global/safe-singleton-factory": "^1.0.21",
+        "hardhat": "^2.22.2",
         "hardhat-deploy": "^0.12.2",
         "npm-run-all": "^4",
         "rimraf": "^5",
-        "typescript": "^5",
-        "viem": "^2.8.6"
+        "typescript": "^5.4.3",
+        "viem": "^2.9.2"
     },
     "dependencies": {
         "@openzeppelin/contracts": "5.0.1"
