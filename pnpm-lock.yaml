@@ -80,6 +80,9 @@ importers:
       lokijs:
         specifier: ^1.5
         version: 1.5.12
+      lookpath:
+        specifier: ^1.2.2
+        version: 1.2.2
       node-fetch:
         specifier: '3.3'
         version: 3.3.2
@@ -15953,6 +15956,12 @@ packages:
 
   /lokijs@1.5.12:
     resolution: {integrity: sha512-Q5ALD6JiS6xAUWCwX3taQmgwxyveCtIIuL08+ml0nHwT3k0S/GIFJN+Hd38b1qYIMaE5X++iqsqWVksz7SYW+Q==}
+    dev: false
+
+  /lookpath@1.2.2:
+    resolution: {integrity: sha512-k2Gmn8iV6qdME3ztZC2spubmQISimFOPLuQKiPaLcVdRz0IpdxrNClVepMlyTJlhodm/zG/VfbkWERm3kUIh+Q==}
+    engines: {npm: '>=6.13.4'}
+    hasBin: true
     dev: false
 
   /loose-envify@1.4.0:
