@@ -79,9 +79,7 @@ export default class BuildApplication extends Command {
         );
         const args = ["buildx", "build", "--load", "--iidfile", buildResult];
 
-        if (options.verbose) {
-            args.push("--progress", "plain");
-        } else {
+        if (!options.verbose) {
             args.push("--quiet");
         }
 
