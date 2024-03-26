@@ -2,4 +2,4 @@
 "@sunodo/cli": patch
 ---
 
-sunodo run quieter output
+reduce sunodo run verbosity

@@ -2,4 +2,4 @@
 "@sunodo/cli": patch
 ---
 
-make builds reproducible
+make application builds reproducible

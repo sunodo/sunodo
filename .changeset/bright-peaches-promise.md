@@ -2,4 +2,4 @@
 "@sunodo/cli": minor
 ---
 
-adapt to use sunodo/rollups-node:0.7.0
+use cartesi/rollups-node:0.7.0 instead of our own sunodo/rollups-node
