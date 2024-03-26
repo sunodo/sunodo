@@ -1,5 +1,11 @@
 # sdk
 
+## 0.3.0
+
+### Minor Changes
+
+- 445e600: bump version
+
 ## 0.2.1
 
 ### Patch Changes
