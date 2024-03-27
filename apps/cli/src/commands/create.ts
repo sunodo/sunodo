@@ -4,7 +4,7 @@ import type { TemplateProvider } from "giget";
 import { DownloadTemplateResult, downloadTemplate } from "giget";
 import ora from "ora";
 
-const DEFAULT_TEMPLATES_BRANCH = "sdk-0.2";
+const DEFAULT_TEMPLATES_BRANCH = "sdk-0.3";
 
 export default class CreateCommand extends Command {
     static description = "Create application";
