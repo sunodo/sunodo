@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.11.1
+
+### Patch Changes
+
+- 22c2ac7: fix default template branch
+
 ## 0.11.0
 
 ### Minor Changes
