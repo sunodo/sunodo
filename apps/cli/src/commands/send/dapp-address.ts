@@ -1,3 +1,4 @@
+import { Command } from "clipanion";
 import { Address, PublicClient, WalletClient } from "viem";
 
 import {
@@ -6,13 +7,13 @@ import {
 } from "../../contracts.js";
 import { SendBaseCommand } from "./index.js";
 
-export default class SendAddress extends SendBaseCommand<typeof SendAddress> {
-    static summary = "Send DApp address input to the application.";
+export default class SendAddress extends SendBaseCommand {
+    static paths = [["send", "dapp-address"]];
 
-    static description =
-        "Sends an input to the application with its own address.";
-
-    static examples = ["<%= config.bin %> <%= command.id %>"];
+    static usage = Command.Usage({
+        description: "Send DApp address input to the application.",
+        details: "Sends an input to the application with its own address.",
+    });
 
     public async send(
         publicClient: PublicClient,

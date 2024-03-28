@@ -1,30 +1,29 @@
-import { Flags } from "@oclif/core";
+import { Command, Option, UsageError } from "clipanion";
 import { execa } from "execa";
 import fs from "fs-extra";
 import path from "path";
 import { tmpNameSync } from "tmp";
+import * as t from "typanion";
 import { URL } from "url";
 
 import { SunodoCommand } from "../../sunodoCommand.js";
 
-export default class DeployBuild extends SunodoCommand<typeof DeployBuild> {
-    static summary = "Build deployment Docker image of application.";
+export default class DeployBuild extends SunodoCommand {
+    static paths = [["deploy", "build"]];
 
-    static description =
-        "Package the application in a Docker image ready to be deployed.";
+    static usage = Command.Usage({
+        description: "Build deployment Docker image of application.",
+        details:
+            "Package the application in a Docker image ready to be deployed.",
+    });
 
-    static examples = ["<%= config.bin %> <%= command.id %>"];
+    platform = Option.String<"linux/amd64" | "linux/arm64">("--platform", {
+        description:
+            'Docker image target platform ("linux/amd64", "linux/arm64")',
+        validator: t.isEnum(["linux/amd64", "linux/arm64"]),
+    });
 
-    static flags = {
-        platform: Flags.string({
-            options: ["linux/amd64", "linux/arm64"],
-            summary: "Docker image target platform",
-            description:
-                "Select the target platform for the produced Docker image. It depends on the platform where the application node will be deployed.",
-        }),
-    };
-
-    private async buildRollupsImage(platform?: string) {
+    private async buildRollupsImage() {
         const buildResult = tmpNameSync();
         const imagePath = path.join(".sunodo", "image");
         const binPath = path.join(
@@ -45,21 +44,19 @@ export default class DeployBuild extends SunodoCommand<typeof DeployBuild> {
         ];
 
         // optional platform, default to not defining, which will build for the host platform
-        if (platform) {
-            args.push("--platform", platform);
+        if (this.platform) {
+            args.push("--platform", this.platform);
         }
 
         await execa("docker", args, { stdio: "inherit" });
         return fs.readFileSync(buildResult, "utf8");
     }
 
-    public async run(): Promise<string> {
-        const { flags } = await this.parse(DeployBuild);
-
+    public async execute() {
         // print machine hash
         const templateHash = this.getMachineHash();
         if (!templateHash) {
-            this.error(
+            throw new UsageError(
                 "Cartesi machine snapshot not found, run 'sunodo build'",
             );
         }
@@ -67,14 +64,16 @@ export default class DeployBuild extends SunodoCommand<typeof DeployBuild> {
             title: "Cartesi machine templateHash",
             value: templateHash,
         });
-        this.log("Building application node Docker image...");
+        this.context.stdout.write(
+            "Building application node Docker image...\n",
+        );
 
-        const image = await this.buildRollupsImage(flags.platform);
+        const image = await this.buildRollupsImage();
         this.logPrompt({
             title: "Application node Docker image",
             value: image,
         });
 
-        return image;
+        return;
     }
 }

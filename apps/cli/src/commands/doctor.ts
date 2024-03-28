@@ -1,12 +1,16 @@
-import { Command } from "@oclif/core";
+import { Command } from "clipanion";
 import { execa } from "execa";
 import semver from "semver";
 
 export default class DoctorCommand extends Command {
-    static description =
-        "Verify the minimal requirements for the sunodo execution commands";
+    static paths = [["doctor"]];
 
-    static examples = ["<%= config.bin %> <%= command.id %>"];
+    static usage = Command.Usage({
+        description:
+            "Verify the minimal requirements for the sunodo execution commands.",
+        details:
+            "Check if Docker is installed and if it meets the minimum version required",
+    });
 
     private static MINIMUM_DOCKER_VERSION = "23.0.0"; // Replace with our minimum required Docker version
     private static MINIMUM_DOCKER_COMPOSE_VERSION = "2.21.0"; // Replace with our minimum required Docker Compose version
@@ -27,7 +31,7 @@ export default class DoctorCommand extends Command {
         return buildxOutput.includes("riscv64");
     }
 
-    public async run() {
+    public async execute() {
         try {
             // Check Docker version
             const { stdout: dockerVersionOutput } = await execa("docker", [
@@ -72,12 +76,12 @@ export default class DoctorCommand extends Command {
                 );
             }
 
-            this.log("Your system is ready for sunodo.");
+            this.context.stdout.write("Your system is ready for sunodo.\n");
         } catch (error: unknown) {
             if (error instanceof Error) {
-                this.error(error.message);
+                this.context.stderr.write(error.message);
             } else {
-                this.error(String(error));
+                this.context.stderr.write(String(error));
             }
         }
     }

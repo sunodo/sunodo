@@ -1,33 +1,30 @@
-import { ux } from "@oclif/core";
+import Table from "cli-table3";
+import { Command } from "clipanion";
 
-import {
-    AddressBook as AddressBookType,
-    SunodoCommand,
-} from "../sunodoCommand.js";
+import { SunodoCommand } from "../sunodoCommand.js";
 
-export default class AddressBook extends SunodoCommand<typeof AddressBook> {
-    static summary = "Prints addresses of smart contracts deployed.";
+export default class AddressBook extends SunodoCommand {
+    static paths = [["address-book"]];
 
-    static description =
-        "Prints the addresses of all smart contracts deployed to the runtime environment of the application.";
+    static usage = Command.Usage({
+        description: "Prints addresses of smart contracts deployed.",
+        details:
+            "Prints the addresses of all smart contracts deployed to the runtime environment of the application.",
+    });
 
-    static examples = ["<%= config.bin %> <%= command.id %>"];
-
-    public static enableJsonFlag = true;
-
-    public async run(): Promise<AddressBookType> {
+    public async execute(): Promise<void> {
         const addressBook = await super.getAddressBook();
-        if (!this.jsonEnabled()) {
+        if (!this.jsonEnabled) {
             // print as a table
-            ux.table(
-                Object.entries(addressBook).map(([name, address]) => ({
-                    name,
-                    address,
-                })),
-                { name: { header: "Contract" }, address: {} },
-            );
+            const table = new Table({
+                head: ["Contract", "Address"],
+                style: { compact: true, head: ["cyan"] },
+            });
+            table.push(...Object.entries(addressBook));
+            this.context.stdout.write(`${table.toString()}\n`);
+        } else {
+            // print json
+            this.context.stdout.write(JSON.stringify(addressBook));
         }
-        // return (as json)
-        return addressBook;
     }
 }

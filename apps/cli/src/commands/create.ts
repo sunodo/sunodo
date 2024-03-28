@@ -1,5 +1,5 @@
-import { Args, Command, Flags } from "@oclif/core";
 import chalk from "chalk";
+import { Command, Option } from "clipanion";
 import type { TemplateProvider } from "giget";
 import { DownloadTemplateResult, downloadTemplate } from "giget";
 import ora from "ora";
@@ -7,38 +7,24 @@ import ora from "ora";
 const DEFAULT_TEMPLATES_BRANCH = "sdk-0.3";
 
 export default class CreateCommand extends Command {
-    static description = "Create application";
+    static paths = [["create"]];
+
+    static usage = Command.Usage({
+        description: "Create application",
+    });
 
     static examples = ["<%= config.bin %> <%= command.id %>"];
 
-    static args = {
-        name: Args.string({
-            description: "application and directory name",
-            required: true,
-        }),
-    };
+    name = Option.String();
 
-    static flags = {
-        template: Flags.string({
-            description: "template name to use",
-            required: true,
-            options: [
-                "cpp",
-                "cpp-low-level",
-                "go",
-                "javascript",
-                "lua",
-                "python",
-                "ruby",
-                "rust",
-                "typescript",
-            ],
-        }),
-        branch: Flags.string({
-            description: `sunodo/sunodo-templates repository branch name to use`,
-            default: DEFAULT_TEMPLATES_BRANCH,
-        }),
-    };
+    template = Option.String("--template", {
+        description: "template name to use",
+        required: true,
+    });
+
+    branch = Option.String("--branch", {
+        description: `sunodo/sunodo-templates repository branch name to use`,
+    });
 
     private async download(
         template: string,
@@ -61,14 +47,13 @@ export default class CreateCommand extends Command {
         });
     }
 
-    public async run(): Promise<void> {
-        const { args, flags } = await this.parse(CreateCommand);
+    public async execute(): Promise<void> {
         const spinner = ora("Creating application...").start();
         try {
             const { dir } = await this.download(
-                flags.template,
-                flags.branch,
-                args.name,
+                this.template,
+                this.branch || DEFAULT_TEMPLATES_BRANCH,
+                this.name,
             );
             spinner.succeed(`Application created at ${chalk.cyan(dir)}`);
         } catch (e: unknown) {

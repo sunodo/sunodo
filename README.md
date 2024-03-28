@@ -16,10 +16,9 @@ It helps developers to:
 
 ## Apps and Packages
 
--   `cli`: a [oclif](https://oclif.io) CLI tool for development, deployment and management of applications, available at `brew install sunodo/tap/sunodo`;
+-   `cli`: a CLI tool for development, deployment and management of applications, available at `brew install sunodo/tap/sunodo`;
 -   `docs`: a [VitePress](https://vitepress.dev/) app with Sunodo documentation, deployed at [https://docs.sunodo.io](https://docs.sunodo.io)
 -   `web`: a [next.js](https://nextjs.org/) app for Sunodo website, deployed at [https://sunodo.io](https://sunodo.io)
--   `app`: a [next.js](https://nextjs.org/) app for Sunodo dashboard, deployed at [https://app.sunodo.io](https://app.sunodo.io)
 -   `anvil`: Docker image of [anvil](https://book.getfoundry.sh/reference/anvil/), multi-arch;
 -   `car-download`: Utility library and CLI to download IPFS CAR to local filesystem;
 -   `sdk`: Docker image to help with Cartesi build and execution;

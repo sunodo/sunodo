@@ -1,14 +1,15 @@
 import input from "@inquirer/input";
+import { Command, Option } from "clipanion";
 import {
     Address,
-    erc721Abi,
-    isAddress,
     PublicClient,
     WalletClient,
+    erc721Abi,
+    isAddress as viemIsAddress,
 } from "viem";
 
 import { erc721PortalAbi, erc721PortalAddress } from "../../contracts.js";
-import * as CustomFlags from "../../flags.js";
+import { isAddress } from "../../flags.js";
 import { SendBaseCommand } from "./index.js";
 
 type ERC721Token = {
@@ -16,18 +17,19 @@ type ERC721Token = {
     symbol: string;
 };
 
-export default class SendERC721 extends SendBaseCommand<typeof SendERC721> {
-    static summary = "Send ERC-721 deposit to the application.";
+export default class SendERC721 extends SendBaseCommand {
+    static usage = Command.Usage({
+        description: "Send ERC-721 deposit to the application.",
+        details:
+            "Sends ERC-721 deposits to the application, optionally in interactive mode.",
+    });
 
-    static description =
-        "Sends ERC-721 deposits to the application, optionally in interactive mode.";
+    token = Option.String("--token", {
+        description: "token address",
+        validator: isAddress,
+    });
 
-    static flags = {
-        token: CustomFlags.address({ description: "token address" }),
-        tokenId: CustomFlags.bigint({ description: "token ID" }),
-    };
-
-    static examples = ["<%= config.bin %> <%= command.id %>"];
+    tokenId = Option.String("--tokenId", { description: "token ID" });
 
     private async readToken(
         publicClient: PublicClient,
@@ -58,7 +60,7 @@ export default class SendERC721 extends SendBaseCommand<typeof SendERC721> {
         const ercValidator = async (
             value: string,
         ): Promise<string | boolean> => {
-            if (!isAddress(value)) {
+            if (!viemIsAddress(value)) {
                 return "Invalid address";
             }
             try {
@@ -70,14 +72,14 @@ export default class SendERC721 extends SendBaseCommand<typeof SendERC721> {
         };
 
         const token =
-            this.flags.token ||
+            this.token ||
             ((await input({
                 message: "Token address",
                 validate: ercValidator,
             })) as Address);
 
         const tokenId =
-            this.flags.tokenId ||
+            this.tokenId ||
             (await input({
                 message: "Token ID",
                 validate: (value) => {

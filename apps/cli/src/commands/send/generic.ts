@@ -1,4 +1,4 @@
-import { Flags } from "@oclif/core";
+import { Command, Option } from "clipanion";
 import {
     Address,
     PublicClient,
@@ -15,35 +15,29 @@ import { inputBoxAbi, inputBoxAddress } from "../../contracts.js";
 import { bytesInput } from "../../prompts.js";
 import { SendBaseCommand } from "./index.js";
 
-export default class SendGeneric extends SendBaseCommand<typeof SendGeneric> {
-    static summary = "Send generic input to the application.";
+export default class SendGeneric extends SendBaseCommand {
+    static usage = Command.Usage({
+        description: "Send generic input to the application.",
+        details:
+            "Sends generics inputs to the application, optionally in interactive mode.",
+    });
 
-    static description =
-        "Sends generics inputs to the application, optionally in interactive mode.";
+    input = Option.String("--input", {
+        description: "input payload",
+    });
 
-    static examples = ["<%= config.bin %> <%= command.id %>"];
+    inputEncoding = Option.String("--input-encoding", {
+        description: "input encoding",
+        // options: ["hex", "string", "abi"],
+    });
 
-    static flags = {
-        input: Flags.string({
-            description: "input payload",
-            summary: "see input-encoding for definition on how input is parsed",
-        }),
-        "input-encoding": Flags.string({
-            description: "input encoding",
-            summary:
-                "if input-encoding is undefined, the input is parsed as a hex-string if it starts with 0x or else is parsed as a UTF-8 encoding",
-            options: ["hex", "string", "abi"],
-        }),
-        "input-abi-params": Flags.string({
-            description: "input abi params",
-            summary:
-                "ABI params definition for input, following human-readable format specified at https://abitype.dev/api/human.html#parseabiparameters",
-        }),
-    };
+    inputAbiParams = Option.String("--input-abi-params", {
+        description: "input abi params",
+    });
 
     protected async getInput(): Promise<`0x${string}` | undefined> {
-        const input = this.flags.input;
-        const encoding = this.flags["input-encoding"];
+        const input = this.input;
+        const encoding = this.inputEncoding;
         if (input) {
             if (encoding === "hex") {
                 // validate if is a hex value
@@ -55,7 +49,7 @@ export default class SendGeneric extends SendBaseCommand<typeof SendGeneric> {
                 // encode UTF-8 string as hex
                 return stringToHex(input);
             } else if (encoding === "abi") {
-                const abiParams = this.flags["input-abi-params"];
+                const abiParams = this.inputAbiParams;
                 if (!abiParams) {
                     throw new Error("Undefined input-abi-params");
                 }

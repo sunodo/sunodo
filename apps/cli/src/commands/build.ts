@@ -1,14 +1,10 @@
-import { Command, Flags } from "@oclif/core";
 import bytes from "bytes";
+import { Command, Option, UsageError } from "clipanion";
 import { execa } from "execa";
 import fs from "fs-extra";
 import path from "path";
 import semver from "semver";
 import tmp from "tmp";
-
-type ImageBuildOptions = {
-    target?: string;
-};
 
 type ImageInfo = {
     cmd: string[];
@@ -36,43 +32,37 @@ const SUNODO_DEFAULT_RETAR_TAR_PATH = path.join(SUNODO_PATH, "image.gnutar");
 const SUNODO_DEFAULT_EXT2_PATH = path.join(SUNODO_PATH, "image.ext2");
 
 export default class BuildApplication extends Command {
-    static summary = "Build application.";
+    static paths = [["build"]];
 
-    static description =
-        "Build application starting from a Dockerfile and ending with a snapshot of the corresponding Cartesi Machine already booted and yielded for the first time. This snapshot can be used to start a Cartesi node for the application using `sunodo run`. The process can also start from a Docker image built by the developer using `docker build` using the option `--from-image`";
+    static usage = Command.Usage({
+        description: "Build application.",
+        details:
+            "Build application starting from a Dockerfile and ending with a snapshot of the corresponding Cartesi Machine already booted and yielded for the first time. This snapshot can be used to start a Cartesi node for the application using `sunodo run`. The process can also start from a Docker image built by the developer using `docker build` using the option `--from-image`",
+        examples: [
+            ["Basic usage", "$0 build"],
+            ["From existing Docker image", "$0 build --from-image <image_id>"],
+        ],
+    });
 
-    static examples = [
-        "<%= config.bin %> <%= command.id %>",
-        "<%= config.bin %> <%= command.id %> --from-image my-app",
-    ];
-
-    static args = {};
-
-    static flags = {
-        "from-image": Flags.string({
-            summary: "skip docker build and start from this image.",
-            description:
-                "if the build process of the application Dockerfile needs more control the developer can build the image using the `docker build` command, and then start the build process of the Cartesi machine starting from that image.",
-        }),
-        target: Flags.string({
-            summary: "target of docker multi-stage build.",
-            description:
-                "if the application Dockerfile uses a multi-stage strategy, and stage of the image to be exported as a Cartesi machine is not the last stage, use this parameter to specify the target stage.",
-        }),
-    };
+    fromImage = Option.String("--from-image", {
+        description: "skip docker build and start from this image.",
+    });
+    target = Option.String("--target", {
+        description: "target of docker multi-stage build.",
+    });
 
     /**
      * Build DApp image (linux/riscv64). Returns image id.
      * @param directory path of context containing Dockerfile
      */
-    private async buildImage(options: ImageBuildOptions): Promise<string> {
+    private async buildImage(): Promise<string> {
         const buildResult = tmp.tmpNameSync();
-        this.debug(
-            `building docker image and writing result to ${buildResult}`,
+        this.context.stderr.write(
+            `building docker image and writing result to ${buildResult}\n`,
         );
         const args = ["buildx", "build", "--load", "--iidfile", buildResult];
-        if (options.target) {
-            args.push("--target", options.target);
+        if (this.target) {
+            args.push("--target", this.target);
         }
 
         await execa("docker", [...args, process.cwd()], { stdio: "inherit" });
@@ -113,9 +103,11 @@ export default class BuildApplication extends Command {
 
         // fail if using unsupported sdk version
         if (!semver.valid(info.sdkVersion)) {
-            this.warn("sunodo sdk version is not a valid semver");
+            this.context.stderr.write(
+                "sunodo sdk version is not a valid semver\n",
+            );
         } else if (semver.lt(info.sdkVersion, SUNODO_DEFAULT_SDK_VERSION)) {
-            throw new Error(`Unsupported sunodo sdk version.
+            throw new UsageError(`Unsupported sunodo sdk version.
 
 Make sure you defined \`io.sunodo.sdk_version\` label at your Dockerfile.
 
@@ -129,18 +121,18 @@ LABEL io.sunodo.sdk_version=${SUNODO_DEFAULT_SDK_VERSION}
 
         // warn for using default values
         info.sdkVersion ||
-            this.warn(
-                `Undefined ${SUNODO_LABEL_SDK_VERSION} label, defaulting to ${SUNODO_DEFAULT_SDK_VERSION}`,
+            this.context.stderr.write(
+                `Undefined ${SUNODO_LABEL_SDK_VERSION} label, defaulting to ${SUNODO_DEFAULT_SDK_VERSION}\n`,
             );
 
         info.ramSize ||
-            this.warn(
-                `Undefined ${CARTESI_LABEL_RAM_SIZE} label, defaulting to ${CARTESI_DEFAULT_RAM_SIZE}`,
+            this.context.stderr.write(
+                `Undefined ${CARTESI_LABEL_RAM_SIZE} label, defaulting to ${CARTESI_DEFAULT_RAM_SIZE}\n`,
             );
 
         // validate data size value
         if (bytes(info.dataSize) === null) {
-            throw new Error(
+            throw new UsageError(
                 `Invalid ${CARTESI_LABEL_DATA_SIZE} value: ${info.dataSize}`,
             );
         }
@@ -315,14 +307,12 @@ LABEL io.sunodo.sdk_version=${SUNODO_DEFAULT_SDK_VERSION}
         // XXX: should we delete image.ext2, or leave there for shell?
     }
 
-    public async run(): Promise<void> {
-        const { flags } = await this.parse(BuildApplication);
-
+    public async execute(): Promise<void> {
         // clean up temp files we create along the process
         tmp.setGracefulCleanup();
 
         // use pre-existing image or build dapp image
-        const appImage = flags["from-image"] || (await this.buildImage(flags));
+        const appImage = this.fromImage || (await this.buildImage());
 
         // prapare .sunodo directory
         await fs.emptyDir(SUNODO_PATH); // XXX: make it less error prone

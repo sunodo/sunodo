@@ -1,56 +1,43 @@
 import input from "@inquirer/input";
 import select from "@inquirer/select";
-import { Command, Interfaces, Flags as StandardFlags } from "@oclif/core";
+import { Command, Option } from "clipanion";
 import ora from "ora";
-import { Address, PublicClient, WalletClient, isAddress } from "viem";
+import {
+    Address,
+    PublicClient,
+    WalletClient,
+    isAddress as viemIsAddress,
+} from "viem";
 
-import * as CustomFlags from "../../flags.js";
+import { isAddress, isPositiveNumber } from "../../flags.js";
 import { SunodoCommand } from "../../sunodoCommand.js";
 import createClients, { supportedChains } from "../../wallet.js";
 
-export type Flags<T extends typeof Command> = Interfaces.InferredFlags<
-    (typeof SendBaseCommand)["baseFlags"] & T["flags"]
->;
-export type Args<T extends typeof Command> = Interfaces.InferredArgs<T["args"]>;
-
 // base command for sending input to the application
-export abstract class SendBaseCommand<
-    T extends typeof Command,
-> extends SunodoCommand<typeof SendBaseCommand> {
-    static baseFlags = {
-        dapp: CustomFlags.address({
-            summary: "dapp address.",
-            description:
-                "the address of the DApp, defaults to the deployed DApp address if application is running.",
-        }),
-        "chain-id": StandardFlags.integer({
-            description: "The EIP-155 chain ID.",
-            char: "c",
-            env: "CHAIN",
-            helpGroup: "Ethereum",
-            options: supportedChains({ includeDevnet: true }).map((c) =>
-                c.id.toString(),
-            ),
-        }),
-        "rpc-url": StandardFlags.string({
-            description: "The RPC endpoint.",
-            char: "r",
-            env: "ETH_RPC_URL",
-            helpGroup: "Ethereum",
-        }),
-        "mnemonic-passphrase": StandardFlags.string({
-            description: "Use a BIP39 passphrase for the mnemonic.",
-            helpGroup: "Wallet",
-        }),
-        "mnemonic-index": StandardFlags.integer({
-            description: "Use the private key from the given mnemonic index.",
-            helpGroup: "Wallet",
-            default: 0,
-        }),
-    };
+export abstract class SendBaseCommand extends SunodoCommand {
+    dapp = Option.String<Address>("--dapp", {
+        description: "dapp address.",
+        validator: isAddress,
+    });
 
-    protected flags!: Flags<T>;
-    protected args!: Args<T>;
+    chainId = Option.String("-c,--chain-id", {
+        description: "The EIP-155 chain ID.",
+        validator: isPositiveNumber, // XXX: limited options
+        env: "CHAIN",
+    });
+
+    rpcUrl = Option.String("-r,--rpc-url", {
+        description: "The RPC endpoint.",
+        env: "ETH_RPC_URL",
+    });
+    mnemonicPassphrase = Option.String("--mnemonic-passphrase", {
+        description: "Use a BIP39 passphrase for the mnemonic.",
+    });
+
+    mnemonicIndex = Option.String("--mnemonic-index", {
+        description: "Use the private key from the given mnemonic index.",
+        validator: isPositiveNumber,
+    });
 
     private async connect(): Promise<{
         publicClient: PublicClient;
@@ -59,18 +46,18 @@ export abstract class SendBaseCommand<
         // create viem clients
         return createClients({
             chain: supportedChains({ includeDevnet: true }).find(
-                (c) => c.id == this.flags["chain-id"],
+                (c) => c.id == this.chainId,
             ),
-            rpcUrl: this.flags["rpc-url"],
-            mnemonicPassphrase: this.flags["mnemonic-passphrase"],
-            mnemonicIndex: this.flags["mnemonic-index"],
+            rpcUrl: this.rpcUrl,
+            mnemonicPassphrase: this.mnemonicPassphrase,
+            mnemonicIndex: this.mnemonicIndex,
         });
     }
 
     protected async getApplicationAddress(): Promise<Address> {
-        if (this.flags.dapp) {
+        if (this.dapp) {
             // honor the flag
-            return this.flags.dapp;
+            return this.dapp;
         }
 
         // get the running container dapp address
@@ -79,23 +66,11 @@ export abstract class SendBaseCommand<
         // query for the address
         const applicationAddress = await input({
             message: "Application address",
-            validate: (value) => isAddress(value) || "Invalid address",
+            validate: (value) => viemIsAddress(value) || "Invalid address",
             default: nodeAddress,
         });
 
         return applicationAddress as Address;
-    }
-
-    public async init(): Promise<void> {
-        await super.init();
-        const { args, flags } = await this.parse({
-            flags: this.ctor.flags,
-            baseFlags: (super.ctor as typeof SendBaseCommand).baseFlags,
-            args: this.ctor.args,
-            strict: this.ctor.strict,
-        });
-        this.flags = flags as Flags<T>;
-        this.args = args as Args<T>;
     }
 
     protected abstract send(
@@ -103,7 +78,7 @@ export abstract class SendBaseCommand<
         walletClient: WalletClient,
     ): Promise<Address>;
 
-    public async run(): Promise<void> {
+    public async execute(): Promise<void> {
         const { publicClient, walletClient } = await this.connect();
         const hash = await this.send(publicClient, walletClient);
         const progress = ora("Sending input...").start();
@@ -113,30 +88,37 @@ export abstract class SendBaseCommand<
 }
 
 export default class Send extends Command {
-    static summary = "Send input to the application.";
+    static paths = [["send"]];
 
-    static description =
-        "Sends different kinds of input to the application in interactive mode.";
+    static usage = Command.Usage({
+        description: "Send input to the application.",
+        details:
+            "Sends different kinds of input to the application in interactive mode.",
+    });
 
-    static examples = ["<%= config.bin %> <%= command.id %>"];
+    rest = Option.Rest();
 
-    public async run(): Promise<void> {
+    public async execute(): Promise<void> {
         // get all send sub-commands
-        const sendCommands = this.config.commands.filter((command) =>
-            command.id.startsWith("send:"),
-        );
+        const sendCommands = this.cli.definitions().filter((d) => {
+            const paths = d.path.split(" ");
+            return paths.length > 2 && paths[1] === "send";
+        });
 
         // select the send sub-command
         const commandId = await select({
             message: "Select send sub-command",
-            choices: sendCommands.map((command) => ({
-                value: command.id,
-                name: command.summary,
-                description: command.description,
-            })),
+            choices: sendCommands.map((command) => {
+                const paths = command.path.split(" ");
+                return {
+                    value: paths[2],
+                    name: command.description,
+                    description: command.details,
+                };
+            }),
         });
 
         // invoke the sub-command
-        await this.config.runCommand(commandId, this.argv);
+        await this.cli.run(["send", commandId, ...this.rest]);
     }
 }

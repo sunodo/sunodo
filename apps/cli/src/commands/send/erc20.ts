@@ -1,15 +1,16 @@
 import input from "@inquirer/input";
+import { Command, Option } from "clipanion";
 import {
     Address,
-    erc20Abi,
-    isAddress,
-    parseEther,
     PublicClient,
     WalletClient,
+    erc20Abi,
+    parseEther,
+    isAddress as viemIsAddress,
 } from "viem";
 
 import { erc20PortalAbi, erc20PortalAddress } from "../../contracts.js";
-import * as CustomFlags from "../../flags.js";
+import { isAddress } from "../../flags.js";
 import { SendBaseCommand } from "./index.js";
 
 type ERC20Token = {
@@ -18,18 +19,18 @@ type ERC20Token = {
     decimals: number;
 };
 
-export default class SendERC20 extends SendBaseCommand<typeof SendERC20> {
-    static summary = "Send ERC-20 deposit to the application.";
+export default class SendERC20 extends SendBaseCommand {
+    static usage = Command.Usage({
+        description: "Send ERC-20 deposit to the application.",
+        details:
+            "Sends ERC-20 deposits to the application, optionally in interactive mode.",
+    });
 
-    static description =
-        "Sends ERC-20 deposits to the application, optionally in interactive mode.";
-
-    static flags = {
-        token: CustomFlags.address({ description: "token address" }),
-        amount: CustomFlags.number({ description: "amount" }),
-    };
-
-    static examples = ["<%= config.bin %> <%= command.id %>"];
+    token = Option.String("--token", {
+        description: "token address",
+        validator: isAddress,
+    });
+    amount = Option.String("--amount", { description: "amount" });
 
     private async readToken(
         publicClient: PublicClient,
@@ -65,7 +66,7 @@ export default class SendERC20 extends SendBaseCommand<typeof SendERC20> {
         const ercValidator = async (
             value: string,
         ): Promise<string | boolean> => {
-            if (!isAddress(value)) {
+            if (!viemIsAddress(value)) {
                 return "Invalid address";
             }
             try {
@@ -77,14 +78,13 @@ export default class SendERC20 extends SendBaseCommand<typeof SendERC20> {
         };
 
         const tokenAddress =
-            this.flags.token ||
+            this.token ||
             ((await input({
                 message: "Token address",
                 validate: ercValidator,
             })) as Address);
 
-        const amount =
-            this.flags.amount || (await input({ message: "Amount" }));
+        const amount = this.amount || (await input({ message: "Amount" }));
 
         const { request } = await publicClient.simulateContract({
             address: erc20PortalAddress,

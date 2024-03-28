@@ -1,48 +1,46 @@
-import { Flags } from "@oclif/core";
+import { Command, Option } from "clipanion";
 import { execa } from "execa";
 import fs from "fs-extra";
 import path from "path";
 
+import { isPort, isPositiveNumber } from "../flags.js";
 import { SunodoCommand } from "../sunodoCommand.js";
 
-export default class Run extends SunodoCommand<typeof Run> {
-    static summary = "Run application node.";
+export default class Run extends SunodoCommand {
+    static paths = [["run"]];
 
-    static description = "Run a local cartesi node for the application.";
+    static usage = Command.Usage({
+        description: "Run application node.",
+        details: "Run a local cartesi node for the application.",
+    });
 
-    static examples = ["<%= config.bin %> <%= command.id %>"];
+    blockTime = Option.String("--block-time", {
+        description: "interval between blocks (in seconds)",
+        validator: isPositiveNumber,
+    });
 
-    static flags = {
-        "block-time": Flags.integer({
-            description: "interval between blocks (in seconds)",
-            default: 5,
-        }),
-        "epoch-duration": Flags.integer({
-            description: "duration of an epoch (in seconds)",
-            default: 3600,
-        }),
-        "no-backend": Flags.boolean({
-            description:
-                "Run a node without the application code. Application must be executed by the developer on the host machine, fetching inputs from the node running at http://localhost:5004",
-            summary: "run a node without the application code",
-            default: false,
-        }),
-        verbose: Flags.boolean({
-            description: "verbose output",
-            default: false,
-            char: "v",
-        }),
-        "listen-port": Flags.integer({
-            description: "port to listen for incoming connections",
-            default: 8080,
-        }),
-    };
+    epochDuration = Option.String("--epoch-duration", {
+        description: "duration of an epoch (in seconds)",
+        validator: isPositiveNumber,
+    });
 
-    public async run(): Promise<void> {
-        const { flags } = await this.parse(Run);
+    noBackend = Option.Boolean("--no-backend", {
+        description: "run a node without the application code",
+    });
+
+    verbose = Option.Boolean("-v,--verbose", {
+        description: "verbose output",
+    });
+
+    listenPort = Option.String("-p,--listen-port", {
+        description: "port to listen for incoming connections",
+        validator: isPort,
+    });
+
+    public async execute(): Promise<void> {
         let projectName: string;
 
-        if (flags["no-backend"]) {
+        if (this.noBackend) {
             projectName = "sunodo-node";
         } else {
             // get machine hash
@@ -63,21 +61,21 @@ export default class Run extends SunodoCommand<typeof Run> {
         );
 
         // setup the environment variable used in docker compose
-        const blockInterval = flags["block-time"];
-        const epochDuration = flags["epoch-duration"];
-        const listenPort = flags["listen-port"];
+        const blockInterval = this.blockTime ?? 5;
+        const epochDuration = this.epochDuration ?? 3600;
+        const listenPort = this.listenPort ?? 8080;
         const env: NodeJS.ProcessEnv = {
-            ANVIL_VERBOSITY: flags.verbose ? "--steps-tracing" : "--silent",
+            ANVIL_VERBOSITY: this.verbose ? "--steps-tracing" : "--silent",
             BLOCK_TIME: blockInterval.toString(),
             BLOCK_TIMEOUT: (blockInterval + 3).toString(),
             CARTESI_EPOCH_DURATION: epochDuration.toString(),
-            CARTESI_EXPERIMENTAL_DISABLE_CONFIG_LOG: flags.verbose
+            CARTESI_EXPERIMENTAL_DISABLE_CONFIG_LOG: this.verbose
                 ? "false"
                 : "true",
-            CARTESI_EXPERIMENTAL_SERVER_MANAGER_BYPASS_LOG: flags.verbose
+            CARTESI_EXPERIMENTAL_SERVER_MANAGER_BYPASS_LOG: this.verbose
                 ? "false"
                 : "true",
-            CARTESI_LOG_LEVEL: flags.verbose ? "info" : "error",
+            CARTESI_LOG_LEVEL: this.verbose ? "info" : "error",
             CARTESI_SNAPSHOT_DIR: "/usr/share/rollups-node/snapshot",
             SUNODO_BIN_PATH: binPath,
             SUNODO_LISTEN_PORT: listenPort.toString(),
@@ -102,7 +100,7 @@ export default class Run extends SunodoCommand<typeof Run> {
         composeFiles.push("docker-compose-explorer.yaml");
 
         // load the no-backend compose file
-        if (flags["no-backend"]) {
+        if (this.noBackend) {
             composeFiles.push("docker-compose-host.yaml");
         } else {
             // snapshot volume
@@ -130,7 +128,7 @@ export default class Run extends SunodoCommand<typeof Run> {
 
         const up_args = [];
 
-        if (!flags.verbose) {
+        if (!this.verbose) {
             compose_args.push("--progress", "quiet");
             up_args.push("--attach", "validator");
             up_args.push("--attach", "prompt");

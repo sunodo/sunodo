@@ -1,32 +1,38 @@
-import { Flags } from "@oclif/core";
-import { Address, isAddress, isHex } from "viem";
+import * as t from "typanion";
+import {
+    Address,
+    Hex,
+    isAddress as viemIsAddress,
+    isHex as viemIsHex,
+} from "viem";
 
-// custom flag for Address, does validation
-export const address = Flags.custom<Address>({
-    parse: async (input) => {
-        if (isAddress(input)) {
-            return input;
+// validator for Address
+export const isAddress = t.makeValidator<unknown, Address>({
+    test: (value, state): value is Address => {
+        if (typeof value !== "string" || !viemIsAddress(value)) {
+            state?.errors?.push(`Expected an address, but received ${value}`);
+            return false;
         }
-        throw new Error("Invalid address");
+        return true;
     },
 });
 
-// custom flag for bigint
-export const bigint = Flags.custom<bigint>({
-    parse: async (input) => BigInt(input),
-});
+// TODO: validator for BigInt
 
-// custom flag for string number
-export const number = Flags.custom<`${number}`>({
-    parse: async (input) => input as `${number}`,
-});
-
-// custom flag for hex string
-export const hex = Flags.custom<`0x${string}`>({
-    parse: async (input) => {
-        if (isHex(input)) {
-            return input;
+// validator for Hex
+export const isHex = t.makeValidator<unknown, Hex>({
+    test: (value, state): value is Hex => {
+        if (!viemIsHex(value)) {
+            state?.errors?.push(`Expected a hex string, but received ${value}`);
+            return false;
         }
-        throw new Error("Invalid hex string");
+        return true;
     },
 });
+
+export const isPort = t.cascade(t.isNumber(), [
+    t.isInteger(),
+    t.isInInclusiveRange(1, 65535),
+]);
+
+export const isPositiveNumber = t.cascade(t.isNumber(), [t.isPositive()]);

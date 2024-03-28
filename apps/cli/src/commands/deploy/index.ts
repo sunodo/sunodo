@@ -1,41 +1,36 @@
 import confirm from "@inquirer/confirm";
 import select from "@inquirer/select";
-import { Flags } from "@oclif/core";
 import chalk from "chalk";
+import { Command, Option, UsageError } from "clipanion";
 import open, { apps } from "open";
-import { URL } from "url";
+import * as t from "typanion";
 
 import { SunodoCommand } from "../../sunodoCommand.js";
 
-export default class Deploy extends SunodoCommand<typeof Deploy> {
-    static summary = "Deploy application to a live network.";
+export default class Deploy extends SunodoCommand {
+    static paths = [["deploy"]];
 
-    static description =
-        "Package and deploy the application to a supported live network.";
+    static usage = Command.Usage({
+        description: "Deploy application to a live network.",
+        details:
+            "Package and deploy the application to a supported live network.",
+    });
 
-    static examples = ["<%= config.bin %> <%= command.id %>"];
+    hosting = Option.String<"self-hosted" | "third-party">("--hosting", {
+        validator: t.isEnum(["self-hosted", "third-party"]),
+        description: 'hosting type ("self-hosted", "third-party")',
+    });
 
-    static flags = {
-        hosting: Flags.string({
-            options: ["self-hosted", "third-party"] as const,
-            summary: "hosting type",
-            description:
-                "Select wheather the user will host an application node himself, or use a third-party node provider",
-        }),
-        webapp: Flags.url({
-            description: "address of sunodo webapp",
-            default: new URL("https://sunodo.io/deploy"),
-            hidden: true,
-        }),
-    };
+    webapp = Option.String("--webapp", {
+        description: "address of sunodo webapp",
+        hidden: true,
+    });
 
-    public async run(): Promise<void> {
-        const { flags } = await this.parse(Deploy);
-
+    public async execute(): Promise<void> {
         // print machine hash
         const templateHash = this.getMachineHash();
         if (!templateHash) {
-            this.error(
+            throw new UsageError(
                 "Cartesi machine snapshot not found, run 'sunodo build'",
             );
         }
@@ -46,7 +41,7 @@ export default class Deploy extends SunodoCommand<typeof Deploy> {
 
         // ask for deployment type
         const hosting =
-            flags.hosting ||
+            this.hosting ||
             (await select<"self-hosted" | "third-party">({
                 message: "Select hosting type",
                 choices: [
@@ -76,18 +71,20 @@ You will need the following infrastructure:
         switch (hosting) {
             case "self-hosted": {
                 // build docker image
-                await this.config.runCommand("deploy:build");
+                await this.cli.run(["deploy", "build"]);
 
                 queryString = `?templateHash=${templateHash}`;
                 break;
             }
             case "third-party": {
-                this.error("Third-party provider deployment not supported yet");
+                throw new UsageError(
+                    "Third-party provider deployment not supported yet",
+                );
             }
         }
 
         // prompt user to open webapp for onchain deployment
-        const deployUrl = `${flags.webapp}${queryString}`;
+        const deployUrl = `${this.webapp ?? "https://sunodo.io/deploy"}${queryString}`;
         if (await confirm({ message: `Open ${chalk.cyan(deployUrl)}?` })) {
             open(deployUrl, { app: { name: apps.chrome } });
         }

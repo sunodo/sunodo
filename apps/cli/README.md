@@ -9,7 +9,7 @@ Sunodo provides a CLI to help developers to:
 -   `deploy` applications to a cloud provider
 -   `monitor` application already running on a cloud provider
 
-It's implemented using the [oclif framework](https://oclif.io) and distributed through several channels including `npm` and `homebrew`.
+It's distributed through several channels including `npm` and `homebrew`.
 
 ## Installation
 

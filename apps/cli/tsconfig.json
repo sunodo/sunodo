@@ -6,6 +6,7 @@
         "module": "ES2020",
         "importHelpers": true,
         "outDir": "dist",
+        "resolveJsonModule": true,
         "rootDir": "src",
         "target": "es2020"
     },
