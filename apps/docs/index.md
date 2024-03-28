@@ -27,7 +27,7 @@ cta:
     details: The Sunodo infrastructure is a powerful tool that not only enables new use cases but also enhances existing ones by facilitating their expansion.
     button:
         label: Get Started
-        link: https://github.com/sunodo/sunodo
+        link: /guide/introduction/what-is-sunodo
 footer:
     logo: /logo.svg
     navSite:
