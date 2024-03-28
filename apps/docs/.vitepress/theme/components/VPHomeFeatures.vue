@@ -61,4 +61,8 @@ const { frontmatter: fm } = useData();
 .dark .item__icon > img {
     filter: brightness(1.5);
 }
+
+.dark .item__title {
+    color: var(--vp-c-white);
+}
 </style>
