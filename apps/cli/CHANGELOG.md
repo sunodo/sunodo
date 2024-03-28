@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.11.2
+
+### Patch Changes
+
+- 87aaf79: fix no-backend mode
+
 ## 0.11.1
 
 ### Patch Changes
