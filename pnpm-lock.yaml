@@ -37,7 +37,7 @@ importers:
         version: 6.28.5
       '@metamask/sdk':
         specifier: ^0.18.1
-        version: 0.18.1(react-i18next@14.1.0)(react-native@0.73.6)(react@18.2.0)
+        version: 0.18.1(react-i18next@13.5.0)(react-native@0.73.6)(react@18.2.0)
       '@oclif/core':
         specifier: ^3.26.0
         version: 3.26.0
@@ -514,7 +514,7 @@ importers:
     devDependencies:
       '@nomicfoundation/hardhat-viem':
         specifier: ^2.0.0
-        version: 2.0.0(hardhat@2.22.2)(typescript@5.4.3)(viem@2.9.2)
+        version: 2.0.0(hardhat@2.22.2)(typescript@5.4.3)(viem@2.9.9)
       '@safe-global/safe-singleton-factory':
         specifier: ^1.0.21
         version: 1.0.21
@@ -575,15 +575,15 @@ importers:
   packages/token:
     dependencies:
       '@openzeppelin/contracts':
-        specifier: 5.0.1
-        version: 5.0.1
+        specifier: 5.0.2
+        version: 5.0.2
     devDependencies:
       '@safe-global/safe-singleton-factory':
-        specifier: ^1.0.21
-        version: 1.0.21
+        specifier: ^1.0.22
+        version: 1.0.22
       hardhat:
         specifier: ^2.22.2
-        version: 2.22.2(typescript@5.4.3)
+        version: 2.22.2(typescript@5.4.4)
       hardhat-deploy:
         specifier: ^0.12.2
         version: 0.12.2
@@ -594,11 +594,11 @@ importers:
         specifier: ^5
         version: 5.0.5
       typescript:
-        specifier: ^5.4.3
-        version: 5.4.3
+        specifier: ^5.4.4
+        version: 5.4.4
       viem:
-        specifier: ^2.9.2
-        version: 2.9.2(typescript@5.4.3)(zod@3.22.4)
+        specifier: ^2.9.9
+        version: 2.9.9(typescript@5.4.4)
 
   packages/tsconfig: {}
 
@@ -3060,7 +3060,7 @@ packages:
       '@libp2p/peer-id': 4.0.7
       '@noble/ciphers': 0.4.1
       '@noble/curves': 1.3.0
-      '@noble/hashes': 1.3.3
+      '@noble/hashes': 1.4.0
       it-length-prefixed: 9.0.4
       it-length-prefixed-stream: 1.1.6
       it-pair: 2.0.6
@@ -4925,14 +4925,12 @@ packages:
     dependencies:
       '@libp2p/interface': 1.1.3
       '@noble/curves': 1.3.0
-      '@noble/hashes': 1.3.3
+      '@noble/hashes': 1.4.0
       asn1js: 3.0.5
       multiformats: 13.1.0
       protons-runtime: 5.4.0
       uint8arraylist: 2.4.8
       uint8arrays: 5.0.2
-    transitivePeerDependencies:
-      - supports-color
     dev: false
 
   /@libp2p/crypto@4.0.3:
@@ -4940,7 +4938,7 @@ packages:
     dependencies:
       '@libp2p/interface': 1.1.4
       '@noble/curves': 1.3.0
-      '@noble/hashes': 1.3.3
+      '@noble/hashes': 1.4.0
       asn1js: 3.0.5
       multiformats: 13.1.0
       protons-runtime: 5.4.0
@@ -5158,8 +5156,6 @@ packages:
       '@libp2p/interface': 1.1.3
       multiformats: 13.1.0
       uint8arrays: 5.0.2
-    transitivePeerDependencies:
-      - supports-color
     dev: false
 
   /@libp2p/peer-id@4.0.7:
@@ -5632,7 +5628,7 @@ packages:
       - '@types/react'
       - react-native
 
-  /@metamask/sdk-install-modal-web@0.17.0(i18next@22.5.1)(react-i18next@14.1.0)(react-native@0.73.6)(react@18.2.0):
+  /@metamask/sdk-install-modal-web@0.17.0(i18next@22.5.1)(react-i18next@13.5.0)(react-native@0.73.6)(react@18.2.0):
     resolution: {integrity: sha512-R/Cr3Z2ZDMHkYjp5XUz5gs2yyaFtN1TmvBYueoD++wEH659WmSIL6/HTrU/sTRImvOpxCkF+FihwbYrlqagisw==}
     peerDependencies:
       i18next: 22.5.1
@@ -5651,7 +5647,7 @@ packages:
       i18next: 22.5.1
       qr-code-styling: 1.6.0-rc.1
       react: 18.2.0
-      react-i18next: 14.1.0(i18next@22.5.1)(react-native@0.73.6)(react@18.2.0)
+      react-i18next: 13.5.0(i18next@22.5.1)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)
       react-native: 0.73.6(@babel/core@7.24.3)(@babel/preset-env@7.24.3)(react@18.2.0)
     dev: false
 
@@ -5702,7 +5698,7 @@ packages:
       - supports-color
       - utf-8-validate
 
-  /@metamask/sdk@0.18.1(react-i18next@14.1.0)(react-native@0.73.6)(react@18.2.0):
+  /@metamask/sdk@0.18.1(react-i18next@13.5.0)(react-native@0.73.6)(react@18.2.0):
     resolution: {integrity: sha512-fTGE7s/TMnzKMkWx52gPaYslMNoC2mmaJz6V4AGlAopMksHuO8tkkPXMu0IROQc1NqiWa2gdV5Nrr3sRBbd75g==}
     peerDependencies:
       '@react-native-async-storage/async-storage': ^1.19.6
@@ -5722,7 +5718,7 @@ packages:
       '@metamask/onboarding': 1.0.1
       '@metamask/providers': 15.0.0
       '@metamask/sdk-communication-layer': 0.18.1(cross-fetch@4.0.0)(eciesjs@0.3.18)(eventemitter2@6.4.9)(readable-stream@3.6.2)(socket.io-client@4.7.5)
-      '@metamask/sdk-install-modal-web': 0.17.0(i18next@22.5.1)(react-i18next@14.1.0)(react-native@0.73.6)(react@18.2.0)
+      '@metamask/sdk-install-modal-web': 0.17.0(i18next@22.5.1)(react-i18next@13.5.0)(react-native@0.73.6)(react@18.2.0)
       '@types/dom-screen-wake-lock': 1.0.3
       bowser: 2.11.0
       cross-fetch: 4.0.0
@@ -6277,6 +6273,22 @@ packages:
       - zod
     dev: true
 
+  /@nomicfoundation/hardhat-viem@2.0.0(hardhat@2.22.2)(typescript@5.4.3)(viem@2.9.9):
+    resolution: {integrity: sha512-ilXQKTc1jWHqJ66fAN6TIyCRyormoChOn1yQTCGoBQ+G6QcVCu5FTaGL2r0KUOY4IkTohtphK+UXQrKcxQX5Yw==}
+    peerDependencies:
+      hardhat: ^2.17.0
+      typescript: ~5.0.0
+      viem: ^2.7.6
+    dependencies:
+      abitype: 0.9.10(typescript@5.4.3)(zod@3.22.4)
+      hardhat: 2.22.2(typescript@5.4.3)
+      lodash.memoize: 4.1.2
+      typescript: 5.4.3
+      viem: 2.9.9(typescript@5.4.3)
+    transitivePeerDependencies:
+      - zod
+    dev: true
+
   /@nomicfoundation/solidity-analyzer-darwin-arm64@0.1.1:
     resolution: {integrity: sha512-KcTodaQw8ivDZyF+D76FokN/HdpgGpfjc/gFCImdLUyqB6eSWVaZPazMbeAjmfhx3R0zm/NYVzxwAokFKgrc0w==}
     engines: {node: '>= 10'}
@@ -6498,8 +6510,8 @@ packages:
     resolution: {integrity: sha512-He3LieZ1pP2TNt5JbkPA4PNT9WC3gOTOlDcFGJW4Le4QKqwmiNJCRt44APfxMxvq7OugU/cqYuPcSBzOw38DAg==}
     dev: false
 
-  /@openzeppelin/contracts@5.0.1:
-    resolution: {integrity: sha512-yQJaT5HDp9hYOOp4jTYxMsR02gdFZFXhewX5HW9Jo4fsqSVqqyIO/xTHdWDaKX5a3pv1txmf076Lziz+sO7L1w==}
+  /@openzeppelin/contracts@5.0.2:
+    resolution: {integrity: sha512-ytPc6eLGcHHnapAZ9S+5qsdomhjo6QBHTDRRBFfTxXIpsicMhVPouPgmUPebZZZGX7vt9USA+Z+0M0dSVtSUEA==}
     dev: false
 
   /@parcel/watcher-android-arm64@2.4.1:
@@ -7311,6 +7323,10 @@ packages:
     resolution: {integrity: sha512-/fdfbaaqbBlQJDv59Cb0JY1N/AsoY6O092dW4bIty6S/EW2ivho3U/GRa9dj2d+qZxjLBeYs426pdoR+ZfDb/w==}
     dev: true
 
+  /@safe-global/safe-singleton-factory@1.0.22:
+    resolution: {integrity: sha512-lWFeuDG2d0uqjkliC+91GSN9BVU25twr1n2XHHR+KdQG/pEc2hBtSE9zRyJBm2MjpYDqKsznwGtw6nHphqE45g==}
+    dev: true
+
   /@scure/base@1.1.6:
     resolution: {integrity: sha512-ok9AWwhcgYuGG3Zfhyqg+zwl+Wn5uE+dwC0NV/2qQkx4dABbb/bx96vWu8NSj+BNjjSjno+JRYRjle1jV08k3g==}
 
@@ -7326,7 +7342,7 @@ packages:
     resolution: {integrity: sha512-N1ZhksgwD3OBlwTv3R6KFEcPojl/W4ElJOeCZdi+vuI5QmTFwLq3OFf2zd2ROpKvxFdgZ6hUpb0dx9bVNEwYCA==}
     dependencies:
       '@noble/curves': 1.2.0
-      '@noble/hashes': 1.3.2
+      '@noble/hashes': 1.3.3
       '@scure/base': 1.1.6
 
   /@scure/bip32@1.3.3:
@@ -7346,7 +7362,7 @@ packages:
   /@scure/bip39@1.2.1:
     resolution: {integrity: sha512-Z3/Fsz1yr904dduJD0NpiyRHhRYHdcnyh73FZWiV+/qhWi83wNJ3NWolYqCEN+ZWsUz2TWwajJggcRE9r1zUYg==}
     dependencies:
-      '@noble/hashes': 1.3.2
+      '@noble/hashes': 1.3.3
       '@scure/base': 1.1.6
 
   /@scure/bip39@1.2.2:
@@ -11199,6 +11215,20 @@ packages:
     dependencies:
       typescript: 5.4.3
       zod: 3.22.4
+
+  /abitype@1.0.0(typescript@5.4.4):
+    resolution: {integrity: sha512-NMeMah//6bJ56H5XRj8QCV4AwuW6hB6zqz2LnhhLdcWVQOsXki6/Pn3APeqxCma62nXIcmZWdu1DlHWS74umVQ==}
+    peerDependencies:
+      typescript: '>=5.0.4'
+      zod: ^3 >=3.22.0
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+      zod:
+        optional: true
+    dependencies:
+      typescript: 5.4.4
+    dev: true
 
   /abitype@1.0.2(typescript@5.4.3):
     resolution: {integrity: sha512-aFt4k2H+eiAKy/zxtnORa9iIb10BMBeWL18l8v4+QuwYEBXPxxjSB1bFZCzQmKPoj8m7j68K705l3uY+E2gAjg==}
@@ -15553,7 +15583,6 @@ packages:
   /flow-parser@0.231.0:
     resolution: {integrity: sha512-WVzuqwq7ZnvBceCG0DGeTQebZE+iIU0mlk5PmJgYj9DDrt+0isGC2m1ezW9vxL4V+HERJJo9ExppOnwKH2op6Q==}
     engines: {node: '>=0.4.0'}
-    dev: true
 
   /fmix@0.1.0:
     resolution: {integrity: sha512-Y6hyofImk9JdzU8k5INtTXX1cu8LDlePWDFU5sftm9H+zKCr5SGrVjdhkvsim646cw5zD0nADj8oHyXMZmCZ9w==}
@@ -16176,6 +16205,69 @@ packages:
       stacktrace-parser: 0.1.10
       tsort: 0.0.1
       typescript: 5.4.3
+      undici: 5.28.3
+      uuid: 8.3.2
+      ws: 7.5.9
+    transitivePeerDependencies:
+      - bufferutil
+      - c-kzg
+      - supports-color
+      - utf-8-validate
+    dev: true
+
+  /hardhat@2.22.2(typescript@5.4.4):
+    resolution: {integrity: sha512-0xZ7MdCZ5sJem4MrvpQWLR3R3zGDoHw5lsR+pBFimqwagimIOn3bWuZv69KA+veXClwI1s/zpqgwPwiFrd4Dxw==}
+    hasBin: true
+    peerDependencies:
+      ts-node: '*'
+      typescript: '*'
+    peerDependenciesMeta:
+      ts-node:
+        optional: true
+      typescript:
+        optional: true
+    dependencies:
+      '@ethersproject/abi': 5.7.0
+      '@metamask/eth-sig-util': 4.0.1
+      '@nomicfoundation/edr': 0.3.2
+      '@nomicfoundation/ethereumjs-common': 4.0.4
+      '@nomicfoundation/ethereumjs-tx': 5.0.4
+      '@nomicfoundation/ethereumjs-util': 9.0.4
+      '@nomicfoundation/solidity-analyzer': 0.1.1
+      '@sentry/node': 5.30.0
+      '@types/bn.js': 5.1.5
+      '@types/lru-cache': 5.1.1
+      adm-zip: 0.4.16
+      aggregate-error: 3.1.0
+      ansi-escapes: 4.3.2
+      boxen: 5.1.2
+      chalk: 2.4.2
+      chokidar: 3.6.0
+      ci-info: 2.0.0
+      debug: 4.3.4(supports-color@8.1.1)
+      enquirer: 2.4.1
+      env-paths: 2.2.1
+      ethereum-cryptography: 1.2.0
+      ethereumjs-abi: 0.6.8
+      find-up: 2.1.0
+      fp-ts: 1.19.3
+      fs-extra: 7.0.1
+      glob: 7.2.0
+      immutable: 4.3.5
+      io-ts: 1.10.4
+      keccak: 3.0.4
+      lodash: 4.17.21
+      mnemonist: 0.38.5
+      mocha: 10.3.0
+      p-map: 4.0.0
+      raw-body: 2.5.2
+      resolve: 1.17.0
+      semver: 6.3.1
+      solc: 0.7.3(debug@4.3.4)
+      source-map-support: 0.5.21
+      stacktrace-parser: 0.1.10
+      tsort: 0.0.1
+      typescript: 5.4.4
       undici: 5.28.3
       uuid: 8.3.2
       ws: 7.5.9
@@ -17629,7 +17721,7 @@ packages:
       '@babel/register': 7.23.7(@babel/core@7.24.3)
       babel-core: 7.0.0-bridge.0(@babel/core@7.24.3)
       chalk: 4.1.2
-      flow-parser: 0.206.0
+      flow-parser: 0.231.0
       graceful-fs: 4.2.11
       micromatch: 4.0.5
       neo-async: 2.6.2
@@ -20726,26 +20818,6 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
       react-native: 0.73.6(@babel/core@7.24.3)(@babel/preset-env@7.24.3)(react@18.2.0)
 
-  /react-i18next@14.1.0(i18next@22.5.1)(react-native@0.73.6)(react@18.2.0):
-    resolution: {integrity: sha512-3KwX6LHpbvGQ+sBEntjV4sYW3Zovjjl3fpoHbUwSgFHf0uRBcbeCBLR5al6ikncI5+W0EFb71QXZmfop+J6NrQ==}
-    peerDependencies:
-      i18next: '>= 23.2.3'
-      react: '>= 16.8.0'
-      react-dom: '*'
-      react-native: '*'
-    peerDependenciesMeta:
-      react-dom:
-        optional: true
-      react-native:
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.24.1
-      html-parse-stringify: 3.0.1
-      i18next: 22.5.1
-      react: 18.2.0
-      react-native: 0.73.6(@babel/core@7.24.3)(@babel/preset-env@7.24.3)(react@18.2.0)
-    dev: false
-
   /react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
@@ -23154,6 +23226,12 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
+  /typescript@5.4.4:
+    resolution: {integrity: sha512-dGE2Vv8cpVvw28v8HCPqyb08EzbBURxDpuhJvTrusShUfGnhHBafDsLdS1EhhxyL6BJQE+2cT3dDPAv+MQ6oLw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+    dev: true
+
   /ua-parser-js@1.0.37:
     resolution: {integrity: sha512-bhTyI94tZofjo+Dn8SN6Zv8nBDvyXTymAdM3LDI/0IboIUwTu1rEhW7v2TfiVsoYWgkQ4kOVqnI8APUFbIQIFQ==}
     dev: false
@@ -23654,6 +23732,52 @@ packages:
       - bufferutil
       - utf-8-validate
       - zod
+
+  /viem@2.9.9(typescript@5.4.3):
+    resolution: {integrity: sha512-SUIHBL6M5IIlqDCMEQwAAvHzeglaM4FEqM6bCI+srLXtFYmrpV4tWhnpobQRNwh4f7HIksmKLLZ+cytv8FfnJQ==}
+    peerDependencies:
+      typescript: '>=5.0.4'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@adraffy/ens-normalize': 1.10.0
+      '@noble/curves': 1.2.0
+      '@noble/hashes': 1.3.2
+      '@scure/bip32': 1.3.2
+      '@scure/bip39': 1.2.1
+      abitype: 1.0.0(typescript@5.4.3)(zod@3.22.4)
+      isows: 1.0.3(ws@8.13.0)
+      typescript: 5.4.3
+      ws: 8.13.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+      - zod
+    dev: true
+
+  /viem@2.9.9(typescript@5.4.4):
+    resolution: {integrity: sha512-SUIHBL6M5IIlqDCMEQwAAvHzeglaM4FEqM6bCI+srLXtFYmrpV4tWhnpobQRNwh4f7HIksmKLLZ+cytv8FfnJQ==}
+    peerDependencies:
+      typescript: '>=5.0.4'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@adraffy/ens-normalize': 1.10.0
+      '@noble/curves': 1.2.0
+      '@noble/hashes': 1.3.2
+      '@scure/bip32': 1.3.2
+      '@scure/bip39': 1.2.1
+      abitype: 1.0.0(typescript@5.4.4)
+      isows: 1.0.3(ws@8.13.0)
+      typescript: 5.4.4
+      ws: 8.13.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+      - zod
+    dev: true
 
   /vite-node@1.4.0(@types/node@20.11.30):
     resolution: {integrity: sha512-VZDAseqjrHgNd4Kh8icYHWzTKSCZMhia7GyHfhtzLW33fZlG9SwsB6CEhgyVOWkJfJ2pFLrp/Gj1FSfAiqH9Lw==}
