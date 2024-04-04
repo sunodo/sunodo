@@ -1,4 +1,4 @@
-import { input } from "@inquirer/prompts";
+import input from "@inquirer/input";
 import { Address, parseEther, PublicClient, WalletClient } from "viem";
 
 import { etherPortalAbi, etherPortalAddress } from "../../contracts.js";

@@ -1,4 +1,7 @@
-import { Separator, confirm, input, select } from "@inquirer/prompts";
+import confirm from "@inquirer/confirm";
+import { Separator } from "@inquirer/core";
+import input from "@inquirer/input";
+import select from "@inquirer/select";
 import { CancelablePromise, Context } from "@inquirer/type";
 import chalk from "chalk";
 import {

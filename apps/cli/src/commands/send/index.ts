@@ -1,4 +1,5 @@
-import { input, select } from "@inquirer/prompts";
+import input from "@inquirer/input";
+import select from "@inquirer/select";
 import { Command, Interfaces, Flags as StandardFlags } from "@oclif/core";
 import ora from "ora";
 import { Address, PublicClient, WalletClient, isAddress } from "viem";
