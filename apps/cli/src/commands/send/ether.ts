@@ -1,6 +1,5 @@
 import { input } from "@inquirer/prompts";
-import { Address } from "abitype";
-import { parseEther, PublicClient, WalletClient } from "viem";
+import { Address, parseEther, PublicClient, WalletClient } from "viem";
 
 import { etherPortalAbi, etherPortalAddress } from "../../contracts.js";
 import * as CustomFlags from "../../flags.js";

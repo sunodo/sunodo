@@ -1,12 +1,13 @@
 import { Flags } from "@oclif/core";
-import { Address, parseAbiParameters } from "abitype";
 import {
+    Address,
     PublicClient,
     WalletClient,
     encodeAbiParameters,
     getAddress,
     isAddress,
     isHex,
+    parseAbiParameters,
     stringToHex,
 } from "viem";
 

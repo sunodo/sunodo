@@ -1,8 +1,8 @@
 import { input } from "@inquirer/prompts";
-import { Address } from "abitype";
 import chalk from "chalk";
 import {
     Account,
+    Address,
     Chain,
     Hex,
     HttpTransport,

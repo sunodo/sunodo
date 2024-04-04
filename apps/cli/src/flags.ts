@@ -1,6 +1,5 @@
 import { Flags } from "@oclif/core";
-import { Address } from "abitype";
-import { isAddress, isHex } from "viem";
+import { Address, isAddress, isHex } from "viem";
 
 // custom flag for Address, does validation
 export const address = Flags.custom<Address>({

@@ -1,6 +1,11 @@
 import { input } from "@inquirer/prompts";
-import { Address } from "abitype";
-import { erc721Abi, isAddress, PublicClient, WalletClient } from "viem";
+import {
+    Address,
+    erc721Abi,
+    isAddress,
+    PublicClient,
+    WalletClient,
+} from "viem";
 
 import { erc721PortalAbi, erc721PortalAddress } from "../../contracts.js";
 import * as CustomFlags from "../../flags.js";
