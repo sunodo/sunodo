@@ -1,5 +1,4 @@
 import { input } from "@inquirer/prompts";
-import { MetaMaskSDK } from "@metamask/sdk";
 import { EthereumProvider } from "@walletconnect/ethereum-provider";
 import { Address } from "abitype";
 import chalk from "chalk";
@@ -63,22 +62,10 @@ export const supportedChains = (options?: SupportedChainsOptions): Chain[] => {
 export const DEFAULT_DEVNET_MNEMONIC =
     "test test test test test test test test test test test junk";
 
-export type WalletType =
-    | "metamask"
-    | "walletconnect"
-    | "mnemonic"
-    | "private-key";
-const walletChoices = (
-    chain: Chain,
-    includeMetamask: boolean,
-): Choice<WalletType>[] => {
+export type WalletType = "walletconnect" | "mnemonic" | "private-key";
+const walletChoices = (chain: Chain): Choice<WalletType>[] => {
     const dev = chain.id === foundry.id;
     return [
-        {
-            name: "MetaMask Mobile",
-            value: "metamask",
-            disabled: (dev || !includeMetamask) && "(not available)", // do not offer this wallets if chain is local foundry
-        },
         {
             name: "WalletConnect",
             value: "walletconnect",
@@ -222,45 +209,14 @@ const createWalletClient = async (
             chain,
         });
     } else {
-        const metamask = new MetaMaskSDK({
-            dappMetadata: { name: "Sunodo", url: "https://sunodo.io" },
-            shouldShimWeb3: false,
-        });
-        const metamaskProvider = metamask.getProvider();
-
-        const wallets = walletChoices(chain, !!metamaskProvider);
+        const wallets = walletChoices(chain);
         const wallet = await selectAuto<WalletType>({
             message: "Wallet",
             choices: wallets,
             discardDisabled: true,
         });
 
-        if (wallet === "metamask" && metamaskProvider) {
-            // select account from wallet
-            const client = viemCreateWalletClient({
-                transport: custom(metamaskProvider),
-                chain,
-            });
-            const addresses = await client.requestAddresses();
-            const choices = await Promise.all(
-                addresses.map(async (value) => {
-                    const name = await addressBalanceLabel(value, publicClient);
-                    return { name, value };
-                }),
-            );
-            const account = await selectAuto<Address>({
-                message: "Account",
-                choices,
-                pageSize: Math.min(addresses.length, 20),
-            });
-
-            // create wallet client
-            return viemCreateWalletClient({
-                account,
-                transport: custom(metamaskProvider),
-                chain,
-            });
-        } else if (wallet === "walletconnect") {
+        if (wallet === "walletconnect") {
             const provider = await EthereumProvider.init({
                 projectId: "a1b8592593d25d80129f09065e77ec38",
                 showQrModal: false,
