@@ -1,6 +1,6 @@
 import { input } from "@inquirer/prompts";
-import { Address } from "abitype";
 import {
+    Address,
     erc20Abi,
     isAddress,
     parseEther,

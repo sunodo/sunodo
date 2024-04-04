@@ -1,5 +1,4 @@
-import { Address } from "abitype";
-import { PublicClient, WalletClient } from "viem";
+import { Address, PublicClient, WalletClient } from "viem";
 
 import {
     dAppAddressRelayAbi,

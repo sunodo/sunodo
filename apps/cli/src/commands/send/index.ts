@@ -1,8 +1,7 @@
 import { input, select } from "@inquirer/prompts";
 import { Command, Interfaces, Flags as StandardFlags } from "@oclif/core";
-import { Address } from "abitype";
 import ora from "ora";
-import { PublicClient, WalletClient, isAddress } from "viem";
+import { Address, PublicClient, WalletClient, isAddress } from "viem";
 
 import * as CustomFlags from "../../flags.js";
 import { SunodoCommand } from "../../sunodoCommand.js";
