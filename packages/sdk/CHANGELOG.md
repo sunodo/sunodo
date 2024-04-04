@@ -1,5 +1,12 @@
 # sdk
 
+## 0.4.0
+
+### Minor Changes
+
+- 9e26ec4: move to machine emulator SDK 0.17.1
+- 099a834: remove retar script (issues with permission)
+
 ## 0.3.0
 
 ### Minor Changes
