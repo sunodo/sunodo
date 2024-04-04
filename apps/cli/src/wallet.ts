@@ -1,8 +1,6 @@
 import { input } from "@inquirer/prompts";
-import { EthereumProvider } from "@walletconnect/ethereum-provider";
 import { Address } from "abitype";
 import chalk from "chalk";
-import qrcode from "qrcode-terminal";
 import {
     Account,
     Chain,
@@ -11,7 +9,6 @@ import {
     PublicClient,
     Transport,
     WalletClient,
-    custom,
     formatUnits,
     http,
     createPublicClient as viemCreatePublicClient,
@@ -62,15 +59,10 @@ export const supportedChains = (options?: SupportedChainsOptions): Chain[] => {
 export const DEFAULT_DEVNET_MNEMONIC =
     "test test test test test test test test test test test junk";
 
-export type WalletType = "walletconnect" | "mnemonic" | "private-key";
+export type WalletType = "mnemonic" | "private-key";
 const walletChoices = (chain: Chain): Choice<WalletType>[] => {
     const dev = chain.id === foundry.id;
     return [
-        {
-            name: "WalletConnect",
-            value: "walletconnect",
-            disabled: dev && "(not available)", // do not offer this wallets if chain is local foundry
-        },
         {
             name: `Mnemonic${dev ? "" : chalk.red(" (UNSAFE)")}`,
             value: "mnemonic",
@@ -216,41 +208,7 @@ const createWalletClient = async (
             discardDisabled: true,
         });
 
-        if (wallet === "walletconnect") {
-            const provider = await EthereumProvider.init({
-                projectId: "a1b8592593d25d80129f09065e77ec38",
-                showQrModal: false,
-                chains: [chain.id],
-            });
-            provider.on("display_uri", (uri) =>
-                qrcode.generate(uri, { small: true }),
-            );
-            await provider.connect();
-            // select account from wallet
-            const client = viemCreateWalletClient({
-                transport: custom(provider),
-                chain,
-            });
-            const addresses = await client.requestAddresses();
-            const choices = await Promise.all(
-                addresses.map(async (value) => {
-                    const name = await addressBalanceLabel(value, publicClient);
-                    return { name, value };
-                }),
-            );
-            const account = await selectAuto<Address>({
-                message: "Account",
-                choices,
-                pageSize: choices.length,
-            });
-
-            // create wallet client
-            return viemCreateWalletClient({
-                account,
-                transport: custom(provider),
-                chain,
-            });
-        } else if (wallet === "mnemonic") {
+        if (wallet === "mnemonic") {
             // use the publicClient transport
             const mnemonic = await input({
                 message: "Mnemonic",
