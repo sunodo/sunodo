@@ -1,4 +1,5 @@
-import { confirm, select } from "@inquirer/prompts";
+import confirm from "@inquirer/confirm";
+import select from "@inquirer/select";
 import { Flags } from "@oclif/core";
 import chalk from "chalk";
 import open, { apps } from "open";
