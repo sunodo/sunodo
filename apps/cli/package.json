@@ -30,8 +30,6 @@
         "execa": "^8.0",
         "fs-extra": "^11",
         "giget": "^1.2.3",
-        "lokijs": "^1.5",
-        "node-fetch": "3.3",
         "open": "^10.1.0",
         "ora": "^8.0.1",
         "progress-stream": "^2.0",
