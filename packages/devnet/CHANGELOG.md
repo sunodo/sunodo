@@ -1,5 +1,11 @@
 # @sunodo/devnet
 
+## 1.5.0
+
+### Minor Changes
+
+- 4f546e0: new ERC-721 and ERC-1155 test contracts
+
 ## 1.4.0
 
 ### Minor Changes

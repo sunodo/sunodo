@@ -1,5 +1,13 @@
 # @sunodo/token
 
+## 0.6.0
+
+### Minor Changes
+
+- 07ce28a: add test ERC721
+- 56d7bf9: update openzeppelin
+- e305cd5: add test ERC1155
+
 ## 0.5.1
 
 ### Patch Changes
