@@ -36,6 +36,7 @@ export default class Shell extends Command {
             "run",
             "--interactive",
             "--tty",
+            "--quiet",
             "--volume",
             bind,
             sdkImage,
