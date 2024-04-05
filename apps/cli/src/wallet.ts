@@ -17,11 +17,11 @@ import {
 import { mnemonicToAccount, privateKeyToAccount } from "viem/accounts";
 import {
     arbitrum,
-    arbitrumGoerli,
+    arbitrumSepolia,
     foundry,
     mainnet,
     optimism,
-    optimismGoerli,
+    optimismSepolia,
     sepolia,
 } from "viem/chains";
 
@@ -48,7 +48,7 @@ export const supportedChains = (options?: SupportedChainsOptions): Chain[] => {
         chains.push(foundry);
     }
     if (options.includeTestnets) {
-        chains.push(arbitrumGoerli, optimismGoerli, sepolia);
+        chains.push(arbitrumSepolia, optimismSepolia, sepolia);
     }
     if (options.includeMainnets) {
         chains.push(arbitrum, mainnet, optimism);
