@@ -64,6 +64,6 @@ export default class Shell extends Command {
         }
 
         // execute the machine and save snapshot
-        await this.startShell(ext2Path, flags.runAsRoot);
+        await this.startShell(ext2Path, flags["run-as-root"]);
     }
 }
