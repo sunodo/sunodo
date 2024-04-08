@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
     anvil:
         image: sunodo/devnet:1.4.0

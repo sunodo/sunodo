@@ -1,0 +1,9 @@
+
+
+services:
+    builder:
+        <<: *rollups-node
+        volumes:
+            - ./.sunodo:/tmp/.sunodo
+        init: true
+        entrypoint: ["sleep", "infinity"]

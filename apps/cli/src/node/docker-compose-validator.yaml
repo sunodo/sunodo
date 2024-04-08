@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
     validator:
         image: cartesi/rollups-node:1.4.0
