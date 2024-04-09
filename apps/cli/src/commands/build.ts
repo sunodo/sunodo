@@ -8,6 +8,7 @@ import tmp from "tmp";
 
 type ImageBuildOptions = {
     target?: string;
+    tag?: string;
 };
 
 type ImageInfo = {
@@ -44,6 +45,7 @@ export default class BuildApplication extends Command {
     static examples = [
         "<%= config.bin %> <%= command.id %>",
         "<%= config.bin %> <%= command.id %> --from-image my-app",
+        "<%= config.bin %> <%= command.id %> --tag my-image:latest",
     ];
 
     static args = {};
@@ -58,6 +60,11 @@ export default class BuildApplication extends Command {
             summary: "target of docker multi-stage build.",
             description:
                 "if the application Dockerfile uses a multi-stage strategy, and stage of the image to be exported as a Cartesi machine is not the last stage, use this parameter to specify the target stage.",
+        }),
+        tag: Flags.string({
+            summary: "name of the new docker image.",
+            description:
+                "Specify the name for the created Docker image.",
         }),
     };
 
@@ -74,7 +81,9 @@ export default class BuildApplication extends Command {
         if (options.target) {
             args.push("--target", options.target);
         }
-
+        if (options.tag) {
+            args.push("--tag", options.tag);
+        }
         await execa("docker", [...args, process.cwd()], { stdio: "inherit" });
         return fs.readFileSync(buildResult, "utf8");
     }
