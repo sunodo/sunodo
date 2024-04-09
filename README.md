@@ -26,7 +26,6 @@ It helps developers to:
 -   `contracts`: smart contracts for application deployment;
 -   `token`: ERC-20 token smart contract for testing;
 -   `devnet`: Docker image for local devnet execution bundling Cartesi and Sunodo smart contracts;
--   `ui`: a stub React component library shared by both `web` and `app` applications
 -   `eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
 -   `tsconfig`: `tsconfig.json`s used throughout the monorepo
 

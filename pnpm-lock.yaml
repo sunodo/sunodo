@@ -198,9 +198,6 @@ importers:
       '@rainbow-me/rainbowkit':
         specifier: ^2.0.2
         version: 2.0.2(@types/react@18.2.71)(react-dom@18.2.0)(react@18.2.0)(viem@2.9.2)(wagmi@2.5.12)
-      '@sunodo/ui':
-        specifier: workspace:*
-        version: link:../../packages/ui
       '@tabler/icons-react':
         specifier: ^3.1.0
         version: 3.1.0(react@18.2.0)
@@ -580,30 +577,6 @@ importers:
         version: 2.9.9(typescript@5.4.4)
 
   packages/tsconfig: {}
-
-  packages/ui:
-    devDependencies:
-      '@sunodo/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
-      '@types/react':
-        specifier: ^18.2.71
-        version: 18.2.71
-      '@types/react-dom':
-        specifier: ^18.2.22
-        version: 18.2.22
-      eslint:
-        specifier: ^8.57.0
-        version: 8.57.0
-      react:
-        specifier: ^18
-        version: 18.2.0
-      tsconfig:
-        specifier: workspace:*
-        version: link:../tsconfig
-      typescript:
-        specifier: ^5.4.3
-        version: 5.4.3
 
 packages:
 
