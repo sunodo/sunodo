@@ -113,5 +113,8 @@ export abstract class SunodoCommand<T extends typeof Command> extends Command {
         });
         this.flags = flags as Flags<T>;
         this.args = args as Args<T>;
+        this.warn(
+            "DEPRECATION: this package will be released as @cartesi/cli at the next minor version",
+        );
     }
 }
