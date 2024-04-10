@@ -61,6 +61,11 @@ export default class BuildApplication extends Command {
             description:
                 "if the application Dockerfile uses a multi-stage strategy, and stage of the image to be exported as a Cartesi machine is not the last stage, use this parameter to specify the target stage.",
         }),
+        "skip-snapshot": Flags.boolean({
+            summary: "skip machine snapshot creation.",
+            description:
+                "if the developer is only interested in building the ext2 image to run sunodo shell and does not want to create the machine snapshot, this flag can be used to skip the last step of the process.",
+        }),
     };
 
     /**
