@@ -61,6 +61,11 @@ export default class BuildApplication extends Command {
             description:
                 "if the application Dockerfile uses a multi-stage strategy, and stage of the image to be exported as a Cartesi machine is not the last stage, use this parameter to specify the target stage.",
         }),
+        "skip-snapshot": Flags.boolean({
+            summary: "skip machine snapshot creation.",
+            description:
+                "if the developer is only interested in building the ext2 image to run sunodo shell and does not want to create the machine snapshot, this flag can be used to skip the last step of the process.",
+        }),
     };
 
     /**
@@ -339,7 +344,8 @@ Update your application Dockerfile using one of the templates at https://github.
             await this.createExt2(imageInfo, container);
 
             // create machine snapshot
-            await this.createMachineSnapshot(imageInfo, container);
+            if (!flags["skip-snapshot"])
+                await this.createMachineSnapshot(imageInfo, container);
         } finally {
             // stop build container
             await this.stopBuildContainer(container);
