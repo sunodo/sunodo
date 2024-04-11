@@ -8,6 +8,7 @@ import {
     Chain,
     arbitrum,
     arbitrumSepolia,
+    base,
     mainnet,
     optimism,
     optimismSepolia,
@@ -37,8 +38,8 @@ const networkConfig = (chain: Chain): HttpNetworkUserConfig => {
         accounts: mnemonic
             ? { mnemonic }
             : privateKey
-            ? [privateKey]
-            : undefined,
+              ? [privateKey]
+              : undefined,
     };
 };
 
@@ -54,13 +55,14 @@ const config: HardhatUserConfig = {
             accounts: mnemonic
                 ? { mnemonic }
                 : privateKey
-                ? [privateKey]
-                : {
-                      mnemonic: DEFAULT_DEVNET_MNEMONIC,
-                  },
+                  ? [privateKey]
+                  : {
+                        mnemonic: DEFAULT_DEVNET_MNEMONIC,
+                    },
         },
         arbitrum_sepolia: networkConfig(arbitrumSepolia),
         arbitrum: networkConfig(arbitrum),
+        base: networkConfig(base),
         mainnet: networkConfig(mainnet),
         optimism: networkConfig(optimism),
         optimism_sepolia: networkConfig(optimismSepolia),

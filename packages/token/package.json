@@ -15,6 +15,7 @@
         "deploy": "hardhat deploy",
         "deploy:arbitrum": "hardhat deploy --network arbitrum --export export/abi/arbitrum.json",
         "deploy:arbitrum_sepolia": "hardhat deploy --network arbitrum_sepolia --export export/abi/arbitrum_sepolia.json",
+        "deploy:base": "hardhat deploy --network base --export export/abi/base.json",
         "deploy:localhost": "hardhat deploy --network localhost --export export/abi/localhost.json --reset",
         "deploy:mainnet": "hardhat deploy --network mainnet --export export/abi/mainnet.json",
         "deploy:mainnets": "run-s deploy:arbitrum deploy:mainnet deploy:optimism",

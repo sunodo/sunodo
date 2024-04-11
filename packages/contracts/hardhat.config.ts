@@ -13,6 +13,7 @@ import {
     Chain,
     arbitrum,
     arbitrumSepolia,
+    base,
     mainnet,
     optimism,
     optimismSepolia,
@@ -87,6 +88,7 @@ const config: HardhatUserConfig = {
         },
         arbitrum_sepolia: networkConfig(arbitrumSepolia),
         arbitrum: networkConfig(arbitrum),
+        base: networkConfig(base),
         mainnet: networkConfig(mainnet),
         optimism: networkConfig(optimism),
         optimism_sepolia: networkConfig(optimismSepolia),
@@ -96,6 +98,7 @@ const config: HardhatUserConfig = {
         [
             "arbitrum",
             "arbitrum_sepolia",
+            "base",
             "mainnet",
             "optimism",
             "optimism_sepolia",
