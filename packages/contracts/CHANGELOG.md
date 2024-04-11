@@ -1,5 +1,11 @@
 # @sunodo/contracts
 
+## 0.7.0
+
+### Minor Changes
+
+- 17506a2: support to base network
+
 ## 0.6.0
 
 ### Minor Changes
