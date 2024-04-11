@@ -11,6 +11,7 @@
         "deploy": "hardhat deploy",
         "deploy:arbitrum": "hardhat deploy --network arbitrum --export export/abi/arbitrum.json",
         "deploy:arbitrum_sepolia": "hardhat deploy --network arbitrum_sepolia --export export/abi/arbitrum_sepolia.json",
+        "deploy:base": "hardhat deploy --network base --export export/abi/base.json",
         "deploy:mainnet": "hardhat deploy --network mainnet --export export/abi/mainnet.json",
         "deploy:mainnets": "run-s deploy:arbitrum deploy:mainnet deploy:optimism",
         "deploy:optimism": "hardhat deploy --network optimism --export export/abi/optimism.json",
@@ -24,8 +25,8 @@
         "tsc": "tsc"
     },
     "dependencies": {
-        "@cartesi/rollups": "1.2.0",
-        "@cartesi/util": "6.1.0",
+        "@cartesi/rollups": "1.3.0",
+        "@cartesi/util": "6.2.0",
         "@ensdomains/ens-contracts": "1.1.4",
         "@openzeppelin/contracts": "4.9.3"
     },
