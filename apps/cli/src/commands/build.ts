@@ -150,111 +150,95 @@ Update your application Dockerfile using one of the templates at https://github.
         return info;
     }
 
-    private async startBuildContainer(
-        appImage: string,
-        builderImage: string,
-    ): Promise<string> {
+    // creates a rootfs tarball from the image
+    // this process is not always fully reproducible
+    // FIXME: we could use the image and create a flat rootfs without
+    //        `docker container create` (use undocker, umoci, a native typescript implementation, etc.)
+    private async createTarball(
+        image: string,
+        outputFilePath: string,
+    ): Promise<void> {
         // create docker tarball from app image
         const { stdout: appCid } = await execa("docker", [
             "container",
             "create",
             "--platform",
             "linux/riscv64",
-            appImage,
+            image,
         ]);
 
         await execa("docker", [
             "container",
             "export",
             "-o",
-            SUNODO_DEFAULT_TAR_PATH,
+            outputFilePath,
             appCid,
         ]);
 
-        // start build container
+        await execa("docker", ["container", "rm", appCid]);
+    }
+
+    // this wraps the call to the sdk image with a one-shot approach
+    // the (inputPath, outputPath) signature will mount the input as a volume and copy the output with docker cp
+    private async sdkRun(
+        sdkImage: string,
+        cmd: string[],
+        inputPath: string,
+        outputPath: string,
+    ): Promise<void> {
         const { stdout: cid } = await execa("docker", [
             "container",
-            "run",
-            "--detach",
-            "--init",
-            `--volume=./${SUNODO_DEFAULT_TAR_PATH}:/tmp/${SUNODO_DEFAULT_TAR_PATH}`,
-            builderImage,
-            "sleep",
-            "infinity",
+            "create",
+            "--volume",
+            `./${inputPath}:/tmp/input`,
+            sdkImage,
+            ...cmd,
         ]);
 
-        return cid;
-    }
+        await execa("docker", ["container", "start", "-a", cid], {
+            stdio: "inherit",
+        });
 
-    private async stopBuildContainer(container: string): Promise<void> {
-        await execa("docker", ["container", "stop", container]);
-        await execa("docker", ["container", "rm", container]);
-        // delete image.tar (if exists)
-        await fs.remove(SUNODO_DEFAULT_TAR_PATH);
-    }
-
-    // creates the rootfs tar from the image
-    private async createRootfsTar(container: string): Promise<void> {
-        // retar as gnutar
         await execa("docker", [
             "container",
-            "exec",
-            container,
+            "cp",
+            `${cid}:/tmp/output`,
+            outputPath,
+        ]);
+
+        await execa("docker", ["container", "stop", cid]);
+        await execa("docker", ["container", "rm", cid]);
+    }
+
+    // returns the command to create rootfs from a tarball
+    private async createRootfsTarCommand(): Promise<string[]> {
+        return [
             "bsdtar",
             "-cf",
-            `/tmp/${SUNODO_DEFAULT_RETAR_TAR_PATH}`,
+            "/tmp/output",
             "--format=gnutar",
-            `@/tmp/${SUNODO_DEFAULT_TAR_PATH}`,
-        ]);
+            "@/tmp/input",
+        ];
     }
 
-    private async createExt2(
-        info: ImageInfo,
-        container: string,
-    ): Promise<void> {
-        // calculate extra size
-        const blockSize = 4096;
-        const extraBytes = bytes.parse(info.dataSize);
-        const extraBlocks = Math.ceil(extraBytes / blockSize);
-        const extraSize = `+${extraBlocks}`;
-
-        // create ext2
-        await execa(
-            "docker",
-            [
-                "container",
-                "exec",
-                container,
-                "xgenext2fs",
-                "--tarball",
-                `/tmp/${SUNODO_DEFAULT_RETAR_TAR_PATH}`,
-                "--block-size",
-                blockSize.toString(),
-                "--faketime",
-                "-r",
-                extraSize,
-                `/tmp/${SUNODO_DEFAULT_EXT2_PATH}`,
-            ],
-            { stdio: "inherit" },
-        );
-
-        // export ext2 to host filesystem
-        await execa(
-            "docker",
-            [
-                "container",
-                "cp",
-                `${container}:/tmp/${SUNODO_DEFAULT_EXT2_PATH}`,
-                SUNODO_DEFAULT_EXT2_PATH,
-            ],
-            { stdio: "inherit" },
-        );
+    // returns the command to create ext2 from a rootfs
+    private async createExt2Command(): Promise<string[]> {
+        return [
+            "xgenext2fs",
+            "--tarball",
+            "/tmp/input",
+            "--block-size",
+            "4096",
+            "--faketime",
+            "-r",
+            "+1",
+            "/tmp/output",
+        ];
     }
 
-    private async createMachineSnapshot(
+    private async createMachineSnapshotCommand(
         info: ImageInfo,
-        container: string,
-    ): Promise<void> {
+    ): Promise<string[]> {
         const ramSize = info.ramSize;
         const driveLabel = "root"; // XXX: does this need to be customizable?
 
@@ -268,51 +252,18 @@ Update your application Dockerfile using one of the templates at https://github.
 
         // command to change working directory if WORKDIR is defined
         const cwd = info.workdir ? `--append-init=WORKDIR=${info.workdir}` : "";
-
-        // create machine snapshot
-        await execa(
-            "docker",
-            [
-                "container",
-                "exec",
-                container,
-                "cartesi-machine",
-                "--assert-rolling-template",
-                `--ram-length=${ramSize}`,
-                `--flash-drive=label:${driveLabel},filename:/tmp/${SUNODO_DEFAULT_EXT2_PATH}`,
-                "--final-hash",
-                `--store=/tmp/${SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH}`,
-                "--append-bootargs=no4lvl",
-                cwd,
-                ...envs,
-                `--append-entrypoint=${entrypoint}`,
-            ],
-            { stdio: "inherit" },
-        );
-
-        // change snapshot directory permission to read for all
-        await execa("docker", [
-            "container",
-            "exec",
-            container,
-            "chmod",
-            "755",
-            `/tmp/${SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH}`,
-        ]);
-
-        // export machine snapshot to host filesystem
-        await execa(
-            "docker",
-            [
-                "container",
-                "cp",
-                `${container}:/tmp/${SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH}`,
-                SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH,
-            ],
-            { stdio: "inherit" },
-        );
-
-        // XXX: should we delete image.ext2, or leave there for shell?
+        return [
+            "cartesi-machine",
+            "--assert-rolling-template",
+            `--ram-length=${ramSize}`,
+            `--flash-drive=label:${driveLabel},filename:/tmp/input`,
+            "--final-hash",
+            `--store=/tmp/output`,
+            "--append-bootargs=no4lvl",
+            cwd,
+            ...envs,
+            `--append-entrypoint=${entrypoint}`,
+        ];
     }
 
     public async run(): Promise<void> {
@@ -333,22 +284,39 @@ Update your application Dockerfile using one of the templates at https://github.
         // resolve sdk version
         const sdkImage = `sunodo/sdk:${imageInfo.sdkVersion}`;
 
-        // get SDK build container
-        const container = await this.startBuildContainer(appImage, sdkImage);
-
         try {
+            // create docker tarball for image specified
+            await this.createTarball(appImage, SUNODO_DEFAULT_TAR_PATH);
+
             // create rootfs tar
-            await this.createRootfsTar(container);
+            await this.sdkRun(
+                sdkImage,
+                await this.createRootfsTarCommand(),
+                SUNODO_DEFAULT_TAR_PATH,
+                SUNODO_DEFAULT_RETAR_TAR_PATH,
+            );
 
             // create ext2
-            await this.createExt2(imageInfo, container);
+            await this.sdkRun(
+                sdkImage,
+                await this.createExt2Command(),
+                SUNODO_DEFAULT_RETAR_TAR_PATH,
+                SUNODO_DEFAULT_EXT2_PATH,
+            );
 
             // create machine snapshot
-            if (!flags["skip-snapshot"])
-                await this.createMachineSnapshot(imageInfo, container);
+            if (!flags["skip-snapshot"]) {
+                await this.sdkRun(
+                    sdkImage,
+                    await this.createMachineSnapshotCommand(imageInfo),
+                    SUNODO_DEFAULT_EXT2_PATH,
+                    SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH,
+                );
+                await fs.chmod(SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH, 0o755);
+            }
         } finally {
-            // stop build container
-            await this.stopBuildContainer(container);
+            await fs.remove(SUNODO_DEFAULT_RETAR_TAR_PATH);
+            await fs.remove(SUNODO_DEFAULT_TAR_PATH);
         }
     }
 }
