@@ -18,6 +18,7 @@ import { mnemonicToAccount, privateKeyToAccount } from "viem/accounts";
 import {
     arbitrum,
     arbitrumSepolia,
+    base,
     foundry,
     mainnet,
     optimism,
@@ -51,7 +52,7 @@ export const supportedChains = (options?: SupportedChainsOptions): Chain[] => {
         chains.push(arbitrumSepolia, optimismSepolia, sepolia);
     }
     if (options.includeMainnets) {
-        chains.push(arbitrum, mainnet, optimism);
+        chains.push(arbitrum, base, mainnet, optimism);
     }
     return chains;
 };

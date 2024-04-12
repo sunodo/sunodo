@@ -12,6 +12,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
     arbitrum,
     arbitrumSepolia,
+    base,
     foundry,
     mainnet,
     optimism,
@@ -35,6 +36,7 @@ const config = getDefaultConfig({
                   arbitrumSepolia,
                   optimism,
                   optimismSepolia,
+                  base,
                   foundry,
               ]
             : [
@@ -44,6 +46,7 @@ const config = getDefaultConfig({
                   arbitrumSepolia,
                   optimism,
                   optimismSepolia,
+                  base,
               ],
     ssr: true,
 });

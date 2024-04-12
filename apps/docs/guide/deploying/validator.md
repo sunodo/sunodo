@@ -89,7 +89,7 @@ ENS also supports [text records](https://docs.ens.domains/ens-improvement-propos
 
 -   <span v-pre>**{{application_address}}**</span>: the application contract address
 -   <span v-pre>**{{chain_id}}**</span>: the EIP-155 id of the selected chain
--   <span v-pre>**{{chain_name}}**</span>: the name of the selected chain (mainnet, sepolia, arbitrum, arbitrum-sepolia, optimism, optimism-sepolia)
+-   <span v-pre>**{{chain_name}}**</span>: the name of the selected chain (mainnet, sepolia, arbitrum, arbitrum-sepolia, optimism, optimism-sepolia, base)
 -   <span v-pre>**{{provider_address}}**</span>: address of the provider
 
 As an example a record value like <span v-pre>`https://{{chain_name}}.apps.sunodo.io/{{application_address}}`</span> would resolve the node URL to `https://sepolia.apps.sunodo.io/0x0974CC873dF893B302f6be7ecf4F9D4b1A15C366` for an application deployed at `0x0974CC873dF893B302f6be7ecf4F9D4b1A15C366` in the `sepolia` chain.
