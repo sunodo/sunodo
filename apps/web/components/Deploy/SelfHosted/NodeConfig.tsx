@@ -2,6 +2,7 @@
 
 import arbitrumInputBox from "@cartesi/rollups/deployments/arbitrum/InputBox.json";
 import arbitrumSepoliaInputBox from "@cartesi/rollups/deployments/arbitrum_sepolia/InputBox.json";
+import baseInputBox from "@cartesi/rollups/deployments/base/InputBox.json";
 import mainnetInputBox from "@cartesi/rollups/deployments/mainnet/InputBox.json";
 import optimismInputBox from "@cartesi/rollups/deployments/optimism/InputBox.json";
 import optimismSepoliaInputBox from "@cartesi/rollups/deployments/optimism_sepolia/InputBox.json";
@@ -14,6 +15,7 @@ import { Address, Hash } from "viem";
 import {
     arbitrum,
     arbitrumSepolia,
+    base,
     foundry,
     mainnet,
     optimism,
@@ -26,6 +28,7 @@ import { inputBoxAddress } from "../../../src/contracts";
 const inputBoxDeploymentBlockNumber: Record<number, number> = {
     [arbitrum.id]: arbitrumInputBox.receipt.blockNumber,
     [arbitrumSepolia.id]: arbitrumSepoliaInputBox.receipt.blockNumber,
+    [base.id]: baseInputBox.receipt.blockNumber,
     [foundry.id]: 1, // devnet
     [mainnet.id]: mainnetInputBox.receipt.blockNumber,
     [optimism.id]: optimismInputBox.receipt.blockNumber,

@@ -11,3 +11,5 @@ Sunodo deployment supports all networks officially supported by the Cartesi roll
 -   Optimism
     -   Mainnet: optimism (chainId 10)
     -   Testnet: optimism-sepolia (chainId 11155420)
+-   Base
+    -   Mainnet: base (chainId: 8453)

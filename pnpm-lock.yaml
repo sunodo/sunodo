@@ -184,8 +184,8 @@ importers:
   apps/web:
     dependencies:
       '@cartesi/rollups':
-        specifier: 1.2.0
-        version: 1.2.0
+        specifier: 1.3.0
+        version: 1.3.0
       '@mantine/code-highlight':
         specifier: ^7.7.0
         version: 7.7.0(@mantine/core@7.7.0)(@mantine/hooks@7.7.0)(react-dom@18.2.0)(react@18.2.0)
@@ -2981,22 +2981,11 @@ packages:
     resolution: {integrity: sha512-4iri8i1AqYHJE2DstZYkyEprg6Pq6sKx3xn5FpySk9sNhH7qN2LLlHJCfDTZRILNwQNPD7mATWM0TBui7uC1pA==}
     dev: true
 
-  /@cartesi/rollups@1.2.0:
-    resolution: {integrity: sha512-oLm/JYuRpUD6bg8UKFZjdSJRZ1CWOd5SM6xnjvRKMisGZcJzULYHuuzZMSMONpnFVQhFXrwJF4q0tzcOAK4oDw==}
-    dependencies:
-      '@cartesi/util': 6.1.0
-      '@openzeppelin/contracts': 4.9.2
-    dev: false
-
   /@cartesi/rollups@1.3.0:
     resolution: {integrity: sha512-HSBR7FjMWLeqLxrNvmo7flNykbZwbchwtxwPqYPosMqVjzGmT5jypHMZ/WHix9CL+E2njy7Kvl+f+vCio0WjDw==}
     dependencies:
       '@cartesi/util': 6.2.0
       '@openzeppelin/contracts': 4.9.2
-    dev: false
-
-  /@cartesi/util@6.1.0:
-    resolution: {integrity: sha512-j92nSoMHCyu6h7nZgn+MeXjkp8oa1Cy6qaImyxVXmPN2Rcqzl/TkWm/RkhbODU9rh4U3OuUteYqKRjefI3/XIQ==}
     dev: false
 
   /@cartesi/util@6.2.0:
