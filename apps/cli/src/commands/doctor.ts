@@ -11,6 +11,24 @@ export default class DoctorCommand extends Command {
     private static MINIMUM_DOCKER_VERSION = "23.0.0"; // Replace with our minimum required Docker version
     private static MINIMUM_DOCKER_COMPOSE_VERSION = "2.21.0"; // Replace with our minimum required Docker Compose version
 
+    private static async checkDockerVersion(): Promise<string> {
+        const { stdout } = await execa("docker", [
+            "version",
+            "--format",
+            "{{json .Client.Version}}",
+        ]);
+        return JSON.parse(stdout);
+    }
+
+    private static async checkDockerComposeVersion(): Promise<string> {
+        const { stdout } = await execa("docker", [
+            "compose",
+            "version",
+            "--short",
+        ]);
+        return stdout;
+    }
+
     private static isDockerVersionValid(version: string): boolean {
         return semver.gte(version, DoctorCommand.MINIMUM_DOCKER_VERSION);
     }
@@ -29,33 +47,43 @@ export default class DoctorCommand extends Command {
 
     public async run() {
         try {
-            // Check Docker version
-            const { stdout: dockerVersionOutput } = await execa("docker", [
-                "version",
-                "--format",
-                "{{json .Client.Version}}",
-            ]);
-            const dockerVersion = JSON.parse(dockerVersionOutput);
+            try {
+                const dockerVersion = await DoctorCommand.checkDockerVersion();
 
-            if (!DoctorCommand.isDockerVersionValid(dockerVersion)) {
-                throw new Error(
-                    `Unsupported Docker version. Minimum required version is ${DoctorCommand.MINIMUM_DOCKER_VERSION}. Installed version is ${dockerVersion}.`,
-                );
+                // Check Docker version
+                if (!DoctorCommand.isDockerVersionValid(dockerVersion)) {
+                    throw new Error(
+                        `Unsupported Docker version. Minimum required version is ${DoctorCommand.MINIMUM_DOCKER_VERSION}. Installed version is ${dockerVersion}.`,
+                    );
+                }
+            } catch (error: unknown) {
+                if (error instanceof Error) {
+                    this.error(
+                        "Docker is required but not installed or the command execution failed. Please refer to the Docker documentation for installation instructions: https://docs.docker.com/get-docker/",
+                    );
+                }
             }
 
-            // Check Docker Compose version
-            const { stdout: dockerComposeVersionOutput } = await execa(
-                "docker",
-                ["compose", "version", "--short"],
-            );
-            const dockerComposeVersion = dockerComposeVersionOutput.trim();
+            try {
+                const dockerComposeVersion =
+                    await DoctorCommand.checkDockerComposeVersion();
 
-            if (
-                !DoctorCommand.isDockerComposeVersionValid(dockerComposeVersion)
-            ) {
-                throw new Error(
-                    `Unsupported Docker Compose version. Minimum required version is ${DoctorCommand.MINIMUM_DOCKER_COMPOSE_VERSION}. Installed version is ${dockerComposeVersion}.`,
-                );
+                // Check if the Docker Compose version is valid
+                if (
+                    !DoctorCommand.isDockerComposeVersionValid(
+                        dockerComposeVersion,
+                    )
+                ) {
+                    throw new Error(
+                        `Unsupported Docker Compose version. Minimum required version is ${DoctorCommand.MINIMUM_DOCKER_COMPOSE_VERSION}. Installed version is ${dockerComposeVersion}.`,
+                    );
+                }
+            } catch (error: unknown) {
+                if (error instanceof Error) {
+                    this.error(
+                        "Docker Compose is required but not installed or the command execution failed. Please refer to the Docker Compose documentation for installation instructions: https://docs.docker.com/compose/install/",
+                    );
+                }
             }
 
             // Check Docker Buildx version and riscv64 support
