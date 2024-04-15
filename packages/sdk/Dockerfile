@@ -24,19 +24,6 @@ apt-get install -y --no-install-recommends \
 rm -rf /var/lib/apt/lists/*
 EOF
 
-FROM builder as genext2fs
-
-# 1.5.4 -> 15ff1bf67b5dbdd2bbc163ca0b73df50065f00f7
-WORKDIR /usr/local/src
-ADD https://github.com/cartesi/genext2fs.git#15ff1bf67b5dbdd2bbc163ca0b73df50065f00f7 /usr/local/src
-RUN <<EOF
-set -e
-./autogen.sh
-./configure --enable-libarchive
-make
-make install
-EOF
-
 FROM builder as su-exec
 
 # v0.2 -> f85e5bde1afef399021fbc2a99c837cf851ceafa
@@ -70,12 +57,22 @@ locale-gen
 update-locale LANG=en_US.UTF-8
 EOF
 
+# Install dpkg release of xgenext2fs
+ARG XGENEXT2_VERSION=1.5.5
+RUN <<EOF
+ARCH=$(dpkg --print-architecture)
+curl -sSL https://github.com/cartesi/genext2fs/releases/download/v${XGENEXT2_VERSION}/xgenext2fs_${ARCH}.deb \
+    -o ./xgenext2fs.deb
+dpkg -i ./xgenext2fs.deb
+rm ./xgenext2fs.deb
+xgenext2fs --version
+EOF
+
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 
 COPY entrypoint.sh /usr/local/bin/
-COPY --from=genext2fs /usr/local/bin/xgenext2fs /usr/local/bin/
 COPY --from=su-exec /usr/local/src/su-exec /usr/local/bin/
 RUN mkdir -p /tmp/.sunodo && chmod 1777 /tmp/.sunodo
 
