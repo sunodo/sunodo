@@ -31,6 +31,21 @@ WORKDIR /usr/local/src
 ADD https://github.com/ncopa/su-exec.git#f85e5bde1afef399021fbc2a99c837cf851ceafa /usr/local/src
 RUN make
 
+FROM builder as crane
+ARG CRANE_VERSION=0.19.1
+RUN <<EOF
+set -e
+
+#FIXME: ugly hack to download the right go-containerregistry binary
+case "$(arch)" in
+aarch64) ARCH="arm64" ;;
+*) ARCH=$(arch) ;;
+esac
+
+curl -sSL https://github.com/google/go-containerregistry/releases/download/v${CRANE_VERSION}/go-containerregistry_Linux_${ARCH}.tar.gz | \
+    tar -zx -C /usr/local/bin
+EOF
+
 # sdk image
 FROM $SERVER_MANAGER_REGISTRY/$SERVER_MANAGER_ORG/server-manager:$SERVER_MANAGER_VERSION
 ARG SERVER_MANAGER_REGISTRY
@@ -74,6 +89,7 @@ ENV LANGUAGE en_US:en
 
 COPY entrypoint.sh /usr/local/bin/
 COPY --from=su-exec /usr/local/src/su-exec /usr/local/bin/
+COPY --from=crane /usr/local/bin/crane /usr/local/bin/
 RUN mkdir -p /tmp/.sunodo && chmod 1777 /tmp/.sunodo
 
 ADD --chmod=644 \
