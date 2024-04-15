@@ -32,7 +32,7 @@ export default class Shell extends Command {
         const ext2 = path.join(containerDir, path.basename(ext2Path));
         const ramSize = "128Mi";
         const driveLabel = "root";
-        const sdkImage = "sunodo/sdk:0.4.0"; // XXX: how to resolve sdk version?
+        const sdkImage = "sunodo/sdk:0.4.1"; // XXX: how to resolve sdk version?
         const args = [
             "run",
             "--interactive",
