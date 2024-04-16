@@ -1,6 +1,5 @@
 import { Args, Command, Flags } from "@oclif/core";
 import chalk from "chalk";
-import type { TemplateProvider } from "giget";
 import { DownloadTemplateResult, downloadTemplate } from "giget";
 import ora from "ora";
 
@@ -36,7 +35,10 @@ export default class CreateCommand extends Command {
         }),
         branch: Flags.string({
             description: `sunodo/sunodo-templates repository branch name to use`,
-            default: DEFAULT_TEMPLATES_BRANCH,
+            default: "",
+        }),
+        repository: Flags.string({
+            description: `Define a different repository to use. Supports GitHub, GitLab, bitbucket and sourcehut. Example: --repository https://github.com/sunodo/sunodo-templates`,
         }),
     };
 
@@ -44,20 +46,42 @@ export default class CreateCommand extends Command {
         template: string,
         branch: string,
         out: string,
+        repository?: string,
     ): Promise<DownloadTemplateResult> {
-        const sunodoProvider: TemplateProvider = async (input) => {
-            return {
-                name: "sunodo",
-                subdir: input,
-                url: "https://github.com/sunodo/sunodo-templates",
-                tar: `https://codeload.github.com/sunodo/sunodo-templates/tar.gz/refs/heads/${branch}`,
-            };
-        };
+        let source;
 
-        const input = `sunodo:${template}`;
-        return downloadTemplate(input, {
+        if (repository) {
+            // The URL should be in the format "github:owner/repo", "gitlab:owner/repo", etc.
+            if (repository.includes("github.com")) {
+                repository = repository.replace(
+                    "https://github.com/",
+                    "github:",
+                );
+            } else if (repository.includes("gitlab.com")) {
+                repository = repository.replace(
+                    "https://gitlab.com/",
+                    "gitlab:",
+                );
+            } else if (repository.includes("bitbucket.org")) {
+                repository = repository.replace(
+                    "https://bitbucket.org/",
+                    "bitbucket:",
+                );
+            } else if (repository.includes("sourcehut.org")) {
+                repository = repository.replace(
+                    "https://sourcehut.org/",
+                    "sourcehut:",
+                );
+            } else {
+                throw new Error("Unsupported repository host");
+            }
+            source = `${repository}/${template}#${branch} || "main"}`;
+        } else {
+            source = `github:sunodo/sunodo-templates/${template}#${branch} || DEFAULT_TEMPLATES_BRANCH}`;
+        }
+
+        return downloadTemplate(source, {
             dir: out,
-            providers: { sunodo: sunodoProvider },
         });
     }
 
@@ -69,6 +93,7 @@ export default class CreateCommand extends Command {
                 flags.template,
                 flags.branch,
                 args.name,
+                flags.repository,
             );
             spinner.succeed(`Application created at ${chalk.cyan(dir)}`);
         } catch (e: unknown) {
