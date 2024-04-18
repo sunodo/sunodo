@@ -14,6 +14,11 @@ export default class Shell extends Command {
             description: "image ID|name",
             required: false,
         }),
+        shellPath: Args.string({
+            description: "path to the shell executable",
+            required: false,
+            default: "/bin/bash",
+        }),
     };
 
     static flags = {
@@ -26,6 +31,7 @@ export default class Shell extends Command {
     private async startShell(
         ext2Path: string,
         runAsRoot: boolean,
+        shellPath: string,
     ): Promise<void> {
         const containerDir = "/mnt";
         const bind = `${path.resolve(path.dirname(ext2Path))}:${containerDir}`;
@@ -56,13 +62,13 @@ export default class Shell extends Command {
             args.push("-it");
         }
 
-        await execa("docker", [...args, "--", "/bin/bash"], {
+        await execa("docker", [...args, "--", shellPath], {
             stdio: "inherit",
         });
     }
 
     public async run(): Promise<void> {
-        const { flags } = await this.parse(Shell);
+        const { args, flags } = await this.parse(Shell);
 
         // use pre-existing image or build dapp image
         const ext2Path = path.join(".sunodo", "image.ext2");
@@ -71,6 +77,6 @@ export default class Shell extends Command {
         }
 
         // execute the machine and save snapshot
-        await this.startShell(ext2Path, flags["run-as-root"]);
+        await this.startShell(ext2Path, flags["run-as-root"], args.shellPath);
     }
 }
