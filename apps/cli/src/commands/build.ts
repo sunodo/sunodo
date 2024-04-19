@@ -37,6 +37,17 @@ const SUNODO_DEFAULT_TAR_PATH = path.join(SUNODO_PATH, "image.tar");
 const SUNODO_DEFAULT_RETAR_TAR_PATH = path.join(SUNODO_PATH, "image.gnutar");
 const SUNODO_DEFAULT_EXT2_PATH = path.join(SUNODO_PATH, "image.ext2");
 
+const SUNODO_DEFAULT_CRUNTIME_IMAGE = "sunodo/cruntime:devel";
+const SUNODO_DEFAULT_CRUNTIME_TAR_PATH = path.join(SUNODO_PATH, "cruntime.tar");
+const SUNODO_DEFAULT_CRUNTIME_RETAR_TAR_PATH = path.join(
+    SUNODO_PATH,
+    "cruntime.gnutar",
+);
+const SUNODO_DEFAULT_CRUNTIME_EXT2_PATH = path.join(
+    SUNODO_PATH,
+    "cruntime.ext2",
+);
+
 export default class BuildApplication extends Command {
     static summary = "Build application.";
 
@@ -170,17 +181,18 @@ Update your application Dockerfile using one of the templates at https://github.
     private async sdkRun(
         sdkImage: string,
         cmd: string[],
-        inputPath: string,
+        inputPath: string[],
         outputPath: string,
     ): Promise<void> {
-        const { stdout: cid } = await execa("docker", [
-            "container",
-            "create",
-            "--volume",
-            `./${inputPath}:/tmp/input`,
-            sdkImage,
-            ...cmd,
-        ]);
+        const volumes = inputPath.map(
+            (path, i) => `--volume=./${path}:/tmp/input${i}`,
+        );
+
+        const createCmd = ["container", "create", ...volumes, sdkImage, ...cmd];
+
+        console.log(createCmd);
+
+        const { stdout: cid } = await execa("docker", createCmd);
 
         await execa("docker", ["container", "start", "-a", cid], {
             stdio: "inherit",
@@ -201,7 +213,7 @@ Update your application Dockerfile using one of the templates at https://github.
     private async createRootfsTarCommand(): Promise<string[]> {
         const cmd = [
             "cat",
-            "/tmp/input",
+            "/tmp/input0",
             "|",
             "crane",
             "export",
@@ -222,7 +234,7 @@ Update your application Dockerfile using one of the templates at https://github.
         return [
             "xgenext2fs",
             "--tarball",
-            "/tmp/input",
+            "/tmp/input0",
             "--block-size",
             "4096",
             "--faketime",
@@ -236,7 +248,6 @@ Update your application Dockerfile using one of the templates at https://github.
         info: ImageInfo,
     ): Promise<string[]> {
         const ramSize = info.ramSize;
-        const driveLabel = "root"; // XXX: does this need to be customizable?
 
         // list of environment variables of docker image
         const envs = info.env.map(
@@ -248,18 +259,84 @@ Update your application Dockerfile using one of the templates at https://github.
 
         // command to change working directory if WORKDIR is defined
         const cwd = info.workdir ? `--append-init=WORKDIR=${info.workdir}` : "";
-        return [
+
+        const flashDriveArgs: string[] = [
+            `--flash-drive=label:root,filename:/tmp/input0`,
+            `--flash-drive=label:app,filename:/tmp/input1`,
+        ];
+
+        const result = [
             "cartesi-machine",
             "--assert-rolling-template",
             `--ram-length=${ramSize}`,
-            `--flash-drive=label:${driveLabel},filename:/tmp/input`,
+            ...flashDriveArgs,
             "--final-hash",
-            `--store=/tmp/output`,
+            "--store=/tmp/output",
             "--append-bootargs=no4lvl",
             cwd,
             ...envs,
             `--append-entrypoint=${entrypoint}`,
         ];
+        console.log(result);
+        return result;
+    }
+
+    private async createCruntimeDrive(
+        image: string,
+        sdkImage: string,
+    ): Promise<void> {
+        try {
+            await this.createTarball(
+                image,
+                path.join(SUNODO_PATH, "cruntime.tar"),
+            );
+
+            await this.sdkRun(
+                sdkImage,
+                await this.createRootfsTarCommand(),
+                [SUNODO_DEFAULT_CRUNTIME_TAR_PATH],
+                SUNODO_DEFAULT_CRUNTIME_RETAR_TAR_PATH,
+            );
+
+            await this.sdkRun(
+                sdkImage,
+                await this.createExt2Command(),
+                [SUNODO_DEFAULT_CRUNTIME_RETAR_TAR_PATH],
+                SUNODO_DEFAULT_CRUNTIME_EXT2_PATH,
+            );
+        } finally {
+            await fs.remove(SUNODO_DEFAULT_CRUNTIME_RETAR_TAR_PATH);
+            await fs.remove(SUNODO_DEFAULT_CRUNTIME_TAR_PATH);
+        }
+    }
+
+    private async createAppDrive(
+        image: string,
+        sdkImage: string,
+    ): Promise<void> {
+        try {
+            // create OCI Image tarball
+            await this.createTarball(image, SUNODO_DEFAULT_TAR_PATH);
+
+            // create rootfs tar
+            await this.sdkRun(
+                sdkImage,
+                await this.createRootfsTarCommand(),
+                [SUNODO_DEFAULT_TAR_PATH],
+                SUNODO_DEFAULT_RETAR_TAR_PATH,
+            );
+
+            // create ext2
+            await this.sdkRun(
+                sdkImage,
+                await this.createExt2Command(),
+                [SUNODO_DEFAULT_RETAR_TAR_PATH],
+                SUNODO_DEFAULT_EXT2_PATH,
+            );
+        } finally {
+            await fs.remove(SUNODO_DEFAULT_RETAR_TAR_PATH);
+            await fs.remove(SUNODO_DEFAULT_TAR_PATH);
+        }
     }
 
     public async run(): Promise<void> {
@@ -281,31 +358,24 @@ Update your application Dockerfile using one of the templates at https://github.
         const sdkImage = `sunodo/sdk:${imageInfo.sdkVersion}`;
 
         try {
-            // create OCI Image tarball
-            await this.createTarball(appImage, SUNODO_DEFAULT_TAR_PATH);
-
-            // create rootfs tar
-            await this.sdkRun(
+            // create cruntime drive
+            await this.createCruntimeDrive(
+                SUNODO_DEFAULT_CRUNTIME_IMAGE,
                 sdkImage,
-                await this.createRootfsTarCommand(),
-                SUNODO_DEFAULT_TAR_PATH,
-                SUNODO_DEFAULT_RETAR_TAR_PATH,
             );
 
-            // create ext2
-            await this.sdkRun(
-                sdkImage,
-                await this.createExt2Command(),
-                SUNODO_DEFAULT_RETAR_TAR_PATH,
-                SUNODO_DEFAULT_EXT2_PATH,
-            );
+            // create app drive
+            await this.createAppDrive(appImage, sdkImage);
 
             // create machine snapshot
             if (!flags["skip-snapshot"]) {
                 await this.sdkRun(
                     sdkImage,
                     await this.createMachineSnapshotCommand(imageInfo),
-                    SUNODO_DEFAULT_EXT2_PATH,
+                    [
+                        SUNODO_DEFAULT_CRUNTIME_EXT2_PATH,
+                        SUNODO_DEFAULT_EXT2_PATH,
+                    ],
                     SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH,
                 );
                 await fs.chmod(SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH, 0o755);

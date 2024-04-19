@@ -489,6 +489,8 @@ importers:
         specifier: ^2.9.2
         version: 2.9.2(typescript@5.4.3)(zod@3.22.4)
 
+  packages/cruntime: {}
+
   packages/devnet:
     devDependencies:
       '@nomicfoundation/hardhat-viem':
