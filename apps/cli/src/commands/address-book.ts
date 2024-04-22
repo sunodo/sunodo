@@ -1,11 +1,8 @@
 import { ux } from "@oclif/core";
 
-import {
-    AddressBook as AddressBookType,
-    SunodoCommand,
-} from "../sunodoCommand.js";
+import { AddressBook as AddressBookType, BaseCommand } from "../baseCommand.js";
 
-export default class AddressBook extends SunodoCommand<typeof AddressBook> {
+export default class AddressBook extends BaseCommand<typeof AddressBook> {
     static summary = "Prints addresses of smart contracts deployed.";
 
     static description =

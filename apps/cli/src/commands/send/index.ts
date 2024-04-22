@@ -4,8 +4,8 @@ import { Command, Interfaces, Flags as StandardFlags } from "@oclif/core";
 import ora from "ora";
 import { Address, PublicClient, WalletClient, isAddress } from "viem";
 
+import { BaseCommand } from "../../baseCommand.js";
 import * as CustomFlags from "../../flags.js";
-import { SunodoCommand } from "../../sunodoCommand.js";
 import createClients, { supportedChains } from "../../wallet.js";
 
 export type Flags<T extends typeof Command> = Interfaces.InferredFlags<
@@ -16,7 +16,7 @@ export type Args<T extends typeof Command> = Interfaces.InferredArgs<T["args"]>;
 // base command for sending input to the application
 export abstract class SendBaseCommand<
     T extends typeof Command,
-> extends SunodoCommand<typeof SendBaseCommand> {
+> extends BaseCommand<typeof SendBaseCommand> {
     static baseFlags = {
         dapp: CustomFlags.address({
             summary: "dapp address.",

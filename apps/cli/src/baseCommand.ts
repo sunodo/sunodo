@@ -23,7 +23,7 @@ import {
 import { PsResponse } from "./types/docker.js";
 
 export type Flags<T extends typeof Command> = Interfaces.InferredFlags<
-    (typeof SunodoCommand)["baseFlags"] & T["flags"]
+    (typeof BaseCommand)["baseFlags"] & T["flags"]
 >;
 export type Args<T extends typeof Command> = Interfaces.InferredArgs<T["args"]>;
 
@@ -35,7 +35,7 @@ export interface DApp {
     transactionHash: Address;
 }
 
-export abstract class SunodoCommand<T extends typeof Command> extends Command {
+export abstract class BaseCommand<T extends typeof Command> extends Command {
     protected flags!: Flags<T>;
     protected args!: Args<T>;
 
@@ -108,7 +108,7 @@ export abstract class SunodoCommand<T extends typeof Command> extends Command {
         await super.init();
         const { args, flags } = await this.parse({
             flags: this.ctor.flags,
-            baseFlags: (super.ctor as typeof SunodoCommand).baseFlags,
+            baseFlags: (super.ctor as typeof BaseCommand).baseFlags,
             args: this.ctor.args,
             enableJsonFlag: this.ctor.enableJsonFlag,
             strict: this.ctor.strict,
