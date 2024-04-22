@@ -38,16 +38,13 @@ RUN chisel cut \
     base-files_base \
     base-files_release-info \
     base-passwd_data \
-    #    crun_bins \
     libc6_libs \
     libcap2_libs \
     libgcc-s1_libs \
     libseccomp2_libs \
     libyajl2_libs \
-    busybox-static_bins \
-    strace_bins
-#RUN /rootfs/bin/busybox --install /rootfs/usr/bin
-# patch cartesi-init to use crun
+    busybox-static_bins
+
 RUN <<EOF
 set -e
 ln -s /bin/busybox bin/sh
@@ -58,7 +55,10 @@ mkdir home/dapp
 chown 1000:1000 home/dapp
 ln -s /mnt/app cruntime/rootfs
 EOF
+
+# patch cartesi-init to use crun
 COPY cartesi-init usr/sbin/cartesi-init
+#XXX: how to inject the .process.args into the crun config.json ?
 COPY config.json cruntime/config.json
 
 FROM base-image AS crun-builder
@@ -83,6 +83,7 @@ apt-get install -y \
 EOF
 
 WORKDIR /usr/local/src
+#XXX: make crun static ?
 # crun:v1.4.4 -> a220ca661ce078f2c37b38c92e66cf66c012d9c1
 ADD --keep-git-dir https://github.com/containers/crun.git#a220ca661ce078f2c37b38c92e66cf66c012d9c1 /usr/local/src
 RUN <<EOF
