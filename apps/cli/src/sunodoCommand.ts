@@ -15,7 +15,6 @@ import {
     erc721PortalAddress,
     etherPortalAddress,
     inputBoxAddress,
-    marketplaceAddress,
     selfHostedApplicationFactoryAddress,
     sunodoTokenAddress,
 } from "./contracts.js";
@@ -89,7 +88,6 @@ export abstract class SunodoCommand<T extends typeof Command> extends Command {
             ERC721Portal: erc721PortalAddress,
             EtherPortal: etherPortalAddress,
             InputBox: inputBoxAddress,
-            Marketplace: marketplaceAddress,
             SelfHostedApplicationFactory: selfHostedApplicationFactoryAddress,
             SunodoToken: sunodoTokenAddress,
         };
