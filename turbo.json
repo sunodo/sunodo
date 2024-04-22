@@ -14,7 +14,7 @@
     "pipeline": {
         "build": {
             "dependsOn": ["^build"],
-            "outputs": ["build/**", "dist/**", ".next/**", ".vitepress/dist/**"]
+            "outputs": ["build/**", "dist/**", ".next/**"]
         },
         "clean": {
             "cache": false
