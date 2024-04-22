@@ -18,17 +18,17 @@
         "tsc": "tsc"
     },
     "devDependencies": {
-        "@nomicfoundation/hardhat-viem": "^2.0.0",
-        "@safe-global/safe-singleton-factory": "^1.0.21",
-        "@sunodo/contracts": "workspace:*",
+        "@nomicfoundation/hardhat-viem": "^2.0.1",
+        "@safe-global/safe-singleton-factory": "^1.0.23",
+        "@cartesi/rollups": "^1.4.0",
         "@sunodo/token": "workspace:*",
-        "hardhat": "^2.22.2",
+        "hardhat": "^2.22.3",
         "hardhat-abi-exporter": "^2",
         "hardhat-deploy": "^0.12.2",
         "npm-run-all": "^4",
         "rimraf": "^5",
         "tsconfig": "workspace:*",
-        "typescript": "^5.4.3"
+        "typescript": "^5.4.5"
     },
     "files": [
         "deployments/*/*.json",
