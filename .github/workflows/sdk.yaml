@@ -36,14 +36,14 @@ jobs:
               uses: docker/metadata-action@v5
               with:
                   images: |
-                      docker.io/sunodo/sdk,enable=${{ github.event_name != 'pull_request' }}
-                      ghcr.io/sunodo/sdk
+                      docker.io/cartesi/sdk,enable=${{ github.event_name != 'pull_request' }}
+                      ghcr.io/cartesi/sdk
                   tags: |
                       type=raw,value=${{ steps.package-version.outputs.PACKAGE_VERSION }},enable=${{ github.event_name == 'push' }}
                       type=ref,event=pr
                   labels: |
-                      org.opencontainers.image.title=Sunodo SDK
-                      org.opencontainers.image.description=Sunodo SDK tools image
+                      org.opencontainers.image.title=Cartesi SDK
+                      org.opencontainers.image.description=Cartesi SDK tools image
 
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v3

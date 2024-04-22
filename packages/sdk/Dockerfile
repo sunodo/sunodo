@@ -110,7 +110,7 @@ COPY --from=su-exec /usr/local/src/su-exec /usr/local/bin/
 COPY --from=crane /usr/local/bin/crane /usr/local/bin/
 COPY --from=devnet /usr/local/lib/node_modules/@cartesi/devnet/export/abi/localhost.json /usr/share/cartesi/
 COPY --from=devnet /usr/local/lib/node_modules/@cartesi/devnet/build/anvil_state.json /usr/share/cartesi/
-RUN mkdir -p /tmp/.sunodo && chmod 1777 /tmp/.sunodo
+RUN mkdir -p /tmp/.cartesi && chmod 1777 /tmp/.cartesi
 
 ADD --chmod=644 \
     --checksum=sha256:1dc36e05bf04d3fff097e51408556cef4d5ac09792e245b37c470d9188a4c173 \

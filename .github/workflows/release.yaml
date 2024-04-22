@@ -61,7 +61,7 @@ jobs:
     build_sdk:
         name: Build sdk
         needs: [release, packages_to_build]
-        if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), '@sunodo/sdk') }}
+        if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), '@cartesi/sdk') }}
         uses: ./.github/workflows/sdk.yaml
         secrets: inherit
 

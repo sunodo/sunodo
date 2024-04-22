@@ -1,3 +1,3 @@
 target "default" {
-  tags = ["sunodo/sdk:devel"]
+  tags = ["cartesi/sdk:devel"]
 }
