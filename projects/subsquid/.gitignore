@@ -1,9 +1,0 @@
-/node_modules
-/lib
-/builds
-
-/**Versions.json
-
-# generated files
-#/src/abi
-/src/model
