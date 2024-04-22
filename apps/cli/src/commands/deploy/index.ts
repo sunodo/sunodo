@@ -5,9 +5,9 @@ import chalk from "chalk";
 import open, { apps } from "open";
 import { URL } from "url";
 
-import { SunodoCommand } from "../../sunodoCommand.js";
+import { BaseCommand } from "../../baseCommand.js";
 
-export default class Deploy extends SunodoCommand<typeof Deploy> {
+export default class Deploy extends BaseCommand<typeof Deploy> {
     static summary = "Deploy application to a live network.";
 
     static description =

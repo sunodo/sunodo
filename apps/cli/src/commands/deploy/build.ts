@@ -5,9 +5,9 @@ import path from "path";
 import { tmpNameSync } from "tmp";
 import { URL } from "url";
 
-import { SunodoCommand } from "../../sunodoCommand.js";
+import { BaseCommand } from "../../baseCommand.js";
 
-export default class DeployBuild extends SunodoCommand<typeof DeployBuild> {
+export default class DeployBuild extends BaseCommand<typeof DeployBuild> {
     static summary = "Build deployment Docker image of application.";
 
     static description =

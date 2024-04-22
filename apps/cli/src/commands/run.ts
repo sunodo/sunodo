@@ -3,9 +3,9 @@ import { execa } from "execa";
 import fs from "fs-extra";
 import path from "path";
 
-import { SunodoCommand } from "../sunodoCommand.js";
+import { BaseCommand } from "../baseCommand.js";
 
-export default class Run extends SunodoCommand<typeof Run> {
+export default class Run extends BaseCommand<typeof Run> {
     static summary = "Run application node.";
 
     static description = "Run a local cartesi node for the application.";
