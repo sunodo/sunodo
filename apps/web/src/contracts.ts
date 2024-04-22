@@ -841,168 +841,6 @@ export const inputBoxConfig = {
 } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Marketplace
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-export const marketplaceAbi = [
-    {
-        type: 'constructor',
-        inputs: [
-            { name: '_ens', internalType: 'contract ENS', type: 'address' },
-            {
-                name: '_factory',
-                internalType: 'contract ICartesiDAppFactory',
-                type: 'address',
-            },
-        ],
-        stateMutability: 'nonpayable',
-    },
-    {
-        type: 'event',
-        anonymous: false,
-        inputs: [
-            {
-                name: 'provider',
-                internalType: 'contract IReaderNodeProvider',
-                type: 'address',
-                indexed: false,
-            },
-            {
-                name: 'token',
-                internalType: 'contract IERC20',
-                type: 'address',
-                indexed: false,
-            },
-            {
-                name: 'payee',
-                internalType: 'address',
-                type: 'address',
-                indexed: false,
-            },
-            {
-                name: 'price',
-                internalType: 'uint256',
-                type: 'uint256',
-                indexed: false,
-            },
-        ],
-        name: 'ReaderNodeProviderCreated',
-    },
-    {
-        type: 'event',
-        anonymous: false,
-        inputs: [
-            {
-                name: 'provider',
-                internalType: 'contract IValidatorNodeProvider',
-                type: 'address',
-                indexed: false,
-            },
-            {
-                name: 'consensus',
-                internalType: 'contract IConsensus',
-                type: 'address',
-                indexed: false,
-            },
-            {
-                name: 'token',
-                internalType: 'contract IERC20',
-                type: 'address',
-                indexed: false,
-            },
-            {
-                name: 'payee',
-                internalType: 'address',
-                type: 'address',
-                indexed: false,
-            },
-            {
-                name: 'price',
-                internalType: 'uint256',
-                type: 'uint256',
-                indexed: false,
-            },
-        ],
-        name: 'ValidatorNodeProviderCreated',
-    },
-    {
-        type: 'function',
-        inputs: [],
-        name: 'ens',
-        outputs: [{ name: '', internalType: 'contract ENS', type: 'address' }],
-        stateMutability: 'view',
-    },
-    {
-        type: 'function',
-        inputs: [],
-        name: 'factory',
-        outputs: [
-            {
-                name: '',
-                internalType: 'contract ICartesiDAppFactory',
-                type: 'address',
-            },
-        ],
-        stateMutability: 'view',
-    },
-    {
-        type: 'function',
-        inputs: [
-            {
-                name: '_token',
-                internalType: 'contract IERC20',
-                type: 'address',
-            },
-            { name: '_payee', internalType: 'address', type: 'address' },
-            { name: '_price', internalType: 'uint256', type: 'uint256' },
-        ],
-        name: 'newReaderNodeProvider',
-        outputs: [
-            {
-                name: '',
-                internalType: 'contract IReaderNodeProvider',
-                type: 'address',
-            },
-        ],
-        stateMutability: 'nonpayable',
-    },
-    {
-        type: 'function',
-        inputs: [
-            {
-                name: '_consensus',
-                internalType: 'contract IConsensus',
-                type: 'address',
-            },
-            {
-                name: '_token',
-                internalType: 'contract IERC20',
-                type: 'address',
-            },
-            { name: '_payee', internalType: 'address', type: 'address' },
-            { name: '_price', internalType: 'uint256', type: 'uint256' },
-        ],
-        name: 'newValidatorNodeProvider',
-        outputs: [
-            {
-                name: '',
-                internalType: 'contract IValidatorNodeProvider',
-                type: 'address',
-            },
-        ],
-        stateMutability: 'nonpayable',
-    },
-] as const
-
-export const marketplaceAddress =
-    '0x85c77207642c51F6Cf8Ad76b5E777805cA5148B6' as const
-
-export const marketplaceConfig = {
-    address: marketplaceAddress,
-    abi: marketplaceAbi,
-} as const
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // MerkleV2
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1089,7 +927,7 @@ export const selfHostedApplicationFactoryAbi = [
             },
             {
                 name: '_applicationFactory',
-                internalType: 'contract CartesiDAppFactory',
+                internalType: 'contract ICartesiDAppFactory',
                 type: 'address',
             },
         ],
@@ -1107,11 +945,11 @@ export const selfHostedApplicationFactoryAbi = [
             { name: '_templateHash', internalType: 'bytes32', type: 'bytes32' },
             { name: '_salt', internalType: 'bytes32', type: 'bytes32' },
         ],
-        name: 'calculateApplicationAddress',
+        name: 'calculateAddresses',
         outputs: [
-            { name: '', internalType: 'address', type: 'address' },
-            { name: '', internalType: 'address', type: 'address' },
-            { name: '', internalType: 'address', type: 'address' },
+            { name: 'application_', internalType: 'address', type: 'address' },
+            { name: 'authority_', internalType: 'address', type: 'address' },
+            { name: 'history_', internalType: 'address', type: 'address' },
         ],
         stateMutability: 'view',
     },
@@ -1127,20 +965,777 @@ export const selfHostedApplicationFactoryAbi = [
             { name: '_templateHash', internalType: 'bytes32', type: 'bytes32' },
             { name: '_salt', internalType: 'bytes32', type: 'bytes32' },
         ],
-        name: 'newApplication',
+        name: 'deployContracts',
         outputs: [
-            { name: '', internalType: 'contract CartesiDApp', type: 'address' },
+            {
+                name: 'application_',
+                internalType: 'contract CartesiDApp',
+                type: 'address',
+            },
+            {
+                name: 'authority_',
+                internalType: 'contract Authority',
+                type: 'address',
+            },
+            {
+                name: 'history_',
+                internalType: 'contract History',
+                type: 'address',
+            },
         ],
         stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [],
+        name: 'getApplicationFactory',
+        outputs: [
+            {
+                name: '',
+                internalType: 'contract ICartesiDAppFactory',
+                type: 'address',
+            },
+        ],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [],
+        name: 'getAuthorityHistoryPairFactory',
+        outputs: [
+            {
+                name: '',
+                internalType: 'contract IAuthorityHistoryPairFactory',
+                type: 'address',
+            },
+        ],
+        stateMutability: 'view',
     },
 ] as const
 
 export const selfHostedApplicationFactoryAddress =
-    '0x1a71aE5dd62D1a5B8cB2cd9669F939F035601c5C' as const
+    '0x9E32e06Fd23675b2DF8eA8e6b0A25c3DF6a60AbC' as const
 
 export const selfHostedApplicationFactoryConfig = {
     address: selfHostedApplicationFactoryAddress,
     abi: selfHostedApplicationFactoryAbi,
+} as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// SunodoMultiToken
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const sunodoMultiTokenAbi = [
+    {
+        type: 'constructor',
+        inputs: [
+            { name: 'initialOwner', internalType: 'address', type: 'address' },
+        ],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'error',
+        inputs: [
+            { name: 'sender', internalType: 'address', type: 'address' },
+            { name: 'balance', internalType: 'uint256', type: 'uint256' },
+            { name: 'needed', internalType: 'uint256', type: 'uint256' },
+            { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+        ],
+        name: 'ERC1155InsufficientBalance',
+    },
+    {
+        type: 'error',
+        inputs: [
+            { name: 'approver', internalType: 'address', type: 'address' },
+        ],
+        name: 'ERC1155InvalidApprover',
+    },
+    {
+        type: 'error',
+        inputs: [
+            { name: 'idsLength', internalType: 'uint256', type: 'uint256' },
+            { name: 'valuesLength', internalType: 'uint256', type: 'uint256' },
+        ],
+        name: 'ERC1155InvalidArrayLength',
+    },
+    {
+        type: 'error',
+        inputs: [
+            { name: 'operator', internalType: 'address', type: 'address' },
+        ],
+        name: 'ERC1155InvalidOperator',
+    },
+    {
+        type: 'error',
+        inputs: [
+            { name: 'receiver', internalType: 'address', type: 'address' },
+        ],
+        name: 'ERC1155InvalidReceiver',
+    },
+    {
+        type: 'error',
+        inputs: [{ name: 'sender', internalType: 'address', type: 'address' }],
+        name: 'ERC1155InvalidSender',
+    },
+    {
+        type: 'error',
+        inputs: [
+            { name: 'operator', internalType: 'address', type: 'address' },
+            { name: 'owner', internalType: 'address', type: 'address' },
+        ],
+        name: 'ERC1155MissingApprovalForAll',
+    },
+    {
+        type: 'error',
+        inputs: [{ name: 'owner', internalType: 'address', type: 'address' }],
+        name: 'OwnableInvalidOwner',
+    },
+    {
+        type: 'error',
+        inputs: [{ name: 'account', internalType: 'address', type: 'address' }],
+        name: 'OwnableUnauthorizedAccount',
+    },
+    {
+        type: 'event',
+        anonymous: false,
+        inputs: [
+            {
+                name: 'account',
+                internalType: 'address',
+                type: 'address',
+                indexed: true,
+            },
+            {
+                name: 'operator',
+                internalType: 'address',
+                type: 'address',
+                indexed: true,
+            },
+            {
+                name: 'approved',
+                internalType: 'bool',
+                type: 'bool',
+                indexed: false,
+            },
+        ],
+        name: 'ApprovalForAll',
+    },
+    {
+        type: 'event',
+        anonymous: false,
+        inputs: [
+            {
+                name: 'previousOwner',
+                internalType: 'address',
+                type: 'address',
+                indexed: true,
+            },
+            {
+                name: 'newOwner',
+                internalType: 'address',
+                type: 'address',
+                indexed: true,
+            },
+        ],
+        name: 'OwnershipTransferred',
+    },
+    {
+        type: 'event',
+        anonymous: false,
+        inputs: [
+            {
+                name: 'operator',
+                internalType: 'address',
+                type: 'address',
+                indexed: true,
+            },
+            {
+                name: 'from',
+                internalType: 'address',
+                type: 'address',
+                indexed: true,
+            },
+            {
+                name: 'to',
+                internalType: 'address',
+                type: 'address',
+                indexed: true,
+            },
+            {
+                name: 'ids',
+                internalType: 'uint256[]',
+                type: 'uint256[]',
+                indexed: false,
+            },
+            {
+                name: 'values',
+                internalType: 'uint256[]',
+                type: 'uint256[]',
+                indexed: false,
+            },
+        ],
+        name: 'TransferBatch',
+    },
+    {
+        type: 'event',
+        anonymous: false,
+        inputs: [
+            {
+                name: 'operator',
+                internalType: 'address',
+                type: 'address',
+                indexed: true,
+            },
+            {
+                name: 'from',
+                internalType: 'address',
+                type: 'address',
+                indexed: true,
+            },
+            {
+                name: 'to',
+                internalType: 'address',
+                type: 'address',
+                indexed: true,
+            },
+            {
+                name: 'id',
+                internalType: 'uint256',
+                type: 'uint256',
+                indexed: false,
+            },
+            {
+                name: 'value',
+                internalType: 'uint256',
+                type: 'uint256',
+                indexed: false,
+            },
+        ],
+        name: 'TransferSingle',
+    },
+    {
+        type: 'event',
+        anonymous: false,
+        inputs: [
+            {
+                name: 'value',
+                internalType: 'string',
+                type: 'string',
+                indexed: false,
+            },
+            {
+                name: 'id',
+                internalType: 'uint256',
+                type: 'uint256',
+                indexed: true,
+            },
+        ],
+        name: 'URI',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'account', internalType: 'address', type: 'address' },
+            { name: 'id', internalType: 'uint256', type: 'uint256' },
+        ],
+        name: 'balanceOf',
+        outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'accounts', internalType: 'address[]', type: 'address[]' },
+            { name: 'ids', internalType: 'uint256[]', type: 'uint256[]' },
+        ],
+        name: 'balanceOfBatch',
+        outputs: [{ name: '', internalType: 'uint256[]', type: 'uint256[]' }],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'account', internalType: 'address', type: 'address' },
+            { name: 'operator', internalType: 'address', type: 'address' },
+        ],
+        name: 'isApprovedForAll',
+        outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'account', internalType: 'address', type: 'address' },
+            { name: 'id', internalType: 'uint256', type: 'uint256' },
+            { name: 'amount', internalType: 'uint256', type: 'uint256' },
+            { name: 'data', internalType: 'bytes', type: 'bytes' },
+        ],
+        name: 'mint',
+        outputs: [],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'to', internalType: 'address', type: 'address' },
+            { name: 'ids', internalType: 'uint256[]', type: 'uint256[]' },
+            { name: 'amounts', internalType: 'uint256[]', type: 'uint256[]' },
+            { name: 'data', internalType: 'bytes', type: 'bytes' },
+        ],
+        name: 'mintBatch',
+        outputs: [],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [],
+        name: 'owner',
+        outputs: [{ name: '', internalType: 'address', type: 'address' }],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [],
+        name: 'renounceOwnership',
+        outputs: [],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'from', internalType: 'address', type: 'address' },
+            { name: 'to', internalType: 'address', type: 'address' },
+            { name: 'ids', internalType: 'uint256[]', type: 'uint256[]' },
+            { name: 'values', internalType: 'uint256[]', type: 'uint256[]' },
+            { name: 'data', internalType: 'bytes', type: 'bytes' },
+        ],
+        name: 'safeBatchTransferFrom',
+        outputs: [],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'from', internalType: 'address', type: 'address' },
+            { name: 'to', internalType: 'address', type: 'address' },
+            { name: 'id', internalType: 'uint256', type: 'uint256' },
+            { name: 'value', internalType: 'uint256', type: 'uint256' },
+            { name: 'data', internalType: 'bytes', type: 'bytes' },
+        ],
+        name: 'safeTransferFrom',
+        outputs: [],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'operator', internalType: 'address', type: 'address' },
+            { name: 'approved', internalType: 'bool', type: 'bool' },
+        ],
+        name: 'setApprovalForAll',
+        outputs: [],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [{ name: 'newuri', internalType: 'string', type: 'string' }],
+        name: 'setURI',
+        outputs: [],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'interfaceId', internalType: 'bytes4', type: 'bytes4' },
+        ],
+        name: 'supportsInterface',
+        outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'newOwner', internalType: 'address', type: 'address' },
+        ],
+        name: 'transferOwnership',
+        outputs: [],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+        name: 'uri',
+        outputs: [{ name: '', internalType: 'string', type: 'string' }],
+        stateMutability: 'view',
+    },
+] as const
+
+export const sunodoMultiTokenAddress =
+    '0xa376A4afa7D03A64Dc7aE194322468c170276c62' as const
+
+export const sunodoMultiTokenConfig = {
+    address: sunodoMultiTokenAddress,
+    abi: sunodoMultiTokenAbi,
+} as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// SunodoNFT
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const sunodoNftAbi = [
+    {
+        type: 'constructor',
+        inputs: [
+            { name: 'initialOwner', internalType: 'address', type: 'address' },
+        ],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'error',
+        inputs: [
+            { name: 'sender', internalType: 'address', type: 'address' },
+            { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+            { name: 'owner', internalType: 'address', type: 'address' },
+        ],
+        name: 'ERC721IncorrectOwner',
+    },
+    {
+        type: 'error',
+        inputs: [
+            { name: 'operator', internalType: 'address', type: 'address' },
+            { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+        ],
+        name: 'ERC721InsufficientApproval',
+    },
+    {
+        type: 'error',
+        inputs: [
+            { name: 'approver', internalType: 'address', type: 'address' },
+        ],
+        name: 'ERC721InvalidApprover',
+    },
+    {
+        type: 'error',
+        inputs: [
+            { name: 'operator', internalType: 'address', type: 'address' },
+        ],
+        name: 'ERC721InvalidOperator',
+    },
+    {
+        type: 'error',
+        inputs: [{ name: 'owner', internalType: 'address', type: 'address' }],
+        name: 'ERC721InvalidOwner',
+    },
+    {
+        type: 'error',
+        inputs: [
+            { name: 'receiver', internalType: 'address', type: 'address' },
+        ],
+        name: 'ERC721InvalidReceiver',
+    },
+    {
+        type: 'error',
+        inputs: [{ name: 'sender', internalType: 'address', type: 'address' }],
+        name: 'ERC721InvalidSender',
+    },
+    {
+        type: 'error',
+        inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
+        name: 'ERC721NonexistentToken',
+    },
+    {
+        type: 'error',
+        inputs: [{ name: 'owner', internalType: 'address', type: 'address' }],
+        name: 'OwnableInvalidOwner',
+    },
+    {
+        type: 'error',
+        inputs: [{ name: 'account', internalType: 'address', type: 'address' }],
+        name: 'OwnableUnauthorizedAccount',
+    },
+    {
+        type: 'event',
+        anonymous: false,
+        inputs: [
+            {
+                name: 'owner',
+                internalType: 'address',
+                type: 'address',
+                indexed: true,
+            },
+            {
+                name: 'approved',
+                internalType: 'address',
+                type: 'address',
+                indexed: true,
+            },
+            {
+                name: 'tokenId',
+                internalType: 'uint256',
+                type: 'uint256',
+                indexed: true,
+            },
+        ],
+        name: 'Approval',
+    },
+    {
+        type: 'event',
+        anonymous: false,
+        inputs: [
+            {
+                name: 'owner',
+                internalType: 'address',
+                type: 'address',
+                indexed: true,
+            },
+            {
+                name: 'operator',
+                internalType: 'address',
+                type: 'address',
+                indexed: true,
+            },
+            {
+                name: 'approved',
+                internalType: 'bool',
+                type: 'bool',
+                indexed: false,
+            },
+        ],
+        name: 'ApprovalForAll',
+    },
+    {
+        type: 'event',
+        anonymous: false,
+        inputs: [
+            {
+                name: '_fromTokenId',
+                internalType: 'uint256',
+                type: 'uint256',
+                indexed: false,
+            },
+            {
+                name: '_toTokenId',
+                internalType: 'uint256',
+                type: 'uint256',
+                indexed: false,
+            },
+        ],
+        name: 'BatchMetadataUpdate',
+    },
+    {
+        type: 'event',
+        anonymous: false,
+        inputs: [
+            {
+                name: '_tokenId',
+                internalType: 'uint256',
+                type: 'uint256',
+                indexed: false,
+            },
+        ],
+        name: 'MetadataUpdate',
+    },
+    {
+        type: 'event',
+        anonymous: false,
+        inputs: [
+            {
+                name: 'previousOwner',
+                internalType: 'address',
+                type: 'address',
+                indexed: true,
+            },
+            {
+                name: 'newOwner',
+                internalType: 'address',
+                type: 'address',
+                indexed: true,
+            },
+        ],
+        name: 'OwnershipTransferred',
+    },
+    {
+        type: 'event',
+        anonymous: false,
+        inputs: [
+            {
+                name: 'from',
+                internalType: 'address',
+                type: 'address',
+                indexed: true,
+            },
+            {
+                name: 'to',
+                internalType: 'address',
+                type: 'address',
+                indexed: true,
+            },
+            {
+                name: 'tokenId',
+                internalType: 'uint256',
+                type: 'uint256',
+                indexed: true,
+            },
+        ],
+        name: 'Transfer',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'to', internalType: 'address', type: 'address' },
+            { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+        ],
+        name: 'approve',
+        outputs: [],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [{ name: 'owner', internalType: 'address', type: 'address' }],
+        name: 'balanceOf',
+        outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
+        name: 'getApproved',
+        outputs: [{ name: '', internalType: 'address', type: 'address' }],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'owner', internalType: 'address', type: 'address' },
+            { name: 'operator', internalType: 'address', type: 'address' },
+        ],
+        name: 'isApprovedForAll',
+        outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [],
+        name: 'name',
+        outputs: [{ name: '', internalType: 'string', type: 'string' }],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [],
+        name: 'owner',
+        outputs: [{ name: '', internalType: 'address', type: 'address' }],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
+        name: 'ownerOf',
+        outputs: [{ name: '', internalType: 'address', type: 'address' }],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [],
+        name: 'renounceOwnership',
+        outputs: [],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'to', internalType: 'address', type: 'address' },
+            { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+            { name: 'uri', internalType: 'string', type: 'string' },
+        ],
+        name: 'safeMint',
+        outputs: [],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'from', internalType: 'address', type: 'address' },
+            { name: 'to', internalType: 'address', type: 'address' },
+            { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+        ],
+        name: 'safeTransferFrom',
+        outputs: [],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'from', internalType: 'address', type: 'address' },
+            { name: 'to', internalType: 'address', type: 'address' },
+            { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+            { name: 'data', internalType: 'bytes', type: 'bytes' },
+        ],
+        name: 'safeTransferFrom',
+        outputs: [],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'operator', internalType: 'address', type: 'address' },
+            { name: 'approved', internalType: 'bool', type: 'bool' },
+        ],
+        name: 'setApprovalForAll',
+        outputs: [],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'interfaceId', internalType: 'bytes4', type: 'bytes4' },
+        ],
+        name: 'supportsInterface',
+        outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [],
+        name: 'symbol',
+        outputs: [{ name: '', internalType: 'string', type: 'string' }],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
+        name: 'tokenURI',
+        outputs: [{ name: '', internalType: 'string', type: 'string' }],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'from', internalType: 'address', type: 'address' },
+            { name: 'to', internalType: 'address', type: 'address' },
+            { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+        ],
+        name: 'transferFrom',
+        outputs: [],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'newOwner', internalType: 'address', type: 'address' },
+        ],
+        name: 'transferOwnership',
+        outputs: [],
+        stateMutability: 'nonpayable',
+    },
+] as const
+
+export const sunodoNftAddress =
+    '0x093771B61bBAC90C74576E007673068AaD6AE3B7' as const
+
+export const sunodoNftConfig = {
+    address: sunodoNftAddress,
+    abi: sunodoNftAbi,
 } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1578,302 +2173,6 @@ export const unrolledCordicConfig = {
     address: unrolledCordicAddress,
     abi: unrolledCordicAbi,
 } as const
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// ValidatorNodeProvider
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-export const validatorNodeProviderAbi = [
-    {
-        type: 'constructor',
-        inputs: [
-            { name: '_owner', internalType: 'address', type: 'address' },
-            { name: '_ens', internalType: 'contract ENS', type: 'address' },
-            {
-                name: '_token',
-                internalType: 'contract IERC20',
-                type: 'address',
-            },
-            { name: '_payee', internalType: 'address', type: 'address' },
-            { name: '_price', internalType: 'uint256', type: 'uint256' },
-            {
-                name: '_factory',
-                internalType: 'contract ICartesiDAppFactory',
-                type: 'address',
-            },
-            {
-                name: '_consensus',
-                internalType: 'contract IConsensus',
-                type: 'address',
-            },
-        ],
-        stateMutability: 'nonpayable',
-    },
-    {
-        type: 'event',
-        anonymous: false,
-        inputs: [
-            {
-                name: 'application',
-                internalType: 'address',
-                type: 'address',
-                indexed: true,
-            },
-            {
-                name: 'until',
-                internalType: 'uint256',
-                type: 'uint256',
-                indexed: false,
-            },
-        ],
-        name: 'FinancialRunway',
-    },
-    {
-        type: 'event',
-        anonymous: false,
-        inputs: [
-            {
-                name: 'application',
-                internalType: 'address',
-                type: 'address',
-                indexed: true,
-            },
-            {
-                name: 'location',
-                internalType: 'string',
-                type: 'string',
-                indexed: false,
-            },
-        ],
-        name: 'MachineLocation',
-    },
-    {
-        type: 'event',
-        anonymous: false,
-        inputs: [
-            {
-                name: 'previousOwner',
-                internalType: 'address',
-                type: 'address',
-                indexed: true,
-            },
-            {
-                name: 'newOwner',
-                internalType: 'address',
-                type: 'address',
-                indexed: true,
-            },
-        ],
-        name: 'OwnershipTransferred',
-    },
-    {
-        type: 'event',
-        anonymous: false,
-        inputs: [
-            {
-                name: 'account',
-                internalType: 'address',
-                type: 'address',
-                indexed: false,
-            },
-        ],
-        name: 'Paused',
-    },
-    {
-        type: 'event',
-        anonymous: false,
-        inputs: [
-            {
-                name: 'account',
-                internalType: 'address',
-                type: 'address',
-                indexed: false,
-            },
-        ],
-        name: 'Unpaused',
-    },
-    {
-        type: 'function',
-        inputs: [
-            { name: '_owner', internalType: 'address', type: 'address' },
-            { name: '_templateHash', internalType: 'bytes32', type: 'bytes32' },
-            { name: '_salt', internalType: 'bytes32', type: 'bytes32' },
-        ],
-        name: 'calculateApplicationAddress',
-        outputs: [{ name: '', internalType: 'address', type: 'address' }],
-        stateMutability: 'view',
-    },
-    {
-        type: 'function',
-        inputs: [],
-        name: 'consensus',
-        outputs: [
-            { name: '', internalType: 'contract IConsensus', type: 'address' },
-        ],
-        stateMutability: 'view',
-    },
-    {
-        type: 'function',
-        inputs: [{ name: '_time', internalType: 'uint256', type: 'uint256' }],
-        name: 'cost',
-        outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-        stateMutability: 'view',
-    },
-    {
-        type: 'function',
-        inputs: [
-            { name: '_owner', internalType: 'address', type: 'address' },
-            { name: '_templateHash', internalType: 'bytes32', type: 'bytes32' },
-            { name: '_location', internalType: 'string', type: 'string' },
-            {
-                name: '_initialRunway',
-                internalType: 'uint256',
-                type: 'uint256',
-            },
-            { name: '_salt', internalType: 'bytes32', type: 'bytes32' },
-        ],
-        name: 'deploy',
-        outputs: [
-            { name: '', internalType: 'contract CartesiDApp', type: 'address' },
-        ],
-        stateMutability: 'nonpayable',
-    },
-    {
-        type: 'function',
-        inputs: [],
-        name: 'ens',
-        outputs: [{ name: '', internalType: 'contract ENS', type: 'address' }],
-        stateMutability: 'view',
-    },
-    {
-        type: 'function',
-        inputs: [
-            {
-                name: '_application',
-                internalType: 'contract ICartesiDApp',
-                type: 'address',
-            },
-            { name: '_time', internalType: 'uint256', type: 'uint256' },
-        ],
-        name: 'extendRunway',
-        outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-        stateMutability: 'nonpayable',
-    },
-    {
-        type: 'function',
-        inputs: [],
-        name: 'factory',
-        outputs: [
-            {
-                name: '',
-                internalType: 'contract ICartesiDAppFactory',
-                type: 'address',
-            },
-        ],
-        stateMutability: 'view',
-    },
-    {
-        type: 'function',
-        inputs: [],
-        name: 'owner',
-        outputs: [{ name: '', internalType: 'address', type: 'address' }],
-        stateMutability: 'view',
-    },
-    {
-        type: 'function',
-        inputs: [],
-        name: 'pause',
-        outputs: [],
-        stateMutability: 'nonpayable',
-    },
-    {
-        type: 'function',
-        inputs: [],
-        name: 'paused',
-        outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
-        stateMutability: 'view',
-    },
-    {
-        type: 'function',
-        inputs: [],
-        name: 'payee',
-        outputs: [{ name: '', internalType: 'address', type: 'address' }],
-        stateMutability: 'view',
-    },
-    {
-        type: 'function',
-        inputs: [],
-        name: 'price',
-        outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-        stateMutability: 'view',
-    },
-    {
-        type: 'function',
-        inputs: [
-            {
-                name: 'application',
-                internalType: 'contract ICartesiDApp',
-                type: 'address',
-            },
-            { name: 'location', internalType: 'string', type: 'string' },
-        ],
-        name: 'register',
-        outputs: [],
-        stateMutability: 'nonpayable',
-    },
-    {
-        type: 'function',
-        inputs: [],
-        name: 'renounceOwnership',
-        outputs: [],
-        stateMutability: 'nonpayable',
-    },
-    {
-        type: 'function',
-        inputs: [
-            {
-                name: '',
-                internalType: 'contract ICartesiDApp',
-                type: 'address',
-            },
-        ],
-        name: 'runway',
-        outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-        stateMutability: 'view',
-    },
-    {
-        type: 'function',
-        inputs: [{ name: 'name', internalType: 'string', type: 'string' }],
-        name: 'setName',
-        outputs: [],
-        stateMutability: 'nonpayable',
-    },
-    {
-        type: 'function',
-        inputs: [],
-        name: 'token',
-        outputs: [
-            { name: '', internalType: 'contract IERC20', type: 'address' },
-        ],
-        stateMutability: 'view',
-    },
-    {
-        type: 'function',
-        inputs: [
-            { name: 'newOwner', internalType: 'address', type: 'address' },
-        ],
-        name: 'transferOwnership',
-        outputs: [],
-        stateMutability: 'nonpayable',
-    },
-    {
-        type: 'function',
-        inputs: [],
-        name: 'unpause',
-        outputs: [],
-        stateMutability: 'nonpayable',
-    },
-] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // erc20
@@ -2771,117 +3070,6 @@ export const useWatchInputBoxInputAddedEvent =
     })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link marketplaceAbi}__
- */
-export const useReadMarketplace = /*#__PURE__*/ createUseReadContract({
-    abi: marketplaceAbi,
-    address: marketplaceAddress,
-})
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link marketplaceAbi}__ and `functionName` set to `"ens"`
- */
-export const useReadMarketplaceEns = /*#__PURE__*/ createUseReadContract({
-    abi: marketplaceAbi,
-    address: marketplaceAddress,
-    functionName: 'ens',
-})
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link marketplaceAbi}__ and `functionName` set to `"factory"`
- */
-export const useReadMarketplaceFactory = /*#__PURE__*/ createUseReadContract({
-    abi: marketplaceAbi,
-    address: marketplaceAddress,
-    functionName: 'factory',
-})
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link marketplaceAbi}__
- */
-export const useWriteMarketplace = /*#__PURE__*/ createUseWriteContract({
-    abi: marketplaceAbi,
-    address: marketplaceAddress,
-})
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link marketplaceAbi}__ and `functionName` set to `"newReaderNodeProvider"`
- */
-export const useWriteMarketplaceNewReaderNodeProvider =
-    /*#__PURE__*/ createUseWriteContract({
-        abi: marketplaceAbi,
-        address: marketplaceAddress,
-        functionName: 'newReaderNodeProvider',
-    })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link marketplaceAbi}__ and `functionName` set to `"newValidatorNodeProvider"`
- */
-export const useWriteMarketplaceNewValidatorNodeProvider =
-    /*#__PURE__*/ createUseWriteContract({
-        abi: marketplaceAbi,
-        address: marketplaceAddress,
-        functionName: 'newValidatorNodeProvider',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link marketplaceAbi}__
- */
-export const useSimulateMarketplace = /*#__PURE__*/ createUseSimulateContract({
-    abi: marketplaceAbi,
-    address: marketplaceAddress,
-})
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link marketplaceAbi}__ and `functionName` set to `"newReaderNodeProvider"`
- */
-export const useSimulateMarketplaceNewReaderNodeProvider =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: marketplaceAbi,
-        address: marketplaceAddress,
-        functionName: 'newReaderNodeProvider',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link marketplaceAbi}__ and `functionName` set to `"newValidatorNodeProvider"`
- */
-export const useSimulateMarketplaceNewValidatorNodeProvider =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: marketplaceAbi,
-        address: marketplaceAddress,
-        functionName: 'newValidatorNodeProvider',
-    })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link marketplaceAbi}__
- */
-export const useWatchMarketplaceEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({
-        abi: marketplaceAbi,
-        address: marketplaceAddress,
-    })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link marketplaceAbi}__ and `eventName` set to `"ReaderNodeProviderCreated"`
- */
-export const useWatchMarketplaceReaderNodeProviderCreatedEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({
-        abi: marketplaceAbi,
-        address: marketplaceAddress,
-        eventName: 'ReaderNodeProviderCreated',
-    })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link marketplaceAbi}__ and `eventName` set to `"ValidatorNodeProviderCreated"`
- */
-export const useWatchMarketplaceValidatorNodeProviderCreatedEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({
-        abi: marketplaceAbi,
-        address: marketplaceAddress,
-        eventName: 'ValidatorNodeProviderCreated',
-    })
-
-/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link merkleV2Abi}__
  */
 export const useReadMerkleV2 = /*#__PURE__*/ createUseReadContract({
@@ -2949,13 +3137,33 @@ export const useReadSelfHostedApplicationFactory =
     })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link selfHostedApplicationFactoryAbi}__ and `functionName` set to `"calculateApplicationAddress"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link selfHostedApplicationFactoryAbi}__ and `functionName` set to `"calculateAddresses"`
  */
-export const useReadSelfHostedApplicationFactoryCalculateApplicationAddress =
+export const useReadSelfHostedApplicationFactoryCalculateAddresses =
     /*#__PURE__*/ createUseReadContract({
         abi: selfHostedApplicationFactoryAbi,
         address: selfHostedApplicationFactoryAddress,
-        functionName: 'calculateApplicationAddress',
+        functionName: 'calculateAddresses',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link selfHostedApplicationFactoryAbi}__ and `functionName` set to `"getApplicationFactory"`
+ */
+export const useReadSelfHostedApplicationFactoryGetApplicationFactory =
+    /*#__PURE__*/ createUseReadContract({
+        abi: selfHostedApplicationFactoryAbi,
+        address: selfHostedApplicationFactoryAddress,
+        functionName: 'getApplicationFactory',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link selfHostedApplicationFactoryAbi}__ and `functionName` set to `"getAuthorityHistoryPairFactory"`
+ */
+export const useReadSelfHostedApplicationFactoryGetAuthorityHistoryPairFactory =
+    /*#__PURE__*/ createUseReadContract({
+        abi: selfHostedApplicationFactoryAbi,
+        address: selfHostedApplicationFactoryAddress,
+        functionName: 'getAuthorityHistoryPairFactory',
     })
 
 /**
@@ -2968,13 +3176,13 @@ export const useWriteSelfHostedApplicationFactory =
     })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link selfHostedApplicationFactoryAbi}__ and `functionName` set to `"newApplication"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link selfHostedApplicationFactoryAbi}__ and `functionName` set to `"deployContracts"`
  */
-export const useWriteSelfHostedApplicationFactoryNewApplication =
+export const useWriteSelfHostedApplicationFactoryDeployContracts =
     /*#__PURE__*/ createUseWriteContract({
         abi: selfHostedApplicationFactoryAbi,
         address: selfHostedApplicationFactoryAddress,
-        functionName: 'newApplication',
+        functionName: 'deployContracts',
     })
 
 /**
@@ -2987,13 +3195,629 @@ export const useSimulateSelfHostedApplicationFactory =
     })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link selfHostedApplicationFactoryAbi}__ and `functionName` set to `"newApplication"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link selfHostedApplicationFactoryAbi}__ and `functionName` set to `"deployContracts"`
  */
-export const useSimulateSelfHostedApplicationFactoryNewApplication =
+export const useSimulateSelfHostedApplicationFactoryDeployContracts =
     /*#__PURE__*/ createUseSimulateContract({
         abi: selfHostedApplicationFactoryAbi,
         address: selfHostedApplicationFactoryAddress,
-        functionName: 'newApplication',
+        functionName: 'deployContracts',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__
+ */
+export const useReadSunodoMultiToken = /*#__PURE__*/ createUseReadContract({
+    abi: sunodoMultiTokenAbi,
+    address: sunodoMultiTokenAddress,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"balanceOf"`
+ */
+export const useReadSunodoMultiTokenBalanceOf =
+    /*#__PURE__*/ createUseReadContract({
+        abi: sunodoMultiTokenAbi,
+        address: sunodoMultiTokenAddress,
+        functionName: 'balanceOf',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"balanceOfBatch"`
+ */
+export const useReadSunodoMultiTokenBalanceOfBatch =
+    /*#__PURE__*/ createUseReadContract({
+        abi: sunodoMultiTokenAbi,
+        address: sunodoMultiTokenAddress,
+        functionName: 'balanceOfBatch',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"isApprovedForAll"`
+ */
+export const useReadSunodoMultiTokenIsApprovedForAll =
+    /*#__PURE__*/ createUseReadContract({
+        abi: sunodoMultiTokenAbi,
+        address: sunodoMultiTokenAddress,
+        functionName: 'isApprovedForAll',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"owner"`
+ */
+export const useReadSunodoMultiTokenOwner = /*#__PURE__*/ createUseReadContract(
+    {
+        abi: sunodoMultiTokenAbi,
+        address: sunodoMultiTokenAddress,
+        functionName: 'owner',
+    },
+)
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"supportsInterface"`
+ */
+export const useReadSunodoMultiTokenSupportsInterface =
+    /*#__PURE__*/ createUseReadContract({
+        abi: sunodoMultiTokenAbi,
+        address: sunodoMultiTokenAddress,
+        functionName: 'supportsInterface',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"uri"`
+ */
+export const useReadSunodoMultiTokenUri = /*#__PURE__*/ createUseReadContract({
+    abi: sunodoMultiTokenAbi,
+    address: sunodoMultiTokenAddress,
+    functionName: 'uri',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__
+ */
+export const useWriteSunodoMultiToken = /*#__PURE__*/ createUseWriteContract({
+    abi: sunodoMultiTokenAbi,
+    address: sunodoMultiTokenAddress,
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"mint"`
+ */
+export const useWriteSunodoMultiTokenMint =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: sunodoMultiTokenAbi,
+        address: sunodoMultiTokenAddress,
+        functionName: 'mint',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"mintBatch"`
+ */
+export const useWriteSunodoMultiTokenMintBatch =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: sunodoMultiTokenAbi,
+        address: sunodoMultiTokenAddress,
+        functionName: 'mintBatch',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"renounceOwnership"`
+ */
+export const useWriteSunodoMultiTokenRenounceOwnership =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: sunodoMultiTokenAbi,
+        address: sunodoMultiTokenAddress,
+        functionName: 'renounceOwnership',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"safeBatchTransferFrom"`
+ */
+export const useWriteSunodoMultiTokenSafeBatchTransferFrom =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: sunodoMultiTokenAbi,
+        address: sunodoMultiTokenAddress,
+        functionName: 'safeBatchTransferFrom',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"safeTransferFrom"`
+ */
+export const useWriteSunodoMultiTokenSafeTransferFrom =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: sunodoMultiTokenAbi,
+        address: sunodoMultiTokenAddress,
+        functionName: 'safeTransferFrom',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"setApprovalForAll"`
+ */
+export const useWriteSunodoMultiTokenSetApprovalForAll =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: sunodoMultiTokenAbi,
+        address: sunodoMultiTokenAddress,
+        functionName: 'setApprovalForAll',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"setURI"`
+ */
+export const useWriteSunodoMultiTokenSetUri =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: sunodoMultiTokenAbi,
+        address: sunodoMultiTokenAddress,
+        functionName: 'setURI',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"transferOwnership"`
+ */
+export const useWriteSunodoMultiTokenTransferOwnership =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: sunodoMultiTokenAbi,
+        address: sunodoMultiTokenAddress,
+        functionName: 'transferOwnership',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__
+ */
+export const useSimulateSunodoMultiToken =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: sunodoMultiTokenAbi,
+        address: sunodoMultiTokenAddress,
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"mint"`
+ */
+export const useSimulateSunodoMultiTokenMint =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: sunodoMultiTokenAbi,
+        address: sunodoMultiTokenAddress,
+        functionName: 'mint',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"mintBatch"`
+ */
+export const useSimulateSunodoMultiTokenMintBatch =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: sunodoMultiTokenAbi,
+        address: sunodoMultiTokenAddress,
+        functionName: 'mintBatch',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"renounceOwnership"`
+ */
+export const useSimulateSunodoMultiTokenRenounceOwnership =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: sunodoMultiTokenAbi,
+        address: sunodoMultiTokenAddress,
+        functionName: 'renounceOwnership',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"safeBatchTransferFrom"`
+ */
+export const useSimulateSunodoMultiTokenSafeBatchTransferFrom =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: sunodoMultiTokenAbi,
+        address: sunodoMultiTokenAddress,
+        functionName: 'safeBatchTransferFrom',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"safeTransferFrom"`
+ */
+export const useSimulateSunodoMultiTokenSafeTransferFrom =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: sunodoMultiTokenAbi,
+        address: sunodoMultiTokenAddress,
+        functionName: 'safeTransferFrom',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"setApprovalForAll"`
+ */
+export const useSimulateSunodoMultiTokenSetApprovalForAll =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: sunodoMultiTokenAbi,
+        address: sunodoMultiTokenAddress,
+        functionName: 'setApprovalForAll',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"setURI"`
+ */
+export const useSimulateSunodoMultiTokenSetUri =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: sunodoMultiTokenAbi,
+        address: sunodoMultiTokenAddress,
+        functionName: 'setURI',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"transferOwnership"`
+ */
+export const useSimulateSunodoMultiTokenTransferOwnership =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: sunodoMultiTokenAbi,
+        address: sunodoMultiTokenAddress,
+        functionName: 'transferOwnership',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoMultiTokenAbi}__
+ */
+export const useWatchSunodoMultiTokenEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: sunodoMultiTokenAbi,
+        address: sunodoMultiTokenAddress,
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `eventName` set to `"ApprovalForAll"`
+ */
+export const useWatchSunodoMultiTokenApprovalForAllEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: sunodoMultiTokenAbi,
+        address: sunodoMultiTokenAddress,
+        eventName: 'ApprovalForAll',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `eventName` set to `"OwnershipTransferred"`
+ */
+export const useWatchSunodoMultiTokenOwnershipTransferredEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: sunodoMultiTokenAbi,
+        address: sunodoMultiTokenAddress,
+        eventName: 'OwnershipTransferred',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `eventName` set to `"TransferBatch"`
+ */
+export const useWatchSunodoMultiTokenTransferBatchEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: sunodoMultiTokenAbi,
+        address: sunodoMultiTokenAddress,
+        eventName: 'TransferBatch',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `eventName` set to `"TransferSingle"`
+ */
+export const useWatchSunodoMultiTokenTransferSingleEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: sunodoMultiTokenAbi,
+        address: sunodoMultiTokenAddress,
+        eventName: 'TransferSingle',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `eventName` set to `"URI"`
+ */
+export const useWatchSunodoMultiTokenUriEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: sunodoMultiTokenAbi,
+        address: sunodoMultiTokenAddress,
+        eventName: 'URI',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__
+ */
+export const useReadSunodoNft = /*#__PURE__*/ createUseReadContract({
+    abi: sunodoNftAbi,
+    address: sunodoNftAddress,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"balanceOf"`
+ */
+export const useReadSunodoNftBalanceOf = /*#__PURE__*/ createUseReadContract({
+    abi: sunodoNftAbi,
+    address: sunodoNftAddress,
+    functionName: 'balanceOf',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"getApproved"`
+ */
+export const useReadSunodoNftGetApproved = /*#__PURE__*/ createUseReadContract({
+    abi: sunodoNftAbi,
+    address: sunodoNftAddress,
+    functionName: 'getApproved',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"isApprovedForAll"`
+ */
+export const useReadSunodoNftIsApprovedForAll =
+    /*#__PURE__*/ createUseReadContract({
+        abi: sunodoNftAbi,
+        address: sunodoNftAddress,
+        functionName: 'isApprovedForAll',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"name"`
+ */
+export const useReadSunodoNftName = /*#__PURE__*/ createUseReadContract({
+    abi: sunodoNftAbi,
+    address: sunodoNftAddress,
+    functionName: 'name',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"owner"`
+ */
+export const useReadSunodoNftOwner = /*#__PURE__*/ createUseReadContract({
+    abi: sunodoNftAbi,
+    address: sunodoNftAddress,
+    functionName: 'owner',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"ownerOf"`
+ */
+export const useReadSunodoNftOwnerOf = /*#__PURE__*/ createUseReadContract({
+    abi: sunodoNftAbi,
+    address: sunodoNftAddress,
+    functionName: 'ownerOf',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"supportsInterface"`
+ */
+export const useReadSunodoNftSupportsInterface =
+    /*#__PURE__*/ createUseReadContract({
+        abi: sunodoNftAbi,
+        address: sunodoNftAddress,
+        functionName: 'supportsInterface',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"symbol"`
+ */
+export const useReadSunodoNftSymbol = /*#__PURE__*/ createUseReadContract({
+    abi: sunodoNftAbi,
+    address: sunodoNftAddress,
+    functionName: 'symbol',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"tokenURI"`
+ */
+export const useReadSunodoNftTokenUri = /*#__PURE__*/ createUseReadContract({
+    abi: sunodoNftAbi,
+    address: sunodoNftAddress,
+    functionName: 'tokenURI',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoNftAbi}__
+ */
+export const useWriteSunodoNft = /*#__PURE__*/ createUseWriteContract({
+    abi: sunodoNftAbi,
+    address: sunodoNftAddress,
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"approve"`
+ */
+export const useWriteSunodoNftApprove = /*#__PURE__*/ createUseWriteContract({
+    abi: sunodoNftAbi,
+    address: sunodoNftAddress,
+    functionName: 'approve',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"renounceOwnership"`
+ */
+export const useWriteSunodoNftRenounceOwnership =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: sunodoNftAbi,
+        address: sunodoNftAddress,
+        functionName: 'renounceOwnership',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"safeMint"`
+ */
+export const useWriteSunodoNftSafeMint = /*#__PURE__*/ createUseWriteContract({
+    abi: sunodoNftAbi,
+    address: sunodoNftAddress,
+    functionName: 'safeMint',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"safeTransferFrom"`
+ */
+export const useWriteSunodoNftSafeTransferFrom =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: sunodoNftAbi,
+        address: sunodoNftAddress,
+        functionName: 'safeTransferFrom',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"setApprovalForAll"`
+ */
+export const useWriteSunodoNftSetApprovalForAll =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: sunodoNftAbi,
+        address: sunodoNftAddress,
+        functionName: 'setApprovalForAll',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"transferFrom"`
+ */
+export const useWriteSunodoNftTransferFrom =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: sunodoNftAbi,
+        address: sunodoNftAddress,
+        functionName: 'transferFrom',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"transferOwnership"`
+ */
+export const useWriteSunodoNftTransferOwnership =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: sunodoNftAbi,
+        address: sunodoNftAddress,
+        functionName: 'transferOwnership',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoNftAbi}__
+ */
+export const useSimulateSunodoNft = /*#__PURE__*/ createUseSimulateContract({
+    abi: sunodoNftAbi,
+    address: sunodoNftAddress,
+})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"approve"`
+ */
+export const useSimulateSunodoNftApprove =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: sunodoNftAbi,
+        address: sunodoNftAddress,
+        functionName: 'approve',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"renounceOwnership"`
+ */
+export const useSimulateSunodoNftRenounceOwnership =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: sunodoNftAbi,
+        address: sunodoNftAddress,
+        functionName: 'renounceOwnership',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"safeMint"`
+ */
+export const useSimulateSunodoNftSafeMint =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: sunodoNftAbi,
+        address: sunodoNftAddress,
+        functionName: 'safeMint',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"safeTransferFrom"`
+ */
+export const useSimulateSunodoNftSafeTransferFrom =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: sunodoNftAbi,
+        address: sunodoNftAddress,
+        functionName: 'safeTransferFrom',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"setApprovalForAll"`
+ */
+export const useSimulateSunodoNftSetApprovalForAll =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: sunodoNftAbi,
+        address: sunodoNftAddress,
+        functionName: 'setApprovalForAll',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"transferFrom"`
+ */
+export const useSimulateSunodoNftTransferFrom =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: sunodoNftAbi,
+        address: sunodoNftAddress,
+        functionName: 'transferFrom',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"transferOwnership"`
+ */
+export const useSimulateSunodoNftTransferOwnership =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: sunodoNftAbi,
+        address: sunodoNftAddress,
+        functionName: 'transferOwnership',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoNftAbi}__
+ */
+export const useWatchSunodoNftEvent = /*#__PURE__*/ createUseWatchContractEvent(
+    { abi: sunodoNftAbi, address: sunodoNftAddress },
+)
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoNftAbi}__ and `eventName` set to `"Approval"`
+ */
+export const useWatchSunodoNftApprovalEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: sunodoNftAbi,
+        address: sunodoNftAddress,
+        eventName: 'Approval',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoNftAbi}__ and `eventName` set to `"ApprovalForAll"`
+ */
+export const useWatchSunodoNftApprovalForAllEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: sunodoNftAbi,
+        address: sunodoNftAddress,
+        eventName: 'ApprovalForAll',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoNftAbi}__ and `eventName` set to `"BatchMetadataUpdate"`
+ */
+export const useWatchSunodoNftBatchMetadataUpdateEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: sunodoNftAbi,
+        address: sunodoNftAddress,
+        eventName: 'BatchMetadataUpdate',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoNftAbi}__ and `eventName` set to `"MetadataUpdate"`
+ */
+export const useWatchSunodoNftMetadataUpdateEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: sunodoNftAbi,
+        address: sunodoNftAddress,
+        eventName: 'MetadataUpdate',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoNftAbi}__ and `eventName` set to `"OwnershipTransferred"`
+ */
+export const useWatchSunodoNftOwnershipTransferredEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: sunodoNftAbi,
+        address: sunodoNftAddress,
+        eventName: 'OwnershipTransferred',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoNftAbi}__ and `eventName` set to `"Transfer"`
+ */
+export const useWatchSunodoNftTransferEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: sunodoNftAbi,
+        address: sunodoNftAddress,
+        eventName: 'Transfer',
     })
 
 /**
@@ -3394,319 +4218,6 @@ export const useReadUnrolledCordicLog2Times1e18 =
         abi: unrolledCordicAbi,
         address: unrolledCordicAddress,
         functionName: 'log2Times1e18',
-    })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__
- */
-export const useReadValidatorNodeProvider = /*#__PURE__*/ createUseReadContract(
-    { abi: validatorNodeProviderAbi },
-)
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `functionName` set to `"calculateApplicationAddress"`
- */
-export const useReadValidatorNodeProviderCalculateApplicationAddress =
-    /*#__PURE__*/ createUseReadContract({
-        abi: validatorNodeProviderAbi,
-        functionName: 'calculateApplicationAddress',
-    })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `functionName` set to `"consensus"`
- */
-export const useReadValidatorNodeProviderConsensus =
-    /*#__PURE__*/ createUseReadContract({
-        abi: validatorNodeProviderAbi,
-        functionName: 'consensus',
-    })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `functionName` set to `"cost"`
- */
-export const useReadValidatorNodeProviderCost =
-    /*#__PURE__*/ createUseReadContract({
-        abi: validatorNodeProviderAbi,
-        functionName: 'cost',
-    })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `functionName` set to `"ens"`
- */
-export const useReadValidatorNodeProviderEns =
-    /*#__PURE__*/ createUseReadContract({
-        abi: validatorNodeProviderAbi,
-        functionName: 'ens',
-    })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `functionName` set to `"factory"`
- */
-export const useReadValidatorNodeProviderFactory =
-    /*#__PURE__*/ createUseReadContract({
-        abi: validatorNodeProviderAbi,
-        functionName: 'factory',
-    })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `functionName` set to `"owner"`
- */
-export const useReadValidatorNodeProviderOwner =
-    /*#__PURE__*/ createUseReadContract({
-        abi: validatorNodeProviderAbi,
-        functionName: 'owner',
-    })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `functionName` set to `"paused"`
- */
-export const useReadValidatorNodeProviderPaused =
-    /*#__PURE__*/ createUseReadContract({
-        abi: validatorNodeProviderAbi,
-        functionName: 'paused',
-    })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `functionName` set to `"payee"`
- */
-export const useReadValidatorNodeProviderPayee =
-    /*#__PURE__*/ createUseReadContract({
-        abi: validatorNodeProviderAbi,
-        functionName: 'payee',
-    })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `functionName` set to `"price"`
- */
-export const useReadValidatorNodeProviderPrice =
-    /*#__PURE__*/ createUseReadContract({
-        abi: validatorNodeProviderAbi,
-        functionName: 'price',
-    })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `functionName` set to `"runway"`
- */
-export const useReadValidatorNodeProviderRunway =
-    /*#__PURE__*/ createUseReadContract({
-        abi: validatorNodeProviderAbi,
-        functionName: 'runway',
-    })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `functionName` set to `"token"`
- */
-export const useReadValidatorNodeProviderToken =
-    /*#__PURE__*/ createUseReadContract({
-        abi: validatorNodeProviderAbi,
-        functionName: 'token',
-    })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__
- */
-export const useWriteValidatorNodeProvider =
-    /*#__PURE__*/ createUseWriteContract({ abi: validatorNodeProviderAbi })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `functionName` set to `"deploy"`
- */
-export const useWriteValidatorNodeProviderDeploy =
-    /*#__PURE__*/ createUseWriteContract({
-        abi: validatorNodeProviderAbi,
-        functionName: 'deploy',
-    })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `functionName` set to `"extendRunway"`
- */
-export const useWriteValidatorNodeProviderExtendRunway =
-    /*#__PURE__*/ createUseWriteContract({
-        abi: validatorNodeProviderAbi,
-        functionName: 'extendRunway',
-    })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `functionName` set to `"pause"`
- */
-export const useWriteValidatorNodeProviderPause =
-    /*#__PURE__*/ createUseWriteContract({
-        abi: validatorNodeProviderAbi,
-        functionName: 'pause',
-    })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `functionName` set to `"register"`
- */
-export const useWriteValidatorNodeProviderRegister =
-    /*#__PURE__*/ createUseWriteContract({
-        abi: validatorNodeProviderAbi,
-        functionName: 'register',
-    })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `functionName` set to `"renounceOwnership"`
- */
-export const useWriteValidatorNodeProviderRenounceOwnership =
-    /*#__PURE__*/ createUseWriteContract({
-        abi: validatorNodeProviderAbi,
-        functionName: 'renounceOwnership',
-    })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `functionName` set to `"setName"`
- */
-export const useWriteValidatorNodeProviderSetName =
-    /*#__PURE__*/ createUseWriteContract({
-        abi: validatorNodeProviderAbi,
-        functionName: 'setName',
-    })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `functionName` set to `"transferOwnership"`
- */
-export const useWriteValidatorNodeProviderTransferOwnership =
-    /*#__PURE__*/ createUseWriteContract({
-        abi: validatorNodeProviderAbi,
-        functionName: 'transferOwnership',
-    })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `functionName` set to `"unpause"`
- */
-export const useWriteValidatorNodeProviderUnpause =
-    /*#__PURE__*/ createUseWriteContract({
-        abi: validatorNodeProviderAbi,
-        functionName: 'unpause',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__
- */
-export const useSimulateValidatorNodeProvider =
-    /*#__PURE__*/ createUseSimulateContract({ abi: validatorNodeProviderAbi })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `functionName` set to `"deploy"`
- */
-export const useSimulateValidatorNodeProviderDeploy =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: validatorNodeProviderAbi,
-        functionName: 'deploy',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `functionName` set to `"extendRunway"`
- */
-export const useSimulateValidatorNodeProviderExtendRunway =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: validatorNodeProviderAbi,
-        functionName: 'extendRunway',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `functionName` set to `"pause"`
- */
-export const useSimulateValidatorNodeProviderPause =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: validatorNodeProviderAbi,
-        functionName: 'pause',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `functionName` set to `"register"`
- */
-export const useSimulateValidatorNodeProviderRegister =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: validatorNodeProviderAbi,
-        functionName: 'register',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `functionName` set to `"renounceOwnership"`
- */
-export const useSimulateValidatorNodeProviderRenounceOwnership =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: validatorNodeProviderAbi,
-        functionName: 'renounceOwnership',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `functionName` set to `"setName"`
- */
-export const useSimulateValidatorNodeProviderSetName =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: validatorNodeProviderAbi,
-        functionName: 'setName',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `functionName` set to `"transferOwnership"`
- */
-export const useSimulateValidatorNodeProviderTransferOwnership =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: validatorNodeProviderAbi,
-        functionName: 'transferOwnership',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `functionName` set to `"unpause"`
- */
-export const useSimulateValidatorNodeProviderUnpause =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: validatorNodeProviderAbi,
-        functionName: 'unpause',
-    })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link validatorNodeProviderAbi}__
- */
-export const useWatchValidatorNodeProviderEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({ abi: validatorNodeProviderAbi })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `eventName` set to `"FinancialRunway"`
- */
-export const useWatchValidatorNodeProviderFinancialRunwayEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({
-        abi: validatorNodeProviderAbi,
-        eventName: 'FinancialRunway',
-    })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `eventName` set to `"MachineLocation"`
- */
-export const useWatchValidatorNodeProviderMachineLocationEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({
-        abi: validatorNodeProviderAbi,
-        eventName: 'MachineLocation',
-    })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `eventName` set to `"OwnershipTransferred"`
- */
-export const useWatchValidatorNodeProviderOwnershipTransferredEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({
-        abi: validatorNodeProviderAbi,
-        eventName: 'OwnershipTransferred',
-    })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `eventName` set to `"Paused"`
- */
-export const useWatchValidatorNodeProviderPausedEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({
-        abi: validatorNodeProviderAbi,
-        eventName: 'Paused',
-    })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link validatorNodeProviderAbi}__ and `eventName` set to `"Unpaused"`
- */
-export const useWatchValidatorNodeProviderUnpausedEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({
-        abi: validatorNodeProviderAbi,
-        eventName: 'Unpaused',
     })
 
 /**

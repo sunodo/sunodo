@@ -178,8 +178,8 @@ importers:
   apps/web:
     dependencies:
       '@cartesi/rollups':
-        specifier: 1.3.0
-        version: 1.3.0
+        specifier: 1.4.0
+        version: 1.4.0
       '@mantine/code-highlight':
         specifier: ^7.7.0
         version: 7.7.0(@mantine/core@7.7.0)(@mantine/hooks@7.7.0)(react-dom@18.2.0)(react@18.2.0)
@@ -256,9 +256,6 @@ importers:
       '@storybook/test':
         specifier: ^8.0.4
         version: 8.0.4
-      '@sunodo/contracts':
-        specifier: workspace:*
-        version: link:../../packages/contracts
       '@sunodo/devnet':
         specifier: workspace:*
         version: link:../../packages/devnet
@@ -2975,22 +2972,11 @@ packages:
     resolution: {integrity: sha512-4iri8i1AqYHJE2DstZYkyEprg6Pq6sKx3xn5FpySk9sNhH7qN2LLlHJCfDTZRILNwQNPD7mATWM0TBui7uC1pA==}
     dev: true
 
-  /@cartesi/rollups@1.3.0:
-    resolution: {integrity: sha512-HSBR7FjMWLeqLxrNvmo7flNykbZwbchwtxwPqYPosMqVjzGmT5jypHMZ/WHix9CL+E2njy7Kvl+f+vCio0WjDw==}
-    dependencies:
-      '@cartesi/util': 6.2.0
-      '@openzeppelin/contracts': 4.9.2
-    dev: false
-
   /@cartesi/rollups@1.4.0:
     resolution: {integrity: sha512-remwnm4Rgkhzoc3F2YQw4nXJk0ggvmwdgGQxF5Gps7Ej3zY2qLCUS7OscMX5P9RFjpWnJ7mtlEXydVaUR4XXrQ==}
     dependencies:
       '@cartesi/util': 6.3.0
       '@openzeppelin/contracts': 4.9.2
-
-  /@cartesi/util@6.2.0:
-    resolution: {integrity: sha512-ct9Msjl5sAzximAUfHOYmJmIMAj7iU/wcXEJ/4Hj0NU3edugdTbNcWMOw/sec+jY3UgJoPgUFUyOf1Ao35l23w==}
-    dev: false
 
   /@cartesi/util@6.3.0:
     resolution: {integrity: sha512-UgsyTklI4mf3ZbnPHQTuYJcMyldM3y9Xm+ib9xBgDzDq6TxMO81xkrPv/gwA23seHL2/bkJ5flXJEhCE8poW8Q==}
