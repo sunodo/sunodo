@@ -1,7 +1,7 @@
 {
     "name": "@sunodo/token",
     "version": "0.7.0",
-    "description": "Sunodo Utility Token",
+    "description": "Test Tokens",
     "main": "src/index.ts",
     "author": "Danilo Tuler",
     "license": "Apache-2.0",

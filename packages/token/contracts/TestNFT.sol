@@ -6,11 +6,10 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-/// @custom:security-contact admin@sunodo.io
-contract SunodoNFT is ERC721, ERC721URIStorage, Ownable {
+contract TestNFT is ERC721, ERC721URIStorage, Ownable {
     constructor(
         address initialOwner
-    ) ERC721("SunodoNFT", "SUNN") Ownable(initialOwner) {}
+    ) ERC721("TestNFT", "SUNN") Ownable(initialOwner) {}
 
     function safeMint(
         address to,

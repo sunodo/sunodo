@@ -5,8 +5,7 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-/// @custom:security-contact admin@sunodo.io
-contract SunodoMultiToken is ERC1155, Ownable {
+contract TestMultiToken is ERC1155, Ownable {
     constructor(address initialOwner) ERC1155("") Ownable(initialOwner) {}
 
     function setURI(string memory newuri) public onlyOwner {
