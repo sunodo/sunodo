@@ -1,6 +1,6 @@
 import hardhatDeploy from "@sunodo/wagmi-plugin-hardhat-deploy";
 import { defineConfig } from "@wagmi/cli";
-import { hardhat, react } from "@wagmi/cli/plugins";
+import { react } from "@wagmi/cli/plugins";
 import { erc20Abi } from "viem";
 
 export default defineConfig({
@@ -12,10 +12,6 @@ export default defineConfig({
         },
     ],
     plugins: [
-        hardhat({
-            project: "node_modules/@sunodo/contracts",
-            include: ["**/ValidatorNodeProvider.json"],
-        }),
         hardhatDeploy({ directory: "node_modules/@sunodo/devnet/export/abi" }),
         react(),
     ],

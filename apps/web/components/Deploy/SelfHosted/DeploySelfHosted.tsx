@@ -18,9 +18,9 @@ import { generatePrivateKey } from "viem/accounts";
 import { useAccount, useWaitForTransactionReceipt } from "wagmi";
 
 import {
-    useReadSelfHostedApplicationFactoryCalculateApplicationAddress,
-    useSimulateSelfHostedApplicationFactoryNewApplication,
-    useWriteSelfHostedApplicationFactoryNewApplication,
+    useReadSelfHostedApplicationFactoryCalculateAddresses,
+    useSimulateSelfHostedApplicationFactoryDeployContracts,
+    useWriteSelfHostedApplicationFactoryDeployContracts,
 } from "../../../src/contracts";
 import MachineInstructions from "../MachineInstructions";
 import NodeConfig from "./NodeConfig";
@@ -75,21 +75,20 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
         !deployed;
 
     // calculate addresses using determinisitic deployment
-    const { data } =
-        useReadSelfHostedApplicationFactoryCalculateApplicationAddress({
-            args: [authorityOwner, applicationOwner!, templateHash, salt],
-            query: { enabled },
-        });
+    const { data } = useReadSelfHostedApplicationFactoryCalculateAddresses({
+        args: [authorityOwner, applicationOwner!, templateHash, salt],
+        query: { enabled },
+    });
     const [authorityAddress, historyAddress, applicationAddress] = data || [];
 
     // simulate deploy transaction
-    const simulate = useSimulateSelfHostedApplicationFactoryNewApplication({
+    const simulate = useSimulateSelfHostedApplicationFactoryDeployContracts({
         args: [authorityOwner, applicationOwner!, templateHash, salt],
         query: { enabled },
     });
 
     // executor
-    const execute = useWriteSelfHostedApplicationFactoryNewApplication();
+    const execute = useWriteSelfHostedApplicationFactoryDeployContracts();
     const receipt = useWaitForTransactionReceipt({ hash: execute.data });
 
     useEffect(() => {
