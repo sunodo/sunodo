@@ -74,15 +74,6 @@ jobs:
         with:
             release: true
 
-    build_contracts:
-        name: Build contracts
-        needs: [release, packages_to_build]
-        if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), '@sunodo/contracts') }}
-        uses: ./.github/workflows/contracts.yaml
-        secrets: inherit
-        with:
-            release: true
-
     build_cli:
         name: Build cli
         needs: [release, packages_to_build]
