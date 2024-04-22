@@ -7,8 +7,7 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Pausable.sol";
 import "@openzeppelin/contracts/access/manager/AccessManaged.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 
-/// @custom:security-contact admin@sunodo.io
-contract SunodoToken is
+contract TestToken is
     ERC20,
     ERC20Burnable,
     ERC20Pausable,
@@ -18,9 +17,9 @@ contract SunodoToken is
     constructor(
         address initialAuthority
     )
-        ERC20("SunodoToken", "SUN")
+        ERC20("TestToken", "TEST")
         AccessManaged(initialAuthority)
-        ERC20Permit("SunodoToken")
+        ERC20Permit("TestToken")
     {
         _mint(initialAuthority, 1000000000 * 10 ** decimals());
     }

@@ -6,7 +6,7 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
     const { deploy } = deployments;
     const { deployer } = await getNamedAccounts();
 
-    await deploy("SunodoMultiToken", {
+    await deploy("TestMultiToken", {
         from: deployer,
         args: [deployer],
         deterministicDeployment: true,
