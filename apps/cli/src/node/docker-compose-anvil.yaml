@@ -1,6 +1,6 @@
 services:
     anvil:
-        image: sunodo/devnet:1.4.0
+        image: sunodo/devnet:1.6.0
         command:
             [
                 "anvil",
@@ -21,7 +21,7 @@ services:
             - 8545:8545
 
     dapp_deployer:
-        image: sunodo/devnet:1.4.0
+        image: sunodo/devnet:1.6.0
         restart: on-failure
         depends_on:
             anvil:
@@ -34,8 +34,8 @@ services:
                 "http://anvil:8545",
                 "--private-key",
                 "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80",
-                "0x1a71aE5dd62D1a5B8cB2cd9669F939F035601c5C",
-                "newApplication(address,address,bytes32,bytes32)",
+                "0x9E32e06Fd23675b2DF8eA8e6b0A25c3DF6a60AbC",
+                "deployContracts(address,address,bytes32,bytes32)",
                 "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
                 "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
                 "0x0000000000000000000000000000000000000000000000000000000000000000",

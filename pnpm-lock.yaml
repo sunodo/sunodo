@@ -87,18 +87,12 @@ importers:
       '@oclif/test':
         specifier: ^3.2.8
         version: 3.2.8
-      '@sunodo/contracts':
-        specifier: workspace:*
-        version: link:../../packages/contracts
       '@sunodo/devnet':
         specifier: workspace:*
         version: link:../../packages/devnet
       '@sunodo/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
-      '@sunodo/token':
-        specifier: workspace:*
-        version: link:../../packages/token
       '@sunodo/wagmi-plugin-hardhat-deploy':
         specifier: ^0.3.0
         version: 0.3.0(@wagmi/core@2.6.9)(abitype@1.0.2)(typescript@5.4.3)(wagmi@2.5.12)

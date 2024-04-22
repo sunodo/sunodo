@@ -16,7 +16,9 @@ import {
     etherPortalAddress,
     inputBoxAddress,
     selfHostedApplicationFactoryAddress,
-    sunodoTokenAddress,
+    testMultiTokenAddress,
+    testNftAddress,
+    testTokenAddress,
 } from "./contracts.js";
 import { PsResponse } from "./types/docker.js";
 
@@ -89,7 +91,9 @@ export abstract class SunodoCommand<T extends typeof Command> extends Command {
             EtherPortal: etherPortalAddress,
             InputBox: inputBoxAddress,
             SelfHostedApplicationFactory: selfHostedApplicationFactoryAddress,
-            SunodoToken: sunodoTokenAddress,
+            TestToken: testTokenAddress,
+            TestNFT: testNftAddress,
+            TestMultiToken: testMultiTokenAddress,
         };
 
         // get dapp address
