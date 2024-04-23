@@ -33,6 +33,7 @@
         "@openzeppelin/contracts": "5.0.2"
     },
     "files": [
+        "build",
         "deployments/*/*.json",
         "deployments/*/.chainid",
         "dist/src",
