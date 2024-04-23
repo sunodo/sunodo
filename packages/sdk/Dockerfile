@@ -62,8 +62,10 @@ apt-get update
 apt-get install -y --no-install-recommends \
     ca-certificates \
     curl \
+    jq \
     libarchive-tools \
     locales \
+    xxd \
     xz-utils
 rm -rf /var/lib/apt/lists/*
 
@@ -86,6 +88,16 @@ EOF
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
+
+# download anvil pre-compiled binaries
+ARG ANVIL_VERSION=f625d0fa7c51e65b4bf1e8f7931cd1c6e2e285e9
+RUN curl -sSL https://github.com/foundry-rs/foundry/releases/download/nightly-${ANVIL_VERSION}/foundry_nightly_linux_$(dpkg --print-architecture).tar.gz | \
+    tar -zx -C /usr/local/bin
+
+# healthcheck script using net_listening JSON-RPC method
+COPY eth_isready /usr/local/bin
+COPY eth_dump /usr/local/bin
+COPY eth_load /usr/local/bin
 
 COPY entrypoint.sh /usr/local/bin/
 COPY --from=su-exec /usr/local/src/su-exec /usr/local/bin/
