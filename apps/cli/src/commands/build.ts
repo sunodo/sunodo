@@ -205,35 +205,7 @@ Update your application Dockerfile using one of the templates at https://github.
         await execa("docker", ["container", "rm", cid]);
     }
 
-    // returns the command to create rootfs from a tarball
-    private async createRootfsTarCommand(): Promise<string[]> {
-        return [
-            "bsdtar",
-            "-cf",
-            "/tmp/output",
-            "--format=gnutar",
-            "@/tmp/input",
-        ];
-    }
-
-    // returns the command to create ext2 from a rootfs
-    private async createExt2Command(): Promise<string[]> {
-        return [
-            "xgenext2fs",
-            "--tarball",
-            "/tmp/input",
-            "--block-size",
-            "4096",
-            "--faketime",
-            "-r",
-            "+1",
-            "/tmp/output",
-        ];
-    }
-
-    private async createMachineSnapshotCommand(
-        info: ImageInfo,
-    ): Promise<string[]> {
+    private createMachineSnapshotCommand(info: ImageInfo): string[] {
         const ramSize = info.ramSize;
         const driveLabel = "root"; // XXX: does this need to be customizable?
 
@@ -286,7 +258,13 @@ Update your application Dockerfile using one of the templates at https://github.
             // create rootfs tar
             await this.sdkRun(
                 sdkImage,
-                await this.createRootfsTarCommand(),
+                [
+                    "bsdtar",
+                    "-cf",
+                    "/tmp/output",
+                    "--format=gnutar",
+                    "@/tmp/input",
+                ],
                 SUNODO_DEFAULT_TAR_PATH,
                 SUNODO_DEFAULT_RETAR_TAR_PATH,
             );
@@ -294,7 +272,17 @@ Update your application Dockerfile using one of the templates at https://github.
             // create ext2
             await this.sdkRun(
                 sdkImage,
-                await this.createExt2Command(),
+                [
+                    "xgenext2fs",
+                    "--tarball",
+                    "/tmp/input",
+                    "--block-size",
+                    "4096",
+                    "--faketime",
+                    "-r",
+                    "+1",
+                    "/tmp/output",
+                ],
                 SUNODO_DEFAULT_RETAR_TAR_PATH,
                 SUNODO_DEFAULT_EXT2_PATH,
             );
@@ -303,7 +291,7 @@ Update your application Dockerfile using one of the templates at https://github.
             if (!flags["skip-snapshot"]) {
                 await this.sdkRun(
                     sdkImage,
-                    await this.createMachineSnapshotCommand(imageInfo),
+                    this.createMachineSnapshotCommand(imageInfo),
                     SUNODO_DEFAULT_EXT2_PATH,
                     SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH,
                 );
