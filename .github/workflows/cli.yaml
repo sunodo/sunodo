@@ -48,7 +48,7 @@ jobs:
               run: pnpm install
 
             - name: Build
-              run: pnpm build --filter @sunodo/cli
+              run: pnpm build --filter @cartesi/cli
 
             - name: Publish
               if: ${{ inputs.release }}

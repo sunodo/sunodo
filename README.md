@@ -1,21 +1,17 @@
-# Sunodo
+# Cartesi CLI
 
-![Release Packages](https://github.com/sunodo/sunodo/actions/workflows/release.yaml/badge.svg)
+![Release Packages](https://github.com/cartesi/cli/actions/workflows/release.yaml/badge.svg)
 
-Sunodo is a framework for developing decentralized applications built on top of [Cartesi](http://cartesi.io) technology.
-It helps developers to:
+Cartesi CLI is a tool to help creating [Cartesi](http://cartesi.io) applications. It includes commands that help developers to:
 
 -   `create` applications from templates
 -   `build` applications from source to a Cartesi machine
 -   `run` applications in a local development environment
--   `deploy` applications to a cloud provider
+-   `deploy` applications to a live networks
 
 ## Apps and Packages
 
--   `cli`: a [oclif](https://oclif.io) CLI tool for development, deployment and management of applications, available at `brew install sunodo/tap/sunodo`;
--   `docs`: a [VitePress](https://vitepress.dev/) app with Sunodo documentation, deployed at [https://docs.sunodo.io](https://docs.sunodo.io)
--   `web`: a [next.js](https://nextjs.org/) app for Sunodo website, deployed at [https://sunodo.io](https://sunodo.io)
--   `car-download`: Utility library and CLI to download IPFS CAR to local filesystem;
+-   `cli`: a [oclif](https://oclif.io) CLI tool for development, deployment and management of applications, available at `brew install cartesi/tap/cartesi`;
 -   `sdk`: Docker image to help with Cartesi build and execution;
 -   `contracts`: smart contracts for application deployment;
 -   `devnet`: local deployment of Cartesi contracts and token test contracts;
@@ -26,22 +22,12 @@ Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
 ## Dependencies
 
-Sunodo uses Anvil commands. To install Anvil, you need to follow the instructions [here](https://book.getfoundry.sh/getting-started/installation#using-foundryup)
+This repo build uses Anvil commands. To install Anvil, you need to follow the instructions [here](https://book.getfoundry.sh/getting-started/installation#using-foundryup)
 
 ## Build
 
 To build all apps and packages, run the following command:
 
 ```shell
-cd sunodo
 pnpm run build
-```
-
-## Develop
-
-To develop all apps and packages, run the following command:
-
-```shell
-cd sunodo
-pnpm run dev
 ```

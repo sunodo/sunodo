@@ -77,7 +77,7 @@ jobs:
     build_cli:
         name: Build cli
         needs: [release, packages_to_build]
-        if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), '@sunodo/cli') }}
+        if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), '@cartesi/cli') }}
         uses: ./.github/workflows/cli.yaml
         secrets: inherit
         with:

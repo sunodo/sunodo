@@ -58,7 +58,7 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
     }
 
     protected getContextPath(...paths: string[]): string {
-        return path.join(".sunodo", ...paths);
+        return path.join(".cartesi", ...paths);
     }
 
     protected getMachineHash(): Hash | undefined {

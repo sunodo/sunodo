@@ -1,7 +1,7 @@
 module.exports = {
     root: true,
     extends: [
-        "@sunodo/eslint-config/library.js",
+        "@cartesi/eslint-config/library.js",
         "plugin:@typescript-eslint/recommended",
     ],
     parser: "@typescript-eslint/parser",

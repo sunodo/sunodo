@@ -6,7 +6,7 @@ on:
         types: [closed]
 jobs:
     cleanup:
-        name: PR - cleanup ghcr.io/sunodo/${{ matrix.image }}:pr-${{ github.event.number }} images
+        name: PR - cleanup ghcr.io/cartesi/${{ matrix.image }}:pr-${{ github.event.number }} images
         runs-on: ubuntu-latest
         permissions:
             packages: write
@@ -17,7 +17,7 @@ jobs:
         steps:
             - uses: vlaurin/action-ghcr-prune@v0.6.0
               with:
-                  organization: sunodo
+                  organization: cartesi
                   container: ${{ matrix.image }}
                   token: ${{ secrets.GITHUB_TOKEN }}
                   prune-untagged: false

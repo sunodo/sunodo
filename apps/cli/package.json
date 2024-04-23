@@ -1,16 +1,16 @@
 {
-    "name": "@sunodo/cli",
+    "name": "@cartesi/cli",
     "version": "0.13.1",
-    "description": "Sunodo CLI",
+    "description": "Cartesi CLI",
     "author": "Danilo Tuler <tuler@pobox.com>",
     "bin": {
-        "sunodo": "./bin/run.js"
+        "cartesi": "./bin/run.js"
     },
     "type": "module",
-    "homepage": "https://github.com/sunodo/sunodo",
+    "homepage": "https://github.com/cartesi/cli",
     "license": "Apache-2.0",
     "exports": "./dist/index.js",
-    "repository": "sunodo/sunodo",
+    "repository": "cartesi/cli",
     "files": [
         "/bin",
         "/dist",
@@ -42,7 +42,7 @@
     "devDependencies": {
         "@oclif/test": "^3.2.8",
         "@cartesi/devnet": "workspace:*",
-        "@sunodo/eslint-config": "workspace:*",
+        "@cartesi/eslint-config": "workspace:*",
         "@sunodo/wagmi-plugin-hardhat-deploy": "^0.3.0",
         "@types/bytes": "^3.1",
         "@types/fs-extra": "^11",
@@ -68,15 +68,15 @@
         "vitest": "^1.4.0"
     },
     "oclif": {
-        "bin": "sunodo",
-        "dirname": "sunodo",
+        "bin": "cartesi",
+        "dirname": "cartesi",
         "commands": "./dist/commands",
         "plugins": [
             "@oclif/plugin-help"
         ],
         "topicSeparator": " ",
         "macos": {
-            "identifier": "io.sunodo.cli"
+            "identifier": "io.cartesi.cli"
         }
     },
     "scripts": {
@@ -95,7 +95,7 @@
     "engines": {
         "node": ">=18.0.0"
     },
-    "bugs": "https://github.com/sunodo/sunodo/issues",
+    "bugs": "https://github.com/cartesi/cli/issues",
     "keywords": [
         "oclif"
     ],

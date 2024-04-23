@@ -36,7 +36,7 @@ export default class CreateCommand extends BaseCommand<typeof CreateCommand> {
             ],
         }),
         branch: Flags.string({
-            description: `sunodo/sunodo-templates repository branch name to use`,
+            description: `cartesi/application-templates repository branch name to use`,
             default: DEFAULT_TEMPLATES_BRANCH,
         }),
     };
@@ -46,19 +46,19 @@ export default class CreateCommand extends BaseCommand<typeof CreateCommand> {
         branch: string,
         out: string,
     ): Promise<DownloadTemplateResult> {
-        const sunodoProvider: TemplateProvider = async (input) => {
+        const cartesiProvider: TemplateProvider = async (input) => {
             return {
-                name: "sunodo",
+                name: "cartesi",
                 subdir: input,
-                url: "https://github.com/sunodo/sunodo-templates",
-                tar: `https://codeload.github.com/sunodo/sunodo-templates/tar.gz/refs/heads/${branch}`,
+                url: "https://github.com/cartesi/application-templates",
+                tar: `https://codeload.github.com/cartesi/application-templates/tar.gz/refs/heads/${branch}`,
             };
         };
 
-        const input = `sunodo:${template}`;
+        const input = `cartesi:${template}`;
         return downloadTemplate(input, {
             dir: out,
-            providers: { sunodo: sunodoProvider },
+            providers: { cartesi: cartesiProvider },
         });
     }
 

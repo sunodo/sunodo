@@ -18,7 +18,7 @@
         "ora": "^8.0.1"
     },
     "devDependencies": {
-        "@sunodo/eslint-config": "workspace:*",
+        "@cartesi/eslint-config": "workspace:*",
         "@types/fs-extra": "^11",
         "eslint": "^8.57.0",
         "npm-run-all": "^4",

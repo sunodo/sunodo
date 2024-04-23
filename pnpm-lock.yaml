@@ -8,12 +8,12 @@ importers:
 
   .:
     devDependencies:
+      '@cartesi/eslint-config':
+        specifier: workspace:*
+        version: link:packages/eslint-config
       '@changesets/cli':
         specifier: ^2
         version: 2.27.1
-      '@sunodo/eslint-config':
-        specifier: workspace:*
-        version: link:packages/eslint-config
       prettier:
         specifier: ^3
         version: 3.2.5
@@ -87,12 +87,12 @@ importers:
       '@cartesi/devnet':
         specifier: workspace:*
         version: link:../../packages/devnet
+      '@cartesi/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
       '@oclif/test':
         specifier: ^3.2.8
         version: 3.2.8
-      '@sunodo/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
       '@sunodo/wagmi-plugin-hardhat-deploy':
         specifier: ^0.3.0
         version: 0.3.0(@wagmi/core@2.6.9)(abitype@1.0.2)(typescript@5.4.3)(wagmi@2.5.12)
@@ -226,6 +226,9 @@ importers:
       '@cartesi/devnet':
         specifier: workspace:*
         version: link:../../packages/devnet
+      '@cartesi/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
       '@next/bundle-analyzer':
         specifier: ^14.1.4
         version: 14.1.4
@@ -256,9 +259,6 @@ importers:
       '@storybook/test':
         specifier: ^8.0.4
         version: 8.0.4
-      '@sunodo/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
       '@sunodo/wagmi-plugin-hardhat-deploy':
         specifier: ^0.3
         version: 0.3.0(@wagmi/core@2.6.9)(abitype@1.0.2)(typescript@5.4.3)(wagmi@2.5.12)
@@ -389,7 +389,7 @@ importers:
         specifier: ^8.0.1
         version: 8.0.1
     devDependencies:
-      '@sunodo/eslint-config':
+      '@cartesi/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
       '@types/fs-extra':

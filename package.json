@@ -1,5 +1,5 @@
 {
-    "name": "sunodo-monorepo",
+    "name": "cartesi-cli-monorepo",
     "version": "0.0.0",
     "private": true,
     "license": "Apache-2.0",
@@ -14,7 +14,7 @@
     },
     "devDependencies": {
         "@changesets/cli": "^2",
-        "@sunodo/eslint-config": "workspace:*",
+        "@cartesi/eslint-config": "workspace:*",
         "prettier": "^3",
         "turbo": "^1.13.0"
     },

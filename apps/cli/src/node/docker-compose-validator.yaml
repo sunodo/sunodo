@@ -20,7 +20,7 @@ services:
                 exec cartesi-rollups-node
 
         env_file:
-            - ${SUNODO_BIN_PATH}/node/default.env
+            - ${CARTESI_BIN_PATH}/node/default.env
 
     proxy:
         depends_on:
@@ -30,8 +30,8 @@ services:
     prompt:
         image: debian:bookworm-slim
         environment:
-            PROMPT_TXT_02_GRAPHQL: "GraphQL running at http://localhost:${SUNODO_LISTEN_PORT}/graphql"
-            PROMPT_TXT_03_INSPECT: "Inspect running at http://localhost:${SUNODO_LISTEN_PORT}/inspect/"
+            PROMPT_TXT_02_GRAPHQL: "GraphQL running at http://localhost:${CARTESI_LISTEN_PORT}/graphql"
+            PROMPT_TXT_03_INSPECT: "Inspect running at http://localhost:${CARTESI_LISTEN_PORT}/inspect/"
 
     traefik-config-generator:
         environment:

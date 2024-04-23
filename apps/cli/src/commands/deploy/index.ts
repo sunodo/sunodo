@@ -3,7 +3,6 @@ import select from "@inquirer/select";
 import { Flags } from "@oclif/core";
 import chalk from "chalk";
 import open, { apps } from "open";
-import { URL } from "url";
 
 import { BaseCommand } from "../../baseCommand.js";
 
@@ -24,8 +23,7 @@ export default class Deploy extends BaseCommand<typeof Deploy> {
         }),
         webapp: Flags.url({
             description: "address of deploy webapp",
-            default: new URL("https://sunodo.io/deploy"),
-            hidden: true,
+            required: true,
         }),
     };
 

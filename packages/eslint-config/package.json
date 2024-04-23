@@ -1,5 +1,5 @@
 {
-    "name": "@sunodo/eslint-config",
+    "name": "@cartesi/eslint-config",
     "version": "0.0.0",
     "main": "index.js",
     "license": "Apache-2.0",

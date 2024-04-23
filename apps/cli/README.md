@@ -1,21 +1,19 @@
-# Sunodo CLI
+# Cartesi CLI
 
-Sunodo provides a CLI to help developers to:
+Cartesi CLI provides a tool to help developers to:
 
 -   `create` applications from templates
 -   `build` applications from source to a cartesi machine
 -   `run` applications in a local development environment
--   `test` applications running inside a cartesi machine
--   `deploy` applications to a cloud provider
--   `monitor` application already running on a cloud provider
+-   `deploy` applications to a live network
 
-It's implemented using the [oclif framework](https://oclif.io) and distributed through several channels including `npm` and `homebrew`.
+It's distributed through several channels including `npm` and `homebrew`.
 
 ## Installation
 
 ```shell
-brew install sunodo/tap/sunodo
-sunodo --help
+brew install cartesi/tap/cartesi
+cartesi --help
 ```
 
-More documentation at [https://docs.sunodo.io](https://docs.sunodo.io).
+More documentation at [https://docs.cartesi.io](https://docs.cartesi.io).

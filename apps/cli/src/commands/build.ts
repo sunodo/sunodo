@@ -27,9 +27,8 @@ const CARTESI_LABEL_RAM_SIZE = `${CARTESI_LABEL_PREFIX}.ram_size`;
 const CARTESI_LABEL_DATA_SIZE = `${CARTESI_LABEL_PREFIX}.data_size`;
 const CARTESI_DEFAULT_RAM_SIZE = "128Mi";
 
-const SUNODO_LABEL_PREFIX = "io.sunodo";
-const SUNODO_LABEL_SDK_VERSION = `${SUNODO_LABEL_PREFIX}.sdk_version`;
-const SUNODO_DEFAULT_SDK_VERSION = "0.4.0";
+const CARTESI_LABEL_SDK_VERSION = `${CARTESI_LABEL_PREFIX}.sdk_version`;
+const CARTESI_DEFAULT_SDK_VERSION = "0.4.0";
 
 export default class BuildApplication extends BaseCommand<
     typeof BuildApplication
@@ -37,7 +36,7 @@ export default class BuildApplication extends BaseCommand<
     static summary = "Build application.";
 
     static description =
-        "Build application starting from a Dockerfile and ending with a snapshot of the corresponding Cartesi Machine already booted and yielded for the first time. This snapshot can be used to start a Cartesi node for the application using `sunodo run`. The process can also start from a Docker image built by the developer using `docker build` using the option `--from-image`";
+        "Build application starting from a Dockerfile and ending with a snapshot of the corresponding Cartesi Machine already booted and yielded for the first time. This snapshot can be used to start a Cartesi node for the application using `run`. The process can also start from a Docker image built by the developer using `docker build` using the option `--from-image`";
 
     static examples = [
         "<%= config.bin %> <%= command.id %>",
@@ -101,7 +100,8 @@ export default class BuildApplication extends BaseCommand<
             env: imageInfo["Config"]["Env"] || [],
             ramSize: labels[CARTESI_LABEL_RAM_SIZE] ?? CARTESI_DEFAULT_RAM_SIZE,
             sdkVersion:
-                labels[SUNODO_LABEL_SDK_VERSION] ?? SUNODO_DEFAULT_SDK_VERSION,
+                labels[CARTESI_LABEL_SDK_VERSION] ??
+                CARTESI_DEFAULT_SDK_VERSION,
             workdir: imageInfo["Config"]["WorkingDir"],
         };
 
@@ -111,17 +111,17 @@ export default class BuildApplication extends BaseCommand<
 
         // fail if using unsupported sdk version
         if (!semver.valid(info.sdkVersion)) {
-            this.warn("sunodo sdk version is not a valid semver");
-        } else if (semver.lt(info.sdkVersion, SUNODO_DEFAULT_SDK_VERSION)) {
-            throw new Error(`Unsupported sunodo sdk version: ${info.sdkVersion} (used) < ${SUNODO_DEFAULT_SDK_VERSION} (minimum).
-Update your application Dockerfile using one of the templates at https://github.com/sunodo/sunodo-templates/tree/${DEFAULT_TEMPLATES_BRANCH}
+            this.warn("sdk version is not a valid semver");
+        } else if (semver.lt(info.sdkVersion, CARTESI_DEFAULT_SDK_VERSION)) {
+            throw new Error(`Unsupported sdk version: ${info.sdkVersion} (used) < ${CARTESI_DEFAULT_SDK_VERSION} (minimum).
+Update your application Dockerfile using one of the templates at https://github.com/cartesi/application-templates/tree/${DEFAULT_TEMPLATES_BRANCH}
 `);
         }
 
         // warn for using default values
         info.sdkVersion ||
             this.warn(
-                `Undefined ${SUNODO_LABEL_SDK_VERSION} label, defaulting to ${SUNODO_DEFAULT_SDK_VERSION}`,
+                `Undefined ${CARTESI_LABEL_SDK_VERSION} label, defaulting to ${CARTESI_DEFAULT_SDK_VERSION}`,
             );
 
         info.ramSize ||
@@ -280,7 +280,7 @@ Update your application Dockerfile using one of the templates at https://github.
         const imageInfo = await this.getImageInfo(appImage);
 
         // resolve sdk version
-        const sdkImage = `sunodo/sdk:${imageInfo.sdkVersion}`;
+        const sdkImage = `cartesi/sdk:${imageInfo.sdkVersion}`;
 
         try {
             // create docker tarball for image specified

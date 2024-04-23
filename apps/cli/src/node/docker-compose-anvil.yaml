@@ -1,13 +1,13 @@
 services:
     anvil:
-        image: sunodo/devnet:1.6.0
+        image: cartesi/devnet:1.6.0
         command:
             [
                 "anvil",
                 "--block-time",
                 "${BLOCK_TIME:-5}",
                 "--load-state",
-                "/usr/share/sunodo/anvil_state.json",
+                "/usr/share/cartesi/anvil_state.json",
                 "${ANVIL_VERBOSITY:---silent}",
             ]
         healthcheck:
@@ -21,7 +21,7 @@ services:
             - 8545:8545
 
     dapp_deployer:
-        image: sunodo/devnet:1.6.0
+        image: cartesi/devnet:1.6.0
         restart: on-failure
         depends_on:
             anvil:

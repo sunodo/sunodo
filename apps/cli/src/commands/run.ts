@@ -43,7 +43,7 @@ export default class Run extends BaseCommand<typeof Run> {
         let projectName: string;
 
         if (flags["no-backend"]) {
-            projectName = "sunodo-node";
+            projectName = "cartesi-node";
         } else {
             // get machine hash
             const hash = this.getMachineHash();
@@ -79,8 +79,8 @@ export default class Run extends BaseCommand<typeof Run> {
                 : "true",
             CARTESI_LOG_LEVEL: flags.verbose ? "info" : "error",
             CARTESI_SNAPSHOT_DIR: "/usr/share/rollups-node/snapshot",
-            SUNODO_BIN_PATH: binPath,
-            SUNODO_LISTEN_PORT: listenPort.toString(),
+            CARTESI_BIN_PATH: binPath,
+            CARTESI_LISTEN_PORT: listenPort.toString(),
         };
 
         // validator
@@ -110,7 +110,7 @@ export default class Run extends BaseCommand<typeof Run> {
         }
 
         // add project env file loading
-        if (fs.existsSync("./.sunodo.env")) {
+        if (fs.existsSync("./.cartesi.env")) {
             composeFiles.push("docker-compose-envfile.yaml");
         }
 

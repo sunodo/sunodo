@@ -1,4 +1,4 @@
 module.exports = {
     root: true,
-    extends: ["@sunodo/eslint-config/library.js"],
+    extends: ["@cartesi/eslint-config/library.js"],
 };
