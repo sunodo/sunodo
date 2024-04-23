@@ -37,7 +37,7 @@
         "progress-stream": "^2.0",
         "semver": "^7.5",
         "tmp": "^0.2.3",
-        "viem": "^2.9.2"
+        "viem": "^2.9.25"
     },
     "devDependencies": {
         "@oclif/test": "^3.2.8",

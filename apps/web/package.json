@@ -26,7 +26,7 @@
         "react": "^18",
         "react-dom": "^18.2.0",
         "react-jazzicon": "^1",
-        "viem": "^2.9.2",
+        "viem": "^2.9.25",
         "wagmi": "^2.5.12"
     },
     "devDependencies": {
