@@ -11,102 +11,104 @@ export default class DoctorCommand extends Command {
     private static MINIMUM_DOCKER_VERSION = "23.0.0"; // Replace with our minimum required Docker version
     private static MINIMUM_DOCKER_COMPOSE_VERSION = "2.21.0"; // Replace with our minimum required Docker Compose version
 
-    private static async checkDockerVersion(): Promise<string> {
-        const { stdout } = await execa("docker", [
-            "version",
-            "--format",
-            "{{json .Client.Version}}",
-        ]);
-        return JSON.parse(stdout);
-    }
-
-    private static async checkDockerComposeVersion(): Promise<string> {
-        const { stdout } = await execa("docker", [
-            "compose",
-            "version",
-            "--short",
-        ]);
-        return stdout;
-    }
-
-    private static isDockerVersionValid(version: string): boolean {
-        return semver.gte(version, DoctorCommand.MINIMUM_DOCKER_VERSION);
-    }
-
-    private static isDockerComposeVersionValid(version: string): boolean {
-        const v = semver.coerce(version);
-        return (
-            v !== null &&
-            semver.gte(v, DoctorCommand.MINIMUM_DOCKER_COMPOSE_VERSION)
-        );
-    }
-
-    private static isBuildxRiscv64Supported(buildxOutput: string): boolean {
-        return buildxOutput.includes("riscv64");
-    }
-
-    public async run() {
+    private async checkDocker(): Promise<true | never> {
         try {
-            try {
-                const dockerVersion = await DoctorCommand.checkDockerVersion();
+            let { stdout: dockerVersion } = await execa("docker", [
+                "version",
+                "--format",
+                "{{json .Client.Version}}",
+            ]);
 
-                // Check Docker version
-                if (!DoctorCommand.isDockerVersionValid(dockerVersion)) {
-                    throw new Error(
-                        `Unsupported Docker version. Minimum required version is ${DoctorCommand.MINIMUM_DOCKER_VERSION}. Installed version is ${dockerVersion}.`,
-                    );
-                }
-            } catch (error: unknown) {
-                if (error instanceof Error) {
-                    this.error(
-                        "Docker is required but not installed or the command execution failed. Please refer to the Docker documentation for installation instructions: https://docs.docker.com/get-docker/",
-                    );
-                }
+            const v = semver.coerce(dockerVersion);
+            if (
+                v !== null &&
+                !semver.gte(v, DoctorCommand.MINIMUM_DOCKER_VERSION)
+            ) {
+                throw new Error(
+                    `Unsupported Docker version. Minimum required version is ${DoctorCommand.MINIMUM_DOCKER_VERSION}. Installed version is ${v}.`,
+                );
             }
-
-            try {
-                const dockerComposeVersion =
-                    await DoctorCommand.checkDockerComposeVersion();
-
-                // Check if the Docker Compose version is valid
-                if (
-                    !DoctorCommand.isDockerComposeVersionValid(
-                        dockerComposeVersion,
-                    )
-                ) {
-                    throw new Error(
-                        `Unsupported Docker Compose version. Minimum required version is ${DoctorCommand.MINIMUM_DOCKER_COMPOSE_VERSION}. Installed version is ${dockerComposeVersion}.`,
-                    );
-                }
-            } catch (error: unknown) {
-                if (error instanceof Error) {
-                    this.error(
-                        "Docker Compose is required but not installed or the command execution failed. Please refer to the Docker Compose documentation for installation instructions: https://docs.docker.com/compose/install/",
-                    );
-                }
+        } catch (e: unknown) {
+            if ((e as any).code == "ENOENT") {
+                throw new Error("Docker is required but not installed.");
+            } else {
+                throw e;
             }
+        }
 
-            // Check Docker Buildx version and riscv64 support
+        return true;
+    }
+
+    private async checkCompose(): Promise<true | never> {
+        try {
+            const { stdout: dockerComposeVersion } = await execa("docker", [
+                "compose",
+                "version",
+                "--short",
+            ]);
+
+            const v = semver.coerce(dockerComposeVersion);
+            if (
+                v !== null &&
+                !semver.gte(v, DoctorCommand.MINIMUM_DOCKER_COMPOSE_VERSION)
+            ) {
+                throw new Error(
+                    `Unsupported Docker Compose version. Minimum required version is ${DoctorCommand.MINIMUM_DOCKER_COMPOSE_VERSION}. Installed version is ${v}.`,
+                );
+            }
+        } catch (e: unknown) {
+            if ((e as any).exitCode === 125) {
+                throw new Error(
+                    "Docker Compose is required but not installed or the command execution failed. Please refer to the Docker Compose documentation for installation instructions: https://docs.docker.com/compose/install/",
+                );
+            } else {
+                throw e;
+            }
+        }
+
+        return true;
+    }
+
+    private async checkBuildx(): Promise<true | never> {
+        try {
             const { stdout: buildxOutput } = await execa("docker", [
                 "buildx",
                 "ls",
+                "--format",
+                "{{.Platforms}}",
             ]);
-            const buildxRiscv64Supported =
-                DoctorCommand.isBuildxRiscv64Supported(buildxOutput);
 
-            if (!buildxRiscv64Supported) {
+            const buildxPlatforms: string[] = buildxOutput
+                .split(",")
+                .map((platform) => platform.trim());
+
+            if (!buildxPlatforms.includes("linux/riscv64")) {
                 throw new Error(
-                    "Your system does not support riscv64 architecture.",
+                    "Your system does not support riscv64 architecture. Run `docker run --privileged --rm tonistiigi/binfmt:riscv` to enable riscv64 support.",
                 );
             }
-
-            this.log("Your system is ready for sunodo.");
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                this.error(error.message);
+        } catch (e: unknown) {
+            if ((e as any).exitCode === 125) {
+                throw new Error(
+                    "Docker Buildx is required but not installed. Please refer to the Docker Desktop documentation for installation instructions: https://docs.docker.com/desktop/",
+                );
             } else {
-                this.error(String(error));
+                throw e;
             }
         }
+
+        return true;
+    }
+
+    public async run(): Promise<void> {
+        try {
+            await this.checkDocker();
+            await this.checkCompose();
+            await this.checkBuildx();
+        } catch (e: unknown) {
+            this.error(e as Error);
+        }
+
+        this.log("Your system is ready for sunodo.");
     }
 }
