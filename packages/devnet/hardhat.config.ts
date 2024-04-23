@@ -52,10 +52,7 @@ const config: HardhatUserConfig = {
                   },
         },
     },
-    external: external(
-        ["localhost"],
-        ["@cartesi/util", "@cartesi/rollups", "@sunodo/token"],
-    ),
+    external: external(["localhost"], ["@cartesi/util", "@cartesi/rollups"]),
     namedAccounts: {
         deployer: 0,
     },
