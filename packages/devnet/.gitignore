@@ -6,8 +6,7 @@ typechain
 typechain-types
 
 # Hardhat files
-artifacts/*
-!artifacts/.gitkeep
+artifacts
 build
 cache
 deployments/localhost

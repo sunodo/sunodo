@@ -5,7 +5,7 @@
     "scripts": {
         "build": "run-s compile export deploy:anvil",
         "build:docker": "docker buildx bake --load",
-        "clean:ignored": "rimraf artifacts cache coverage deployments/localhost dist",
+        "clean:ignored": "rimraf artifacts build cache coverage deployments/localhost dist",
         "clean:hardhat": "hardhat clean",
         "clean": "run-s clean:hardhat clean:ignored",
         "compile": "hardhat compile",
@@ -21,7 +21,6 @@
         "@nomicfoundation/hardhat-viem": "^2.0.1",
         "@safe-global/safe-singleton-factory": "^1.0.23",
         "@cartesi/rollups": "^1.4.0",
-        "@sunodo/token": "workspace:*",
         "hardhat": "^2.22.3",
         "hardhat-abi-exporter": "^2",
         "hardhat-deploy": "^0.12.2",
@@ -29,6 +28,9 @@
         "rimraf": "^5",
         "tsconfig": "workspace:*",
         "typescript": "^5.4.5"
+    },
+    "dependencies": {
+        "@openzeppelin/contracts": "5.0.2"
     },
     "files": [
         "deployments/*/*.json",
