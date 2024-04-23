@@ -78,6 +78,8 @@ jobs:
         if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), '@sunodo/devnet') }}
         uses: ./.github/workflows/devnet.yaml
         secrets: inherit
+        with:
+            release: true
 
     build_contracts:
         name: Build contracts
