@@ -118,9 +118,10 @@ export default class DoctorCommand extends Command {
 
     public async run(): Promise<void> {
         try {
-            await this.checkDocker();
-            await this.checkCompose();
-            await this.checkBuildx();
+            if (await this.checkDocker()) {
+                await this.checkCompose();
+                await this.checkBuildx();
+            }
         } catch (e: unknown) {
             this.error(e as Error);
         }
