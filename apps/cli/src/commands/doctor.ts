@@ -70,7 +70,7 @@ export default class DoctorCommand extends Command {
         return true;
     }
 
-    private async checkBuildx(): Promise<void> {
+    private async checkBuildx(): Promise<true | never> {
         try {
             const { stdout: buildxOutput } = await execa("docker", [
                 "buildx",
@@ -112,6 +112,8 @@ export default class DoctorCommand extends Command {
                 throw e;
             }
         }
+
+        return true;
     }
 
     public async run(): Promise<void> {
