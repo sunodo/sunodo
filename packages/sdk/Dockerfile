@@ -100,6 +100,7 @@ RUN curl -sSL https://github.com/foundry-rs/foundry/releases/download/nightly-${
     tar -zx -C /usr/local/bin
 
 # healthcheck script using net_listening JSON-RPC method
+COPY devnet /usr/local/bin
 COPY eth_isready /usr/local/bin
 COPY eth_dump /usr/local/bin
 COPY eth_load /usr/local/bin
