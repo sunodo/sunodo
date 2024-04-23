@@ -1,0 +1,4 @@
+#!/bin/sh
+set -e
+jq -r '.contracts | to_entries | .[] | "\(.value.address) \(.key)"' < /usr/share/cartesi/localhost.json
+exec anvil --load-state /usr/share/cartesi/anvil_state.json "$@"
