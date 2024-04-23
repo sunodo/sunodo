@@ -10,6 +10,7 @@ export default class DoctorCommand extends Command {
 
     private static MINIMUM_DOCKER_VERSION = "23.0.0"; // Replace with our minimum required Docker version
     private static MINIMUM_DOCKER_COMPOSE_VERSION = "2.21.0"; // Replace with our minimum required Docker Compose version
+    private static MINIMUM_BUILDX_VERSION = "0.13.0"; // Replace with our minimum required Buildx version
 
     private async checkDocker(): Promise<true | never> {
         try {
@@ -69,16 +70,31 @@ export default class DoctorCommand extends Command {
         return true;
     }
 
-    private async checkBuildx(): Promise<true | never> {
+    private async checkBuildx(): Promise<void> {
         try {
             const { stdout: buildxOutput } = await execa("docker", [
+                "buildx",
+                "version",
+            ]);
+
+            const v = semver.coerce(buildxOutput);
+            if (
+                v !== null &&
+                !semver.gte(v, DoctorCommand.MINIMUM_BUILDX_VERSION)
+            ) {
+                throw new Error(
+                    `Unsupported Docker Buildx version. Minimum required version is ${DoctorCommand.MINIMUM_BUILDX_VERSION}. Installed version is ${v}.`,
+                );
+            }
+
+            const { stdout: platformsOutput } = await execa("docker", [
                 "buildx",
                 "ls",
                 "--format",
                 "{{.Platforms}}",
             ]);
 
-            const buildxPlatforms: string[] = buildxOutput
+            const buildxPlatforms: string[] = platformsOutput
                 .split(",")
                 .map((platform) => platform.trim());
 
@@ -96,8 +112,6 @@ export default class DoctorCommand extends Command {
                 throw e;
             }
         }
-
-        return true;
     }
 
     public async run(): Promise<void> {
