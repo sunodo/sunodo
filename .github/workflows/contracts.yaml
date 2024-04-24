@@ -54,12 +54,3 @@ jobs:
               working-directory: packages/contracts
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-            - name: Upload to release
-              uses: softprops/action-gh-release@v2
-              if: ${{ inputs.release }}
-              with:
-                  body_path: packages/contracts/CHANGELOG.md
-                  files: |
-                      packages/contracts/deployments/**
-                      packages/contracts/export/abi/*
