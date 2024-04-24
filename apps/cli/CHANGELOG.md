@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.13.0
+
+### Minor Changes
+
+- 459ab03: use latest devnet (renamed test tokens)
+- 31f0894: add base_sepolia
+
+### Patch Changes
+
+- fbb1747: support to base network
+- c629806: remove unused Marketplace contract from address-book
+- 18b5b37: refactor sunodo build
+
 ## 0.12.0
 
 ### Minor Changes

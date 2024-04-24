@@ -1,6 +1,6 @@
 {
     "name": "@sunodo/token",
-    "version": "0.7.0",
+    "version": "0.8.0",
     "description": "Test Tokens",
     "main": "src/index.ts",
     "author": "Danilo Tuler",
