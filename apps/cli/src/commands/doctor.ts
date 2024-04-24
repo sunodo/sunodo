@@ -3,8 +3,7 @@ import { execa } from "execa";
 import semver from "semver";
 
 export default class DoctorCommand extends Command {
-    static description =
-        "Verify the minimal requirements for the sunodo execution commands";
+    static description = "Verify the minimal sytem requirements";
 
     static examples = ["<%= config.bin %> <%= command.id %>"];
 
@@ -72,7 +71,7 @@ export default class DoctorCommand extends Command {
                 );
             }
 
-            this.log("Your system is ready for sunodo.");
+            this.log(`Your system is ready for ${this.config.bin}.`);
         } catch (error: unknown) {
             if (error instanceof Error) {
                 this.error(error.message);

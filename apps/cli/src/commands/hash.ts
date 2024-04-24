@@ -22,7 +22,7 @@ export default class HashCommand extends BaseCommand<typeof HashCommand> {
             }
         } else {
             this.error(
-                "Cartesi machine snapshot not found, run 'sunodo build'",
+                `Cartesi machine snapshot not found, run '${this.config.bin} build'`,
             );
         }
     }
