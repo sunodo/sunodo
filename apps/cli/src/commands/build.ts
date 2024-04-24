@@ -311,7 +311,7 @@ Update your application Dockerfile using one of the templates at https://github.
                 ext2Path,
                 snapshotPath,
             );
-            await fs.chmod(this.getContextPath("image"), 0o755);
+            await fs.chmod(snapshotPath, 0o755);
         } finally {
             await fs.remove(gnuTarPath);
             await fs.remove(tarPath);
