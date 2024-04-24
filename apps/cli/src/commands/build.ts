@@ -2,7 +2,6 @@ import { Flags } from "@oclif/core";
 import bytes from "bytes";
 import { execa } from "execa";
 import fs from "fs-extra";
-import path from "path";
 import semver from "semver";
 import tmp from "tmp";
 
@@ -31,12 +30,6 @@ const CARTESI_DEFAULT_RAM_SIZE = "128Mi";
 const SUNODO_LABEL_PREFIX = "io.sunodo";
 const SUNODO_LABEL_SDK_VERSION = `${SUNODO_LABEL_PREFIX}.sdk_version`;
 const SUNODO_DEFAULT_SDK_VERSION = "0.4.0";
-
-const SUNODO_PATH = path.join(".sunodo");
-const SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH = path.join(SUNODO_PATH, "image");
-const SUNODO_DEFAULT_TAR_PATH = path.join(SUNODO_PATH, "image.tar");
-const SUNODO_DEFAULT_RETAR_TAR_PATH = path.join(SUNODO_PATH, "image.gnutar");
-const SUNODO_DEFAULT_EXT2_PATH = path.join(SUNODO_PATH, "image.ext2");
 
 export default class BuildApplication extends BaseCommand<
     typeof BuildApplication
@@ -269,14 +262,19 @@ Update your application Dockerfile using one of the templates at https://github.
     public async run(): Promise<void> {
         const { flags } = await this.parse(BuildApplication);
 
+        const snapshotPath = this.getContextPath("image");
+        const tarPath = this.getContextPath("image.tar");
+        const gnuTarPath = this.getContextPath("image.gnutar");
+        const ext2Path = this.getContextPath("image.ext2");
+
         // clean up temp files we create along the process
         tmp.setGracefulCleanup();
 
         // use pre-existing image or build dapp image
         const appImage = flags["from-image"] || (await this.buildImage(flags));
 
-        // prapare .sunodo directory
-        await fs.emptyDir(SUNODO_PATH); // XXX: make it less error prone
+        // prepare context directory
+        await fs.emptyDir(this.getContextPath()); // XXX: make it less error prone
 
         // get and validate image info
         const imageInfo = await this.getImageInfo(appImage);
@@ -286,14 +284,14 @@ Update your application Dockerfile using one of the templates at https://github.
 
         try {
             // create docker tarball for image specified
-            await this.createTarball(appImage, SUNODO_DEFAULT_TAR_PATH);
+            await this.createTarball(appImage, tarPath);
 
             // create rootfs tar
             await this.sdkRun(
                 sdkImage,
                 BuildApplication.createRootfsTarCommand(),
-                SUNODO_DEFAULT_TAR_PATH,
-                SUNODO_DEFAULT_RETAR_TAR_PATH,
+                tarPath,
+                gnuTarPath,
             );
 
             // create ext2
@@ -302,8 +300,8 @@ Update your application Dockerfile using one of the templates at https://github.
                 BuildApplication.createExt2Command(
                     bytes.parse(imageInfo.dataSize),
                 ),
-                SUNODO_DEFAULT_RETAR_TAR_PATH,
-                SUNODO_DEFAULT_EXT2_PATH,
+                gnuTarPath,
+                ext2Path,
             );
 
             // create machine snapshot
@@ -311,14 +309,14 @@ Update your application Dockerfile using one of the templates at https://github.
                 await this.sdkRun(
                     sdkImage,
                     BuildApplication.createMachineSnapshotCommand(imageInfo),
-                    SUNODO_DEFAULT_EXT2_PATH,
-                    SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH,
+                    ext2Path,
+                    snapshotPath,
                 );
-                await fs.chmod(SUNODO_DEFAULT_MACHINE_SNAPSHOT_PATH, 0o755);
+                await fs.chmod(this.getContextPath("image"), 0o755);
             }
         } finally {
-            await fs.remove(SUNODO_DEFAULT_RETAR_TAR_PATH);
-            await fs.remove(SUNODO_DEFAULT_TAR_PATH);
+            await fs.remove(gnuTarPath);
+            await fs.remove(tarPath);
         }
     }
 }

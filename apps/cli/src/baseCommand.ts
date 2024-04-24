@@ -57,9 +57,13 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
         return ps?.State;
     }
 
+    protected getContextPath(...paths: string[]): string {
+        return path.join(".sunodo", ...paths);
+    }
+
     protected getMachineHash(): Hash | undefined {
         // read hash of the cartesi machine snapshot, if one exists
-        const hashPath = path.join(".sunodo", "image", "hash");
+        const hashPath = this.getContextPath("image", "hash");
         if (fs.existsSync(hashPath)) {
             const hash = fs.readFileSync(hashPath).toString("hex");
             if (isHash(`0x${hash}`)) {
