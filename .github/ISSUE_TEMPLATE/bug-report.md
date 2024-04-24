@@ -1,11 +1,9 @@
 ---
-
 name: 🐛 Bug Report
 about: Template for reporting bugs
-title: ''
-labels: bug
-assignees: ''
-
+title: ""
+labels: bug, triage
+assignees: ""
 ---
 
 ## 🙂 Expected behavior
