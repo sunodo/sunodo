@@ -1,10 +1,11 @@
-import { Args, Command, Flags } from "@oclif/core";
+import { Args, Flags } from "@oclif/core";
 import { execa } from "execa";
 import fs from "fs-extra";
 import { lookpath } from "lookpath";
 import path from "path";
+import { BaseCommand } from "../baseCommand";
 
-export default class Shell extends Command {
+export default class Shell extends BaseCommand<typeof Shell> {
     static description = "Start a shell in cartesi machine of application";
 
     static examples = ["<%= config.bin %> <%= command.id %>"];

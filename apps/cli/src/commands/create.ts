@@ -1,12 +1,13 @@
-import { Args, Command, Flags } from "@oclif/core";
+import { Args, Flags } from "@oclif/core";
 import chalk from "chalk";
 import type { TemplateProvider } from "giget";
 import { DownloadTemplateResult, downloadTemplate } from "giget";
 import ora from "ora";
+import { BaseCommand } from "../baseCommand";
 
 export const DEFAULT_TEMPLATES_BRANCH = "sdk-0.4";
 
-export default class CreateCommand extends Command {
+export default class CreateCommand extends BaseCommand<typeof CreateCommand> {
     static description = "Create application";
 
     static examples = ["<%= config.bin %> <%= command.id %>"];
