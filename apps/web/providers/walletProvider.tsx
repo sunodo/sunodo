@@ -13,6 +13,7 @@ import {
     arbitrum,
     arbitrumSepolia,
     base,
+    baseSepolia,
     foundry,
     mainnet,
     optimism,
@@ -37,6 +38,7 @@ const config = getDefaultConfig({
                   optimism,
                   optimismSepolia,
                   base,
+                  baseSepolia,
                   foundry,
               ]
             : [
@@ -47,6 +49,7 @@ const config = getDefaultConfig({
                   optimism,
                   optimismSepolia,
                   base,
+                  baseSepolia,
               ],
     ssr: true,
 });
