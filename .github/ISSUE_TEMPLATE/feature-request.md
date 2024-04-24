@@ -2,7 +2,7 @@
 name: ✨ Feature request
 about: Template for requesting new features
 title: ""
-labels: feature
+labels: feature, triage
 assignees: ""
 ---
 
