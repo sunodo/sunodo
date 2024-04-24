@@ -23,7 +23,7 @@ export default class Deploy extends BaseCommand<typeof Deploy> {
                 "Select wheather the user will host an application node himself, or use a third-party node provider",
         }),
         webapp: Flags.url({
-            description: "address of sunodo webapp",
+            description: "address of deploy webapp",
             default: new URL("https://sunodo.io/deploy"),
             hidden: true,
         }),
@@ -36,7 +36,7 @@ export default class Deploy extends BaseCommand<typeof Deploy> {
         const templateHash = this.getMachineHash();
         if (!templateHash) {
             this.error(
-                "Cartesi machine snapshot not found, run 'sunodo build'",
+                `Cartesi machine snapshot not found, run '${this.config.bin} build'`,
             );
         }
         this.logPrompt({

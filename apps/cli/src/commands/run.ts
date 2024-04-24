@@ -50,13 +50,13 @@ export default class Run extends BaseCommand<typeof Run> {
             // Check if snapshot exists
             if (!hash) {
                 throw new Error(
-                    "Cartesi machine snapshot not found, run 'sunodo build'",
+                    `Cartesi machine snapshot not found, run '${this.config.bin} build'`,
                 );
             }
             projectName = hash.substring(2, 10);
         }
 
-        // path of the sunodo instalation
+        // path of the tool instalation
         const binPath = path.join(
             path.dirname(new URL(import.meta.url).pathname),
             "..",

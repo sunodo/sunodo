@@ -67,7 +67,9 @@ export default class Shell extends Command {
         // use pre-existing image or build dapp image
         const ext2Path = path.join(".sunodo", "image.ext2");
         if (!fs.existsSync(ext2Path)) {
-            throw new Error(`machine not build, run \`sunodo build\``);
+            throw new Error(
+                `machine not built, run '${this.config.bin} build'`,
+            );
         }
 
         // execute the machine and save snapshot

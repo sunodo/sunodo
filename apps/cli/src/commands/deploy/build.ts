@@ -60,7 +60,7 @@ export default class DeployBuild extends BaseCommand<typeof DeployBuild> {
         const templateHash = this.getMachineHash();
         if (!templateHash) {
             this.error(
-                "Cartesi machine snapshot not found, run 'sunodo build'",
+                `Cartesi machine snapshot not found, run '${this.config.bin} build'`,
             );
         }
         this.logPrompt({
