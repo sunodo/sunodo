@@ -19,6 +19,7 @@ import {
     arbitrum,
     arbitrumSepolia,
     base,
+    baseSepolia,
     foundry,
     mainnet,
     optimism,
@@ -49,7 +50,7 @@ export const supportedChains = (options?: SupportedChainsOptions): Chain[] => {
         chains.push(foundry);
     }
     if (options.includeTestnets) {
-        chains.push(arbitrumSepolia, optimismSepolia, sepolia);
+        chains.push(arbitrumSepolia, baseSepolia, optimismSepolia, sepolia);
     }
     if (options.includeMainnets) {
         chains.push(arbitrum, base, mainnet, optimism);
