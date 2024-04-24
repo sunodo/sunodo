@@ -147,7 +147,10 @@ export default class Run extends BaseCommand<typeof Run> {
             });
         } catch (e: unknown) {
             // 130 is a graceful shutdown, so we can swallow it
-            if ((e as any).exitCode !== 130) {
+            if (
+                e instanceof Error &&
+                (e as Error & { exitCode?: number }).exitCode === 130
+            ) {
                 throw e;
             }
         } finally {
