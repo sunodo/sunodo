@@ -1,8 +1,8 @@
-import { Command } from "@oclif/core";
 import fs from "fs-extra";
 import path from "path";
+import { BaseCommand } from "../baseCommand";
 
-export default class Clean extends Command {
+export default class Clean extends BaseCommand<typeof Clean> {
     static summary = "Clean build artifacts of application.";
 
     static description = "Deletes all cached build artifacts of application.";

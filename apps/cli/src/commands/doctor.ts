@@ -1,8 +1,8 @@
-import { Command } from "@oclif/core";
 import { execa } from "execa";
 import semver from "semver";
+import { BaseCommand } from "../baseCommand";
 
-export default class DoctorCommand extends Command {
+export default class DoctorCommand extends BaseCommand<typeof DoctorCommand> {
     static description = "Verify the minimal sytem requirements";
 
     static examples = ["<%= config.bin %> <%= command.id %>"];

@@ -1,4 +1,4 @@
-import { Command, Flags } from "@oclif/core";
+import { Flags } from "@oclif/core";
 import bytes from "bytes";
 import { execa } from "execa";
 import fs from "fs-extra";
@@ -6,6 +6,7 @@ import path from "path";
 import semver from "semver";
 import tmp from "tmp";
 
+import { BaseCommand } from "../baseCommand.js";
 import { DEFAULT_TEMPLATES_BRANCH } from "./create.js";
 
 type ImageBuildOptions = {
@@ -37,7 +38,9 @@ const SUNODO_DEFAULT_TAR_PATH = path.join(SUNODO_PATH, "image.tar");
 const SUNODO_DEFAULT_RETAR_TAR_PATH = path.join(SUNODO_PATH, "image.gnutar");
 const SUNODO_DEFAULT_EXT2_PATH = path.join(SUNODO_PATH, "image.ext2");
 
-export default class BuildApplication extends Command {
+export default class BuildApplication extends BaseCommand<
+    typeof BuildApplication
+> {
     static summary = "Build application.";
 
     static description =
