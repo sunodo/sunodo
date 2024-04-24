@@ -26,7 +26,7 @@ export default class DeployBuild extends BaseCommand<typeof DeployBuild> {
 
     private async buildRollupsImage(platform?: string) {
         const buildResult = tmpNameSync();
-        const imagePath = path.join(".sunodo", "image");
+        const imagePath = this.getContextPath("image");
         const binPath = path.join(
             path.dirname(new URL(import.meta.url).pathname),
             "..",

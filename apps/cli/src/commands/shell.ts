@@ -66,7 +66,7 @@ export default class Shell extends BaseCommand<typeof Shell> {
         const { flags } = await this.parse(Shell);
 
         // use pre-existing image or build dapp image
-        const ext2Path = path.join(".sunodo", "image.ext2");
+        const ext2Path = this.getContextPath("image.ext2");
         if (!fs.existsSync(ext2Path)) {
             throw new Error(
                 `machine not built, run '${this.config.bin} build'`,
