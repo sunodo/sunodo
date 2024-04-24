@@ -1,5 +1,12 @@
 # @sunodo/devnet
 
+## 1.6.0
+
+### Minor Changes
+
+- 0e2dd7f: move token contracts to devnet
+- f38dfaf: using SelfHostedApplicationFactory from @cartesi/rollups
+
 ## 1.5.0
 
 ### Minor Changes

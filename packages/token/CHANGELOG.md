@@ -1,5 +1,12 @@
 # @sunodo/token
 
+## 0.8.0
+
+### Minor Changes
+
+- 4638d34: rename tokens
+- 31f0894: add base_sepolia
+
 ## 0.7.0
 
 ### Minor Changes

@@ -1,5 +1,12 @@
 # @sunodo/contracts
 
+## 0.8.0
+
+### Minor Changes
+
+- 95c276d: remove SelfHostedApplicationFactory, now part of @cartesi/rollups
+- 31f0894: add base_sepolia
+
 ## 0.7.0
 
 ### Minor Changes
