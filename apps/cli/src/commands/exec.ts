@@ -4,14 +4,18 @@ import fs from "fs-extra";
 import { lookpath } from "lookpath";
 import path from "path";
 
-export default class Shell extends Command {
-    static description = "Start a shell in cartesi machine of application";
+export default class Exec extends Command {
+    static description = "Execute command in cartesi machine of application";
 
-    static examples = ["<%= config.bin %> <%= command.id %>"];
+    static examples = ["<%= config.bin %> <%= command.id %> /bin/bash"];
 
     static args = {
         image: Args.string({
             description: "image ID|name",
+            required: false,
+        }),
+        command: Args.string({
+            description: "Command to execute",
             required: false,
         }),
     };
@@ -23,9 +27,10 @@ export default class Shell extends Command {
         }),
     };
 
-    private async startShell(
+    private async startExec(
         ext2Path: string,
         runAsRoot: boolean,
+        command: string[],
     ): Promise<void> {
         const containerDir = "/mnt";
         const bind = `${path.resolve(path.dirname(ext2Path))}:${containerDir}`;
@@ -56,13 +61,16 @@ export default class Shell extends Command {
             args.push("-it");
         }
 
-        await execa("docker", [...args, "--", "/bin/bash"], {
+        await execa("docker", [...args, "--", ...command], {
             stdio: "inherit",
         });
     }
 
     public async run(): Promise<void> {
-        const { flags } = await this.parse(Shell);
+        const { argv, flags } = (await this.parse(Exec)) as {
+            argv: string[];
+            flags: { "run-as-root": boolean };
+        };
 
         // use pre-existing image or build dapp image
         const ext2Path = path.join(".sunodo", "image.ext2");
@@ -70,7 +78,7 @@ export default class Shell extends Command {
             throw new Error(`machine not build, run \`sunodo build\``);
         }
 
-        // execute the machine and save snapshot
-        await this.startShell(ext2Path, flags["run-as-root"]);
+        // Execute the command in the shell
+        await this.startExec(ext2Path, flags["run-as-root"], argv);
     }
 }
