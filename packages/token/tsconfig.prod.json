@@ -1,7 +1,0 @@
-{
-    "extends": "./tsconfig.json",
-    "compilerOptions": {
-        "composite": true
-    },
-    "exclude": ["dist", "node_modules", "test"]
-}
