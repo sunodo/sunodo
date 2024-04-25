@@ -217,16 +217,20 @@ Update your application Dockerfile using one of the templates at https://github.
     }
 
     // returns the command to create ext2 from a rootfs
-    private static createExt2Command(): string[] {
+    private static createExt2Command(extraBytes: number): string[] {
+        const blockSize = 4096;
+        const extraBlocks = Math.ceil(extraBytes / blockSize);
+        const extraSize = `+${extraBlocks}`;
+
         return [
             "xgenext2fs",
             "--tarball",
             "/tmp/input",
             "--block-size",
-            "4096",
+            blockSize.toString(),
             "--faketime",
             "-r",
-            "+1",
+            extraSize,
             "/tmp/output",
         ];
     }
@@ -292,7 +296,9 @@ Update your application Dockerfile using one of the templates at https://github.
             // create ext2
             await this.sdkRun(
                 sdkImage,
-                BuildApplication.createExt2Command(),
+                BuildApplication.createExt2Command(
+                    bytes.parse(imageInfo.dataSize),
+                ),
                 SUNODO_DEFAULT_RETAR_TAR_PATH,
                 SUNODO_DEFAULT_EXT2_PATH,
             );
