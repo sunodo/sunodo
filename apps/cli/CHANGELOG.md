@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.13.1
+
+### Patch Changes
+
+- aea5435: fix ext2 drive size specification
+
 ## 0.13.0
 
 ### Minor Changes
