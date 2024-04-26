@@ -1,8 +1,0 @@
-{
-    "name": "@sunodo/anvil",
-    "private": true,
-    "version": "3.6.0",
-    "scripts": {
-        "build": "docker buildx bake --load"
-    }
-}

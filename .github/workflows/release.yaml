@@ -65,13 +65,6 @@ jobs:
         uses: ./.github/workflows/sdk.yaml
         secrets: inherit
 
-    build_anvil:
-        name: Build anvil
-        needs: [release, packages_to_build]
-        if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), '@sunodo/anvil') }}
-        uses: ./.github/workflows/anvil.yaml
-        secrets: inherit
-
     build_devnet:
         name: Build devnet
         needs: [release, packages_to_build]
