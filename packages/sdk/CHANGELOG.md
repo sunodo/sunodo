@@ -1,5 +1,11 @@
 # sdk
 
+## 0.6.0
+
+### Minor Changes
+
+- c65af20: add devnet files
+
 ## 0.5.0
 
 ### Minor Changes
