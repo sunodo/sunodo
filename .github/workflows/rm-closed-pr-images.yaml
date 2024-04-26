@@ -13,7 +13,6 @@ jobs:
         strategy:
             matrix:
                 image:
-                    - anvil
                     - sdk
         steps:
             - uses: vlaurin/action-ghcr-prune@v0.6.0

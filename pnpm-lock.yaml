@@ -350,8 +350,6 @@ importers:
         specifier: ^5.4.3
         version: 5.4.3
 
-  packages/anvil: {}
-
   packages/car-download:
     dependencies:
       '@commander-js/extra-typings':
