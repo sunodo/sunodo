@@ -1,12 +1,6 @@
-import input from "@inquirer/input";
-import select from "@inquirer/select";
-import { Command, Interfaces, Flags as StandardFlags } from "@oclif/core";
-import ora from "ora";
-import { Address, PublicClient, WalletClient, isAddress } from "viem";
+import { Command, Interfaces } from "@oclif/core";
 
 import { BaseCommand } from "../../baseCommand.js";
-import * as CustomFlags from "../../flags.js";
-import createClients, { supportedChains } from "../../wallet.js";
 
 export type Flags<T extends typeof Command> = Interfaces.InferredFlags<
     (typeof SendBaseCommand)["baseFlags"] & T["flags"]
@@ -17,74 +11,8 @@ export type Args<T extends typeof Command> = Interfaces.InferredArgs<T["args"]>;
 export abstract class SendBaseCommand<
     T extends typeof Command,
 > extends BaseCommand<typeof SendBaseCommand> {
-    static baseFlags = {
-        dapp: CustomFlags.address({
-            summary: "dapp address.",
-            description:
-                "the address of the DApp, defaults to the deployed DApp address if application is running.",
-        }),
-        "chain-id": StandardFlags.integer({
-            description: "The EIP-155 chain ID.",
-            char: "c",
-            env: "CHAIN",
-            helpGroup: "Ethereum",
-            options: supportedChains({ includeDevnet: true }).map((c) =>
-                c.id.toString(),
-            ),
-        }),
-        "rpc-url": StandardFlags.string({
-            description: "The RPC endpoint.",
-            char: "r",
-            env: "ETH_RPC_URL",
-            helpGroup: "Ethereum",
-        }),
-        "mnemonic-passphrase": StandardFlags.string({
-            description: "Use a BIP39 passphrase for the mnemonic.",
-            helpGroup: "Wallet",
-        }),
-        "mnemonic-index": StandardFlags.integer({
-            description: "Use the private key from the given mnemonic index.",
-            helpGroup: "Wallet",
-            default: 0,
-        }),
-    };
-
     protected flags!: Flags<T>;
     protected args!: Args<T>;
-
-    private async connect(): Promise<{
-        publicClient: PublicClient;
-        walletClient: WalletClient;
-    }> {
-        // create viem clients
-        return createClients({
-            chain: supportedChains({ includeDevnet: true }).find(
-                (c) => c.id == this.flags["chain-id"],
-            ),
-            rpcUrl: this.flags["rpc-url"],
-            mnemonicPassphrase: this.flags["mnemonic-passphrase"],
-            mnemonicIndex: this.flags["mnemonic-index"],
-        });
-    }
-
-    protected async getApplicationAddress(): Promise<Address> {
-        if (this.flags.dapp) {
-            // honor the flag
-            return this.flags.dapp;
-        }
-
-        // get the running container dapp address
-        const nodeAddress = await super.getApplicationAddress();
-
-        // query for the address
-        const applicationAddress = await input({
-            message: "Application address",
-            validate: (value) => isAddress(value) || "Invalid address",
-            default: nodeAddress,
-        });
-
-        return applicationAddress as Address;
-    }
 
     public async init(): Promise<void> {
         await super.init();
@@ -98,17 +26,10 @@ export abstract class SendBaseCommand<
         this.args = args as Args<T>;
     }
 
-    protected abstract send(
-        publicClient: PublicClient,
-        walletClient: WalletClient,
-    ): Promise<Address>;
-
     public async run(): Promise<void> {
-        const { publicClient, walletClient } = await this.connect();
-        const hash = await this.send(publicClient, walletClient);
-        const progress = ora("Sending input...").start();
-        await publicClient.waitForTransactionReceipt({ hash });
-        progress.succeed(`Input sent: ${hash}`);
+        this.error(
+            "Sunodo CLI is deprecated, please uninstall it and install Cartesi CLI",
+        );
     }
 }
 
@@ -121,22 +42,8 @@ export default class Send extends Command {
     static examples = ["<%= config.bin %> <%= command.id %>"];
 
     public async run(): Promise<void> {
-        // get all send sub-commands
-        const sendCommands = this.config.commands.filter((command) =>
-            command.id.startsWith("send:"),
+        this.error(
+            "Sunodo CLI is deprecated, please uninstall it and install Cartesi CLI",
         );
-
-        // select the send sub-command
-        const commandId = await select({
-            message: "Select send sub-command",
-            choices: sendCommands.map((command) => ({
-                value: command.id,
-                name: command.summary,
-                description: command.description,
-            })),
-        });
-
-        // invoke the sub-command
-        await this.config.runCommand(commandId, this.argv);
     }
 }

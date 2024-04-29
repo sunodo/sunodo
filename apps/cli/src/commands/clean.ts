@@ -1,5 +1,4 @@
-import fs from "fs-extra";
-import { BaseCommand } from "../baseCommand";
+import { BaseCommand } from "../baseCommand.js";
 
 export default class Clean extends BaseCommand<typeof Clean> {
     static summary = "Clean build artifacts of application.";
@@ -9,6 +8,8 @@ export default class Clean extends BaseCommand<typeof Clean> {
     static examples = ["<%= config.bin %> <%= command.id %>"];
 
     public async run(): Promise<void> {
-        await fs.emptyDir(this.getContextPath());
+        this.error(
+            "Sunodo CLI is deprecated, please uninstall it and install Cartesi CLI",
+        );
     }
 }
