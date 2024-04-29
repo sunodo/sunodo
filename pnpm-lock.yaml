@@ -84,12 +84,12 @@ importers:
         specifier: ^2.9.25
         version: 2.9.25(typescript@5.4.3)(zod@3.22.4)
     devDependencies:
+      '@cartesi/devnet':
+        specifier: ^1.6.0
+        version: 1.6.0
       '@oclif/test':
         specifier: ^3.2.8
         version: 3.2.8
-      '@sunodo/devnet':
-        specifier: workspace:*
-        version: link:../../packages/devnet
       '@sunodo/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
@@ -226,6 +226,9 @@ importers:
         specifier: ^2.5.12
         version: 2.5.12(@tanstack/react-query@5.28.8)(@types/react@18.2.71)(react-dom@18.2.0)(react-native@0.74.0)(react@18.2.0)(typescript@5.4.3)(viem@2.9.25)
     devDependencies:
+      '@cartesi/devnet':
+        specifier: ^1.6.0
+        version: 1.6.0
       '@next/bundle-analyzer':
         specifier: ^14.1.4
         version: 14.1.4
@@ -256,9 +259,6 @@ importers:
       '@storybook/test':
         specifier: ^8.0.4
         version: 8.0.4
-      '@sunodo/devnet':
-        specifier: workspace:*
-        version: link:../../packages/devnet
       '@sunodo/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
@@ -478,43 +478,6 @@ importers:
         specifier: ^2.9.25
         version: 2.9.25(typescript@5.4.5)
 
-  packages/devnet:
-    dependencies:
-      '@openzeppelin/contracts':
-        specifier: 5.0.2
-        version: 5.0.2
-    devDependencies:
-      '@cartesi/rollups':
-        specifier: ^1.4.0
-        version: 1.4.0
-      '@nomicfoundation/hardhat-viem':
-        specifier: ^2.0.1
-        version: 2.0.1(hardhat@2.22.3)(typescript@5.4.5)(viem@2.9.25)
-      '@safe-global/safe-singleton-factory':
-        specifier: ^1.0.23
-        version: 1.0.23
-      hardhat:
-        specifier: ^2.22.3
-        version: 2.22.3(typescript@5.4.5)
-      hardhat-abi-exporter:
-        specifier: ^2
-        version: 2.10.1(hardhat@2.22.3)
-      hardhat-deploy:
-        specifier: ^0.12.2
-        version: 0.12.2
-      npm-run-all:
-        specifier: ^4
-        version: 4.1.5
-      rimraf:
-        specifier: ^5
-        version: 5.0.5
-      tsconfig:
-        specifier: workspace:*
-        version: link:../tsconfig
-      typescript:
-        specifier: ^5.4.5
-        version: 5.4.5
-
   packages/eslint-config:
     devDependencies:
       '@typescript-eslint/eslint-plugin':
@@ -538,8 +501,6 @@ importers:
       typescript:
         specifier: ^5.4.3
         version: 5.4.3
-
-  packages/sdk: {}
 
   packages/tsconfig: {}
 
@@ -4130,14 +4091,22 @@ packages:
     resolution: {integrity: sha512-4iri8i1AqYHJE2DstZYkyEprg6Pq6sKx3xn5FpySk9sNhH7qN2LLlHJCfDTZRILNwQNPD7mATWM0TBui7uC1pA==}
     dev: true
 
+  /@cartesi/devnet@1.6.0:
+    resolution: {integrity: sha512-lyJ5/K71cgJ9owb+AkOt5QVLeCJ0MF32dNftxtTTyF8vQ83DdPapyOxezLxbrwWi1+cZdSwK8z1pk4H6Lta6/A==}
+    dependencies:
+      '@openzeppelin/contracts': 5.0.2
+    dev: true
+
   /@cartesi/rollups@1.4.0:
     resolution: {integrity: sha512-remwnm4Rgkhzoc3F2YQw4nXJk0ggvmwdgGQxF5Gps7Ej3zY2qLCUS7OscMX5P9RFjpWnJ7mtlEXydVaUR4XXrQ==}
     dependencies:
       '@cartesi/util': 6.3.0
       '@openzeppelin/contracts': 4.9.2
+    dev: false
 
   /@cartesi/util@6.3.0:
     resolution: {integrity: sha512-UgsyTklI4mf3ZbnPHQTuYJcMyldM3y9Xm+ib9xBgDzDq6TxMO81xkrPv/gwA23seHL2/bkJ5flXJEhCE8poW8Q==}
+    dev: false
 
   /@chainsafe/as-chacha20poly1305@0.1.0:
     resolution: {integrity: sha512-BpNcL8/lji/GM3+vZ/bgRWqJ1q5kwvTFmGPk7pxm/QQZDbaMI98waOHjEymTjq2JmdD/INdNBFOVSyJofXg7ew==}
@@ -7250,6 +7219,7 @@ packages:
 
   /@openzeppelin/contracts@4.9.2:
     resolution: {integrity: sha512-mO+y6JaqXjWeMh9glYVzVu8HYPGknAAnWyxTRhGeckOruyXQMNnlcW6w/Dx9ftLeIQk6N+ZJFuVmTwF7lEIFrg==}
+    dev: false
 
   /@openzeppelin/contracts@4.9.3:
     resolution: {integrity: sha512-He3LieZ1pP2TNt5JbkPA4PNT9WC3gOTOlDcFGJW4Le4QKqwmiNJCRt44APfxMxvq7OugU/cqYuPcSBzOw38DAg==}
@@ -7257,7 +7227,7 @@ packages:
 
   /@openzeppelin/contracts@5.0.2:
     resolution: {integrity: sha512-ytPc6eLGcHHnapAZ9S+5qsdomhjo6QBHTDRRBFfTxXIpsicMhVPouPgmUPebZZZGX7vt9USA+Z+0M0dSVtSUEA==}
-    dev: false
+    dev: true
 
   /@parcel/watcher-android-arm64@2.4.1:
     resolution: {integrity: sha512-LOi/WTbbh3aTn2RYddrO8pnapixAziFl6SMxHM69r3tvdSm94JtCenaKgk1GRg5FJ5wpMCpHeW+7yqPlvZv7kg==}
