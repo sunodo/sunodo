@@ -12,7 +12,7 @@ export default defineConfig({
         },
     ],
     plugins: [
-        hardhatDeploy({ directory: "node_modules/@sunodo/devnet/export/abi" }),
+        hardhatDeploy({ directory: "node_modules/@cartesi/devnet/export/abi" }),
         react(),
     ],
 });

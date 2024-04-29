@@ -41,7 +41,7 @@
     },
     "devDependencies": {
         "@oclif/test": "^3.2.8",
-        "@sunodo/devnet": "workspace:*",
+        "@cartesi/devnet": "^1.6.0",
         "@sunodo/eslint-config": "workspace:*",
         "@sunodo/wagmi-plugin-hardhat-deploy": "^0.3.0",
         "@types/bytes": "^3.1",

@@ -58,22 +58,6 @@ jobs:
               run: |
                   echo "PACKAGES=$(jq -c '[ .[].name ]' <(echo '${{ needs.release.outputs.publishedPackages }}'))" >> "$GITHUB_OUTPUT"
 
-    build_sdk:
-        name: Build sdk
-        needs: [release, packages_to_build]
-        if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), '@sunodo/sdk') }}
-        uses: ./.github/workflows/sdk.yaml
-        secrets: inherit
-
-    build_devnet:
-        name: Build devnet
-        needs: [release, packages_to_build]
-        if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), '@sunodo/devnet') }}
-        uses: ./.github/workflows/devnet.yaml
-        secrets: inherit
-        with:
-            release: true
-
     build_contracts:
         name: Build contracts
         needs: [release, packages_to_build]
