@@ -1,6 +1,4 @@
-import { ux } from "@oclif/core";
-
-import { AddressBook as AddressBookType, BaseCommand } from "../baseCommand.js";
+import { BaseCommand } from "../baseCommand.js";
 
 export default class AddressBook extends BaseCommand<typeof AddressBook> {
     static summary = "Prints addresses of smart contracts deployed.";
@@ -10,21 +8,9 @@ export default class AddressBook extends BaseCommand<typeof AddressBook> {
 
     static examples = ["<%= config.bin %> <%= command.id %>"];
 
-    public static enableJsonFlag = true;
-
-    public async run(): Promise<AddressBookType> {
-        const addressBook = await super.getAddressBook();
-        if (!this.jsonEnabled()) {
-            // print as a table
-            ux.table(
-                Object.entries(addressBook).map(([name, address]) => ({
-                    name,
-                    address,
-                })),
-                { name: { header: "Contract" }, address: {} },
-            );
-        }
-        // return (as json)
-        return addressBook;
+    public async run(): Promise<void> {
+        this.error(
+            "Sunodo CLI is deprecated, please uninstall it and install Cartesi CLI",
+        );
     }
 }

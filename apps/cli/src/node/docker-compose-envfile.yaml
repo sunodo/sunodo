@@ -1,4 +1,0 @@
-services:
-    validator:
-        env_file:
-            - ./.sunodo.env
