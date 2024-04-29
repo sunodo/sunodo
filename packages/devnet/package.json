@@ -1,5 +1,5 @@
 {
-    "name": "@sunodo/devnet",
+    "name": "@cartesi/devnet",
     "version": "1.6.0",
     "license": "Apache-2.0",
     "scripts": {

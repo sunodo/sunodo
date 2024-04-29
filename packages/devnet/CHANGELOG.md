@@ -1,4 +1,4 @@
-# @sunodo/devnet
+# devnet
 
 ## 1.6.0
 

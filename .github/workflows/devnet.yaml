@@ -45,7 +45,7 @@ jobs:
               run: pnpm install
 
             - name: Build
-              run: pnpm build --filter @sunodo/devnet
+              run: pnpm build --filter @cartesi/devnet
 
             - name: Publish
               if: ${{ inputs.release }}

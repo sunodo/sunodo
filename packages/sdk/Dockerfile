@@ -49,7 +49,7 @@ EOF
 # devnet files
 FROM node:slim as devnet
 ARG DEVNET_VERSION
-RUN npm install -g @sunodo/devnet@${DEVNET_VERSION}
+RUN npm install -g @cartesi/devnet@${DEVNET_VERSION}
 
 # sdk image
 FROM $SERVER_MANAGER_REGISTRY/$SERVER_MANAGER_ORG/server-manager:$SERVER_MANAGER_VERSION
@@ -108,8 +108,8 @@ COPY eth_load /usr/local/bin
 COPY entrypoint.sh /usr/local/bin/
 COPY --from=su-exec /usr/local/src/su-exec /usr/local/bin/
 COPY --from=crane /usr/local/bin/crane /usr/local/bin/
-COPY --from=devnet /usr/local/lib/node_modules/@sunodo/devnet/export/abi/localhost.json /usr/share/cartesi/
-COPY --from=devnet /usr/local/lib/node_modules/@sunodo/devnet/build/anvil_state.json /usr/share/cartesi/
+COPY --from=devnet /usr/local/lib/node_modules/@cartesi/devnet/export/abi/localhost.json /usr/share/cartesi/
+COPY --from=devnet /usr/local/lib/node_modules/@cartesi/devnet/build/anvil_state.json /usr/share/cartesi/
 RUN mkdir -p /tmp/.sunodo && chmod 1777 /tmp/.sunodo
 
 ADD --chmod=644 \
