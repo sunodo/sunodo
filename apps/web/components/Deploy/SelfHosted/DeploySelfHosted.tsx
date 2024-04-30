@@ -79,7 +79,7 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
         args: [authorityOwner, applicationOwner!, templateHash, salt],
         query: { enabled },
     });
-    const [authorityAddress, historyAddress, applicationAddress] = data || [];
+    const [applicationAddress, authorityAddress, historyAddress] = data || [];
 
     // simulate deploy transaction
     const simulate = useSimulateSelfHostedApplicationFactoryDeployContracts({
