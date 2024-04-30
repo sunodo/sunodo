@@ -1,6 +1,10 @@
 # Installing
 
-The `sunodo` CLI tool can be installed on macOS and Linux, and on Windows using [WSL](https://learn.microsoft.com/en-us/windows/wsl/install).
+:::warning
+The Sunodo CLI is deprecated in favor of the new Cartesi CLI tool. Please refer to the [Cartesi documentation](https://docs.cartesi.io) for the most up-to-date information. If you have a Sunodo application and need to migrate to a Cartesi CLI application refer to the [migration guide](/guide/introduction/migrating).
+:::
+
+The `cartesi` CLI tool can be installed on macOS and Linux, and on Windows using [WSL](https://learn.microsoft.com/en-us/windows/wsl/install).
 
 ## System requirements
 
@@ -22,21 +26,21 @@ docker run --privileged --rm tonistiigi/binfmt:riscv
 MacOS [Homebrew](https://brew.sh) users can install sunodo with:
 
 ```shell
-brew install sunodo/tap/sunodo
+brew install cartesi/tap/cartesi
 ```
 
-Users who don't use [Homebrew](https://brew.sh) should install [Node.js](https://nodejs.org/) and then install `sunodo` with:
+Users who don't use [Homebrew](https://brew.sh) should install [Node.js](https://nodejs.org/) and then install `cartesi` with:
 
 ```shell
-npm install -g @sunodo/cli
+npm install -g @cartesi/cli
 ```
 
 ## Linux
 
-Linux users can either also use [Homebrew on Linux](https://docs.brew.sh/Homebrew-on-Linux), or install [Node.js](https://nodejs.org/) and then install `sunodo` with:
+Linux users can either also use [Homebrew on Linux](https://docs.brew.sh/Homebrew-on-Linux), or install [Node.js](https://nodejs.org/) and then install `cartesi` with:
 
 ```shell
-npm install -g @sunodo/cli
+npm install -g @cartesi/cli
 ```
 
 ::: info

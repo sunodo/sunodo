@@ -1,11 +1,15 @@
 # Creating application
 
-One of `sunodo`'s goal is to be the easiest way to create new [Cartesi](https://cartesi.io) applications from scratch.
+:::warning
+The Sunodo CLI is deprecated in favor of the new Cartesi CLI tool. Please refer to the [Cartesi documentation](https://docs.cartesi.io) for the most up-to-date information. If you have a Sunodo application and need to migrate to a Cartesi CLI application refer to the [migration guide](/guide/introduction/migrating).
+:::
+
+One of `cartesi`'s goal is to be the easiest way to create new [Cartesi](https://cartesi.io) applications from scratch.
 
 To create a new application from a basic javascript template, run:
 
 ```shell
-$ sunodo create my-app --template javascript
+$ cartesi create my-app --template javascript
 ✔ Application created at my-app
 ```
 

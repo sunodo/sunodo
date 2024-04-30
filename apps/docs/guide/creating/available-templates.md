@@ -1,18 +1,22 @@
 # Available templates
 
-Sunodo provides basic templates for different programming languages and runtimes. These templates are designed to be a starting point for your application, and can be customized to fit your needs.
+:::warning
+The Sunodo CLI is deprecated in favor of the new Cartesi CLI tool. Please refer to the [Cartesi documentation](https://docs.cartesi.io) for the most up-to-date information. If you have a Sunodo application and need to migrate to a Cartesi CLI application refer to the [migration guide](/guide/introduction/migrating).
+:::
 
-The official templates below are hosted at the [templates public repository](https://github.com/sunodo/sunodo-templates).
+Cartesi provides basic templates for different programming languages and runtimes. These templates are designed to be a starting point for your application, and can be customized to fit your needs.
+
+The official templates below are hosted at the [templates public repository](https://github.com/cartesi/application-templates).
 
 -   `cpp`: C++ template
 -   `cpp-low-level`: C++ template using the low level API, instead of the HTTP server
 -   `go`: Go lang template
--   [`javascript`](https://github.com/sunodo/sunodo-templates/blob/main/javascript/README.md): NodeJS 20 template
+-   [`javascript`](https://github.com/cartesi/application-templates/blob/main/javascript/README.md): NodeJS 20 template
 -   `lua`: Lua 5.4 template
--   [`python`](https://github.com/sunodo/sunodo-templates/blob/main/python/README.md): python 3 template
+-   [`python`](https://github.com/cartesi/application-templates/blob/main/python/README.md): python 3 template
 -   `ruby`: ruby template
 -   `rust`: rust template
--   [`typescript`](https://github.com/sunodo/sunodo-templates/blob/main/typescript/README.md): TypeScript template
+-   [`typescript`](https://github.com/cartesi/application-templates/blob/main/typescript/README.md): TypeScript template
 
 ## Community templates
 
