@@ -1,17 +1,13 @@
 # Deploying application
 
-::: warning
-This is still under development and will be available in a future release.
-:::
-
 The deployment of a Cartesi rollups application has two main components: a Cartesi genesis machine, and a smart contract deployed to the [base layer of choice](./supported-networks.md).
 
 ## Cartesi machine
 
-The Cartesi genesis machine is produced by the [sunodo build](../building/building-application.md) command, and must be installed alongside a Cartesi [rollups node](https://github.com/cartesi/rollups-node). The machine contains a hash that represents the initial state of the application (including the application itself). The hash can be obtained using the `sunodo hash` command:
+The Cartesi genesis machine is produced by the [cartesi build](../building/building-application.md) command, and must be installed alongside a Cartesi [rollups node](https://github.com/cartesi/rollups-node). The machine contains a hash that represents the initial state of the application (including the application itself). The hash can be obtained using the `cartesi hash` command:
 
 ```shell
-$ sunodo hash
+$ cartesi hash
 ? Cartesi machine templateHash 0xc87999b8a93609268b10de25f2e49d35f80fad92813310edc585ed644a9805d3
 ```
 

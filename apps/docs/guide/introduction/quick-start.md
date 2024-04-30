@@ -1,12 +1,16 @@
 # Quick start
 
+:::warning
+The Sunodo CLI is deprecated in favor of the new Cartesi CLI tool. Please refer to the [Cartesi documentation](https://docs.cartesi.io) for the most up-to-date information. If you have a Sunodo application and need to migrate to a Cartesi CLI application refer to the [migration guide](/guide/introduction/migrating).
+:::
+
 The following commands will get you started with a javascript project, build a Cartesi machine and run a local node for the application:
 
 ```shell
-sunodo create my-app --template javascript
+cartesi create my-app --template javascript
 cd my-app
-sunodo build
-sunodo run
+cartesi build
+cartesi run
 ```
 
 This will run an [anvil](https://book.getfoundry.sh/reference/anvil/) node as a local blockchain, and the GraphQL service and Inspect Service.

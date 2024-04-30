@@ -19,6 +19,10 @@ const guideSidebar = (): DefaultTheme.SidebarItem[] => {
                     text: "Quick start",
                     link: "/guide/introduction/quick-start",
                 },
+                {
+                    text: "Migrating a Sunodo project",
+                    link: "/guide/introduction/migrating",
+                },
             ],
         },
         {

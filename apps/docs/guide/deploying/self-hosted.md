@@ -9,12 +9,12 @@ This method of deployment allows the developer to run his own infrastructure to 
 
 ## Deploying
 
-The self-hosted deployment process can be initiated by the `sunodo deploy --hosting self-hosted` command.
+The self-hosted deployment process can be initiated by the `cartesi deploy --hosting self-hosted --webapp https://sunodo.io/deploy` command.
 
 That command will show the Cartesi machine hash and build a Docker image containing the Cartesi rollups node and the Cartesi machine:
 
 ```shell
-$ sunodo deploy --hosting self-hosted
+$ cartesi deploy --hosting self-hosted --webapp https://sunodo.io/deploy
 ? Cartesi machine templateHash 0xc87999b8a93609268b10de25f2e49d35f80fad92813310edc585ed644a9805d3
 ? Application node Docker image sha256:5c355a9bddc92aa08987f395a257a0b32a51552c969eb161386e46f9380ea2ac
 ```
@@ -166,7 +166,7 @@ The developer is free to use any managed container solution, like Kubernetes. Th
     Tag the image produced in the beginning of the process and push it to the Fly.io registry:
 
     ::: warning
-    If you are using macOS with Apple Silicon and are deploying to Fly.io you may need to produce a Docker image for the architecture used by Fly.io, which is `linux/amd64`. You can use the following command to build the image: `sunodo deploy build --platform linux/amd64`
+    If you are using macOS with Apple Silicon and are deploying to Fly.io you may need to produce a Docker image for the architecture used by Fly.io, which is `linux/amd64`. You can use the following command to build the image: `cartesi deploy build --platform linux/amd64`
     :::
 
     ```shell
