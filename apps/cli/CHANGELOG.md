@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.14.0
+
+### Minor Changes
+
+- 3a9b05a: deprecate Sunodo CLI (now Cartesi CLI)
+
 ## 0.13.1
 
 ### Patch Changes
