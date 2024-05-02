@@ -107,6 +107,16 @@ const NodeConfig: FC<NodeConfigProps> = (props) => {
             str.concat(`${key}=${value !== undefined ? value : ""}\n`),
         "",
     );
+
+    // Add YAML generation logic
+    const yaml = entries.reduce<string>(
+        (str, [key, value]) =>
+            str.concat(
+                value !== undefined ? `${key}: ${value}\n` : `${key}: \n`,
+            ),
+        "",
+    );
+
     const toml = entries.reduce<string>(
         (str, [key, value]) =>
             str.concat(value !== undefined ? `${key} = "${value}"\n` : ""),
@@ -153,9 +163,16 @@ memory = "2gb"
 ${toml}
 `;
 
+    const valuesYaml = `
+validator:
+  config:
+    ${yaml}
+`;
+
     const codes = [
         { fileName: `${templateHash}.env`, code: dotenv, language: "shell" },
         { fileName: "fly.toml", code: flyToml, language: "toml" },
+        { fileName: "values.yaml", code: valuesYaml, language: "yaml" },
     ];
     return (
         <Stack>
