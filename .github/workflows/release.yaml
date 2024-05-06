@@ -67,11 +67,11 @@ jobs:
         with:
             release: true
 
-    build_car_download:
-        name: Build car-download
+    build_car_sync:
+        name: Build car-sync
         needs: [release, packages_to_build]
-        if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), '@sunodo/car-download') }}
-        uses: ./.github/workflows/car-download.yaml
+        if: ${{ needs.release.outputs.published == 'true' && contains(fromJSON(needs.packages_to_build.outputs.packages), '@sunodo/car-sync') }}
+        uses: ./.github/workflows/car-sync.yaml
         secrets: inherit
         with:
             release: true

@@ -14,7 +14,7 @@ events.EventEmitter.defaultMaxListeners = 100;
 import { carfs, text } from "./index.js";
 
 program
-    .name("car-download")
+    .name("car-sync")
     .argument("<cid>", "Content ID of the CAR file")
     .argument("[output]", "Output directory", process.cwd())
     .action(async (cid, output) => {

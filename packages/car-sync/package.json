@@ -1,5 +1,5 @@
 {
-    "name": "@sunodo/car-download",
+    "name": "@sunodo/car-sync",
     "version": "0.1.0",
     "license": "Apache-2.0",
     "dependencies": {

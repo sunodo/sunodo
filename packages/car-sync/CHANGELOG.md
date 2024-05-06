@@ -1,4 +1,4 @@
-# @sunodo/car-download
+# @sunodo/car-sync
 
 ## 0.1.0
 

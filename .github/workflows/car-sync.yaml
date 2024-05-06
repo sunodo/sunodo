@@ -1,4 +1,4 @@
-name: car-download
+name: car-sync
 on:
     workflow_call:
         inputs:
@@ -12,8 +12,8 @@ on:
                 required: true
     pull_request:
         paths:
-            - .github/workflows/car-download.yaml
-            - packages/car-download/**
+            - .github/workflows/car-sync.yaml
+            - packages/car-sync/**
             - packages/eslint-config/**
 concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
@@ -43,11 +43,11 @@ jobs:
               run: pnpm install
 
             - name: Build
-              run: pnpm build --filter @sunodo/car-download
+              run: pnpm build --filter @sunodo/car-sync
 
             - name: Publish
               if: ${{ inputs.release }}
-              working-directory: ./packages/car-download
+              working-directory: ./packages/car-sync
               run: pnpm publish
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
