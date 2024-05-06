@@ -11,10 +11,10 @@ The CID [bafybeibwirqufwrm5oohry2v22cmkgtx4sf2yszjikdpe4zlrraz66ewwm](https://ex
 Install the package globally and run the command:
 
 ```shell
-$ npm install -g @sunodo/car-download
-$ car-download --help
+$ npm install -g @sunodo/car-sync
+$ car-sync --help
 
-Usage: car-download [options] <cid> [output]
+Usage: car-sync [options] <cid> [output]
 
 Arguments:
   cid         Content ID of the CAR file
@@ -27,20 +27,20 @@ Options:
 To download a CAR file to the current directory:
 
 ```shell
-car-download bafybeibwirqufwrm5oohry2v22cmkgtx4sf2yszjikdpe4zlrraz66ewwm
+car-sync bafybeibwirqufwrm5oohry2v22cmkgtx4sf2yszjikdpe4zlrraz66ewwm
 ```
 
 ## API
 
-car-download can also be used as a library:
+car-sync can also be used as a library:
 
 ```shell
-npm install @sunodo/car-download
+npm install @sunodo/car-sync
 ```
 
 ```typescript
 import { unixfs } from "@helia/unixfs";
-import { carfs, text } from "@sunodo/car-download";
+import { carfs, text } from "@sunodo/car-sync";
 import { createHelia } from "helia";
 import { CID } from "multiformats/cid";
 import ora from "ora";
