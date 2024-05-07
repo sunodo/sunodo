@@ -48,6 +48,6 @@ jobs:
             - name: Publish
               if: ${{ inputs.release }}
               working-directory: ./packages/car-sync
-              run: pnpm publish
+              run: pnpm publish --access public
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
