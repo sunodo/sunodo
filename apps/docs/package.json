@@ -8,7 +8,7 @@
         "preview": "vitepress preview"
     },
     "devDependencies": {
-        "@algolia/client-search": "^4.23.1",
-        "vitepress": "1.0.1"
+        "@algolia/client-search": "^4.23.3",
+        "vitepress": "^1.1.4"
     }
 }
