@@ -133,7 +133,7 @@ The node requires the following external components:
 The node requires a connection to the selected [base layer](./supported-networks.md) through a JSON-RPC provider.
 The provider must support both HTTP and WebSocket.
 
-The user can run his base layer node, or choose a third-party provider from the non-exaustive list below:
+The user can run his base layer node, or choose a third-party provider from the non-exhaustive list below:
 
 -   [Alchemy](http://alchemy.com)
 -   [Infura](https://infura.io)
