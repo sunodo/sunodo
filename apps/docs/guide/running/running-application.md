@@ -12,13 +12,13 @@ By default the node works on non-verbose mode, and only outputs logs coming from
 
 ## Blockchain configuration
 
-Cartesi CLI runs a local private chain powered by [anvil](https://github.com/foundry-rs/foundry/tree/master/crates/anvil) at port `8545`. All contracts of the Cartesi Rollups framework are already deployed, and theirs addresses can be inspected using `cartesi address-book`.
+Cartesi CLI runs a local private chain powered by [anvil](https://github.com/foundry-rs/foundry/tree/master/crates/anvil) at port `8545`. All contracts of the Cartesi Rollups framework are already deployed, and their addresses can be inspected using `cartesi address-book`.
 
 The private chain by default has a block time of 5 seconds, controlled by `--block-time <seconds>`, and runs on auto-mine mode.
 
 ## Epoch
 
-By default the node closes an epoch once a day, but this can be controlled by the `--epoch-duration <seconds>` command option. It's an important settings when it comes down to voucher execution.
+By default the node closes an epoch once a day, but this can be controlled by the `--epoch-duration <seconds>` command option. It's an important setting when it comes down to voucher execution.
 
 ## Rollups Node configuration
 
