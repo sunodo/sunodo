@@ -10,7 +10,7 @@ To build an existing application simply use the command below:
 cartesi build
 ```
 
-The build process use [Docker](https://www.docker.com/), so you need to have it installed and running, as described in the [system requirements](../introduction/installing#system-requirements) section.
+The build process uses [Docker](https://www.docker.com/), so you need to have it installed and running, as described in the [system requirements](../introduction/installing#system-requirements) section.
 
 Building consists of the following intermediate steps:
 
