@@ -56,4 +56,4 @@ The encoding of the payload, from what you specify in the CLI to the raw bytes t
 
 -   hex: the user input is parsed as a hex-string and converted to bytes.
 -   string: the user input is converted from a utf-8 string to bytes
--   abi: allows the user to specify an abi encoded input format in a human-readable format, i.e. `address token,uint256 tokenId`, and the input values decoded accordinly, as from the input `0x491604c0FDF08347Dd1fa4Ee062a822A5DD06B5D,100000` in this particular example.
+-   abi: allows the user to specify an abi encoded input format in a human-readable format, i.e. `address token,uint256 tokenId`, and the input values decoded accordingly, as from the input `0x491604c0FDF08347Dd1fa4Ee062a822A5DD06B5D,100000` in this particular example.
