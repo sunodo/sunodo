@@ -16,7 +16,7 @@ $ cartesi create my-app --template javascript
 This will create a new directory called `my-app` with a basic javascript nodejs template, with the following files:
 
 -   `Dockerfile`: The Dockerfile used to build the application.
--   `README.md`: general guidance to how go from there
+-   `README.md`: general guidance on how to proceed from there
 -   `package.json`: the application's package.json file with basic dependencies
 -   `src/index.js`: the application entrypoint
 

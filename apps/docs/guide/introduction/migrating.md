@@ -1,6 +1,6 @@
 # Migrating a Sunodo project
 
-This section describe the steps to take to migrate a Sunodo application to a Cartesi CLI application.
+This section describes the steps to take to migrate a Sunodo application to a Cartesi CLI application.
 
 1. uninstall Sunodo CLI;
 
