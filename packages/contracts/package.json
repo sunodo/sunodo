@@ -47,7 +47,7 @@
         "solidity-docgen": "^0.6.0-beta.36",
         "ts-node": "^10.9.2",
         "typescript": "^5.5.3",
-        "viem": "^2.9.25"
+        "viem": "^2.17.3"
     },
     "files": [
         "contracts",
