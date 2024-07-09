@@ -2,10 +2,10 @@
 import { program } from "@commander-js/extra-typings";
 import { unixfs } from "@helia/unixfs";
 import { MemoryBlockstore } from "blockstore-core/memory";
-import events from "events";
 import { ensureDirSync } from "fs-extra";
 import { createHelia } from "helia";
 import { CID } from "multiformats/cid";
+import events from "node:events";
 import ora from "ora";
 
 // helia is causing MaxListenersExceededWarning, increase number here (default is 10)

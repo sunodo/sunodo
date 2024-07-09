@@ -3,7 +3,8 @@ import "@mantine/code-highlight/styles.css";
 
 import { Container } from "@mantine/core";
 import { useSearchParams } from "next/navigation";
-import { FC, Suspense } from "react";
+import type { FC } from "react";
+import { Suspense } from "react";
 
 import DeployComponent from "../../components/Deploy/Deploy";
 import { Section } from "../../components/Section/Section";

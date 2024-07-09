@@ -1,7 +1,7 @@
 import { getSingletonFactoryInfo } from "@safe-global/safe-singleton-factory";
-import { HardhatUserConfig } from "hardhat/config";
-import { HttpNetworkUserConfig } from "hardhat/types";
-import path from "path";
+import type { HardhatUserConfig } from "hardhat/config";
+import type { HttpNetworkUserConfig } from "hardhat/types";
+import path from "node:path";
 
 import "@nomicfoundation/hardhat-verify";
 import "@nomicfoundation/hardhat-viem";
@@ -9,8 +9,8 @@ import "hardhat-abi-exporter";
 import "hardhat-deploy";
 import "solidity-docgen";
 
+import type { Chain } from "viem/chains";
 import {
-    Chain,
     arbitrum,
     arbitrumSepolia,
     base,
@@ -36,7 +36,7 @@ const ppath = (packageName: string, pathname: string) => {
 };
 
 const networkConfig = (chain: Chain): HttpNetworkUserConfig => {
-    let url = chain.rpcUrls.default.http.at(0);
+    let url = chain.rpcUrls.default.http[0];
 
     // support for infura and alchemy URLs through env variables
     if (process.env.INFURA_ID && chain.rpcUrls.infura?.http) {
@@ -125,7 +125,7 @@ const config: HardhatUserConfig = {
     deterministicDeployment: (network: string) => {
         // networks will use another deterministic deployment proxy
         // https://github.com/safe-global/safe-singleton-factory
-        const chainId = parseInt(network);
+        const chainId = Number.parseInt(network);
         const info = getSingletonFactoryInfo(chainId);
         if (info) {
             return {
@@ -136,12 +136,11 @@ const config: HardhatUserConfig = {
                 ).toString(),
                 signedTx: info.transaction,
             };
-        } else {
-            console.warn(
-                `unsupported deterministic deployment for network ${network}`,
-            );
-            return undefined;
         }
+        console.warn(
+            `unsupported deterministic deployment for network ${network}`,
+        );
+        return undefined;
     },
 };
 

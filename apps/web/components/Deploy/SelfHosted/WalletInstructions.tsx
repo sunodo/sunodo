@@ -1,6 +1,6 @@
 import { Alert } from "@mantine/core";
 import { IconInfoCircle } from "@tabler/icons-react";
-import { FC } from "react";
+import type { FC } from "react";
 
 const WalletInstructions: FC = () => {
     return (

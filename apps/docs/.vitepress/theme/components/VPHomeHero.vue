@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useData } from "vitepress";
 const { frontmatter: fm } = useData();
-import { ref, onMounted, onBeforeUnmount } from "vue";
 import { VPButton } from "vitepress/theme";
+import { onBeforeUnmount, onMounted, ref } from "vue";
 
 const cardBg = ref<HTMLElement>();
 
@@ -11,8 +11,8 @@ const moveBg = (e: MouseEvent) => {
     const cardBgEl = cardBg.value;
     const cardEl = cardBgEl?.parentElement;
     const cardRect = cardEl?.getBoundingClientRect();
-    const xMove = e.clientX - cardRect?.left!;
-    const yMove = e.clientY - cardRect?.top!;
+    const xMove = e.clientX - cardRect?.left;
+    const yMove = e.clientY - cardRect?.top;
 
     if (cardBgEl) {
         cardBgEl.style.setProperty("--x", `${xMove}px`);

@@ -1,10 +1,10 @@
-import { UnixFS } from "@helia/unixfs";
+import type { UnixFS } from "@helia/unixfs";
 import { MemoryBlockstore } from "blockstore-core/memory";
 import chalk from "chalk";
 import fs from "fs-extra";
-import { RawNode, UnixFSEntry, UnixFSFile } from "ipfs-unixfs-exporter";
+import type { RawNode, UnixFSEntry, UnixFSFile } from "ipfs-unixfs-exporter";
 import { importer } from "ipfs-unixfs-importer";
-import { CID } from "multiformats/cid";
+import type { CID } from "multiformats/cid";
 import { once } from "node:events";
 import path from "node:path";
 

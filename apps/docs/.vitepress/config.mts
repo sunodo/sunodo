@@ -1,5 +1,6 @@
 import { URL, fileURLToPath } from "node:url";
-import { DefaultTheme, defineConfig } from "vitepress";
+import type { DefaultTheme } from "vitepress";
+import { defineConfig } from "vitepress";
 
 const guideSidebar = (): DefaultTheme.SidebarItem[] => {
     return [

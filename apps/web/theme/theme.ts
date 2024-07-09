@@ -1,7 +1,9 @@
 "use client";
 
-import {
+import type {
     CSSVariablesResolver,
+} from "@mantine/core";
+import {
     Container,
     DEFAULT_THEME,
     createTheme,

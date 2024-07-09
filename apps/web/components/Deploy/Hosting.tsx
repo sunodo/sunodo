@@ -11,7 +11,7 @@ import {
     Title,
 } from "@mantine/core";
 import { IconCloudComputing, IconServer } from "@tabler/icons-react";
-import { FC } from "react";
+import type { FC } from "react";
 
 export type HostingMethod = "self-hosted" | "third-party";
 type HostingProps = {
@@ -22,9 +22,7 @@ type HostingProps = {
 const Hosting: FC<HostingProps> = (props) => {
     return (
         <Radio.Group
-            onChange={(value) =>
-                props.onChange && props.onChange(value as HostingMethod)
-            }
+            onChange={(value) => props.onChange?.(value as HostingMethod)}
             value={props.method}
         >
             <SimpleGrid cols={2}>

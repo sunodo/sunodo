@@ -1,8 +1,5 @@
-import {
-    VariantColorsResolver,
-    defaultVariantColorsResolver,
-    parseThemeColor,
-} from "@mantine/core";
+import type { VariantColorsResolver } from "@mantine/core";
+import { defaultVariantColorsResolver, parseThemeColor } from "@mantine/core";
 
 export const variantColorResolver: VariantColorsResolver = (input) => {
     const defaultResolvedColors = defaultVariantColorsResolver(input);

@@ -1,7 +1,9 @@
 import { Stack, Title } from "@mantine/core";
-import { FC, useState } from "react";
+import type { FC } from "react";
+import { useState } from "react";
 
-import Hosting, { HostingMethod } from "./Hosting";
+import type { HostingMethod } from "./Hosting";
+import Hosting from "./Hosting";
 import DeploySelfHosted from "./SelfHosted/DeploySelfHosted";
 import DeployThirdParty from "./ThirdParty/DeployThirdParty";
 

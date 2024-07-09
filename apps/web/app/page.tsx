@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 import { CtaGetStarted } from "../components/Homepage/CtaGetStarted";
 import { Discover } from "../components/Homepage/Discover/Discover";

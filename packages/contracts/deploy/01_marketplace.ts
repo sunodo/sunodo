@@ -1,5 +1,5 @@
-import { DeployFunction, DeployOptions } from "hardhat-deploy/types";
-import { HardhatRuntimeEnvironment } from "hardhat/types";
+import type { DeployFunction, DeployOptions } from "hardhat-deploy/types";
+import type { HardhatRuntimeEnvironment } from "hardhat/types";
 import { zeroAddress } from "viem";
 
 const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
