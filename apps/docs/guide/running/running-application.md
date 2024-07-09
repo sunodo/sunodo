@@ -18,7 +18,7 @@ The private chain by default has a block time of 5 seconds, controlled by `--blo
 
 ## Epoch
 
-By default the node closes an epoch once a day, but this can be controlled by the `--epoch-duration <seconds>` command option. It's an important setting when it comes down to voucher execution.
+By default the development node closes an epoch every 7200 blocks, but this can be controlled by the `--epoch-length <blocks>` command option. It's an important setting when it comes down to voucher execution.
 
 ## Rollups Node configuration
 

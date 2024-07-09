@@ -207,7 +207,6 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
                                 applicationAddress={applicationAddress}
                                 authorityAddress={authorityAddress}
                                 historyAddress={historyAddress}
-                                blockNumber={receipt.data?.blockNumber}
                                 chainId={chainId}
                             />
                         </Stack>
