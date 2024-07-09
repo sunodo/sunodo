@@ -1,0 +1,19 @@
+{
+    "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+    "files": {
+        "ignore": ["**/artifacts/**", "**/dist/**"]
+    },
+    "formatter": {
+        "enabled": false
+    },
+    "organizeImports": { "enabled": false },
+    "linter": {
+        "enabled": true,
+        "rules": { "recommended": true }
+    },
+    "vcs": {
+        "enabled": true,
+        "clientKind": "git",
+        "useIgnoreFile": true
+    }
+}

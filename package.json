@@ -8,18 +8,15 @@
         "clean": "turbo run clean",
         "dev": "turbo run dev --parallel",
         "format": "prettier --write \"**/*.{cjs,css,json,md,mjs,ts,tsx}\"",
-        "lint": "eslint",
+        "lint": "turbo run lint",
         "publish-packages": "pnpm changeset tag && git push --follow-tags",
         "preinstall": "npx only-allow pnpm"
     },
     "devDependencies": {
         "@changesets/cli": "^2.27.9",
-        "@eslint/js": "^9.13.0",
-        "eslint-plugin-react": "^7.37.2",
         "globals": "^16.2.0",
         "prettier": "^3.5.3",
-        "turbo": "^2.5.4",
-        "typescript-eslint": "^8.12.0"
+        "turbo": "^2.5.4"
     },
     "engines": {
         "node": ">=20.0.0"

@@ -7,7 +7,7 @@
         "build-storybook": "storybook build",
         "codegen": "wagmi generate",
         "dev": "next dev",
-        "lint": "next lint",
+        "lint": "biome lint",
         "start": "next start",
         "storybook": "storybook dev -p 6006"
     },
@@ -31,6 +31,7 @@
         "wagmi": "^2.12.25"
     },
     "devDependencies": {
+        "@biomejs/biome": "catalog:",
         "@cartesi/devnet": "^1.8.0",
         "@next/bundle-analyzer": "^15.0.2",
         "@storybook/addon-essentials": "^8.0.4",
