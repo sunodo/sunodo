@@ -6,7 +6,7 @@ export function Gtm() {
             <Script
                 strategy="lazyOnload"
                 id="gtm"
-                src={`https://www.googletagmanager.com/gtag/js?id=G-88KREZMP4F`}
+                src="https://www.googletagmanager.com/gtag/js?id=G-88KREZMP4F"
             />
 
             <Script strategy="lazyOnload" id="gtm-init">

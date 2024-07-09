@@ -1,4 +1,4 @@
-import { MantineColorsTuple } from "@mantine/core";
+import type { MantineColorsTuple } from "@mantine/core";
 
 const brand: MantineColorsTuple = [
     "#F1F9F8",

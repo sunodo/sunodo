@@ -1,19 +1,20 @@
+import type { TextProps } from "@mantine/core";
 import {
     ActionIcon,
     Anchor,
     CopyButton,
     Group,
-    rem,
     Text,
-    TextProps,
     Tooltip,
+    rem,
 } from "@mantine/core";
 import { IconCheck, IconCopy } from "@tabler/icons-react";
 import Link from "next/link";
-import { FC } from "react";
+import type { FC } from "react";
 import { jsNumberForAddress } from "react-jazzicon";
 import Jazzicon from "react-jazzicon/dist/Jazzicon";
-import { Address, getAddress } from "viem";
+import type { Address } from "viem";
+import { getAddress } from "viem";
 
 export type AddressProps = TextProps & {
     value: Address | undefined;

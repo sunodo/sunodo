@@ -166,7 +166,7 @@ export function Discover() {
                                     <div>
                                         <Image
                                             component={NextImage}
-                                            src={`/layers.svg`}
+                                            src="/layers.svg"
                                             alt=""
                                             width="411"
                                             height="435"

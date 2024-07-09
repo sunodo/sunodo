@@ -12,7 +12,8 @@ import {
 import { useForm } from "@mantine/form";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { IconExclamationCircle, IconInfoCircle } from "@tabler/icons-react";
-import { FC, useEffect, useState } from "react";
+import type { FC } from "react";
+import { useEffect, useState } from "react";
 import { getAddress, isAddress, isHash, zeroAddress, zeroHash } from "viem";
 import { generatePrivateKey } from "viem/accounts";
 import { useAccount, useWaitForTransactionReceipt } from "wagmi";
@@ -76,14 +77,24 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
 
     // calculate addresses using determinisitic deployment
     const { data } = useReadSelfHostedApplicationFactoryCalculateAddresses({
-        args: [authorityOwner, applicationOwner!, templateHash, salt],
+        args: [
+            authorityOwner,
+            applicationOwner ?? zeroAddress,
+            templateHash,
+            salt,
+        ],
         query: { enabled },
     });
     const [applicationAddress, authorityAddress, historyAddress] = data || [];
 
     // simulate deploy transaction
     const simulate = useSimulateSelfHostedApplicationFactoryDeployContracts({
-        args: [authorityOwner, applicationOwner!, templateHash, salt],
+        args: [
+            authorityOwner,
+            applicationOwner ?? zeroAddress,
+            templateHash,
+            salt,
+        ],
         query: { enabled },
     });
 
@@ -182,9 +193,13 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
                                 execute.isPending ||
                                 (execute.isSuccess && receipt.isLoading)
                             }
-                            onClick={() =>
-                                execute.writeContract(simulate.data!.request)
-                            }
+                            onClick={() => {
+                                if (simulate.data) {
+                                    execute.writeContract(
+                                        simulate.data.request,
+                                    );
+                                }
+                            }}
                         >
                             Deploy
                         </Button>

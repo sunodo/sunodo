@@ -1,4 +1,5 @@
-import { Divider, Paper, PaperProps } from "@mantine/core";
+import type { PaperProps } from "@mantine/core";
+import { Divider, Paper } from "@mantine/core";
 import cx from "clsx";
 import classes from "./Card.module.css";
 type Props = {

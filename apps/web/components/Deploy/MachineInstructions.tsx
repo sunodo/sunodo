@@ -1,7 +1,7 @@
 import { Alert } from "@mantine/core";
 import { IconInfoCircle } from "@tabler/icons-react";
 import Link from "next/link";
-import { FC } from "react";
+import type { FC } from "react";
 
 const MachineInstructions: FC = () => {
     return (

@@ -11,8 +11,9 @@ import sepoliaInputBox from "@cartesi/rollups/deployments/sepolia/InputBox.json"
 import { CodeHighlightTabs } from "@mantine/code-highlight";
 import { Button, Group, Stack } from "@mantine/core";
 import { IconDownload } from "@tabler/icons-react";
-import { FC, useState } from "react";
-import { Address, Hash } from "viem";
+import type { FC } from "react";
+import { useState } from "react";
+import type { Address, Hash } from "viem";
 import {
     arbitrum,
     arbitrumSepolia,
@@ -100,16 +101,18 @@ const NodeConfig: FC<NodeConfigProps> = (props) => {
         ([key1, value1], [key2, value2]) => {
             if (value1 !== undefined && value2 !== undefined) {
                 return key1.localeCompare(key2);
-            } else if (value1 === undefined && value2 === undefined) {
-                return key1.localeCompare(key2);
-            } else if (value1 === undefined) {
-                return 1;
-            } else if (value2 === undefined) {
-                return -1;
-            } else {
-                // should not reach here
-                return 0;
             }
+            if (value1 === undefined && value2 === undefined) {
+                return key1.localeCompare(key2);
+            }
+            if (value1 === undefined) {
+                return 1;
+            }
+            if (value2 === undefined) {
+                return -1;
+            }
+            // should not reach here
+            return 0;
         },
     );
 

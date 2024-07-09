@@ -1,6 +1,6 @@
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import "./global.css";
 
 import { Content } from "../components/Content/Content";
