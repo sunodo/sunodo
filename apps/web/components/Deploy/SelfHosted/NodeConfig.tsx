@@ -1,53 +1,22 @@
 "use client";
 
-import arbitrumInputBox from "@cartesi/rollups/deployments/arbitrum/InputBox.json";
-import arbitrumSepoliaInputBox from "@cartesi/rollups/deployments/arbitrum_sepolia/InputBox.json";
-import baseInputBox from "@cartesi/rollups/deployments/base/InputBox.json";
-import baseSepoliaInputBox from "@cartesi/rollups/deployments/base_sepolia/InputBox.json";
-import mainnetInputBox from "@cartesi/rollups/deployments/mainnet/InputBox.json";
-import optimismInputBox from "@cartesi/rollups/deployments/optimism/InputBox.json";
-import optimismSepoliaInputBox from "@cartesi/rollups/deployments/optimism_sepolia/InputBox.json";
 import sepoliaInputBox from "@cartesi/rollups/deployments/sepolia/InputBox.json";
 import { CodeHighlightTabs } from "@mantine/code-highlight";
 import { Button, Group, Stack } from "@mantine/core";
 import { IconDownload } from "@tabler/icons-react";
 import { FC, useState } from "react";
 import { Address, Hash } from "viem";
-import {
-    arbitrum,
-    arbitrumSepolia,
-    base,
-    baseSepolia,
-    foundry,
-    mainnet,
-    optimism,
-    optimismSepolia,
-    sepolia,
-} from "viem/chains";
+import { foundry, sepolia } from "viem/chains";
 
 import { inputBoxAddress } from "../../../src/contracts";
 
 const inputBoxDeploymentBlockNumber: Record<number, number> = {
-    [arbitrum.id]: arbitrumInputBox.receipt.blockNumber,
-    [arbitrumSepolia.id]: arbitrumSepoliaInputBox.receipt.blockNumber,
-    [base.id]: baseInputBox.receipt.blockNumber,
-    [baseSepolia.id]: baseSepoliaInputBox.receipt.blockNumber,
     [foundry.id]: 1, // devnet
-    [mainnet.id]: mainnetInputBox.receipt.blockNumber,
-    [optimism.id]: optimismInputBox.receipt.blockNumber,
-    [optimismSepolia.id]: optimismSepoliaInputBox.receipt.blockNumber,
     [sepolia.id]: sepoliaInputBox.receipt.blockNumber,
 };
 
 const epochLengths: Record<number, number> = {
-    [arbitrum.id]: 43200 * 7, // XXX: arbitrum doesn't have a fixed block interval
-    [arbitrumSepolia.id]: 43200, // XXX: arbitrum doesn't have a fixed block interval
-    [base.id]: 43200 * 7, // 7 days on a 2s block time
-    [baseSepolia.id]: 43200, // 1 day on a 2s block time
     [foundry.id]: 720, // 1 hour on a 5s block time
-    [mainnet.id]: 7200 * 7, // 7 days on a 12s block time
-    [optimism.id]: 43200 * 7, // 7 days on a 2s block time
-    [optimismSepolia.id]: 43200, // 1 day on a 2s block time
     [sepolia.id]: 7200, // 1 day on a 12s block time
 };
 
@@ -55,26 +24,19 @@ type NodeConfigProps = {
     chainId?: number;
     applicationAddress?: Address;
     authorityAddress?: Address;
-    historyAddress?: Address;
     templateHash: Hash;
 };
 
 const NodeConfig: FC<NodeConfigProps> = (props) => {
-    const {
-        chainId,
-        historyAddress,
-        applicationAddress,
-        authorityAddress,
-        templateHash,
-    } = props;
+    const { chainId, applicationAddress, authorityAddress, templateHash } =
+        props;
 
     // get InputBox deployment block from deployment artifact
     const inputBoxBlockNumber = chainId
         ? inputBoxDeploymentBlockNumber[chainId]
         : undefined;
 
-    // mainnet should wait for finalized blocks
-    const finality = chainId === mainnet.id ? 64 : 1;
+    const finality = 1;
 
     // epoch length in blocks, depends on network
     const epochLength = chainId ? epochLengths[chainId] : 7200;
@@ -84,7 +46,6 @@ const NodeConfig: FC<NodeConfigProps> = (props) => {
         CARTESI_BLOCKCHAIN_ID: chainId,
         CARTESI_CONTRACTS_APPLICATION_ADDRESS: applicationAddress,
         CARTESI_CONTRACTS_AUTHORITY_ADDRESS: authorityAddress,
-        CARTESI_CONTRACTS_HISTORY_ADDRESS: historyAddress,
         CARTESI_CONTRACTS_INPUT_BOX_ADDRESS: inputBoxAddress,
         CARTESI_CONTRACTS_INPUT_BOX_DEPLOYMENT_BLOCK_NUMBER:
             inputBoxBlockNumber,

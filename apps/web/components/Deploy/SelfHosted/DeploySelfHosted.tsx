@@ -38,6 +38,7 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
         initialValues: {
             authorityOwner: props.authorityOwner,
             templateHash: props.templateHash,
+            epochLength: "720",
             salt: generatePrivateKey(),
         },
         validate: {
@@ -49,20 +50,31 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
                         ? null
                         : "Invalid address"
                     : "Required",
+            epochLength: (value) =>
+                isNaN(parseInt(value)) ? "Invalid epoch length" : null,
         },
         validateInputOnChange: true,
-        transformValues: ({ authorityOwner, templateHash, salt }) => ({
+        transformValues: ({
+            authorityOwner,
+            epochLength,
+            templateHash,
+            salt,
+        }) => ({
             authorityOwner:
                 authorityOwner && isAddress(authorityOwner)
                     ? getAddress(authorityOwner)
                     : zeroAddress,
+            epochLength: isNaN(parseInt(epochLength))
+                ? 0n
+                : BigInt(epochLength),
             templateHash:
                 templateHash && isHash(templateHash) ? templateHash : zeroHash,
             salt: isHash(salt) ? salt : zeroHash,
         }),
     });
     const [deployed, setDeployed] = useState(false);
-    const { authorityOwner, templateHash, salt } = form.getTransformedValues();
+    const { authorityOwner, epochLength, templateHash, salt } =
+        form.getTransformedValues();
 
     // assume application owner is connected account (user can transfer ownership afterwards)
     const applicationOwner = address;
@@ -76,14 +88,26 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
 
     // calculate addresses using determinisitic deployment
     const { data } = useReadSelfHostedApplicationFactoryCalculateAddresses({
-        args: [authorityOwner, applicationOwner!, templateHash, salt],
+        args: [
+            authorityOwner,
+            epochLength,
+            applicationOwner!,
+            templateHash,
+            salt,
+        ],
         query: { enabled },
     });
-    const [applicationAddress, authorityAddress, historyAddress] = data || [];
+    const [applicationAddress, authorityAddress] = data || [];
 
     // simulate deploy transaction
     const simulate = useSimulateSelfHostedApplicationFactoryDeployContracts({
-        args: [authorityOwner, applicationOwner!, templateHash, salt],
+        args: [
+            authorityOwner,
+            epochLength,
+            applicationOwner!,
+            templateHash,
+            salt,
+        ],
         query: { enabled },
     });
 
@@ -118,6 +142,18 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
                 </Stack>
             </Timeline.Item>
             <Timeline.Item title="Base Layer" pb="lg">
+                <Stack gap="xs" pt="xl">
+                    <Group gap={2}>
+                        <Title order={5}>Epoch Length (in blocks)</Title>
+                        <Text c="red">*</Text>
+                    </Group>
+                    <TextInput
+                        {...form.getInputProps("epochLength")}
+                        required
+                        disabled={deployed}
+                        size="md"
+                    />
+                </Stack>
                 <Stack gap="xs" pt="xl">
                     <Group gap={2}>
                         <Title order={5}>
@@ -206,7 +242,6 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
                                 templateHash={templateHash}
                                 applicationAddress={applicationAddress}
                                 authorityAddress={authorityAddress}
-                                historyAddress={historyAddress}
                                 chainId={chainId}
                             />
                         </Stack>

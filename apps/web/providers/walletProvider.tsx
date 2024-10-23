@@ -9,17 +9,7 @@ import {
 } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import {
-    arbitrum,
-    arbitrumSepolia,
-    base,
-    baseSepolia,
-    foundry,
-    mainnet,
-    optimism,
-    optimismSepolia,
-    sepolia,
-} from "viem/chains";
+import { foundry, sepolia } from "viem/chains";
 import { WagmiProvider } from "wagmi";
 
 const projectId = "bc37f90dfcefc2900e5a86d366bf9aea";
@@ -29,28 +19,7 @@ const config = getDefaultConfig({
     appName: "Sunodo",
     projectId,
     chains:
-        process.env.NODE_ENV === "development"
-            ? [
-                  mainnet,
-                  sepolia,
-                  arbitrum,
-                  arbitrumSepolia,
-                  optimism,
-                  optimismSepolia,
-                  base,
-                  baseSepolia,
-                  foundry,
-              ]
-            : [
-                  mainnet,
-                  sepolia,
-                  arbitrum,
-                  arbitrumSepolia,
-                  optimism,
-                  optimismSepolia,
-                  base,
-                  baseSepolia,
-              ],
+        process.env.NODE_ENV === "development" ? [sepolia, foundry] : [sepolia],
     ssr: true,
 });
 
