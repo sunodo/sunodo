@@ -7,14 +7,12 @@
         "build": "turbo run build",
         "clean": "turbo run clean",
         "dev": "turbo run dev --parallel",
-        "lint": "turbo run lint",
         "format": "prettier --write \"**/*.{cjs,css,json,md,mjs,ts,tsx}\"",
         "publish-packages": "pnpm changeset tag && git push --follow-tags",
         "preinstall": "npx only-allow pnpm"
     },
     "devDependencies": {
         "@changesets/cli": "^2",
-        "@sunodo/eslint-config": "workspace:*",
         "prettier": "^3",
         "turbo": "^2.2.3"
     },

@@ -18,9 +18,7 @@
         "ora": "^8.1.0"
     },
     "devDependencies": {
-        "@sunodo/eslint-config": "workspace:*",
         "@types/fs-extra": "^11",
-        "eslint": "^9.13.0",
         "npm-run-all": "^4",
         "rimraf": "^6.0.1",
         "tsup": "^8.3.5",
@@ -34,7 +32,6 @@
         "clean": "rimraf dist",
         "compile": "tsup",
         "dev": "tsup --watch",
-        "lint": "eslint",
         "prepack": "run-s build",
         "test": "vitest"
     },

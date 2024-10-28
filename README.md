@@ -19,7 +19,6 @@ It helps developers to:
 -   `sdk`: Docker image to help with Cartesi build and execution;
 -   `contracts`: smart contracts for application deployment;
 -   `devnet`: local deployment of Cartesi contracts and token test contracts;
--   `eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
 -   `tsconfig`: `tsconfig.json`s used throughout the monorepo
 
 Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).

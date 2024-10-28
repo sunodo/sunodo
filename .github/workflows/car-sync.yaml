@@ -14,7 +14,6 @@ on:
         paths:
             - .github/workflows/car-sync.yaml
             - packages/car-sync/**
-            - packages/eslint-config/**
 concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
     cancel-in-progress: true
