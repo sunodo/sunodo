@@ -1,18 +1,24 @@
 # docs
 
+## 0.2.0
+
+### Minor Changes
+
+-   f1de394: bump vitepress
+
 ## 0.1.0
 
 ### Minor Changes
 
-- 31f0894: add base_sepolia
+-   31f0894: add base_sepolia
 
 ### Patch Changes
 
-- fbb1747: support to base network
+-   fbb1747: support to base network
 
 ## 0.0.1
 
 ### Patch Changes
 
-- ab2066c: add typescript template
-- 658f9d1: add rust template
+-   ab2066c: add typescript template
+-   658f9d1: add rust template
