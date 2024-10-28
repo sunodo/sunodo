@@ -92,6 +92,7 @@ async function* download(
             yield { file, status: "downloading", total, transferred };
         }
         stream.close();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
         yield { file, error: e.message, status: "error", total, transferred };
     }

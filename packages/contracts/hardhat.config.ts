@@ -22,8 +22,8 @@ import {
 } from "viem/chains";
 
 // read MNEMONIC from env variable
-let mnemonic = process.env.MNEMONIC;
-let privateKey = process.env.PRIVATE_KEY;
+const mnemonic = process.env.MNEMONIC;
+const privateKey = process.env.PRIVATE_KEY;
 
 const DEFAULT_DEVNET_MNEMONIC =
     "test test test test test test test test test test test junk";

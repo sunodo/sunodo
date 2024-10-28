@@ -46,12 +46,13 @@ program
                             exitCode = 1;
                         }
                     }
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 } catch (e: any) {
                     spinner.fail(e.message);
                     exitCode = 1;
                 }
             }
-        } catch (e: any) {
+        } catch (e: unknown) {
             exitCode = 1;
             console.error(e);
         } finally {
