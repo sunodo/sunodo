@@ -36,8 +36,8 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
 
     const form = useForm({
         initialValues: {
-            authorityOwner: props.authorityOwner,
-            templateHash: props.templateHash,
+            authorityOwner: props.authorityOwner || "",
+            templateHash: props.templateHash || "",
             salt: generatePrivateKey(),
         },
         validate: {
