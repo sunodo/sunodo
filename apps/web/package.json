@@ -12,7 +12,7 @@
         "storybook": "storybook dev -p 6006"
     },
     "dependencies": {
-        "@cartesi/rollups": "1.4.3",
+        "@cartesi/rollups": "2.0.0-rc.12",
         "@mantine/code-highlight": "^7.13.4",
         "@mantine/core": "^7.13.4",
         "@mantine/form": "^7.13.4",
@@ -27,11 +27,11 @@
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "react-jazzicon": "^1.0.4",
-        "viem": "^2.21.36",
+        "viem": "^2.21.37",
         "wagmi": "^2.12.25"
     },
     "devDependencies": {
-        "@cartesi/devnet": "^1.8.0",
+        "@cartesi/devnet": "2.0.0-alpha.0",
         "@next/bundle-analyzer": "^15.0.2",
         "@storybook/addon-essentials": "^8.0.4",
         "@storybook/addon-interactions": "^8.0.4",

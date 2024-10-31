@@ -38,6 +38,7 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
         initialValues: {
             authorityOwner: props.authorityOwner || "",
             templateHash: props.templateHash || "",
+            epochLength: (((60 * 60 * 24) / 12) * 7).toString(), // 7 days on mainnet
             salt: generatePrivateKey(),
         },
         validate: {
@@ -49,20 +50,31 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
                         ? null
                         : "Invalid address"
                     : "Required",
+            epochLength: (value) =>
+                isNaN(parseInt(value)) ? "Invalid epoch length" : null,
         },
         validateInputOnChange: true,
-        transformValues: ({ authorityOwner, templateHash, salt }) => ({
+        transformValues: ({
+            authorityOwner,
+            epochLength,
+            templateHash,
+            salt,
+        }) => ({
             authorityOwner:
                 authorityOwner && isAddress(authorityOwner)
                     ? getAddress(authorityOwner)
                     : zeroAddress,
+            epochLength: isNaN(parseInt(epochLength))
+                ? 0n
+                : BigInt(epochLength),
             templateHash:
                 templateHash && isHash(templateHash) ? templateHash : zeroHash,
             salt: isHash(salt) ? salt : zeroHash,
         }),
     });
     const [deployed, setDeployed] = useState(false);
-    const { authorityOwner, templateHash, salt } = form.getTransformedValues();
+    const { authorityOwner, epochLength, templateHash, salt } =
+        form.getTransformedValues();
 
     // assume application owner is connected account (user can transfer ownership afterwards)
     const applicationOwner = address;
@@ -76,14 +88,26 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
 
     // calculate addresses using determinisitic deployment
     const { data } = useReadSelfHostedApplicationFactoryCalculateAddresses({
-        args: [authorityOwner, applicationOwner!, templateHash, salt],
+        args: [
+            authorityOwner,
+            epochLength,
+            applicationOwner!,
+            templateHash,
+            salt,
+        ],
         query: { enabled },
     });
-    const [applicationAddress, authorityAddress, historyAddress] = data || [];
+    const [applicationAddress, authorityAddress] = data || [];
 
     // simulate deploy transaction
     const simulate = useSimulateSelfHostedApplicationFactoryDeployContracts({
-        args: [authorityOwner, applicationOwner!, templateHash, salt],
+        args: [
+            authorityOwner,
+            epochLength,
+            applicationOwner!,
+            templateHash,
+            salt,
+        ],
         query: { enabled },
     });
 
@@ -98,22 +122,19 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
     return (
         <Timeline>
             <Timeline.Item title="Cartesi Machine Hash" pl={"lg"} pb={"lg"}>
-                <Stack gap="xl" pt="xl">
-                    <Stack gap={0}>
-                        <Group gap={2} pb={"xs"}>
-                            <Title order={5}>
-                                Hash of the genesis Cartesi machine
-                            </Title>
-                            <Text c="red">*</Text>
-                        </Group>
-
-                        <TextInput
-                            {...form.getInputProps("templateHash")}
-                            required
-                            disabled={deployed}
-                            size="md"
-                        />
-                    </Stack>
+                <Stack gap="xs" pt="xl">
+                    <Group gap={2} pb={"xs"}>
+                        <Title order={5}>
+                            Hash of the genesis Cartesi machine
+                        </Title>
+                        <Text c="red">*</Text>
+                    </Group>
+                    <TextInput
+                        {...form.getInputProps("templateHash")}
+                        required
+                        disabled={deployed}
+                        size="md"
+                    />
                     {!form.values.templateHash && <MachineInstructions />}
                 </Stack>
             </Timeline.Item>
@@ -127,6 +148,18 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
                         <Text c="red">*</Text>
                     </Group>
                     <ConnectButton />
+                </Stack>
+                <Stack gap="xs" pt="xl">
+                    <Group gap={2}>
+                        <Title order={5}>Epoch Length (in blocks)</Title>
+                        <Text c="red">*</Text>
+                    </Group>
+                    <TextInput
+                        {...form.getInputProps("epochLength")}
+                        required
+                        disabled={deployed}
+                        size="md"
+                    />
                 </Stack>
             </Timeline.Item>
             <Timeline.Item title="Node setup" pb="lg">
@@ -203,11 +236,10 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
                                 instructions at the Sunodo documentation.
                             </Alert>
                             <NodeConfig
-                                templateHash={templateHash}
                                 applicationAddress={applicationAddress}
                                 authorityAddress={authorityAddress}
-                                historyAddress={historyAddress}
                                 chainId={chainId}
+                                templateHash={templateHash}
                             />
                         </Stack>
                     )}
