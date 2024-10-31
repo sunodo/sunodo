@@ -2,7 +2,6 @@
 
 import arbitrumSepoliaInputBox from "@cartesi/rollups/deployments/arbitrum_sepolia/InputBox.json";
 import baseSepoliaInputBox from "@cartesi/rollups/deployments/base_sepolia/InputBox.json";
-// import optimismSepoliaInputBox from "@cartesi/rollups/deployments/optimism_sepolia/InputBox.json";
 import sepoliaInputBox from "@cartesi/rollups/deployments/sepolia/InputBox.json";
 import { CodeHighlightTabs } from "@mantine/code-highlight";
 import { Button, Group, Stack } from "@mantine/core";
@@ -24,23 +23,14 @@ const inputBoxDeploymentBlockNumber: Record<number, number> = {
     [arbitrumSepolia.id]: arbitrumSepoliaInputBox.receipt.blockNumber,
     [baseSepolia.id]: baseSepoliaInputBox.receipt.blockNumber,
     [foundry.id]: 1, // devnet
-    // [optimismSepolia.id]: optimismSepoliaInputBox.receipt.blockNumber,
     [optimismSepolia.id]: 18060079,
     [sepolia.id]: sepoliaInputBox.receipt.blockNumber,
 };
 
-const epochLengths: Record<number, number> = {
-    [arbitrumSepolia.id]: 43200, // XXX: arbitrum doesn't have a fixed block interval
-    [baseSepolia.id]: 43200, // 1 day on a 2s block time
-    [foundry.id]: 720, // 1 hour on a 5s block time
-    [optimismSepolia.id]: 43200, // 1 day on a 2s block time
-    [sepolia.id]: 7200, // 1 day on a 12s block time
-};
-
 type NodeConfigProps = {
-    chainId?: number;
     applicationAddress?: Address;
     authorityAddress?: Address;
+    chainId?: number;
     templateHash: Hash;
 };
 
@@ -56,9 +46,6 @@ const NodeConfig: FC<NodeConfigProps> = (props) => {
     // mainnet should wait for finalized blocks
     const finality = chainId === mainnet.id ? 64 : 1;
 
-    // epoch length in blocks, depends on network
-    const epochLength = chainId ? epochLengths[chainId] : 7200;
-
     const env = {
         CARTESI_BLOCKCHAIN_FINALITY_OFFSET: finality,
         CARTESI_BLOCKCHAIN_ID: chainId,
@@ -67,7 +54,6 @@ const NodeConfig: FC<NodeConfigProps> = (props) => {
         CARTESI_CONTRACTS_INPUT_BOX_ADDRESS: inputBoxAddress,
         CARTESI_CONTRACTS_INPUT_BOX_DEPLOYMENT_BLOCK_NUMBER:
             inputBoxBlockNumber,
-        CARTESI_EPOCH_LENGTH: epochLength,
         CARTESI_BLOCKCHAIN_HTTP_ENDPOINT: undefined,
         CARTESI_BLOCKCHAIN_WS_ENDPOINT: undefined,
         CARTESI_AUTH_MNEMONIC: undefined,

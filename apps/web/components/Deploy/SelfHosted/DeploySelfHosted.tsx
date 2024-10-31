@@ -38,7 +38,7 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
         initialValues: {
             authorityOwner: props.authorityOwner || "",
             templateHash: props.templateHash || "",
-            epochLength: ((60 * 60 * 24) / 12 * 7).toString(), // 7 days on mainnet
+            epochLength: (((60 * 60 * 24) / 12) * 7).toString(), // 7 days on mainnet
             salt: generatePrivateKey(),
         },
         validate: {
@@ -122,26 +122,33 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
     return (
         <Timeline>
             <Timeline.Item title="Cartesi Machine Hash" pl={"lg"} pb={"lg"}>
-                <Stack gap="xl" pt="xl">
-                    <Stack gap={0}>
-                        <Group gap={2} pb={"xs"}>
-                            <Title order={5}>
-                                Hash of the genesis Cartesi machine
-                            </Title>
-                            <Text c="red">*</Text>
-                        </Group>
-
-                        <TextInput
-                            {...form.getInputProps("templateHash")}
-                            required
-                            disabled={deployed}
-                            size="md"
-                        />
-                    </Stack>
+                <Stack gap="xs" pt="xl">
+                    <Group gap={2} pb={"xs"}>
+                        <Title order={5}>
+                            Hash of the genesis Cartesi machine
+                        </Title>
+                        <Text c="red">*</Text>
+                    </Group>
+                    <TextInput
+                        {...form.getInputProps("templateHash")}
+                        required
+                        disabled={deployed}
+                        size="md"
+                    />
                     {!form.values.templateHash && <MachineInstructions />}
                 </Stack>
             </Timeline.Item>
             <Timeline.Item title="Base Layer" pb="lg">
+                <Stack gap="xs" pt="xl">
+                    <Group gap={2}>
+                        <Title order={5}>
+                            Select the base layer and deployer account of the
+                            application chain
+                        </Title>
+                        <Text c="red">*</Text>
+                    </Group>
+                    <ConnectButton />
+                </Stack>
                 <Stack gap="xs" pt="xl">
                     <Group gap={2}>
                         <Title order={5}>Epoch Length (in blocks)</Title>
@@ -153,16 +160,6 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
                         disabled={deployed}
                         size="md"
                     />
-                </Stack>
-                <Stack gap="xs" pt="xl">
-                    <Group gap={2}>
-                        <Title order={5}>
-                            Select the base layer and deployer account of the
-                            application chain
-                        </Title>
-                        <Text c="red">*</Text>
-                    </Group>
-                    <ConnectButton />
                 </Stack>
             </Timeline.Item>
             <Timeline.Item title="Node setup" pb="lg">
@@ -239,10 +236,10 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
                                 instructions at the Sunodo documentation.
                             </Alert>
                             <NodeConfig
-                                templateHash={templateHash}
                                 applicationAddress={applicationAddress}
                                 authorityAddress={authorityAddress}
                                 chainId={chainId}
+                                templateHash={templateHash}
                             />
                         </Stack>
                     )}
