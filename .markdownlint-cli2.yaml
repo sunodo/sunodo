@@ -1,8 +1,16 @@
 config:
+    line-length: false
     list-marker-space:
         ul_multi: 3
         ul_single: 3
     no-duplicate-header:
+        allow_different_nesting: true
         siblings_only: true
     ul-indent:
         indent: 4
+
+noProgress: true
+
+ignores:
+    - "**/node_modules/**"
+    - .changeset/**
