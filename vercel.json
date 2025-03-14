@@ -1,4 +1,3 @@
 {
-    "cleanUrls": true,
-    "installCommand": "yum install -y git tar && curl -sL https://foundry.paradigm.xyz | bash && source /vercel/.bashrc && FOUNDRY_DIR=/usr/local foundryup && pnpm i"
+    "cleanUrls": true
 }

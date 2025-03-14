@@ -26,28 +26,28 @@
         "tsc": "tsc"
     },
     "dependencies": {
-        "@cartesi/rollups": "1.4.3",
-        "@cartesi/util": "6.3.0",
+        "@cartesi/rollups": "1.4.5",
+        "@cartesi/util": "6.4.0",
         "@ensdomains/ens-contracts": "1.1.4",
         "@openzeppelin/contracts": "4.9.3"
     },
     "devDependencies": {
-        "@nomicfoundation/hardhat-verify": "^2.0.6",
-        "@nomicfoundation/hardhat-viem": "^2.0.1",
-        "@safe-global/safe-singleton-factory": "^1.0.23",
-        "@types/chai": "^5.0.0",
-        "@types/mocha": ">=9.1.0",
-        "chai": "^5.1.1",
-        "hardhat": "^2.22.15",
+        "@nomicfoundation/hardhat-verify": "^2.0.13",
+        "@nomicfoundation/hardhat-viem": "^2.0.6",
+        "@safe-global/safe-singleton-factory": "^1.0.41",
+        "@types/chai": "^5.2.0",
+        "@types/mocha": "^10.0.10",
+        "chai": "^5.2.0",
+        "hardhat": "^2.22.19",
         "hardhat-abi-exporter": "^2",
-        "hardhat-deploy": "^0.14.0",
-        "mocha": "^10.4.0",
+        "hardhat-deploy": "^1.0.1",
+        "mocha": "^11.1.0",
         "npm-run-all": "^4",
         "rimraf": "^6.0.1",
         "solidity-docgen": "^0.6.0-beta.36",
         "ts-node": "^10.9.2",
-        "typescript": "^5.4.5",
-        "viem": "^2.21.35"
+        "typescript": "^5.8.2",
+        "viem": "^2.23.10"
     },
     "files": [
         "contracts",
