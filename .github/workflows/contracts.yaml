@@ -46,7 +46,7 @@ jobs:
               run: pnpm install
 
             - name: Build
-              run: pnpm build --filter=contracts
+              run: pnpm build --filter=@sunodo/contracts
 
             - name: Publish package
               if: ${{ inputs.release }}
