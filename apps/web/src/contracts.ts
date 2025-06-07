@@ -6,6 +6,120 @@ import {
 } from 'wagmi/codegen'
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ApplicationFactoryV2
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const applicationFactoryV2Abi = [
+    {
+        type: 'function',
+        inputs: [
+            {
+                name: 'outputsMerkleRootValidator',
+                internalType: 'contract IOutputsMerkleRootValidator',
+                type: 'address',
+            },
+            { name: 'appOwner', internalType: 'address', type: 'address' },
+            { name: 'templateHash', internalType: 'bytes32', type: 'bytes32' },
+            { name: 'dataAvailability', internalType: 'bytes', type: 'bytes' },
+            { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
+        ],
+        name: 'calculateApplicationAddress',
+        outputs: [{ name: '', internalType: 'address', type: 'address' }],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [
+            {
+                name: 'outputsMerkleRootValidator',
+                internalType: 'contract IOutputsMerkleRootValidator',
+                type: 'address',
+            },
+            { name: 'appOwner', internalType: 'address', type: 'address' },
+            { name: 'templateHash', internalType: 'bytes32', type: 'bytes32' },
+            { name: 'dataAvailability', internalType: 'bytes', type: 'bytes' },
+            { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
+        ],
+        name: 'newApplication',
+        outputs: [
+            {
+                name: '',
+                internalType: 'contract IApplication',
+                type: 'address',
+            },
+        ],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [
+            {
+                name: 'outputsMerkleRootValidator',
+                internalType: 'contract IOutputsMerkleRootValidator',
+                type: 'address',
+            },
+            { name: 'appOwner', internalType: 'address', type: 'address' },
+            { name: 'templateHash', internalType: 'bytes32', type: 'bytes32' },
+            { name: 'dataAvailability', internalType: 'bytes', type: 'bytes' },
+        ],
+        name: 'newApplication',
+        outputs: [
+            {
+                name: '',
+                internalType: 'contract IApplication',
+                type: 'address',
+            },
+        ],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'event',
+        anonymous: false,
+        inputs: [
+            {
+                name: 'outputsMerkleRootValidator',
+                internalType: 'contract IOutputsMerkleRootValidator',
+                type: 'address',
+                indexed: true,
+            },
+            {
+                name: 'appOwner',
+                internalType: 'address',
+                type: 'address',
+                indexed: false,
+            },
+            {
+                name: 'templateHash',
+                internalType: 'bytes32',
+                type: 'bytes32',
+                indexed: false,
+            },
+            {
+                name: 'dataAvailability',
+                internalType: 'bytes',
+                type: 'bytes',
+                indexed: false,
+            },
+            {
+                name: 'appContract',
+                internalType: 'contract IApplication',
+                type: 'address',
+                indexed: false,
+            },
+        ],
+        name: 'ApplicationCreated',
+    },
+] as const
+
+export const applicationFactoryV2Address =
+    '0x2210ad1d9B0bD2D470c2bfA4814ab6253BC421A0' as const
+
+export const applicationFactoryV2Config = {
+    address: applicationFactoryV2Address,
+    abi: applicationFactoryV2Abi,
+} as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // AuthorityFactory
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -82,6 +196,82 @@ export const authorityFactoryAddress =
 export const authorityFactoryConfig = {
     address: authorityFactoryAddress,
     abi: authorityFactoryAbi,
+} as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// AuthorityFactoryV2
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const authorityFactoryV2Abi = [
+    {
+        type: 'function',
+        inputs: [
+            {
+                name: 'authorityOwner',
+                internalType: 'address',
+                type: 'address',
+            },
+            { name: 'epochLength', internalType: 'uint256', type: 'uint256' },
+            { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
+        ],
+        name: 'calculateAuthorityAddress',
+        outputs: [{ name: '', internalType: 'address', type: 'address' }],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [
+            {
+                name: 'authorityOwner',
+                internalType: 'address',
+                type: 'address',
+            },
+            { name: 'epochLength', internalType: 'uint256', type: 'uint256' },
+        ],
+        name: 'newAuthority',
+        outputs: [
+            { name: '', internalType: 'contract IAuthority', type: 'address' },
+        ],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [
+            {
+                name: 'authorityOwner',
+                internalType: 'address',
+                type: 'address',
+            },
+            { name: 'epochLength', internalType: 'uint256', type: 'uint256' },
+            { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
+        ],
+        name: 'newAuthority',
+        outputs: [
+            { name: '', internalType: 'contract IAuthority', type: 'address' },
+        ],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'event',
+        anonymous: false,
+        inputs: [
+            {
+                name: 'authority',
+                internalType: 'contract IAuthority',
+                type: 'address',
+                indexed: false,
+            },
+        ],
+        name: 'AuthorityCreated',
+    },
+] as const
+
+export const authorityFactoryV2Address =
+    '0x451f57Ca716046D114Ab9ff23269a2F9F4a1bdaF' as const
+
+export const authorityFactoryV2Config = {
+    address: authorityFactoryV2Address,
+    abi: authorityFactoryV2Abi,
 } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -445,6 +635,41 @@ export const dAppAddressRelayConfig = {
 } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// DataAvailability
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const dataAvailabilityAbi = [
+    {
+        type: 'function',
+        inputs: [
+            {
+                name: 'inputBox',
+                internalType: 'contract IInputBox',
+                type: 'address',
+            },
+        ],
+        name: 'InputBox',
+        outputs: [],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [
+            {
+                name: 'inputBox',
+                internalType: 'contract IInputBox',
+                type: 'address',
+            },
+            { name: 'fromBlock', internalType: 'uint256', type: 'uint256' },
+            { name: 'namespaceId', internalType: 'uint32', type: 'uint32' },
+        ],
+        name: 'InputBoxAndEspresso',
+        outputs: [],
+        stateMutability: 'nonpayable',
+    },
+] as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ERC1155BatchPortal
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -495,6 +720,59 @@ export const erc1155BatchPortalAddress =
 export const erc1155BatchPortalConfig = {
     address: erc1155BatchPortalAddress,
     abi: erc1155BatchPortalAbi,
+} as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ERC1155BatchPortalV2
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const erc1155BatchPortalV2Abi = [
+    {
+        type: 'constructor',
+        inputs: [
+            {
+                name: 'inputBox',
+                internalType: 'contract IInputBox',
+                type: 'address',
+            },
+        ],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [
+            {
+                name: 'token',
+                internalType: 'contract IERC1155',
+                type: 'address',
+            },
+            { name: 'appContract', internalType: 'address', type: 'address' },
+            { name: 'tokenIds', internalType: 'uint256[]', type: 'uint256[]' },
+            { name: 'values', internalType: 'uint256[]', type: 'uint256[]' },
+            { name: 'baseLayerData', internalType: 'bytes', type: 'bytes' },
+            { name: 'execLayerData', internalType: 'bytes', type: 'bytes' },
+        ],
+        name: 'depositBatchERC1155Token',
+        outputs: [],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [],
+        name: 'getInputBox',
+        outputs: [
+            { name: '', internalType: 'contract IInputBox', type: 'address' },
+        ],
+        stateMutability: 'view',
+    },
+] as const
+
+export const erc1155BatchPortalV2Address =
+    '0xBc70d79F916A6d48aB0b8F03AC58f89742dEDA34' as const
+
+export const erc1155BatchPortalV2Config = {
+    address: erc1155BatchPortalV2Address,
+    abi: erc1155BatchPortalV2Abi,
 } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -551,6 +829,59 @@ export const erc1155SinglePortalConfig = {
 } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ERC1155SinglePortalV2
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const erc1155SinglePortalV2Abi = [
+    {
+        type: 'constructor',
+        inputs: [
+            {
+                name: 'inputBox',
+                internalType: 'contract IInputBox',
+                type: 'address',
+            },
+        ],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [
+            {
+                name: 'token',
+                internalType: 'contract IERC1155',
+                type: 'address',
+            },
+            { name: 'appContract', internalType: 'address', type: 'address' },
+            { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+            { name: 'value', internalType: 'uint256', type: 'uint256' },
+            { name: 'baseLayerData', internalType: 'bytes', type: 'bytes' },
+            { name: 'execLayerData', internalType: 'bytes', type: 'bytes' },
+        ],
+        name: 'depositSingleERC1155Token',
+        outputs: [],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [],
+        name: 'getInputBox',
+        outputs: [
+            { name: '', internalType: 'contract IInputBox', type: 'address' },
+        ],
+        stateMutability: 'view',
+    },
+] as const
+
+export const erc1155SinglePortalV2Address =
+    '0xB778147D50219544F113A55DE1d8de626f0cC1bB' as const
+
+export const erc1155SinglePortalV2Config = {
+    address: erc1155SinglePortalV2Address,
+    abi: erc1155SinglePortalV2Abi,
+} as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ERC20Portal
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -599,6 +930,54 @@ export const erc20PortalAddress =
 export const erc20PortalConfig = {
     address: erc20PortalAddress,
     abi: erc20PortalAbi,
+} as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ERC20PortalV2
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const erc20PortalV2Abi = [
+    {
+        type: 'constructor',
+        inputs: [
+            {
+                name: 'inputBox',
+                internalType: 'contract IInputBox',
+                type: 'address',
+            },
+        ],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'token', internalType: 'contract IERC20', type: 'address' },
+            { name: 'appContract', internalType: 'address', type: 'address' },
+            { name: 'value', internalType: 'uint256', type: 'uint256' },
+            { name: 'execLayerData', internalType: 'bytes', type: 'bytes' },
+        ],
+        name: 'depositERC20Tokens',
+        outputs: [],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [],
+        name: 'getInputBox',
+        outputs: [
+            { name: '', internalType: 'contract IInputBox', type: 'address' },
+        ],
+        stateMutability: 'view',
+    },
+    { type: 'error', inputs: [], name: 'ERC20TransferFailed' },
+] as const
+
+export const erc20PortalV2Address =
+    '0x05355c2F9bA566c06199DEb17212c3B78C1A3C31' as const
+
+export const erc20PortalV2Config = {
+    address: erc20PortalV2Address,
+    abi: erc20PortalV2Abi,
 } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -654,6 +1033,58 @@ export const erc721PortalConfig = {
 } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ERC721PortalV2
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const erc721PortalV2Abi = [
+    {
+        type: 'constructor',
+        inputs: [
+            {
+                name: 'inputBox',
+                internalType: 'contract IInputBox',
+                type: 'address',
+            },
+        ],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [
+            {
+                name: 'token',
+                internalType: 'contract IERC721',
+                type: 'address',
+            },
+            { name: 'appContract', internalType: 'address', type: 'address' },
+            { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+            { name: 'baseLayerData', internalType: 'bytes', type: 'bytes' },
+            { name: 'execLayerData', internalType: 'bytes', type: 'bytes' },
+        ],
+        name: 'depositERC721Token',
+        outputs: [],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [],
+        name: 'getInputBox',
+        outputs: [
+            { name: '', internalType: 'contract IInputBox', type: 'address' },
+        ],
+        stateMutability: 'view',
+    },
+] as const
+
+export const erc721PortalV2Address =
+    '0x0F5A20d3729c44FedabBb560b3D633dc1c246DDe' as const
+
+export const erc721PortalV2Config = {
+    address: erc721PortalV2Address,
+    abi: erc721PortalV2Abi,
+} as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // EtherPortal
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -697,6 +1128,52 @@ export const etherPortalAddress =
 export const etherPortalConfig = {
     address: etherPortalAddress,
     abi: etherPortalAbi,
+} as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// EtherPortalV2
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const etherPortalV2Abi = [
+    {
+        type: 'constructor',
+        inputs: [
+            {
+                name: 'inputBox',
+                internalType: 'contract IInputBox',
+                type: 'address',
+            },
+        ],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'appContract', internalType: 'address', type: 'address' },
+            { name: 'execLayerData', internalType: 'bytes', type: 'bytes' },
+        ],
+        name: 'depositEther',
+        outputs: [],
+        stateMutability: 'payable',
+    },
+    {
+        type: 'function',
+        inputs: [],
+        name: 'getInputBox',
+        outputs: [
+            { name: '', internalType: 'contract IInputBox', type: 'address' },
+        ],
+        stateMutability: 'view',
+    },
+    { type: 'error', inputs: [], name: 'EtherTransferFailed' },
+] as const
+
+export const etherPortalV2Address =
+    '0xd31aD6613bDaA139E7D12B2428C0Dd00fdBF8aDa' as const
+
+export const etherPortalV2Config = {
+    address: etherPortalV2Address,
+    abi: etherPortalV2Abi,
 } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -841,6 +1318,95 @@ export const inputBoxConfig = {
 } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// InputBoxV2
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const inputBoxV2Abi = [
+    {
+        type: 'function',
+        inputs: [
+            { name: 'appContract', internalType: 'address', type: 'address' },
+            { name: 'payload', internalType: 'bytes', type: 'bytes' },
+        ],
+        name: 'addInput',
+        outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [],
+        name: 'getDeploymentBlockNumber',
+        outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'appContract', internalType: 'address', type: 'address' },
+            { name: 'index', internalType: 'uint256', type: 'uint256' },
+        ],
+        name: 'getInputHash',
+        outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'appContract', internalType: 'address', type: 'address' },
+        ],
+        name: 'getNumberOfInputs',
+        outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+        stateMutability: 'view',
+    },
+    {
+        type: 'event',
+        anonymous: false,
+        inputs: [
+            {
+                name: 'appContract',
+                internalType: 'address',
+                type: 'address',
+                indexed: true,
+            },
+            {
+                name: 'index',
+                internalType: 'uint256',
+                type: 'uint256',
+                indexed: true,
+            },
+            {
+                name: 'input',
+                internalType: 'bytes',
+                type: 'bytes',
+                indexed: false,
+            },
+        ],
+        name: 'InputAdded',
+    },
+    {
+        type: 'error',
+        inputs: [
+            { name: 'appContract', internalType: 'address', type: 'address' },
+            { name: 'inputLength', internalType: 'uint256', type: 'uint256' },
+            {
+                name: 'maxInputLength',
+                internalType: 'uint256',
+                type: 'uint256',
+            },
+        ],
+        name: 'InputTooLarge',
+    },
+] as const
+
+export const inputBoxV2Address =
+    '0xB6b39Fb3dD926A9e3FBc7A129540eEbeA3016a6c' as const
+
+export const inputBoxV2Config = {
+    address: inputBoxV2Address,
+    abi: inputBoxV2Abi,
+} as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // MerkleV2
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -910,6 +1476,113 @@ export const merkleV2Address =
 export const merkleV2Config = {
     address: merkleV2Address,
     abi: merkleV2Abi,
+} as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// QuorumFactoryV2
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const quorumFactoryV2Abi = [
+    {
+        type: 'function',
+        inputs: [
+            {
+                name: 'validators',
+                internalType: 'address[]',
+                type: 'address[]',
+            },
+            { name: 'epochLength', internalType: 'uint256', type: 'uint256' },
+            { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
+        ],
+        name: 'calculateQuorumAddress',
+        outputs: [{ name: '', internalType: 'address', type: 'address' }],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [
+            {
+                name: 'validators',
+                internalType: 'address[]',
+                type: 'address[]',
+            },
+            { name: 'epochLength', internalType: 'uint256', type: 'uint256' },
+            { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
+        ],
+        name: 'newQuorum',
+        outputs: [
+            { name: '', internalType: 'contract IQuorum', type: 'address' },
+        ],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [
+            {
+                name: 'validators',
+                internalType: 'address[]',
+                type: 'address[]',
+            },
+            { name: 'epochLength', internalType: 'uint256', type: 'uint256' },
+        ],
+        name: 'newQuorum',
+        outputs: [
+            { name: '', internalType: 'contract IQuorum', type: 'address' },
+        ],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'event',
+        anonymous: false,
+        inputs: [
+            {
+                name: 'quorum',
+                internalType: 'contract IQuorum',
+                type: 'address',
+                indexed: false,
+            },
+        ],
+        name: 'QuorumCreated',
+    },
+] as const
+
+export const quorumFactoryV2Address =
+    '0xb85D3942e551E6E5f19AC2CCF8dAb195f5f0347E' as const
+
+export const quorumFactoryV2Config = {
+    address: quorumFactoryV2Address,
+    abi: quorumFactoryV2Abi,
+} as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// SafeERC20TransferV2
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const safeErc20TransferV2Abi = [
+    {
+        type: 'function',
+        inputs: [
+            { name: 'token', internalType: 'contract IERC20', type: 'address' },
+            { name: 'to', internalType: 'address', type: 'address' },
+            { name: 'value', internalType: 'uint256', type: 'uint256' },
+        ],
+        name: 'safeTransfer',
+        outputs: [],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'error',
+        inputs: [{ name: 'token', internalType: 'address', type: 'address' }],
+        name: 'SafeERC20FailedOperation',
+    },
+] as const
+
+export const safeErc20TransferV2Address =
+    '0x35187C9f069D34aB73c02327ae155746a8274208' as const
+
+export const safeErc20TransferV2Config = {
+    address: safeErc20TransferV2Address,
+    abi: safeErc20TransferV2Abi,
 } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1022,10 +1695,117 @@ export const selfHostedApplicationFactoryConfig = {
 } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// SunodoMultiToken
+// SelfHostedApplicationFactoryV2
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const sunodoMultiTokenAbi = [
+export const selfHostedApplicationFactoryV2Abi = [
+    {
+        type: 'constructor',
+        inputs: [
+            {
+                name: 'authorityFactory',
+                internalType: 'contract IAuthorityFactory',
+                type: 'address',
+            },
+            {
+                name: 'applicationFactory',
+                internalType: 'contract IApplicationFactory',
+                type: 'address',
+            },
+        ],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [
+            {
+                name: 'authorityOwner',
+                internalType: 'address',
+                type: 'address',
+            },
+            { name: 'epochLength', internalType: 'uint256', type: 'uint256' },
+            { name: 'appOwner', internalType: 'address', type: 'address' },
+            { name: 'templateHash', internalType: 'bytes32', type: 'bytes32' },
+            { name: 'dataAvailability', internalType: 'bytes', type: 'bytes' },
+            { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
+        ],
+        name: 'calculateAddresses',
+        outputs: [
+            { name: 'application', internalType: 'address', type: 'address' },
+            { name: 'authority', internalType: 'address', type: 'address' },
+        ],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [
+            {
+                name: 'authorityOwner',
+                internalType: 'address',
+                type: 'address',
+            },
+            { name: 'epochLength', internalType: 'uint256', type: 'uint256' },
+            { name: 'appOwner', internalType: 'address', type: 'address' },
+            { name: 'templateHash', internalType: 'bytes32', type: 'bytes32' },
+            { name: 'dataAvailability', internalType: 'bytes', type: 'bytes' },
+            { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
+        ],
+        name: 'deployContracts',
+        outputs: [
+            {
+                name: 'application',
+                internalType: 'contract IApplication',
+                type: 'address',
+            },
+            {
+                name: 'authority',
+                internalType: 'contract IAuthority',
+                type: 'address',
+            },
+        ],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [],
+        name: 'getApplicationFactory',
+        outputs: [
+            {
+                name: '',
+                internalType: 'contract IApplicationFactory',
+                type: 'address',
+            },
+        ],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [],
+        name: 'getAuthorityFactory',
+        outputs: [
+            {
+                name: '',
+                internalType: 'contract IAuthorityFactory',
+                type: 'address',
+            },
+        ],
+        stateMutability: 'view',
+    },
+] as const
+
+export const selfHostedApplicationFactoryV2Address =
+    '0x4a409e1CaB9229711C4e1f68625DdbC75809e721' as const
+
+export const selfHostedApplicationFactoryV2Config = {
+    address: selfHostedApplicationFactoryV2Address,
+    abi: selfHostedApplicationFactoryV2Abi,
+} as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// TestMultiToken
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const testMultiTokenAbi = [
     {
         type: 'constructor',
         inputs: [
@@ -1370,19 +2150,19 @@ export const sunodoMultiTokenAbi = [
     },
 ] as const
 
-export const sunodoMultiTokenAddress =
-    '0xa376A4afa7D03A64Dc7aE194322468c170276c62' as const
+export const testMultiTokenAddress =
+    '0x04d724738873CB6a86328D2EbAEb2079D715e61e' as const
 
-export const sunodoMultiTokenConfig = {
-    address: sunodoMultiTokenAddress,
-    abi: sunodoMultiTokenAbi,
+export const testMultiTokenConfig = {
+    address: testMultiTokenAddress,
+    abi: testMultiTokenAbi,
 } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// SunodoNFT
+// TestNFT
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const sunodoNftAbi = [
+export const testNftAbi = [
     {
         type: 'constructor',
         inputs: [
@@ -1730,19 +2510,19 @@ export const sunodoNftAbi = [
     },
 ] as const
 
-export const sunodoNftAddress =
-    '0x093771B61bBAC90C74576E007673068AaD6AE3B7' as const
+export const testNftAddress =
+    '0xc6582A9b48F211Fa8c2B5b16CB615eC39bcA653B' as const
 
-export const sunodoNftConfig = {
-    address: sunodoNftAddress,
-    abi: sunodoNftAbi,
+export const testNftConfig = {
+    address: testNftAddress,
+    abi: testNftAbi,
 } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// SunodoToken
+// TestToken
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const sunodoTokenAbi = [
+export const testTokenAbi = [
     {
         type: 'constructor',
         inputs: [
@@ -2144,12 +2924,12 @@ export const sunodoTokenAbi = [
     },
 ] as const
 
-export const sunodoTokenAddress =
-    '0xf795b3D15D47ac1c61BEf4Cc6469EBb2454C6a9b' as const
+export const testTokenAddress =
+    '0x92C6bcA388E99d6B304f1Af3c3Cd749Ff0b591e2' as const
 
-export const sunodoTokenConfig = {
-    address: sunodoTokenAddress,
-    abi: sunodoTokenAbi,
+export const testTokenConfig = {
+    address: testTokenAddress,
+    abi: testTokenAbi,
 } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2280,6 +3060,81 @@ export const erc20Abi = [
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link applicationFactoryV2Abi}__
+ */
+export const useReadApplicationFactoryV2 = /*#__PURE__*/ createUseReadContract({
+    abi: applicationFactoryV2Abi,
+    address: applicationFactoryV2Address,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link applicationFactoryV2Abi}__ and `functionName` set to `"calculateApplicationAddress"`
+ */
+export const useReadApplicationFactoryV2CalculateApplicationAddress =
+    /*#__PURE__*/ createUseReadContract({
+        abi: applicationFactoryV2Abi,
+        address: applicationFactoryV2Address,
+        functionName: 'calculateApplicationAddress',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link applicationFactoryV2Abi}__
+ */
+export const useWriteApplicationFactoryV2 =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: applicationFactoryV2Abi,
+        address: applicationFactoryV2Address,
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link applicationFactoryV2Abi}__ and `functionName` set to `"newApplication"`
+ */
+export const useWriteApplicationFactoryV2NewApplication =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: applicationFactoryV2Abi,
+        address: applicationFactoryV2Address,
+        functionName: 'newApplication',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link applicationFactoryV2Abi}__
+ */
+export const useSimulateApplicationFactoryV2 =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: applicationFactoryV2Abi,
+        address: applicationFactoryV2Address,
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link applicationFactoryV2Abi}__ and `functionName` set to `"newApplication"`
+ */
+export const useSimulateApplicationFactoryV2NewApplication =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: applicationFactoryV2Abi,
+        address: applicationFactoryV2Address,
+        functionName: 'newApplication',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link applicationFactoryV2Abi}__
+ */
+export const useWatchApplicationFactoryV2Event =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: applicationFactoryV2Abi,
+        address: applicationFactoryV2Address,
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link applicationFactoryV2Abi}__ and `eventName` set to `"ApplicationCreated"`
+ */
+export const useWatchApplicationFactoryV2ApplicationCreatedEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: applicationFactoryV2Abi,
+        address: applicationFactoryV2Address,
+        eventName: 'ApplicationCreated',
+    })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link authorityFactoryAbi}__
  */
 export const useReadAuthorityFactory = /*#__PURE__*/ createUseReadContract({
@@ -2350,6 +3205,80 @@ export const useWatchAuthorityFactoryAuthorityCreatedEvent =
     /*#__PURE__*/ createUseWatchContractEvent({
         abi: authorityFactoryAbi,
         address: authorityFactoryAddress,
+        eventName: 'AuthorityCreated',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link authorityFactoryV2Abi}__
+ */
+export const useReadAuthorityFactoryV2 = /*#__PURE__*/ createUseReadContract({
+    abi: authorityFactoryV2Abi,
+    address: authorityFactoryV2Address,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link authorityFactoryV2Abi}__ and `functionName` set to `"calculateAuthorityAddress"`
+ */
+export const useReadAuthorityFactoryV2CalculateAuthorityAddress =
+    /*#__PURE__*/ createUseReadContract({
+        abi: authorityFactoryV2Abi,
+        address: authorityFactoryV2Address,
+        functionName: 'calculateAuthorityAddress',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link authorityFactoryV2Abi}__
+ */
+export const useWriteAuthorityFactoryV2 = /*#__PURE__*/ createUseWriteContract({
+    abi: authorityFactoryV2Abi,
+    address: authorityFactoryV2Address,
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link authorityFactoryV2Abi}__ and `functionName` set to `"newAuthority"`
+ */
+export const useWriteAuthorityFactoryV2NewAuthority =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: authorityFactoryV2Abi,
+        address: authorityFactoryV2Address,
+        functionName: 'newAuthority',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link authorityFactoryV2Abi}__
+ */
+export const useSimulateAuthorityFactoryV2 =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: authorityFactoryV2Abi,
+        address: authorityFactoryV2Address,
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link authorityFactoryV2Abi}__ and `functionName` set to `"newAuthority"`
+ */
+export const useSimulateAuthorityFactoryV2NewAuthority =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: authorityFactoryV2Abi,
+        address: authorityFactoryV2Address,
+        functionName: 'newAuthority',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link authorityFactoryV2Abi}__
+ */
+export const useWatchAuthorityFactoryV2Event =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: authorityFactoryV2Abi,
+        address: authorityFactoryV2Address,
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link authorityFactoryV2Abi}__ and `eventName` set to `"AuthorityCreated"`
+ */
+export const useWatchAuthorityFactoryV2AuthorityCreatedEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: authorityFactoryV2Abi,
+        address: authorityFactoryV2Address,
         eventName: 'AuthorityCreated',
     })
 
@@ -2645,6 +3574,55 @@ export const useSimulateDAppAddressRelayRelayDAppAddress =
     })
 
 /**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link dataAvailabilityAbi}__
+ */
+export const useWriteDataAvailability = /*#__PURE__*/ createUseWriteContract({
+    abi: dataAvailabilityAbi,
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link dataAvailabilityAbi}__ and `functionName` set to `"InputBox"`
+ */
+export const useWriteDataAvailabilityInputBox =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: dataAvailabilityAbi,
+        functionName: 'InputBox',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link dataAvailabilityAbi}__ and `functionName` set to `"InputBoxAndEspresso"`
+ */
+export const useWriteDataAvailabilityInputBoxAndEspresso =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: dataAvailabilityAbi,
+        functionName: 'InputBoxAndEspresso',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link dataAvailabilityAbi}__
+ */
+export const useSimulateDataAvailability =
+    /*#__PURE__*/ createUseSimulateContract({ abi: dataAvailabilityAbi })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link dataAvailabilityAbi}__ and `functionName` set to `"InputBox"`
+ */
+export const useSimulateDataAvailabilityInputBox =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: dataAvailabilityAbi,
+        functionName: 'InputBox',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link dataAvailabilityAbi}__ and `functionName` set to `"InputBoxAndEspresso"`
+ */
+export const useSimulateDataAvailabilityInputBoxAndEspresso =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: dataAvailabilityAbi,
+        functionName: 'InputBoxAndEspresso',
+    })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc1155BatchPortalAbi}__
  */
 export const useReadErc1155BatchPortal = /*#__PURE__*/ createUseReadContract({
@@ -2696,6 +3674,62 @@ export const useSimulateErc1155BatchPortalDepositBatchErc1155Token =
     /*#__PURE__*/ createUseSimulateContract({
         abi: erc1155BatchPortalAbi,
         address: erc1155BatchPortalAddress,
+        functionName: 'depositBatchERC1155Token',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc1155BatchPortalV2Abi}__
+ */
+export const useReadErc1155BatchPortalV2 = /*#__PURE__*/ createUseReadContract({
+    abi: erc1155BatchPortalV2Abi,
+    address: erc1155BatchPortalV2Address,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc1155BatchPortalV2Abi}__ and `functionName` set to `"getInputBox"`
+ */
+export const useReadErc1155BatchPortalV2GetInputBox =
+    /*#__PURE__*/ createUseReadContract({
+        abi: erc1155BatchPortalV2Abi,
+        address: erc1155BatchPortalV2Address,
+        functionName: 'getInputBox',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc1155BatchPortalV2Abi}__
+ */
+export const useWriteErc1155BatchPortalV2 =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: erc1155BatchPortalV2Abi,
+        address: erc1155BatchPortalV2Address,
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc1155BatchPortalV2Abi}__ and `functionName` set to `"depositBatchERC1155Token"`
+ */
+export const useWriteErc1155BatchPortalV2DepositBatchErc1155Token =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: erc1155BatchPortalV2Abi,
+        address: erc1155BatchPortalV2Address,
+        functionName: 'depositBatchERC1155Token',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc1155BatchPortalV2Abi}__
+ */
+export const useSimulateErc1155BatchPortalV2 =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: erc1155BatchPortalV2Abi,
+        address: erc1155BatchPortalV2Address,
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc1155BatchPortalV2Abi}__ and `functionName` set to `"depositBatchERC1155Token"`
+ */
+export const useSimulateErc1155BatchPortalV2DepositBatchErc1155Token =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: erc1155BatchPortalV2Abi,
+        address: erc1155BatchPortalV2Address,
         functionName: 'depositBatchERC1155Token',
     })
 
@@ -2754,6 +3788,61 @@ export const useSimulateErc1155SinglePortalDepositSingleErc1155Token =
     })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc1155SinglePortalV2Abi}__
+ */
+export const useReadErc1155SinglePortalV2 = /*#__PURE__*/ createUseReadContract(
+    { abi: erc1155SinglePortalV2Abi, address: erc1155SinglePortalV2Address },
+)
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc1155SinglePortalV2Abi}__ and `functionName` set to `"getInputBox"`
+ */
+export const useReadErc1155SinglePortalV2GetInputBox =
+    /*#__PURE__*/ createUseReadContract({
+        abi: erc1155SinglePortalV2Abi,
+        address: erc1155SinglePortalV2Address,
+        functionName: 'getInputBox',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc1155SinglePortalV2Abi}__
+ */
+export const useWriteErc1155SinglePortalV2 =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: erc1155SinglePortalV2Abi,
+        address: erc1155SinglePortalV2Address,
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc1155SinglePortalV2Abi}__ and `functionName` set to `"depositSingleERC1155Token"`
+ */
+export const useWriteErc1155SinglePortalV2DepositSingleErc1155Token =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: erc1155SinglePortalV2Abi,
+        address: erc1155SinglePortalV2Address,
+        functionName: 'depositSingleERC1155Token',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc1155SinglePortalV2Abi}__
+ */
+export const useSimulateErc1155SinglePortalV2 =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: erc1155SinglePortalV2Abi,
+        address: erc1155SinglePortalV2Address,
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc1155SinglePortalV2Abi}__ and `functionName` set to `"depositSingleERC1155Token"`
+ */
+export const useSimulateErc1155SinglePortalV2DepositSingleErc1155Token =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: erc1155SinglePortalV2Abi,
+        address: erc1155SinglePortalV2Address,
+        functionName: 'depositSingleERC1155Token',
+    })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20PortalAbi}__
  */
 export const useReadErc20Portal = /*#__PURE__*/ createUseReadContract({
@@ -2804,6 +3893,59 @@ export const useSimulateErc20PortalDepositErc20Tokens =
     /*#__PURE__*/ createUseSimulateContract({
         abi: erc20PortalAbi,
         address: erc20PortalAddress,
+        functionName: 'depositERC20Tokens',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20PortalV2Abi}__
+ */
+export const useReadErc20PortalV2 = /*#__PURE__*/ createUseReadContract({
+    abi: erc20PortalV2Abi,
+    address: erc20PortalV2Address,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20PortalV2Abi}__ and `functionName` set to `"getInputBox"`
+ */
+export const useReadErc20PortalV2GetInputBox =
+    /*#__PURE__*/ createUseReadContract({
+        abi: erc20PortalV2Abi,
+        address: erc20PortalV2Address,
+        functionName: 'getInputBox',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc20PortalV2Abi}__
+ */
+export const useWriteErc20PortalV2 = /*#__PURE__*/ createUseWriteContract({
+    abi: erc20PortalV2Abi,
+    address: erc20PortalV2Address,
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc20PortalV2Abi}__ and `functionName` set to `"depositERC20Tokens"`
+ */
+export const useWriteErc20PortalV2DepositErc20Tokens =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: erc20PortalV2Abi,
+        address: erc20PortalV2Address,
+        functionName: 'depositERC20Tokens',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc20PortalV2Abi}__
+ */
+export const useSimulateErc20PortalV2 = /*#__PURE__*/ createUseSimulateContract(
+    { abi: erc20PortalV2Abi, address: erc20PortalV2Address },
+)
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc20PortalV2Abi}__ and `functionName` set to `"depositERC20Tokens"`
+ */
+export const useSimulateErc20PortalV2DepositErc20Tokens =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: erc20PortalV2Abi,
+        address: erc20PortalV2Address,
         functionName: 'depositERC20Tokens',
     })
 
@@ -2862,6 +4004,61 @@ export const useSimulateErc721PortalDepositErc721Token =
     })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc721PortalV2Abi}__
+ */
+export const useReadErc721PortalV2 = /*#__PURE__*/ createUseReadContract({
+    abi: erc721PortalV2Abi,
+    address: erc721PortalV2Address,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc721PortalV2Abi}__ and `functionName` set to `"getInputBox"`
+ */
+export const useReadErc721PortalV2GetInputBox =
+    /*#__PURE__*/ createUseReadContract({
+        abi: erc721PortalV2Abi,
+        address: erc721PortalV2Address,
+        functionName: 'getInputBox',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc721PortalV2Abi}__
+ */
+export const useWriteErc721PortalV2 = /*#__PURE__*/ createUseWriteContract({
+    abi: erc721PortalV2Abi,
+    address: erc721PortalV2Address,
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc721PortalV2Abi}__ and `functionName` set to `"depositERC721Token"`
+ */
+export const useWriteErc721PortalV2DepositErc721Token =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: erc721PortalV2Abi,
+        address: erc721PortalV2Address,
+        functionName: 'depositERC721Token',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc721PortalV2Abi}__
+ */
+export const useSimulateErc721PortalV2 =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: erc721PortalV2Abi,
+        address: erc721PortalV2Address,
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc721PortalV2Abi}__ and `functionName` set to `"depositERC721Token"`
+ */
+export const useSimulateErc721PortalV2DepositErc721Token =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: erc721PortalV2Abi,
+        address: erc721PortalV2Address,
+        functionName: 'depositERC721Token',
+    })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link etherPortalAbi}__
  */
 export const useReadEtherPortal = /*#__PURE__*/ createUseReadContract({
@@ -2912,6 +4109,59 @@ export const useSimulateEtherPortalDepositEther =
     /*#__PURE__*/ createUseSimulateContract({
         abi: etherPortalAbi,
         address: etherPortalAddress,
+        functionName: 'depositEther',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link etherPortalV2Abi}__
+ */
+export const useReadEtherPortalV2 = /*#__PURE__*/ createUseReadContract({
+    abi: etherPortalV2Abi,
+    address: etherPortalV2Address,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link etherPortalV2Abi}__ and `functionName` set to `"getInputBox"`
+ */
+export const useReadEtherPortalV2GetInputBox =
+    /*#__PURE__*/ createUseReadContract({
+        abi: etherPortalV2Abi,
+        address: etherPortalV2Address,
+        functionName: 'getInputBox',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link etherPortalV2Abi}__
+ */
+export const useWriteEtherPortalV2 = /*#__PURE__*/ createUseWriteContract({
+    abi: etherPortalV2Abi,
+    address: etherPortalV2Address,
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link etherPortalV2Abi}__ and `functionName` set to `"depositEther"`
+ */
+export const useWriteEtherPortalV2DepositEther =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: etherPortalV2Abi,
+        address: etherPortalV2Address,
+        functionName: 'depositEther',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link etherPortalV2Abi}__
+ */
+export const useSimulateEtherPortalV2 = /*#__PURE__*/ createUseSimulateContract(
+    { abi: etherPortalV2Abi, address: etherPortalV2Address },
+)
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link etherPortalV2Abi}__ and `functionName` set to `"depositEther"`
+ */
+export const useSimulateEtherPortalV2DepositEther =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: etherPortalV2Abi,
+        address: etherPortalV2Address,
         functionName: 'depositEther',
     })
 
@@ -3070,6 +4320,98 @@ export const useWatchInputBoxInputAddedEvent =
     })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link inputBoxV2Abi}__
+ */
+export const useReadInputBoxV2 = /*#__PURE__*/ createUseReadContract({
+    abi: inputBoxV2Abi,
+    address: inputBoxV2Address,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link inputBoxV2Abi}__ and `functionName` set to `"getDeploymentBlockNumber"`
+ */
+export const useReadInputBoxV2GetDeploymentBlockNumber =
+    /*#__PURE__*/ createUseReadContract({
+        abi: inputBoxV2Abi,
+        address: inputBoxV2Address,
+        functionName: 'getDeploymentBlockNumber',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link inputBoxV2Abi}__ and `functionName` set to `"getInputHash"`
+ */
+export const useReadInputBoxV2GetInputHash =
+    /*#__PURE__*/ createUseReadContract({
+        abi: inputBoxV2Abi,
+        address: inputBoxV2Address,
+        functionName: 'getInputHash',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link inputBoxV2Abi}__ and `functionName` set to `"getNumberOfInputs"`
+ */
+export const useReadInputBoxV2GetNumberOfInputs =
+    /*#__PURE__*/ createUseReadContract({
+        abi: inputBoxV2Abi,
+        address: inputBoxV2Address,
+        functionName: 'getNumberOfInputs',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link inputBoxV2Abi}__
+ */
+export const useWriteInputBoxV2 = /*#__PURE__*/ createUseWriteContract({
+    abi: inputBoxV2Abi,
+    address: inputBoxV2Address,
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link inputBoxV2Abi}__ and `functionName` set to `"addInput"`
+ */
+export const useWriteInputBoxV2AddInput = /*#__PURE__*/ createUseWriteContract({
+    abi: inputBoxV2Abi,
+    address: inputBoxV2Address,
+    functionName: 'addInput',
+})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link inputBoxV2Abi}__
+ */
+export const useSimulateInputBoxV2 = /*#__PURE__*/ createUseSimulateContract({
+    abi: inputBoxV2Abi,
+    address: inputBoxV2Address,
+})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link inputBoxV2Abi}__ and `functionName` set to `"addInput"`
+ */
+export const useSimulateInputBoxV2AddInput =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: inputBoxV2Abi,
+        address: inputBoxV2Address,
+        functionName: 'addInput',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link inputBoxV2Abi}__
+ */
+export const useWatchInputBoxV2Event =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: inputBoxV2Abi,
+        address: inputBoxV2Address,
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link inputBoxV2Abi}__ and `eventName` set to `"InputAdded"`
+ */
+export const useWatchInputBoxV2InputAddedEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: inputBoxV2Abi,
+        address: inputBoxV2Address,
+        eventName: 'InputAdded',
+    })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link merkleV2Abi}__
  */
 export const useReadMerkleV2 = /*#__PURE__*/ createUseReadContract({
@@ -3125,6 +4467,116 @@ export const useReadMerkleV2GetRootAfterReplacementInDrive =
         abi: merkleV2Abi,
         address: merkleV2Address,
         functionName: 'getRootAfterReplacementInDrive',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link quorumFactoryV2Abi}__
+ */
+export const useReadQuorumFactoryV2 = /*#__PURE__*/ createUseReadContract({
+    abi: quorumFactoryV2Abi,
+    address: quorumFactoryV2Address,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link quorumFactoryV2Abi}__ and `functionName` set to `"calculateQuorumAddress"`
+ */
+export const useReadQuorumFactoryV2CalculateQuorumAddress =
+    /*#__PURE__*/ createUseReadContract({
+        abi: quorumFactoryV2Abi,
+        address: quorumFactoryV2Address,
+        functionName: 'calculateQuorumAddress',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link quorumFactoryV2Abi}__
+ */
+export const useWriteQuorumFactoryV2 = /*#__PURE__*/ createUseWriteContract({
+    abi: quorumFactoryV2Abi,
+    address: quorumFactoryV2Address,
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link quorumFactoryV2Abi}__ and `functionName` set to `"newQuorum"`
+ */
+export const useWriteQuorumFactoryV2NewQuorum =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: quorumFactoryV2Abi,
+        address: quorumFactoryV2Address,
+        functionName: 'newQuorum',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link quorumFactoryV2Abi}__
+ */
+export const useSimulateQuorumFactoryV2 =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: quorumFactoryV2Abi,
+        address: quorumFactoryV2Address,
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link quorumFactoryV2Abi}__ and `functionName` set to `"newQuorum"`
+ */
+export const useSimulateQuorumFactoryV2NewQuorum =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: quorumFactoryV2Abi,
+        address: quorumFactoryV2Address,
+        functionName: 'newQuorum',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link quorumFactoryV2Abi}__
+ */
+export const useWatchQuorumFactoryV2Event =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: quorumFactoryV2Abi,
+        address: quorumFactoryV2Address,
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link quorumFactoryV2Abi}__ and `eventName` set to `"QuorumCreated"`
+ */
+export const useWatchQuorumFactoryV2QuorumCreatedEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: quorumFactoryV2Abi,
+        address: quorumFactoryV2Address,
+        eventName: 'QuorumCreated',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link safeErc20TransferV2Abi}__
+ */
+export const useWriteSafeErc20TransferV2 = /*#__PURE__*/ createUseWriteContract(
+    { abi: safeErc20TransferV2Abi, address: safeErc20TransferV2Address },
+)
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link safeErc20TransferV2Abi}__ and `functionName` set to `"safeTransfer"`
+ */
+export const useWriteSafeErc20TransferV2SafeTransfer =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: safeErc20TransferV2Abi,
+        address: safeErc20TransferV2Address,
+        functionName: 'safeTransfer',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link safeErc20TransferV2Abi}__
+ */
+export const useSimulateSafeErc20TransferV2 =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: safeErc20TransferV2Abi,
+        address: safeErc20TransferV2Address,
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link safeErc20TransferV2Abi}__ and `functionName` set to `"safeTransfer"`
+ */
+export const useSimulateSafeErc20TransferV2SafeTransfer =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: safeErc20TransferV2Abi,
+        address: safeErc20TransferV2Address,
+        functionName: 'safeTransfer',
     })
 
 /**
@@ -3205,1000 +4657,1063 @@ export const useSimulateSelfHostedApplicationFactoryDeployContracts =
     })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link selfHostedApplicationFactoryV2Abi}__
  */
-export const useReadSunodoMultiToken = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoMultiTokenAbi,
-    address: sunodoMultiTokenAddress,
+export const useReadSelfHostedApplicationFactoryV2 =
+    /*#__PURE__*/ createUseReadContract({
+        abi: selfHostedApplicationFactoryV2Abi,
+        address: selfHostedApplicationFactoryV2Address,
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link selfHostedApplicationFactoryV2Abi}__ and `functionName` set to `"calculateAddresses"`
+ */
+export const useReadSelfHostedApplicationFactoryV2CalculateAddresses =
+    /*#__PURE__*/ createUseReadContract({
+        abi: selfHostedApplicationFactoryV2Abi,
+        address: selfHostedApplicationFactoryV2Address,
+        functionName: 'calculateAddresses',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link selfHostedApplicationFactoryV2Abi}__ and `functionName` set to `"getApplicationFactory"`
+ */
+export const useReadSelfHostedApplicationFactoryV2GetApplicationFactory =
+    /*#__PURE__*/ createUseReadContract({
+        abi: selfHostedApplicationFactoryV2Abi,
+        address: selfHostedApplicationFactoryV2Address,
+        functionName: 'getApplicationFactory',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link selfHostedApplicationFactoryV2Abi}__ and `functionName` set to `"getAuthorityFactory"`
+ */
+export const useReadSelfHostedApplicationFactoryV2GetAuthorityFactory =
+    /*#__PURE__*/ createUseReadContract({
+        abi: selfHostedApplicationFactoryV2Abi,
+        address: selfHostedApplicationFactoryV2Address,
+        functionName: 'getAuthorityFactory',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link selfHostedApplicationFactoryV2Abi}__
+ */
+export const useWriteSelfHostedApplicationFactoryV2 =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: selfHostedApplicationFactoryV2Abi,
+        address: selfHostedApplicationFactoryV2Address,
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link selfHostedApplicationFactoryV2Abi}__ and `functionName` set to `"deployContracts"`
+ */
+export const useWriteSelfHostedApplicationFactoryV2DeployContracts =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: selfHostedApplicationFactoryV2Abi,
+        address: selfHostedApplicationFactoryV2Address,
+        functionName: 'deployContracts',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link selfHostedApplicationFactoryV2Abi}__
+ */
+export const useSimulateSelfHostedApplicationFactoryV2 =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: selfHostedApplicationFactoryV2Abi,
+        address: selfHostedApplicationFactoryV2Address,
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link selfHostedApplicationFactoryV2Abi}__ and `functionName` set to `"deployContracts"`
+ */
+export const useSimulateSelfHostedApplicationFactoryV2DeployContracts =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: selfHostedApplicationFactoryV2Abi,
+        address: selfHostedApplicationFactoryV2Address,
+        functionName: 'deployContracts',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testMultiTokenAbi}__
+ */
+export const useReadTestMultiToken = /*#__PURE__*/ createUseReadContract({
+    abi: testMultiTokenAbi,
+    address: testMultiTokenAddress,
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"balanceOf"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"balanceOf"`
  */
-export const useReadSunodoMultiTokenBalanceOf =
+export const useReadTestMultiTokenBalanceOf =
     /*#__PURE__*/ createUseReadContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
         functionName: 'balanceOf',
     })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"balanceOfBatch"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"balanceOfBatch"`
  */
-export const useReadSunodoMultiTokenBalanceOfBatch =
+export const useReadTestMultiTokenBalanceOfBatch =
     /*#__PURE__*/ createUseReadContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
         functionName: 'balanceOfBatch',
     })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"isApprovedForAll"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"isApprovedForAll"`
  */
-export const useReadSunodoMultiTokenIsApprovedForAll =
+export const useReadTestMultiTokenIsApprovedForAll =
     /*#__PURE__*/ createUseReadContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
         functionName: 'isApprovedForAll',
     })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"owner"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"owner"`
  */
-export const useReadSunodoMultiTokenOwner = /*#__PURE__*/ createUseReadContract(
-    {
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'owner',
-    },
-)
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"supportsInterface"`
- */
-export const useReadSunodoMultiTokenSupportsInterface =
-    /*#__PURE__*/ createUseReadContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'supportsInterface',
-    })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"uri"`
- */
-export const useReadSunodoMultiTokenUri = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoMultiTokenAbi,
-    address: sunodoMultiTokenAddress,
-    functionName: 'uri',
-})
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__
- */
-export const useWriteSunodoMultiToken = /*#__PURE__*/ createUseWriteContract({
-    abi: sunodoMultiTokenAbi,
-    address: sunodoMultiTokenAddress,
-})
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"mint"`
- */
-export const useWriteSunodoMultiTokenMint =
-    /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'mint',
-    })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"mintBatch"`
- */
-export const useWriteSunodoMultiTokenMintBatch =
-    /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'mintBatch',
-    })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"renounceOwnership"`
- */
-export const useWriteSunodoMultiTokenRenounceOwnership =
-    /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'renounceOwnership',
-    })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"safeBatchTransferFrom"`
- */
-export const useWriteSunodoMultiTokenSafeBatchTransferFrom =
-    /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'safeBatchTransferFrom',
-    })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"safeTransferFrom"`
- */
-export const useWriteSunodoMultiTokenSafeTransferFrom =
-    /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'safeTransferFrom',
-    })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"setApprovalForAll"`
- */
-export const useWriteSunodoMultiTokenSetApprovalForAll =
-    /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'setApprovalForAll',
-    })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"setURI"`
- */
-export const useWriteSunodoMultiTokenSetUri =
-    /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'setURI',
-    })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"transferOwnership"`
- */
-export const useWriteSunodoMultiTokenTransferOwnership =
-    /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'transferOwnership',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__
- */
-export const useSimulateSunodoMultiToken =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"mint"`
- */
-export const useSimulateSunodoMultiTokenMint =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'mint',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"mintBatch"`
- */
-export const useSimulateSunodoMultiTokenMintBatch =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'mintBatch',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"renounceOwnership"`
- */
-export const useSimulateSunodoMultiTokenRenounceOwnership =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'renounceOwnership',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"safeBatchTransferFrom"`
- */
-export const useSimulateSunodoMultiTokenSafeBatchTransferFrom =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'safeBatchTransferFrom',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"safeTransferFrom"`
- */
-export const useSimulateSunodoMultiTokenSafeTransferFrom =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'safeTransferFrom',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"setApprovalForAll"`
- */
-export const useSimulateSunodoMultiTokenSetApprovalForAll =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'setApprovalForAll',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"setURI"`
- */
-export const useSimulateSunodoMultiTokenSetUri =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'setURI',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"transferOwnership"`
- */
-export const useSimulateSunodoMultiTokenTransferOwnership =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'transferOwnership',
-    })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoMultiTokenAbi}__
- */
-export const useWatchSunodoMultiTokenEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-    })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `eventName` set to `"ApprovalForAll"`
- */
-export const useWatchSunodoMultiTokenApprovalForAllEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        eventName: 'ApprovalForAll',
-    })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `eventName` set to `"OwnershipTransferred"`
- */
-export const useWatchSunodoMultiTokenOwnershipTransferredEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        eventName: 'OwnershipTransferred',
-    })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `eventName` set to `"TransferBatch"`
- */
-export const useWatchSunodoMultiTokenTransferBatchEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        eventName: 'TransferBatch',
-    })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `eventName` set to `"TransferSingle"`
- */
-export const useWatchSunodoMultiTokenTransferSingleEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        eventName: 'TransferSingle',
-    })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `eventName` set to `"URI"`
- */
-export const useWatchSunodoMultiTokenUriEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        eventName: 'URI',
-    })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__
- */
-export const useReadSunodoNft = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoNftAbi,
-    address: sunodoNftAddress,
-})
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"balanceOf"`
- */
-export const useReadSunodoNftBalanceOf = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoNftAbi,
-    address: sunodoNftAddress,
-    functionName: 'balanceOf',
-})
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"getApproved"`
- */
-export const useReadSunodoNftGetApproved = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoNftAbi,
-    address: sunodoNftAddress,
-    functionName: 'getApproved',
-})
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"isApprovedForAll"`
- */
-export const useReadSunodoNftIsApprovedForAll =
-    /*#__PURE__*/ createUseReadContract({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
-        functionName: 'isApprovedForAll',
-    })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"name"`
- */
-export const useReadSunodoNftName = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoNftAbi,
-    address: sunodoNftAddress,
-    functionName: 'name',
-})
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"owner"`
- */
-export const useReadSunodoNftOwner = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoNftAbi,
-    address: sunodoNftAddress,
+export const useReadTestMultiTokenOwner = /*#__PURE__*/ createUseReadContract({
+    abi: testMultiTokenAbi,
+    address: testMultiTokenAddress,
     functionName: 'owner',
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"ownerOf"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"supportsInterface"`
  */
-export const useReadSunodoNftOwnerOf = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoNftAbi,
-    address: sunodoNftAddress,
-    functionName: 'ownerOf',
-})
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"supportsInterface"`
- */
-export const useReadSunodoNftSupportsInterface =
+export const useReadTestMultiTokenSupportsInterface =
     /*#__PURE__*/ createUseReadContract({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
         functionName: 'supportsInterface',
     })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"symbol"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"uri"`
  */
-export const useReadSunodoNftSymbol = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoNftAbi,
-    address: sunodoNftAddress,
-    functionName: 'symbol',
+export const useReadTestMultiTokenUri = /*#__PURE__*/ createUseReadContract({
+    abi: testMultiTokenAbi,
+    address: testMultiTokenAddress,
+    functionName: 'uri',
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"tokenURI"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testMultiTokenAbi}__
  */
-export const useReadSunodoNftTokenUri = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoNftAbi,
-    address: sunodoNftAddress,
-    functionName: 'tokenURI',
+export const useWriteTestMultiToken = /*#__PURE__*/ createUseWriteContract({
+    abi: testMultiTokenAbi,
+    address: testMultiTokenAddress,
 })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoNftAbi}__
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"mint"`
  */
-export const useWriteSunodoNft = /*#__PURE__*/ createUseWriteContract({
-    abi: sunodoNftAbi,
-    address: sunodoNftAddress,
+export const useWriteTestMultiTokenMint = /*#__PURE__*/ createUseWriteContract({
+    abi: testMultiTokenAbi,
+    address: testMultiTokenAddress,
+    functionName: 'mint',
 })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"approve"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"mintBatch"`
  */
-export const useWriteSunodoNftApprove = /*#__PURE__*/ createUseWriteContract({
-    abi: sunodoNftAbi,
-    address: sunodoNftAddress,
-    functionName: 'approve',
-})
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"renounceOwnership"`
- */
-export const useWriteSunodoNftRenounceOwnership =
+export const useWriteTestMultiTokenMintBatch =
     /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
+        functionName: 'mintBatch',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"renounceOwnership"`
+ */
+export const useWriteTestMultiTokenRenounceOwnership =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
         functionName: 'renounceOwnership',
     })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"safeMint"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"safeBatchTransferFrom"`
  */
-export const useWriteSunodoNftSafeMint = /*#__PURE__*/ createUseWriteContract({
-    abi: sunodoNftAbi,
-    address: sunodoNftAddress,
-    functionName: 'safeMint',
-})
+export const useWriteTestMultiTokenSafeBatchTransferFrom =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
+        functionName: 'safeBatchTransferFrom',
+    })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"safeTransferFrom"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"safeTransferFrom"`
  */
-export const useWriteSunodoNftSafeTransferFrom =
+export const useWriteTestMultiTokenSafeTransferFrom =
     /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
         functionName: 'safeTransferFrom',
     })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"setApprovalForAll"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"setApprovalForAll"`
  */
-export const useWriteSunodoNftSetApprovalForAll =
+export const useWriteTestMultiTokenSetApprovalForAll =
     /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
         functionName: 'setApprovalForAll',
     })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"transferFrom"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"setURI"`
  */
-export const useWriteSunodoNftTransferFrom =
+export const useWriteTestMultiTokenSetUri =
     /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
-        functionName: 'transferFrom',
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
+        functionName: 'setURI',
     })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"transferOwnership"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"transferOwnership"`
  */
-export const useWriteSunodoNftTransferOwnership =
+export const useWriteTestMultiTokenTransferOwnership =
     /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
         functionName: 'transferOwnership',
     })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoNftAbi}__
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testMultiTokenAbi}__
  */
-export const useSimulateSunodoNft = /*#__PURE__*/ createUseSimulateContract({
-    abi: sunodoNftAbi,
-    address: sunodoNftAddress,
-})
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"approve"`
- */
-export const useSimulateSunodoNftApprove =
+export const useSimulateTestMultiToken =
     /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
-        functionName: 'approve',
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
     })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"renounceOwnership"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"mint"`
  */
-export const useSimulateSunodoNftRenounceOwnership =
+export const useSimulateTestMultiTokenMint =
     /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
+        functionName: 'mint',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"mintBatch"`
+ */
+export const useSimulateTestMultiTokenMintBatch =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
+        functionName: 'mintBatch',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"renounceOwnership"`
+ */
+export const useSimulateTestMultiTokenRenounceOwnership =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
         functionName: 'renounceOwnership',
     })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"safeMint"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"safeBatchTransferFrom"`
  */
-export const useSimulateSunodoNftSafeMint =
+export const useSimulateTestMultiTokenSafeBatchTransferFrom =
     /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
-        functionName: 'safeMint',
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
+        functionName: 'safeBatchTransferFrom',
     })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"safeTransferFrom"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"safeTransferFrom"`
  */
-export const useSimulateSunodoNftSafeTransferFrom =
+export const useSimulateTestMultiTokenSafeTransferFrom =
     /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
         functionName: 'safeTransferFrom',
     })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"setApprovalForAll"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"setApprovalForAll"`
  */
-export const useSimulateSunodoNftSetApprovalForAll =
+export const useSimulateTestMultiTokenSetApprovalForAll =
     /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
         functionName: 'setApprovalForAll',
     })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"transferFrom"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"setURI"`
  */
-export const useSimulateSunodoNftTransferFrom =
+export const useSimulateTestMultiTokenSetUri =
     /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
-        functionName: 'transferFrom',
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
+        functionName: 'setURI',
     })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"transferOwnership"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"transferOwnership"`
  */
-export const useSimulateSunodoNftTransferOwnership =
+export const useSimulateTestMultiTokenTransferOwnership =
     /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
         functionName: 'transferOwnership',
     })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoNftAbi}__
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testMultiTokenAbi}__
  */
-export const useWatchSunodoNftEvent = /*#__PURE__*/ createUseWatchContractEvent(
-    { abi: sunodoNftAbi, address: sunodoNftAddress },
-)
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoNftAbi}__ and `eventName` set to `"Approval"`
- */
-export const useWatchSunodoNftApprovalEvent =
+export const useWatchTestMultiTokenEvent =
     /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
-        eventName: 'Approval',
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
     })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoNftAbi}__ and `eventName` set to `"ApprovalForAll"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testMultiTokenAbi}__ and `eventName` set to `"ApprovalForAll"`
  */
-export const useWatchSunodoNftApprovalForAllEvent =
+export const useWatchTestMultiTokenApprovalForAllEvent =
     /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
         eventName: 'ApprovalForAll',
     })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoNftAbi}__ and `eventName` set to `"BatchMetadataUpdate"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testMultiTokenAbi}__ and `eventName` set to `"OwnershipTransferred"`
  */
-export const useWatchSunodoNftBatchMetadataUpdateEvent =
+export const useWatchTestMultiTokenOwnershipTransferredEvent =
     /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
-        eventName: 'BatchMetadataUpdate',
-    })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoNftAbi}__ and `eventName` set to `"MetadataUpdate"`
- */
-export const useWatchSunodoNftMetadataUpdateEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
-        eventName: 'MetadataUpdate',
-    })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoNftAbi}__ and `eventName` set to `"OwnershipTransferred"`
- */
-export const useWatchSunodoNftOwnershipTransferredEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
         eventName: 'OwnershipTransferred',
     })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoNftAbi}__ and `eventName` set to `"Transfer"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testMultiTokenAbi}__ and `eventName` set to `"TransferBatch"`
  */
-export const useWatchSunodoNftTransferEvent =
+export const useWatchTestMultiTokenTransferBatchEvent =
     /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
-        eventName: 'Transfer',
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
+        eventName: 'TransferBatch',
     })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoTokenAbi}__
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testMultiTokenAbi}__ and `eventName` set to `"TransferSingle"`
  */
-export const useReadSunodoToken = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
-})
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"DOMAIN_SEPARATOR"`
- */
-export const useReadSunodoTokenDomainSeparator =
-    /*#__PURE__*/ createUseReadContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'DOMAIN_SEPARATOR',
+export const useWatchTestMultiTokenTransferSingleEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
+        eventName: 'TransferSingle',
     })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"allowance"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testMultiTokenAbi}__ and `eventName` set to `"URI"`
  */
-export const useReadSunodoTokenAllowance = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
-    functionName: 'allowance',
+export const useWatchTestMultiTokenUriEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
+        eventName: 'URI',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testNftAbi}__
+ */
+export const useReadTestNft = /*#__PURE__*/ createUseReadContract({
+    abi: testNftAbi,
+    address: testNftAddress,
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"authority"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"balanceOf"`
  */
-export const useReadSunodoTokenAuthority = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
-    functionName: 'authority',
-})
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"balanceOf"`
- */
-export const useReadSunodoTokenBalanceOf = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
+export const useReadTestNftBalanceOf = /*#__PURE__*/ createUseReadContract({
+    abi: testNftAbi,
+    address: testNftAddress,
     functionName: 'balanceOf',
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"decimals"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"getApproved"`
  */
-export const useReadSunodoTokenDecimals = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
-    functionName: 'decimals',
+export const useReadTestNftGetApproved = /*#__PURE__*/ createUseReadContract({
+    abi: testNftAbi,
+    address: testNftAddress,
+    functionName: 'getApproved',
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"eip712Domain"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"isApprovedForAll"`
  */
-export const useReadSunodoTokenEip712Domain =
+export const useReadTestNftIsApprovedForAll =
     /*#__PURE__*/ createUseReadContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'eip712Domain',
+        abi: testNftAbi,
+        address: testNftAddress,
+        functionName: 'isApprovedForAll',
     })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"isConsumingScheduledOp"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"name"`
  */
-export const useReadSunodoTokenIsConsumingScheduledOp =
-    /*#__PURE__*/ createUseReadContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'isConsumingScheduledOp',
-    })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"name"`
- */
-export const useReadSunodoTokenName = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
+export const useReadTestNftName = /*#__PURE__*/ createUseReadContract({
+    abi: testNftAbi,
+    address: testNftAddress,
     functionName: 'name',
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"nonces"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"owner"`
  */
-export const useReadSunodoTokenNonces = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
-    functionName: 'nonces',
+export const useReadTestNftOwner = /*#__PURE__*/ createUseReadContract({
+    abi: testNftAbi,
+    address: testNftAddress,
+    functionName: 'owner',
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"paused"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"ownerOf"`
  */
-export const useReadSunodoTokenPaused = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
-    functionName: 'paused',
+export const useReadTestNftOwnerOf = /*#__PURE__*/ createUseReadContract({
+    abi: testNftAbi,
+    address: testNftAddress,
+    functionName: 'ownerOf',
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"symbol"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"supportsInterface"`
  */
-export const useReadSunodoTokenSymbol = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
+export const useReadTestNftSupportsInterface =
+    /*#__PURE__*/ createUseReadContract({
+        abi: testNftAbi,
+        address: testNftAddress,
+        functionName: 'supportsInterface',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"symbol"`
+ */
+export const useReadTestNftSymbol = /*#__PURE__*/ createUseReadContract({
+    abi: testNftAbi,
+    address: testNftAddress,
     functionName: 'symbol',
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"totalSupply"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"tokenURI"`
  */
-export const useReadSunodoTokenTotalSupply =
-    /*#__PURE__*/ createUseReadContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'totalSupply',
-    })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoTokenAbi}__
- */
-export const useWriteSunodoToken = /*#__PURE__*/ createUseWriteContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
+export const useReadTestNftTokenUri = /*#__PURE__*/ createUseReadContract({
+    abi: testNftAbi,
+    address: testNftAddress,
+    functionName: 'tokenURI',
 })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"approve"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testNftAbi}__
  */
-export const useWriteSunodoTokenApprove = /*#__PURE__*/ createUseWriteContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
+export const useWriteTestNft = /*#__PURE__*/ createUseWriteContract({
+    abi: testNftAbi,
+    address: testNftAddress,
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"approve"`
+ */
+export const useWriteTestNftApprove = /*#__PURE__*/ createUseWriteContract({
+    abi: testNftAbi,
+    address: testNftAddress,
     functionName: 'approve',
 })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"burn"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"renounceOwnership"`
  */
-export const useWriteSunodoTokenBurn = /*#__PURE__*/ createUseWriteContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
-    functionName: 'burn',
-})
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"burnFrom"`
- */
-export const useWriteSunodoTokenBurnFrom = /*#__PURE__*/ createUseWriteContract(
-    {
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'burnFrom',
-    },
-)
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"pause"`
- */
-export const useWriteSunodoTokenPause = /*#__PURE__*/ createUseWriteContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
-    functionName: 'pause',
-})
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"permit"`
- */
-export const useWriteSunodoTokenPermit = /*#__PURE__*/ createUseWriteContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
-    functionName: 'permit',
-})
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"setAuthority"`
- */
-export const useWriteSunodoTokenSetAuthority =
+export const useWriteTestNftRenounceOwnership =
     /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'setAuthority',
+        abi: testNftAbi,
+        address: testNftAddress,
+        functionName: 'renounceOwnership',
     })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"transfer"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"safeMint"`
  */
-export const useWriteSunodoTokenTransfer = /*#__PURE__*/ createUseWriteContract(
-    {
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'transfer',
-    },
-)
+export const useWriteTestNftSafeMint = /*#__PURE__*/ createUseWriteContract({
+    abi: testNftAbi,
+    address: testNftAddress,
+    functionName: 'safeMint',
+})
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"transferFrom"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"safeTransferFrom"`
  */
-export const useWriteSunodoTokenTransferFrom =
+export const useWriteTestNftSafeTransferFrom =
     /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'transferFrom',
+        abi: testNftAbi,
+        address: testNftAddress,
+        functionName: 'safeTransferFrom',
     })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"unpause"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"setApprovalForAll"`
  */
-export const useWriteSunodoTokenUnpause = /*#__PURE__*/ createUseWriteContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
-    functionName: 'unpause',
+export const useWriteTestNftSetApprovalForAll =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: testNftAbi,
+        address: testNftAddress,
+        functionName: 'setApprovalForAll',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"transferFrom"`
+ */
+export const useWriteTestNftTransferFrom = /*#__PURE__*/ createUseWriteContract(
+    { abi: testNftAbi, address: testNftAddress, functionName: 'transferFrom' },
+)
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"transferOwnership"`
+ */
+export const useWriteTestNftTransferOwnership =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: testNftAbi,
+        address: testNftAddress,
+        functionName: 'transferOwnership',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testNftAbi}__
+ */
+export const useSimulateTestNft = /*#__PURE__*/ createUseSimulateContract({
+    abi: testNftAbi,
+    address: testNftAddress,
 })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoTokenAbi}__
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"approve"`
  */
-export const useSimulateSunodoToken = /*#__PURE__*/ createUseSimulateContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
-})
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"approve"`
- */
-export const useSimulateSunodoTokenApprove =
+export const useSimulateTestNftApprove =
     /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
+        abi: testNftAbi,
+        address: testNftAddress,
         functionName: 'approve',
     })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"burn"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"renounceOwnership"`
  */
-export const useSimulateSunodoTokenBurn =
+export const useSimulateTestNftRenounceOwnership =
     /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'burn',
+        abi: testNftAbi,
+        address: testNftAddress,
+        functionName: 'renounceOwnership',
     })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"burnFrom"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"safeMint"`
  */
-export const useSimulateSunodoTokenBurnFrom =
+export const useSimulateTestNftSafeMint =
     /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'burnFrom',
+        abi: testNftAbi,
+        address: testNftAddress,
+        functionName: 'safeMint',
     })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"pause"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"safeTransferFrom"`
  */
-export const useSimulateSunodoTokenPause =
+export const useSimulateTestNftSafeTransferFrom =
     /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'pause',
+        abi: testNftAbi,
+        address: testNftAddress,
+        functionName: 'safeTransferFrom',
     })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"permit"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"setApprovalForAll"`
  */
-export const useSimulateSunodoTokenPermit =
+export const useSimulateTestNftSetApprovalForAll =
     /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'permit',
+        abi: testNftAbi,
+        address: testNftAddress,
+        functionName: 'setApprovalForAll',
     })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"setAuthority"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"transferFrom"`
  */
-export const useSimulateSunodoTokenSetAuthority =
+export const useSimulateTestNftTransferFrom =
     /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'setAuthority',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"transfer"`
- */
-export const useSimulateSunodoTokenTransfer =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'transfer',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"transferFrom"`
- */
-export const useSimulateSunodoTokenTransferFrom =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
+        abi: testNftAbi,
+        address: testNftAddress,
         functionName: 'transferFrom',
     })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"unpause"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"transferOwnership"`
  */
-export const useSimulateSunodoTokenUnpause =
+export const useSimulateTestNftTransferOwnership =
     /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'unpause',
+        abi: testNftAbi,
+        address: testNftAddress,
+        functionName: 'transferOwnership',
     })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoTokenAbi}__
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testNftAbi}__
  */
-export const useWatchSunodoTokenEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-    })
+export const useWatchTestNftEvent = /*#__PURE__*/ createUseWatchContractEvent({
+    abi: testNftAbi,
+    address: testNftAddress,
+})
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoTokenAbi}__ and `eventName` set to `"Approval"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testNftAbi}__ and `eventName` set to `"Approval"`
  */
-export const useWatchSunodoTokenApprovalEvent =
+export const useWatchTestNftApprovalEvent =
     /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
+        abi: testNftAbi,
+        address: testNftAddress,
         eventName: 'Approval',
     })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoTokenAbi}__ and `eventName` set to `"AuthorityUpdated"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testNftAbi}__ and `eventName` set to `"ApprovalForAll"`
  */
-export const useWatchSunodoTokenAuthorityUpdatedEvent =
+export const useWatchTestNftApprovalForAllEvent =
     /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        eventName: 'AuthorityUpdated',
+        abi: testNftAbi,
+        address: testNftAddress,
+        eventName: 'ApprovalForAll',
     })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoTokenAbi}__ and `eventName` set to `"EIP712DomainChanged"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testNftAbi}__ and `eventName` set to `"BatchMetadataUpdate"`
  */
-export const useWatchSunodoTokenEip712DomainChangedEvent =
+export const useWatchTestNftBatchMetadataUpdateEvent =
     /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        eventName: 'EIP712DomainChanged',
+        abi: testNftAbi,
+        address: testNftAddress,
+        eventName: 'BatchMetadataUpdate',
     })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoTokenAbi}__ and `eventName` set to `"Paused"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testNftAbi}__ and `eventName` set to `"MetadataUpdate"`
  */
-export const useWatchSunodoTokenPausedEvent =
+export const useWatchTestNftMetadataUpdateEvent =
     /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        eventName: 'Paused',
+        abi: testNftAbi,
+        address: testNftAddress,
+        eventName: 'MetadataUpdate',
     })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoTokenAbi}__ and `eventName` set to `"Transfer"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testNftAbi}__ and `eventName` set to `"OwnershipTransferred"`
  */
-export const useWatchSunodoTokenTransferEvent =
+export const useWatchTestNftOwnershipTransferredEvent =
     /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
+        abi: testNftAbi,
+        address: testNftAddress,
+        eventName: 'OwnershipTransferred',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testNftAbi}__ and `eventName` set to `"Transfer"`
+ */
+export const useWatchTestNftTransferEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: testNftAbi,
+        address: testNftAddress,
         eventName: 'Transfer',
     })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoTokenAbi}__ and `eventName` set to `"Unpaused"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testTokenAbi}__
  */
-export const useWatchSunodoTokenUnpausedEvent =
+export const useReadTestToken = /*#__PURE__*/ createUseReadContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"DOMAIN_SEPARATOR"`
+ */
+export const useReadTestTokenDomainSeparator =
+    /*#__PURE__*/ createUseReadContract({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        functionName: 'DOMAIN_SEPARATOR',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"allowance"`
+ */
+export const useReadTestTokenAllowance = /*#__PURE__*/ createUseReadContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'allowance',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"authority"`
+ */
+export const useReadTestTokenAuthority = /*#__PURE__*/ createUseReadContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'authority',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"balanceOf"`
+ */
+export const useReadTestTokenBalanceOf = /*#__PURE__*/ createUseReadContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'balanceOf',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"decimals"`
+ */
+export const useReadTestTokenDecimals = /*#__PURE__*/ createUseReadContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'decimals',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"eip712Domain"`
+ */
+export const useReadTestTokenEip712Domain = /*#__PURE__*/ createUseReadContract(
+    {
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        functionName: 'eip712Domain',
+    },
+)
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"isConsumingScheduledOp"`
+ */
+export const useReadTestTokenIsConsumingScheduledOp =
+    /*#__PURE__*/ createUseReadContract({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        functionName: 'isConsumingScheduledOp',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"name"`
+ */
+export const useReadTestTokenName = /*#__PURE__*/ createUseReadContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'name',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"nonces"`
+ */
+export const useReadTestTokenNonces = /*#__PURE__*/ createUseReadContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'nonces',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"paused"`
+ */
+export const useReadTestTokenPaused = /*#__PURE__*/ createUseReadContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'paused',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"symbol"`
+ */
+export const useReadTestTokenSymbol = /*#__PURE__*/ createUseReadContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'symbol',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"totalSupply"`
+ */
+export const useReadTestTokenTotalSupply = /*#__PURE__*/ createUseReadContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'totalSupply',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testTokenAbi}__
+ */
+export const useWriteTestToken = /*#__PURE__*/ createUseWriteContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"approve"`
+ */
+export const useWriteTestTokenApprove = /*#__PURE__*/ createUseWriteContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'approve',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"burn"`
+ */
+export const useWriteTestTokenBurn = /*#__PURE__*/ createUseWriteContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'burn',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"burnFrom"`
+ */
+export const useWriteTestTokenBurnFrom = /*#__PURE__*/ createUseWriteContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'burnFrom',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"pause"`
+ */
+export const useWriteTestTokenPause = /*#__PURE__*/ createUseWriteContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'pause',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"permit"`
+ */
+export const useWriteTestTokenPermit = /*#__PURE__*/ createUseWriteContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'permit',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"setAuthority"`
+ */
+export const useWriteTestTokenSetAuthority =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        functionName: 'setAuthority',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"transfer"`
+ */
+export const useWriteTestTokenTransfer = /*#__PURE__*/ createUseWriteContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'transfer',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"transferFrom"`
+ */
+export const useWriteTestTokenTransferFrom =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        functionName: 'transferFrom',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"unpause"`
+ */
+export const useWriteTestTokenUnpause = /*#__PURE__*/ createUseWriteContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'unpause',
+})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testTokenAbi}__
+ */
+export const useSimulateTestToken = /*#__PURE__*/ createUseSimulateContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"approve"`
+ */
+export const useSimulateTestTokenApprove =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        functionName: 'approve',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"burn"`
+ */
+export const useSimulateTestTokenBurn = /*#__PURE__*/ createUseSimulateContract(
+    { abi: testTokenAbi, address: testTokenAddress, functionName: 'burn' },
+)
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"burnFrom"`
+ */
+export const useSimulateTestTokenBurnFrom =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        functionName: 'burnFrom',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"pause"`
+ */
+export const useSimulateTestTokenPause =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        functionName: 'pause',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"permit"`
+ */
+export const useSimulateTestTokenPermit =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        functionName: 'permit',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"setAuthority"`
+ */
+export const useSimulateTestTokenSetAuthority =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        functionName: 'setAuthority',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"transfer"`
+ */
+export const useSimulateTestTokenTransfer =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        functionName: 'transfer',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"transferFrom"`
+ */
+export const useSimulateTestTokenTransferFrom =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        functionName: 'transferFrom',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"unpause"`
+ */
+export const useSimulateTestTokenUnpause =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        functionName: 'unpause',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testTokenAbi}__
+ */
+export const useWatchTestTokenEvent = /*#__PURE__*/ createUseWatchContractEvent(
+    { abi: testTokenAbi, address: testTokenAddress },
+)
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testTokenAbi}__ and `eventName` set to `"Approval"`
+ */
+export const useWatchTestTokenApprovalEvent =
     /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        eventName: 'Approval',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testTokenAbi}__ and `eventName` set to `"AuthorityUpdated"`
+ */
+export const useWatchTestTokenAuthorityUpdatedEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        eventName: 'AuthorityUpdated',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testTokenAbi}__ and `eventName` set to `"EIP712DomainChanged"`
+ */
+export const useWatchTestTokenEip712DomainChangedEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        eventName: 'EIP712DomainChanged',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testTokenAbi}__ and `eventName` set to `"Paused"`
+ */
+export const useWatchTestTokenPausedEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        eventName: 'Paused',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testTokenAbi}__ and `eventName` set to `"Transfer"`
+ */
+export const useWatchTestTokenTransferEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        eventName: 'Transfer',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testTokenAbi}__ and `eventName` set to `"Unpaused"`
+ */
+export const useWatchTestTokenUnpausedEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: testTokenAbi,
+        address: testTokenAddress,
         eventName: 'Unpaused',
     })
 

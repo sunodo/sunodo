@@ -11,18 +11,10 @@ function getAbsolutePath(value: string) {
 
 const config: StorybookConfig = {
     stories: ["../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
-    addons: [
-        getAbsolutePath("@storybook/addon-links"),
-        getAbsolutePath("@storybook/addon-essentials"),
-        getAbsolutePath("@storybook/addon-interactions"),
-        getAbsolutePath("storybook-dark-mode"),
-    ],
+    addons: [getAbsolutePath("@storybook/addon-links")],
     framework: {
         name: getAbsolutePath("@storybook/nextjs"),
         options: {},
-    },
-    docs: {
-        autodocs: "tag",
     },
 };
 export default config;
