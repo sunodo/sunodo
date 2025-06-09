@@ -2,40 +2,28 @@ import { Stack, Title } from "@mantine/core";
 import type { FC } from "react";
 import { useState } from "react";
 
-import type { HostingMethod } from "./Hosting";
-import Hosting from "./Hosting";
-import DeploySelfHosted from "./SelfHosted/DeploySelfHosted";
-import DeployThirdParty from "./ThirdParty/DeployThirdParty";
+import DeployV1 from "./DeployV1";
+import DeployV2 from "./DeployV2";
+import RollupsVersionSelector from "./RollupsVersionSelector";
 
 type DeployProps = {
     cid?: string;
     provider?: string;
     templateHash?: string;
+    version?: "v1" | "v2";
 };
 
 const Deploy: FC<DeployProps> = (props) => {
-    const defaultMethod = props.templateHash
-        ? "self-hosted"
-        : props.cid
-          ? "third-party"
-          : undefined;
-    const [method, setMethod] = useState<HostingMethod | undefined>(
-        defaultMethod,
+    const [version, setVersion] = useState<"v1" | "v2" | undefined>(
+        props.version,
     );
 
     return (
         <Stack maw={960} gap="xl" pb="xl">
             <Title order={3}>Deploy</Title>
-            <Hosting method={method} onChange={setMethod} />
-            {method === "self-hosted" && (
-                <DeploySelfHosted templateHash={props.templateHash} />
-            )}
-            {method === "third-party" && (
-                <DeployThirdParty
-                    cid={props.cid ?? ""}
-                    provider={props.provider ?? ""}
-                />
-            )}
+            <RollupsVersionSelector value={version} onChange={setVersion} />
+            {version === "v1" && <DeployV1 {...props} />}
+            {version === "v2" && <DeployV2 {...props} />}
         </Stack>
     );
 };

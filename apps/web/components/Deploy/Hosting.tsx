@@ -38,13 +38,13 @@ const Hosting: FC<HostingProps> = (props) => {
                             value="self-hosted"
                         />
                         <Text>
-                            Select this option to run the node for your own
+                            Select this option to run a node for your
                             application. You will need the following
                             infrastructure:
                         </Text>
                         <List>
                             <List.Item>
-                                a cloud server for the application node
+                                a cloud server for the node software
                             </List.Item>
                             <List.Item>a postgres database</List.Item>
                             <List.Item>a web3 node provider</List.Item>

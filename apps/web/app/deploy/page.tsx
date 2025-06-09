@@ -9,12 +9,15 @@ import { Suspense } from "react";
 import DeployComponent from "../../components/Deploy/Deploy";
 import { Section } from "../../components/Section/Section";
 
+const DEFAULT_VERSION = "v2";
+
 const Deploy: FC = () => {
     const searchParams = useSearchParams();
 
-    // default location and provider can come from URL
+    // default location, provider and version can come from URL
     const locationParam = searchParams.get("cid");
     const providerParam = searchParams.get("provider");
+    const versionParam = searchParams.get("version") as "v1" | "v2" | undefined;
 
     // templateHash comes in case of self-hosted
     const templateHashParam = searchParams.get("templateHash");
@@ -24,6 +27,7 @@ const Deploy: FC = () => {
             cid={locationParam ?? ""}
             provider={providerParam ?? ""}
             templateHash={templateHashParam ?? ""}
+            version={versionParam ?? DEFAULT_VERSION}
         />
     );
 };
