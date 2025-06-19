@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 /// @title NodeProvider interfaces
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.20;
 
-import {CartesiDApp} from "@cartesi/rollups/contracts/dapp/CartesiDApp.sol";
-import {ICartesiDApp} from "@cartesi/rollups/contracts/dapp/ICartesiDApp.sol";
-import {IConsensus} from "@cartesi/rollups/contracts/consensus/IConsensus.sol";
+import {IApplication} from "@cartesi-rollups-contracts-2.0.0/dapp/IApplication.sol";
+import {IOutputsMerkleRootValidator} from "@cartesi-rollups-contracts-2.0.0/consensus/IOutputsMerkleRootValidator.sol";
 
 import {IVault} from "../payment/IVault.sol";
 
@@ -13,24 +12,21 @@ interface INodeProvider is IVault {
     /// @param application The application to be registered
     /// @param location The Cartesi machine snapshot location
     function register(
-        ICartesiDApp application,
+        IApplication application,
         string calldata location
     ) external;
-
-    /// @notice Sets a name for the provider using ENS service
-    /// @param _name The name of the provider
-    function setName(string calldata _name) external;
 }
 
 interface IReaderNodeProvider is INodeProvider {}
 
 interface IValidatorNodeProvider is IReaderNodeProvider {
     /// @notice The consensus wired to the provider
-    function consensus() external view returns (IConsensus);
+    function validator() external view returns (IOutputsMerkleRootValidator);
 
     /// @notice Deploy a new application deterministically
     /// @param _owner The address that will own the application
     /// @param _templateHash The hash of the initial state of the Cartesi Machine
+    /// @param _dataAvailability The data availability solution used by the application
     /// @param _location The Cartesi machine snapshot location
     /// @param _initialRunway The initial runway of the application in seconds
     /// @param _salt The salt used to deterministically generate the application address
@@ -38,14 +34,16 @@ interface IValidatorNodeProvider is IReaderNodeProvider {
     function deploy(
         address _owner,
         bytes32 _templateHash,
+        bytes calldata _dataAvailability,
         string calldata _location,
         uint256 _initialRunway,
         bytes32 _salt
-    ) external returns (CartesiDApp);
+    ) external returns (IApplication);
 
     /// @notice Calculate the address of an application to be deployed deterministically.
     /// @param _owner The address that will own the application
     /// @param _templateHash The hash of the initial state of the Cartesi Machine
+    /// @param _dataAvailability The data availability solution used by the application
     /// @param _salt The salt used to deterministically generate the application address
     /// @return The application address
     /// @dev Beware that only the `deploy` function with the `salt` parameter
@@ -53,6 +51,7 @@ interface IValidatorNodeProvider is IReaderNodeProvider {
     function calculateApplicationAddress(
         address _owner,
         bytes32 _templateHash,
+        bytes calldata _dataAvailability,
         bytes32 _salt
     ) external view returns (address);
 }

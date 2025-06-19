@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 /// @title Cartesi Machine Protocol
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.20;
 
 /// @notice Interface that should be implemented by any contract which controls the association
 /// of a deployed Cartesi application to its offchain Cartesi Machine snapshot.

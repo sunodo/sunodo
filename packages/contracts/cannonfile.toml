@@ -1,0 +1,11 @@
+name = "sunodo-marketplace"
+version = "<%= package.version %>"
+
+[pull.cartesiRollups]
+source = "cartesi-rollups:2.0.0"
+
+[deploy.Marketplace]
+artifact = "Marketplace"
+args = ["<%= cartesiRollups.ApplicationFactory.address %>"]
+create2 = true
+salt = "%<= zeroHash %>"

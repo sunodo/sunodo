@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 /// @title Financial Protocol
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.20;
 
 /// @notice Interface that should be implemented by any contract which dictates the financial incentives
 /// of the execution of validator nodes for Cartesi applications.

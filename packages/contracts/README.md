@@ -1,6 +1,6 @@
 # Contracts
 
-The [Cartesi Node](https://github.com/cartesi/rollups-node) provided by the Cartesi team allows anyone to run a node for a specific application assuming they have the Cartesi machine initial snapshot in hand, and have the financial incentives to run it, which typically has computational and storage costs.
+The [Cartesi Node](https://github.com/cartesi/rollups-node) provided by the Cartesi team allows anyone to run a node for a specific base layer. Multiple applications can be registered to the node assuming they have the Cartesi machine initial snapshot in hand, and have the financial incentives to run it, which typically has computational and storage costs.
 
 The goal of the smart contracts in this package is to support an incentivized and decentralized way of delegating the execution of Cartesi Nodes for applications to third-party service providers.
 
@@ -26,7 +26,7 @@ interface IFinancialProtocol {
 }
 ```
 
-This protocol allows a service provider to know how long an application has enough funds to run. Of course it is a choice of the service provider off-chain node manager to decide which smart contract implementation to watch for `IFinancialProtocol` events.
+This protocol allows a service provider to know for how long an application has enough funds to run. It is a choice of the service provider off-chain node manager to decide which smart contract implementation to watch for `IFinancialProtocol` events.
 
 ## Implementation
 
@@ -36,21 +36,23 @@ The two protocols described above are implemented by two smart contracts: `Reade
 
 ### `ReaderNodeProvider`
 
-The `ReaderNodeProvider` contract is responsible for the implementation of the `IMachineProtocol` interface and inherits from a `Vault` contract which implements the `IFinancialProtocol` interface.
+The `ReaderNodeProvider` contract implements the `IMachineProtocol` interface and inherits from a `Vault` contract which implements the `IFinancialProtocol` interface.
 
-Anyone can call the `register` function of the `ReaderNodeProvider` contract to register a new application. The caller must provide the Cartesi machine snapshot location so the service provider can download it and run a node for the application. If the service provider can't find the machine, or if the machine's hash is not the one specified during the application deployment, the node will fail to run.
+Anyone can call the `register` function of the `ReaderNodeProvider` contract to register a new application. The caller must provide the Cartesi machine snapshot location so the service provider can download it and register the application to its node. If the service provider can't find the machine, or if the machine's hash is not the one specified during the application deployment, the node will fail to register the application.
 
 ### `ValidatorNodeProvider`
 
 The `ValidatorNodeProvider` contract builds on top of the `ReaderNodeProvider` and adds the capability of deploying applications through the provider.
 
-A `ValidatorNodeProvider` is attached to an `IConsensus` and only accepts registrations of applications that has the same consensus as the one it is attached to.
+A `ValidatorNodeProvider` is attached to an `IOutputsMerkleRootValidator` and only accepts registrations of applications that has the same validator as the one it is attached to.
 
-Developers can use the `ValidatorNodeProvider` to deploy their application by calling the `deploy` function while specifying who is the application owner, the hash of the Cartesi machine snapshot, and the location of the Cartesi machine snapshot. The `ValidatorNodeProvider` is already attached to a consensus, so the developer does not need to specify it.
+Developers can use the `ValidatorNodeProvider` to deploy their application by calling the `deploy` function while specifying who is the application owner, the hash of the Cartesi machine snapshot, and the location of the Cartesi machine snapshot. The `ValidatorNodeProvider` is already attached to an authority consensus managed the provider, so the developer does not need to specify it.
 
 ### `Vault`
 
-The `Vault` contract is responsible for the implementation of the `IFinancialProtocol` interface and implements a simple model based on an ERC-20 token and a fixed price per unit of time.
+The `Vault` contract is responsible for the implementation of the `IFinancialProtocol` interface and implements a simple price model based on an ERC-20 token and a fixed price per unit of time.
+
+The running cost can be calculated by calling the `cost(uint256 _time)` view function, where `_time` is measured in seconds, and the returned value is measured in amount of tokens of the Vault `IERC20 token`.
 
 ### `Marketplace`
 

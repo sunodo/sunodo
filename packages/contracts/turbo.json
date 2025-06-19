@@ -2,15 +2,7 @@
     "extends": ["//"],
     "tasks": {
         "build": {
-            "outputs": [
-                "artifacts/**",
-                "build/**",
-                "cache/**",
-                "deployments/localhost/**",
-                "dist/**",
-                "export/abi/localhost.json",
-                "export/artifacts/**"
-            ]
+            "outputs": ["cache/**", "out/**"]
         }
     }
 }

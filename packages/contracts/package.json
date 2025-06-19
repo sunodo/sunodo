@@ -3,58 +3,14 @@
     "version": "0.9.0",
     "license": "Apache-2.0",
     "scripts": {
-        "build": "run-s compile tsc export docgen",
-        "clean:ignored": "rimraf artifacts cache coverage deployments/localhost dist",
-        "clean:hardhat": "hardhat clean",
-        "clean": "run-s clean:hardhat clean:ignored",
-        "compile": "hardhat compile",
-        "deploy": "hardhat deploy",
-        "deploy:arbitrum": "hardhat deploy --network arbitrum --export export/abi/arbitrum.json",
-        "deploy:arbitrum_sepolia": "hardhat deploy --network arbitrum_sepolia --export export/abi/arbitrum_sepolia.json",
-        "deploy:base": "hardhat deploy --network base --export export/abi/base.json",
-        "deploy:base_sepolia": "hardhat deploy --network base_sepolia --export export/abi/base_sepolia.json",
-        "deploy:mainnet": "hardhat deploy --network mainnet --export export/abi/mainnet.json",
-        "deploy:mainnets": "run-s deploy:arbitrum deploy:mainnet deploy:optimism",
-        "deploy:optimism": "hardhat deploy --network optimism --export export/abi/optimism.json",
-        "deploy:optimism_sepolia": "hardhat deploy --network optimism_sepolia --export export/abi/optimism_sepolia.json",
-        "deploy:sepolia": "hardhat deploy --network sepolia --export export/abi/sepolia.json",
-        "deploy:testnet": "run-s deploy:arbitrum_sepolia deploy:base_sepolia deploy:optimism_sepolia deploy:sepolia",
-        "docgen": "hardhat docgen",
-        "export": "hardhat export-artifacts export/artifacts --hide-sources --including-empty-bytecode --including-no-public-functions",
-        "prepack": "run-s build tsc",
-        "test": "hardhat test",
-        "tsc": "tsc"
+        "build": "forge build",
+        "clean": "forge clean",
+        "test": "forge test"
     },
     "dependencies": {
-        "@cartesi/rollups": "1.4.3",
-        "@cartesi/util": "6.3.0",
-        "@ensdomains/ens-contracts": "1.1.4",
-        "@openzeppelin/contracts": "4.9.3"
-    },
-    "devDependencies": {
-        "@nomicfoundation/hardhat-verify": "^2.0.6",
-        "@nomicfoundation/hardhat-viem": "^2.0.1",
-        "@safe-global/safe-singleton-factory": "^1.0.23",
-        "@types/chai": "^5.0.0",
-        "@types/mocha": ">=9.1.0",
-        "chai": "^5.1.1",
-        "hardhat": "^2.22.15",
-        "hardhat-abi-exporter": "^2",
-        "hardhat-deploy": "^0.14.0",
-        "mocha": "^10.4.0",
-        "npm-run-all": "^4",
-        "rimraf": "^6.0.1",
-        "solidity-docgen": "^0.6.0-beta.36",
-        "ts-node": "^10.9.2",
-        "typescript": "^5.4.5",
-        "viem": "^2.21.35"
+        "@ensdomains/ens-contracts": "1.5.2"
     },
     "files": [
-        "contracts",
-        "deployments/*/*.json",
-        "deployments/*/.chainid",
-        "dist/src",
-        "dist/deploy/*.js",
-        "export"
+        "src"
     ]
 }
