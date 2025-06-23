@@ -1,0 +1,35 @@
+{
+    "name": "@sunodo/registrar",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "codegen": "ponder codegen",
+        "db": "ponder db",
+        "dev": "ponder dev",
+        "serve": "ponder serve",
+        "start": "ponder start",
+        "test": "vitest",
+        "typecheck": "tsc"
+    },
+    "dependencies": {
+        "@ponder/utils": "^0.2.8",
+        "execa": "^9.6.0",
+        "fs-extra": "^11.3.0",
+        "got": "^14.4.7",
+        "hono": "^4.8.2",
+        "ponder": "^0.11.19",
+        "tar": "^7.4.3",
+        "tmp": "^0.2.3",
+        "viem": "^2.31.3"
+    },
+    "devDependencies": {
+        "@types/fs-extra": "^11.0.4",
+        "@types/node": "^24.0.3",
+        "@types/tmp": "^0.2.6",
+        "typescript": "^5.8.3",
+        "vitest": "^3.2.4"
+    },
+    "engines": {
+        "node": ">=20"
+    }
+}

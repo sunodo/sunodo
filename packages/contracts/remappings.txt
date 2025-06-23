@@ -1,0 +1,4 @@
+@cartesi-rollups-contracts-2.0.0/=dependencies/cartesi-rollups-contracts-2.0.1/src/
+@ensdomains-contracts-1.5.2/=node_modules/@ensdomains/ens-contracts/contracts/
+@openzeppelin-contracts-5.2.0/=dependencies/@openzeppelin-contracts-5.2.0/
+@openzeppelin/contracts/=dependencies/@openzeppelin-contracts-4.9.3/

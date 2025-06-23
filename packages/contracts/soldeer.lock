@@ -1,0 +1,13 @@
+[[dependencies]]
+name = "@openzeppelin-contracts"
+version = "5.2.0"
+url = "https://soldeer-revisions.s3.amazonaws.com/@openzeppelin-contracts/5_2_0_11-01-2025_09:30:20_contracts.zip"
+checksum = "6dbd0440446b2ed16ca25e9f1af08fc0c5c1e73e71fee86ae8a00daa774e3817"
+integrity = "4cb7f3777f67fdf4b7d0e2f94d2f93f198b2e5dce718b7062ac7c2c83e1183bd"
+
+[[dependencies]]
+name = "cartesi-rollups-contracts"
+version = "2.0.1"
+url = "https://soldeer-revisions.s3.amazonaws.com/cartesi-rollups-contracts/2_0_1_09-06-2025_16:42:36_rollups-contracts.zip"
+checksum = "199e543cfe5cfe4116d37baeb3ab279b789b2bf5c1df4229fec51453cc136916"
+integrity = "eb0dd07d277017a033fa3ee4747cef8c1329754953705a964bc60db291d6f10d"
