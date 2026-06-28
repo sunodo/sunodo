@@ -1,5 +1,4 @@
 "use client";
-import "@mantine/code-highlight/styles.css";
 
 import { Container } from "@mantine/core";
 import { useSearchParams } from "next/navigation";

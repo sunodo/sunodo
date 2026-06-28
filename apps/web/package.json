@@ -13,7 +13,6 @@
     },
     "dependencies": {
         "@cartesi/viem": "2.0.0-alpha.31",
-        "@mantine/code-highlight": "^9.4.1",
         "@mantine/core": "^9.4.1",
         "@mantine/form": "^9.4.1",
         "@mantine/hooks": "^9.4.1",

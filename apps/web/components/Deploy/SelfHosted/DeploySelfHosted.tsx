@@ -1,6 +1,8 @@
 import {
+    ActionIcon,
     Alert,
     Button,
+    CopyButton,
     Group,
     NumberInput,
     ScrollArea,
@@ -10,10 +12,16 @@ import {
     TextInput,
     Timeline,
     Title,
+    Tooltip,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { IconExclamationCircle, IconInfoCircle } from "@tabler/icons-react";
+import {
+    IconCheck,
+    IconCopy,
+    IconExclamationCircle,
+    IconInfoCircle,
+} from "@tabler/icons-react";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 import {
@@ -46,7 +54,6 @@ import {
     useWriteSelfHostedApplicationFactoryDeployContracts,
 } from "../../../src/contracts";
 import MachineInstructions from "../MachineInstructions";
-import NodeConfig from "./NodeConfig";
 import WalletInstructions from "./WalletInstructions";
 
 // Default epoch length (in base-layer blocks) per chain, used to prefill the form.
@@ -184,7 +191,7 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
         args,
         query: { enabled },
     });
-    const [applicationAddress, authorityAddress] = data || [];
+    const [applicationAddress] = data || [];
 
     // simulate deploy transaction
     const simulate = useSimulateSelfHostedApplicationFactoryDeployContracts({
@@ -380,17 +387,44 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
                                 title="Deploy Successful"
                                 icon={<IconInfoCircle />}
                             >
-                                Application deployed to {applicationAddress}.
-                                Copy the configuration below to start the node
-                                of your application by following the
-                                instructions at the Sunodo documentation.
+                                Your application has been deployed. Use the
+                                application address below to register it with a
+                                Cartesi node.
                             </Alert>
-                            <NodeConfig
-                                templateHash={templateHash}
-                                applicationAddress={applicationAddress}
-                                authorityAddress={authorityAddress}
-                                epochLength={Number(epochLength)}
-                                chainId={chainId}
+                            <TextInput
+                                label="Application address"
+                                value={applicationAddress ?? ""}
+                                readOnly
+                                size="md"
+                                ff="mono"
+                                rightSection={
+                                    <CopyButton
+                                        value={applicationAddress ?? ""}
+                                    >
+                                        {({ copied, copy }) => (
+                                            <Tooltip
+                                                label={
+                                                    copied ? "Copied" : "Copy"
+                                                }
+                                                withArrow
+                                            >
+                                                <ActionIcon
+                                                    color={
+                                                        copied ? "teal" : "gray"
+                                                    }
+                                                    variant="subtle"
+                                                    onClick={copy}
+                                                >
+                                                    {copied ? (
+                                                        <IconCheck size={16} />
+                                                    ) : (
+                                                        <IconCopy size={16} />
+                                                    )}
+                                                </ActionIcon>
+                                            </Tooltip>
+                                        )}
+                                    </CopyButton>
+                                }
                             />
                         </Stack>
                     )}
