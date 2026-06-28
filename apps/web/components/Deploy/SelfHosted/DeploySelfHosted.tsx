@@ -2,7 +2,9 @@ import {
     Alert,
     Button,
     Group,
+    NumberInput,
     ScrollArea,
+    SimpleGrid,
     Stack,
     Text,
     TextInput,
@@ -14,11 +16,31 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { IconExclamationCircle, IconInfoCircle } from "@tabler/icons-react";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
-import { getAddress, isAddress, isHash, zeroAddress, zeroHash } from "viem";
+import {
+    encodeFunctionData,
+    getAddress,
+    isAddress,
+    isHash,
+    zeroAddress,
+    zeroHash,
+} from "viem";
 import { generatePrivateKey } from "viem/accounts";
+import {
+    arbitrum,
+    arbitrumSepolia,
+    base,
+    baseSepolia,
+    foundry,
+    mainnet,
+    optimism,
+    optimismSepolia,
+    sepolia,
+} from "viem/chains";
 import { useAccount, useWaitForTransactionReceipt } from "wagmi";
 
 import {
+    dataAvailabilityAbi,
+    inputBoxAddress,
     useReadSelfHostedApplicationFactoryCalculateAddresses,
     useSimulateSelfHostedApplicationFactoryDeployContracts,
     useWriteSelfHostedApplicationFactoryDeployContracts,
@@ -26,6 +48,32 @@ import {
 import MachineInstructions from "../MachineInstructions";
 import NodeConfig from "./NodeConfig";
 import WalletInstructions from "./WalletInstructions";
+
+// Default epoch length (in base-layer blocks) per chain, used to prefill the form.
+const epochLengths: Record<number, number> = {
+    [arbitrum.id]: 43200 * 7, // XXX: arbitrum doesn't have a fixed block interval
+    [arbitrumSepolia.id]: 43200, // XXX: arbitrum doesn't have a fixed block interval
+    [base.id]: 43200 * 7, // 7 days on a 2s block time
+    [baseSepolia.id]: 43200, // 1 day on a 2s block time
+    [foundry.id]: 720, // 1 hour on a 5s block time
+    [mainnet.id]: 7200 * 7, // 7 days on a 12s block time
+    [optimism.id]: 43200 * 7, // 7 days on a 2s block time
+    [optimismSepolia.id]: 43200, // 1 day on a 2s block time
+    [sepolia.id]: 7200, // 1 day on a 12s block time
+};
+
+const defaultEpochLength = (chainId?: number) =>
+    (chainId && epochLengths[chainId]) || 7200;
+
+const DEFAULT_CLAIM_STAGING_PERIOD = 0;
+
+// The application reads its inputs from the canonical InputBox. The factory expects
+// this choice ABI-encoded as a call to DataAvailability.InputBox(address).
+const dataAvailability = encodeFunctionData({
+    abi: dataAvailabilityAbi,
+    functionName: "InputBox",
+    args: [inputBoxAddress],
+});
 
 type DeploySelfHostedProps = {
     authorityOwner?: string;
@@ -39,6 +87,13 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
         initialValues: {
             authorityOwner: props.authorityOwner || "",
             templateHash: props.templateHash || "",
+            epochLength: defaultEpochLength(chainId),
+            claimStagingPeriod: DEFAULT_CLAIM_STAGING_PERIOD,
+            guardian: "",
+            withdrawalOutputBuilder: "",
+            log2LeavesPerAccount: 0,
+            log2MaxNumOfAccounts: 0,
+            accountsDriveStartIndex: 0,
             salt: generatePrivateKey(),
         },
         validate: {
@@ -50,20 +105,56 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
                         ? null
                         : "Invalid address"
                     : "Required",
+            epochLength: (value) => (value > 0 ? null : "Required"),
+            guardian: (value) =>
+                !value || isAddress(value) ? null : "Invalid address",
+            withdrawalOutputBuilder: (value) =>
+                !value || isAddress(value) ? null : "Invalid address",
         },
         validateInputOnChange: true,
-        transformValues: ({ authorityOwner, templateHash, salt }) => ({
+        transformValues: (values) => ({
             authorityOwner:
-                authorityOwner && isAddress(authorityOwner)
-                    ? getAddress(authorityOwner)
+                values.authorityOwner && isAddress(values.authorityOwner)
+                    ? getAddress(values.authorityOwner)
                     : zeroAddress,
             templateHash:
-                templateHash && isHash(templateHash) ? templateHash : zeroHash,
-            salt: isHash(salt) ? salt : zeroHash,
+                values.templateHash && isHash(values.templateHash)
+                    ? values.templateHash
+                    : zeroHash,
+            epochLength: BigInt(values.epochLength),
+            claimStagingPeriod: BigInt(values.claimStagingPeriod),
+            withdrawalConfig: {
+                guardian:
+                    values.guardian && isAddress(values.guardian)
+                        ? getAddress(values.guardian)
+                        : zeroAddress,
+                log2LeavesPerAccount: values.log2LeavesPerAccount,
+                log2MaxNumOfAccounts: values.log2MaxNumOfAccounts,
+                accountsDriveStartIndex: BigInt(values.accountsDriveStartIndex),
+                withdrawalOutputBuilder:
+                    values.withdrawalOutputBuilder &&
+                    isAddress(values.withdrawalOutputBuilder)
+                        ? getAddress(values.withdrawalOutputBuilder)
+                        : zeroAddress,
+            },
+            salt: isHash(values.salt) ? values.salt : zeroHash,
         }),
     });
     const [deployed, setDeployed] = useState(false);
-    const { authorityOwner, templateHash, salt } = form.getTransformedValues();
+    const {
+        authorityOwner,
+        templateHash,
+        epochLength,
+        claimStagingPeriod,
+        withdrawalConfig,
+        salt,
+    } = form.getTransformedValues();
+
+    // resync the epoch-length default whenever the connected chain changes
+    // biome-ignore lint/correctness/useExhaustiveDependencies: only resync on chain change
+    useEffect(() => {
+        form.setFieldValue("epochLength", defaultEpochLength(chainId));
+    }, [chainId]);
 
     // assume application owner is connected account (user can transfer ownership afterwards)
     const applicationOwner = address;
@@ -73,28 +164,31 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
         authorityOwner !== zeroAddress &&
         !!applicationOwner &&
         templateHash !== zeroHash &&
+        epochLength > 0n &&
         !deployed;
+
+    // deploy arguments shared by calculate/simulate/write
+    const args = [
+        authorityOwner,
+        epochLength,
+        claimStagingPeriod,
+        applicationOwner ?? zeroAddress,
+        templateHash,
+        dataAvailability,
+        withdrawalConfig,
+        salt,
+    ] as const;
 
     // calculate addresses using determinisitic deployment
     const { data } = useReadSelfHostedApplicationFactoryCalculateAddresses({
-        args: [
-            authorityOwner,
-            applicationOwner ?? zeroAddress,
-            templateHash,
-            salt,
-        ],
+        args,
         query: { enabled },
     });
-    const [applicationAddress, authorityAddress, historyAddress] = data || [];
+    const [applicationAddress, authorityAddress] = data || [];
 
     // simulate deploy transaction
     const simulate = useSimulateSelfHostedApplicationFactoryDeployContracts({
-        args: [
-            authorityOwner,
-            applicationOwner ?? zeroAddress,
-            templateHash,
-            salt,
-        ],
+        args,
         query: { enabled },
     });
 
@@ -153,6 +247,80 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
                         size="md"
                     />
                     {authorityOwner === zeroAddress && <WalletInstructions />}
+                </Stack>
+            </Timeline.Item>
+            <Timeline.Item title="Consensus parameters" pb="lg">
+                <Stack gap="md" pt="xl">
+                    <SimpleGrid cols={{ base: 1, sm: 2 }}>
+                        <NumberInput
+                            {...form.getInputProps("epochLength")}
+                            label="Epoch length"
+                            description="Number of base-layer blocks per epoch"
+                            min={1}
+                            allowDecimal={false}
+                            disabled={deployed}
+                            size="md"
+                        />
+                        <NumberInput
+                            {...form.getInputProps("claimStagingPeriod")}
+                            label="Claim staging period"
+                            description="Number of base-layer blocks before a claim can be accepted"
+                            min={0}
+                            allowDecimal={false}
+                            disabled={deployed}
+                            size="md"
+                        />
+                    </SimpleGrid>
+                </Stack>
+            </Timeline.Item>
+            <Timeline.Item title="Withdrawal configuration" pb="lg">
+                <Stack gap="md" pt="xl">
+                    <Text size="sm" c="dimmed">
+                        Advanced settings for output validation and asset
+                        withdrawals. Leave blank to disable.
+                    </Text>
+                    <SimpleGrid cols={{ base: 1, sm: 2 }}>
+                        <TextInput
+                            {...form.getInputProps("guardian")}
+                            label="Guardian"
+                            placeholder={zeroAddress}
+                            disabled={deployed}
+                            size="md"
+                        />
+                        <TextInput
+                            {...form.getInputProps("withdrawalOutputBuilder")}
+                            label="Withdrawal output builder"
+                            placeholder={zeroAddress}
+                            disabled={deployed}
+                            size="md"
+                        />
+                        <NumberInput
+                            {...form.getInputProps("log2LeavesPerAccount")}
+                            label="log2 leaves per account"
+                            min={0}
+                            max={255}
+                            allowDecimal={false}
+                            disabled={deployed}
+                            size="md"
+                        />
+                        <NumberInput
+                            {...form.getInputProps("log2MaxNumOfAccounts")}
+                            label="log2 max number of accounts"
+                            min={0}
+                            max={255}
+                            allowDecimal={false}
+                            disabled={deployed}
+                            size="md"
+                        />
+                        <NumberInput
+                            {...form.getInputProps("accountsDriveStartIndex")}
+                            label="Accounts drive start index"
+                            min={0}
+                            allowDecimal={false}
+                            disabled={deployed}
+                            size="md"
+                        />
+                    </SimpleGrid>
                 </Stack>
             </Timeline.Item>
             <Timeline.Item title="Deploy" pb="lg">
@@ -221,7 +389,7 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
                                 templateHash={templateHash}
                                 applicationAddress={applicationAddress}
                                 authorityAddress={authorityAddress}
-                                historyAddress={historyAddress}
+                                epochLength={Number(epochLength)}
                                 chainId={chainId}
                             />
                         </Stack>

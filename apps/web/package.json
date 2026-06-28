@@ -12,7 +12,7 @@
         "storybook": "storybook dev -p 6006"
     },
     "dependencies": {
-        "@cartesi/rollups": "1.4.3",
+        "@cartesi/viem": "2.0.0-alpha.31",
         "@mantine/code-highlight": "^9.4.1",
         "@mantine/core": "^9.4.1",
         "@mantine/form": "^9.4.1",
@@ -32,13 +32,13 @@
     },
     "devDependencies": {
         "@biomejs/biome": "catalog:",
-        "@cartesi/devnet": "^1.8.0",
+        "@cartesi/devnet": "2.0.0-alpha.14",
+        "@cartesi/rollups": "3.0.0-alpha.6",
         "@next/bundle-analyzer": "^16.2.9",
         "@storybook/addon-docs": "^10.4.6",
         "@storybook/addon-links": "^10.4.6",
         "@storybook/nextjs": "^10.4.6",
         "@storybook/react": "^10.4.6",
-        "@sunodo/wagmi-plugin-hardhat-deploy": "^0.3",
         "@types/node": "^26",
         "@types/react": "^19.2.17",
         "@types/react-dom": "^19.2.3",

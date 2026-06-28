@@ -8,13 +8,13 @@ import {
     lightTheme,
 } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
+import { cartesi } from "@cartesi/viem/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
     arbitrum,
     arbitrumSepolia,
     base,
     baseSepolia,
-    foundry,
     mainnet,
     optimism,
     optimismSepolia,
@@ -39,7 +39,7 @@ const config = getDefaultConfig({
                   optimismSepolia,
                   base,
                   baseSepolia,
-                  foundry,
+                  cartesi,
               ]
             : [
                   mainnet,
