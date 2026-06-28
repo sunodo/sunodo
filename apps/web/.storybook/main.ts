@@ -1,5 +1,8 @@
-import type { StorybookConfig } from "@storybook/nextjs";
+import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
+import type { StorybookConfig } from "@storybook/nextjs";
+
+const require = createRequire(import.meta.url);
 
 /**
  * This function is used to resolve the absolute path of a package.
@@ -13,16 +16,12 @@ const config: StorybookConfig = {
     stories: ["../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
     addons: [
         getAbsolutePath("@storybook/addon-links"),
-        getAbsolutePath("@storybook/addon-essentials"),
-        getAbsolutePath("@storybook/addon-interactions"),
+        getAbsolutePath("@storybook/addon-docs"),
         getAbsolutePath("storybook-dark-mode"),
     ],
     framework: {
         name: getAbsolutePath("@storybook/nextjs"),
         options: {},
-    },
-    docs: {
-        autodocs: "tag",
     },
 };
 export default config;

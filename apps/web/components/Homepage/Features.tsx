@@ -32,7 +32,7 @@ export function Features() {
                             }}
                         />
                         <Grid
-                            gutter={{
+                            gap={{
                                 base: "lg",
                                 sm: "128",
                             }}
@@ -95,7 +95,7 @@ export function Features() {
                         </Grid>
                         <Space h={{ base: "md", lg: "xl" }} />
                         <Grid
-                            gutter={{
+                            gap={{
                                 base: "lg",
                                 sm: "128",
                             }}

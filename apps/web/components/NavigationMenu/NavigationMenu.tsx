@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@mantine/core";
 import cx from "clsx";
 import Link from "next/link";

@@ -1,3 +1,5 @@
+"use client";
+
 import {
     Button,
     Center,
@@ -45,7 +47,7 @@ export function Welcome() {
                 </Stack>
 
                 <Grid
-                    gutter={{
+                    gap={{
                         base: "sm",
                         sm: "48",
                     }}
@@ -100,7 +102,7 @@ export function Welcome() {
                 </Grid>
 
                 <Grid
-                    gutter={{
+                    gap={{
                         base: "md",
                         sm: "48",
                     }}

@@ -10,7 +10,7 @@ Note: the README describes apps (`cli`, `sdk`, `devnet`) that no longer live in 
 
 ## Workspaces
 
-- `apps/web` (`@sunodo/web`) — Next.js 15 (App Router) website + deploy UI. Mantine v7 for UI, wagmi/viem + RainbowKit for wallet/chain interaction, Storybook for component dev. Deployed to Vercel at https://sunodo.io.
+- `apps/web` (`@sunodo/web`) — Next.js 16 (App Router, React 19) website + deploy UI. Mantine v9 for UI, wagmi/viem + RainbowKit for wallet/chain interaction, Storybook 10 for component dev. Deployed to Vercel at https://sunodo.io.
 - `apps/docs` (`@sunodo/docs`) — VitePress documentation site, deployed at https://docs.sunodo.io.
 - `packages/contracts` (`@sunodo/contracts`) — Solidity smart contracts for application deployment, built with **both Hardhat (primary, deploy + ABI export) and Foundry (tests)**.
 - `packages/car-sync` (`@sunodo/car-sync`) — library + CLI to download an IPFS CAR to the local filesystem. Built with tsup (ESM), tested with Vitest, CLI via commander.

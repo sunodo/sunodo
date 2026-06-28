@@ -1022,10 +1022,10 @@ export const selfHostedApplicationFactoryConfig = {
 } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// SunodoMultiToken
+// TestMultiToken
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const sunodoMultiTokenAbi = [
+export const testMultiTokenAbi = [
     {
         type: 'constructor',
         inputs: [
@@ -1370,19 +1370,19 @@ export const sunodoMultiTokenAbi = [
     },
 ] as const
 
-export const sunodoMultiTokenAddress =
-    '0xa376A4afa7D03A64Dc7aE194322468c170276c62' as const
+export const testMultiTokenAddress =
+    '0x04d724738873CB6a86328D2EbAEb2079D715e61e' as const
 
-export const sunodoMultiTokenConfig = {
-    address: sunodoMultiTokenAddress,
-    abi: sunodoMultiTokenAbi,
+export const testMultiTokenConfig = {
+    address: testMultiTokenAddress,
+    abi: testMultiTokenAbi,
 } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// SunodoNFT
+// TestNFT
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const sunodoNftAbi = [
+export const testNftAbi = [
     {
         type: 'constructor',
         inputs: [
@@ -1730,19 +1730,19 @@ export const sunodoNftAbi = [
     },
 ] as const
 
-export const sunodoNftAddress =
-    '0x093771B61bBAC90C74576E007673068AaD6AE3B7' as const
+export const testNftAddress =
+    '0xc6582A9b48F211Fa8c2B5b16CB615eC39bcA653B' as const
 
-export const sunodoNftConfig = {
-    address: sunodoNftAddress,
-    abi: sunodoNftAbi,
+export const testNftConfig = {
+    address: testNftAddress,
+    abi: testNftAbi,
 } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// SunodoToken
+// TestToken
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const sunodoTokenAbi = [
+export const testTokenAbi = [
     {
         type: 'constructor',
         inputs: [
@@ -2144,12 +2144,12 @@ export const sunodoTokenAbi = [
     },
 ] as const
 
-export const sunodoTokenAddress =
-    '0xf795b3D15D47ac1c61BEf4Cc6469EBb2454C6a9b' as const
+export const testTokenAddress =
+    '0x92C6bcA388E99d6B304f1Af3c3Cd749Ff0b591e2' as const
 
-export const sunodoTokenConfig = {
-    address: sunodoTokenAddress,
-    abi: sunodoTokenAbi,
+export const testTokenConfig = {
+    address: testTokenAddress,
+    abi: testTokenAbi,
 } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -3205,1000 +3205,986 @@ export const useSimulateSelfHostedApplicationFactoryDeployContracts =
     })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testMultiTokenAbi}__
  */
-export const useReadSunodoMultiToken = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoMultiTokenAbi,
-    address: sunodoMultiTokenAddress,
+export const useReadTestMultiToken = /*#__PURE__*/ createUseReadContract({
+    abi: testMultiTokenAbi,
+    address: testMultiTokenAddress,
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"balanceOf"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"balanceOf"`
  */
-export const useReadSunodoMultiTokenBalanceOf =
+export const useReadTestMultiTokenBalanceOf =
     /*#__PURE__*/ createUseReadContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
         functionName: 'balanceOf',
     })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"balanceOfBatch"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"balanceOfBatch"`
  */
-export const useReadSunodoMultiTokenBalanceOfBatch =
+export const useReadTestMultiTokenBalanceOfBatch =
     /*#__PURE__*/ createUseReadContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
         functionName: 'balanceOfBatch',
     })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"isApprovedForAll"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"isApprovedForAll"`
  */
-export const useReadSunodoMultiTokenIsApprovedForAll =
+export const useReadTestMultiTokenIsApprovedForAll =
     /*#__PURE__*/ createUseReadContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
         functionName: 'isApprovedForAll',
     })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"owner"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"owner"`
  */
-export const useReadSunodoMultiTokenOwner = /*#__PURE__*/ createUseReadContract(
-    {
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'owner',
-    },
-)
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"supportsInterface"`
- */
-export const useReadSunodoMultiTokenSupportsInterface =
-    /*#__PURE__*/ createUseReadContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'supportsInterface',
-    })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"uri"`
- */
-export const useReadSunodoMultiTokenUri = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoMultiTokenAbi,
-    address: sunodoMultiTokenAddress,
-    functionName: 'uri',
-})
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__
- */
-export const useWriteSunodoMultiToken = /*#__PURE__*/ createUseWriteContract({
-    abi: sunodoMultiTokenAbi,
-    address: sunodoMultiTokenAddress,
-})
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"mint"`
- */
-export const useWriteSunodoMultiTokenMint =
-    /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'mint',
-    })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"mintBatch"`
- */
-export const useWriteSunodoMultiTokenMintBatch =
-    /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'mintBatch',
-    })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"renounceOwnership"`
- */
-export const useWriteSunodoMultiTokenRenounceOwnership =
-    /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'renounceOwnership',
-    })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"safeBatchTransferFrom"`
- */
-export const useWriteSunodoMultiTokenSafeBatchTransferFrom =
-    /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'safeBatchTransferFrom',
-    })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"safeTransferFrom"`
- */
-export const useWriteSunodoMultiTokenSafeTransferFrom =
-    /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'safeTransferFrom',
-    })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"setApprovalForAll"`
- */
-export const useWriteSunodoMultiTokenSetApprovalForAll =
-    /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'setApprovalForAll',
-    })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"setURI"`
- */
-export const useWriteSunodoMultiTokenSetUri =
-    /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'setURI',
-    })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"transferOwnership"`
- */
-export const useWriteSunodoMultiTokenTransferOwnership =
-    /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'transferOwnership',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__
- */
-export const useSimulateSunodoMultiToken =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"mint"`
- */
-export const useSimulateSunodoMultiTokenMint =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'mint',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"mintBatch"`
- */
-export const useSimulateSunodoMultiTokenMintBatch =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'mintBatch',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"renounceOwnership"`
- */
-export const useSimulateSunodoMultiTokenRenounceOwnership =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'renounceOwnership',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"safeBatchTransferFrom"`
- */
-export const useSimulateSunodoMultiTokenSafeBatchTransferFrom =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'safeBatchTransferFrom',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"safeTransferFrom"`
- */
-export const useSimulateSunodoMultiTokenSafeTransferFrom =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'safeTransferFrom',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"setApprovalForAll"`
- */
-export const useSimulateSunodoMultiTokenSetApprovalForAll =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'setApprovalForAll',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"setURI"`
- */
-export const useSimulateSunodoMultiTokenSetUri =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'setURI',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `functionName` set to `"transferOwnership"`
- */
-export const useSimulateSunodoMultiTokenTransferOwnership =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        functionName: 'transferOwnership',
-    })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoMultiTokenAbi}__
- */
-export const useWatchSunodoMultiTokenEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-    })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `eventName` set to `"ApprovalForAll"`
- */
-export const useWatchSunodoMultiTokenApprovalForAllEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        eventName: 'ApprovalForAll',
-    })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `eventName` set to `"OwnershipTransferred"`
- */
-export const useWatchSunodoMultiTokenOwnershipTransferredEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        eventName: 'OwnershipTransferred',
-    })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `eventName` set to `"TransferBatch"`
- */
-export const useWatchSunodoMultiTokenTransferBatchEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        eventName: 'TransferBatch',
-    })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `eventName` set to `"TransferSingle"`
- */
-export const useWatchSunodoMultiTokenTransferSingleEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        eventName: 'TransferSingle',
-    })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoMultiTokenAbi}__ and `eventName` set to `"URI"`
- */
-export const useWatchSunodoMultiTokenUriEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoMultiTokenAbi,
-        address: sunodoMultiTokenAddress,
-        eventName: 'URI',
-    })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__
- */
-export const useReadSunodoNft = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoNftAbi,
-    address: sunodoNftAddress,
-})
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"balanceOf"`
- */
-export const useReadSunodoNftBalanceOf = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoNftAbi,
-    address: sunodoNftAddress,
-    functionName: 'balanceOf',
-})
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"getApproved"`
- */
-export const useReadSunodoNftGetApproved = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoNftAbi,
-    address: sunodoNftAddress,
-    functionName: 'getApproved',
-})
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"isApprovedForAll"`
- */
-export const useReadSunodoNftIsApprovedForAll =
-    /*#__PURE__*/ createUseReadContract({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
-        functionName: 'isApprovedForAll',
-    })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"name"`
- */
-export const useReadSunodoNftName = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoNftAbi,
-    address: sunodoNftAddress,
-    functionName: 'name',
-})
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"owner"`
- */
-export const useReadSunodoNftOwner = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoNftAbi,
-    address: sunodoNftAddress,
+export const useReadTestMultiTokenOwner = /*#__PURE__*/ createUseReadContract({
+    abi: testMultiTokenAbi,
+    address: testMultiTokenAddress,
     functionName: 'owner',
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"ownerOf"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"supportsInterface"`
  */
-export const useReadSunodoNftOwnerOf = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoNftAbi,
-    address: sunodoNftAddress,
-    functionName: 'ownerOf',
-})
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"supportsInterface"`
- */
-export const useReadSunodoNftSupportsInterface =
+export const useReadTestMultiTokenSupportsInterface =
     /*#__PURE__*/ createUseReadContract({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
         functionName: 'supportsInterface',
     })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"symbol"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"uri"`
  */
-export const useReadSunodoNftSymbol = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoNftAbi,
-    address: sunodoNftAddress,
-    functionName: 'symbol',
+export const useReadTestMultiTokenUri = /*#__PURE__*/ createUseReadContract({
+    abi: testMultiTokenAbi,
+    address: testMultiTokenAddress,
+    functionName: 'uri',
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"tokenURI"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testMultiTokenAbi}__
  */
-export const useReadSunodoNftTokenUri = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoNftAbi,
-    address: sunodoNftAddress,
-    functionName: 'tokenURI',
+export const useWriteTestMultiToken = /*#__PURE__*/ createUseWriteContract({
+    abi: testMultiTokenAbi,
+    address: testMultiTokenAddress,
 })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoNftAbi}__
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"mint"`
  */
-export const useWriteSunodoNft = /*#__PURE__*/ createUseWriteContract({
-    abi: sunodoNftAbi,
-    address: sunodoNftAddress,
+export const useWriteTestMultiTokenMint = /*#__PURE__*/ createUseWriteContract({
+    abi: testMultiTokenAbi,
+    address: testMultiTokenAddress,
+    functionName: 'mint',
 })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"approve"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"mintBatch"`
  */
-export const useWriteSunodoNftApprove = /*#__PURE__*/ createUseWriteContract({
-    abi: sunodoNftAbi,
-    address: sunodoNftAddress,
-    functionName: 'approve',
-})
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"renounceOwnership"`
- */
-export const useWriteSunodoNftRenounceOwnership =
+export const useWriteTestMultiTokenMintBatch =
     /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
+        functionName: 'mintBatch',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"renounceOwnership"`
+ */
+export const useWriteTestMultiTokenRenounceOwnership =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
         functionName: 'renounceOwnership',
     })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"safeMint"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"safeBatchTransferFrom"`
  */
-export const useWriteSunodoNftSafeMint = /*#__PURE__*/ createUseWriteContract({
-    abi: sunodoNftAbi,
-    address: sunodoNftAddress,
-    functionName: 'safeMint',
-})
+export const useWriteTestMultiTokenSafeBatchTransferFrom =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
+        functionName: 'safeBatchTransferFrom',
+    })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"safeTransferFrom"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"safeTransferFrom"`
  */
-export const useWriteSunodoNftSafeTransferFrom =
+export const useWriteTestMultiTokenSafeTransferFrom =
     /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
         functionName: 'safeTransferFrom',
     })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"setApprovalForAll"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"setApprovalForAll"`
  */
-export const useWriteSunodoNftSetApprovalForAll =
+export const useWriteTestMultiTokenSetApprovalForAll =
     /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
         functionName: 'setApprovalForAll',
     })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"transferFrom"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"setURI"`
  */
-export const useWriteSunodoNftTransferFrom =
+export const useWriteTestMultiTokenSetUri =
     /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
-        functionName: 'transferFrom',
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
+        functionName: 'setURI',
     })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"transferOwnership"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"transferOwnership"`
  */
-export const useWriteSunodoNftTransferOwnership =
+export const useWriteTestMultiTokenTransferOwnership =
     /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
         functionName: 'transferOwnership',
     })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoNftAbi}__
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testMultiTokenAbi}__
  */
-export const useSimulateSunodoNft = /*#__PURE__*/ createUseSimulateContract({
-    abi: sunodoNftAbi,
-    address: sunodoNftAddress,
-})
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"approve"`
- */
-export const useSimulateSunodoNftApprove =
+export const useSimulateTestMultiToken =
     /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
-        functionName: 'approve',
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
     })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"renounceOwnership"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"mint"`
  */
-export const useSimulateSunodoNftRenounceOwnership =
+export const useSimulateTestMultiTokenMint =
     /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
+        functionName: 'mint',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"mintBatch"`
+ */
+export const useSimulateTestMultiTokenMintBatch =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
+        functionName: 'mintBatch',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"renounceOwnership"`
+ */
+export const useSimulateTestMultiTokenRenounceOwnership =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
         functionName: 'renounceOwnership',
     })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"safeMint"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"safeBatchTransferFrom"`
  */
-export const useSimulateSunodoNftSafeMint =
+export const useSimulateTestMultiTokenSafeBatchTransferFrom =
     /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
-        functionName: 'safeMint',
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
+        functionName: 'safeBatchTransferFrom',
     })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"safeTransferFrom"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"safeTransferFrom"`
  */
-export const useSimulateSunodoNftSafeTransferFrom =
+export const useSimulateTestMultiTokenSafeTransferFrom =
     /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
         functionName: 'safeTransferFrom',
     })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"setApprovalForAll"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"setApprovalForAll"`
  */
-export const useSimulateSunodoNftSetApprovalForAll =
+export const useSimulateTestMultiTokenSetApprovalForAll =
     /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
         functionName: 'setApprovalForAll',
     })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"transferFrom"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"setURI"`
  */
-export const useSimulateSunodoNftTransferFrom =
+export const useSimulateTestMultiTokenSetUri =
     /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
-        functionName: 'transferFrom',
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
+        functionName: 'setURI',
     })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoNftAbi}__ and `functionName` set to `"transferOwnership"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testMultiTokenAbi}__ and `functionName` set to `"transferOwnership"`
  */
-export const useSimulateSunodoNftTransferOwnership =
+export const useSimulateTestMultiTokenTransferOwnership =
     /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
         functionName: 'transferOwnership',
     })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoNftAbi}__
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testMultiTokenAbi}__
  */
-export const useWatchSunodoNftEvent = /*#__PURE__*/ createUseWatchContractEvent(
-    { abi: sunodoNftAbi, address: sunodoNftAddress },
-)
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoNftAbi}__ and `eventName` set to `"Approval"`
- */
-export const useWatchSunodoNftApprovalEvent =
+export const useWatchTestMultiTokenEvent =
     /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
-        eventName: 'Approval',
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
     })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoNftAbi}__ and `eventName` set to `"ApprovalForAll"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testMultiTokenAbi}__ and `eventName` set to `"ApprovalForAll"`
  */
-export const useWatchSunodoNftApprovalForAllEvent =
+export const useWatchTestMultiTokenApprovalForAllEvent =
     /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
         eventName: 'ApprovalForAll',
     })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoNftAbi}__ and `eventName` set to `"BatchMetadataUpdate"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testMultiTokenAbi}__ and `eventName` set to `"OwnershipTransferred"`
  */
-export const useWatchSunodoNftBatchMetadataUpdateEvent =
+export const useWatchTestMultiTokenOwnershipTransferredEvent =
     /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
-        eventName: 'BatchMetadataUpdate',
-    })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoNftAbi}__ and `eventName` set to `"MetadataUpdate"`
- */
-export const useWatchSunodoNftMetadataUpdateEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
-        eventName: 'MetadataUpdate',
-    })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoNftAbi}__ and `eventName` set to `"OwnershipTransferred"`
- */
-export const useWatchSunodoNftOwnershipTransferredEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
         eventName: 'OwnershipTransferred',
     })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoNftAbi}__ and `eventName` set to `"Transfer"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testMultiTokenAbi}__ and `eventName` set to `"TransferBatch"`
  */
-export const useWatchSunodoNftTransferEvent =
+export const useWatchTestMultiTokenTransferBatchEvent =
     /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoNftAbi,
-        address: sunodoNftAddress,
-        eventName: 'Transfer',
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
+        eventName: 'TransferBatch',
     })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoTokenAbi}__
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testMultiTokenAbi}__ and `eventName` set to `"TransferSingle"`
  */
-export const useReadSunodoToken = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
-})
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"DOMAIN_SEPARATOR"`
- */
-export const useReadSunodoTokenDomainSeparator =
-    /*#__PURE__*/ createUseReadContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'DOMAIN_SEPARATOR',
+export const useWatchTestMultiTokenTransferSingleEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
+        eventName: 'TransferSingle',
     })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"allowance"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testMultiTokenAbi}__ and `eventName` set to `"URI"`
  */
-export const useReadSunodoTokenAllowance = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
-    functionName: 'allowance',
+export const useWatchTestMultiTokenUriEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: testMultiTokenAbi,
+        address: testMultiTokenAddress,
+        eventName: 'URI',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testNftAbi}__
+ */
+export const useReadTestNft = /*#__PURE__*/ createUseReadContract({
+    abi: testNftAbi,
+    address: testNftAddress,
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"authority"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"balanceOf"`
  */
-export const useReadSunodoTokenAuthority = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
-    functionName: 'authority',
-})
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"balanceOf"`
- */
-export const useReadSunodoTokenBalanceOf = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
+export const useReadTestNftBalanceOf = /*#__PURE__*/ createUseReadContract({
+    abi: testNftAbi,
+    address: testNftAddress,
     functionName: 'balanceOf',
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"decimals"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"getApproved"`
  */
-export const useReadSunodoTokenDecimals = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
-    functionName: 'decimals',
+export const useReadTestNftGetApproved = /*#__PURE__*/ createUseReadContract({
+    abi: testNftAbi,
+    address: testNftAddress,
+    functionName: 'getApproved',
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"eip712Domain"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"isApprovedForAll"`
  */
-export const useReadSunodoTokenEip712Domain =
+export const useReadTestNftIsApprovedForAll =
     /*#__PURE__*/ createUseReadContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'eip712Domain',
+        abi: testNftAbi,
+        address: testNftAddress,
+        functionName: 'isApprovedForAll',
     })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"isConsumingScheduledOp"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"name"`
  */
-export const useReadSunodoTokenIsConsumingScheduledOp =
-    /*#__PURE__*/ createUseReadContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'isConsumingScheduledOp',
-    })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"name"`
- */
-export const useReadSunodoTokenName = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
+export const useReadTestNftName = /*#__PURE__*/ createUseReadContract({
+    abi: testNftAbi,
+    address: testNftAddress,
     functionName: 'name',
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"nonces"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"owner"`
  */
-export const useReadSunodoTokenNonces = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
-    functionName: 'nonces',
+export const useReadTestNftOwner = /*#__PURE__*/ createUseReadContract({
+    abi: testNftAbi,
+    address: testNftAddress,
+    functionName: 'owner',
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"paused"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"ownerOf"`
  */
-export const useReadSunodoTokenPaused = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
-    functionName: 'paused',
+export const useReadTestNftOwnerOf = /*#__PURE__*/ createUseReadContract({
+    abi: testNftAbi,
+    address: testNftAddress,
+    functionName: 'ownerOf',
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"symbol"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"supportsInterface"`
  */
-export const useReadSunodoTokenSymbol = /*#__PURE__*/ createUseReadContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
+export const useReadTestNftSupportsInterface =
+    /*#__PURE__*/ createUseReadContract({
+        abi: testNftAbi,
+        address: testNftAddress,
+        functionName: 'supportsInterface',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"symbol"`
+ */
+export const useReadTestNftSymbol = /*#__PURE__*/ createUseReadContract({
+    abi: testNftAbi,
+    address: testNftAddress,
     functionName: 'symbol',
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"totalSupply"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"tokenURI"`
  */
-export const useReadSunodoTokenTotalSupply =
-    /*#__PURE__*/ createUseReadContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'totalSupply',
-    })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoTokenAbi}__
- */
-export const useWriteSunodoToken = /*#__PURE__*/ createUseWriteContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
+export const useReadTestNftTokenUri = /*#__PURE__*/ createUseReadContract({
+    abi: testNftAbi,
+    address: testNftAddress,
+    functionName: 'tokenURI',
 })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"approve"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testNftAbi}__
  */
-export const useWriteSunodoTokenApprove = /*#__PURE__*/ createUseWriteContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
+export const useWriteTestNft = /*#__PURE__*/ createUseWriteContract({
+    abi: testNftAbi,
+    address: testNftAddress,
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"approve"`
+ */
+export const useWriteTestNftApprove = /*#__PURE__*/ createUseWriteContract({
+    abi: testNftAbi,
+    address: testNftAddress,
     functionName: 'approve',
 })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"burn"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"renounceOwnership"`
  */
-export const useWriteSunodoTokenBurn = /*#__PURE__*/ createUseWriteContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
-    functionName: 'burn',
-})
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"burnFrom"`
- */
-export const useWriteSunodoTokenBurnFrom = /*#__PURE__*/ createUseWriteContract(
-    {
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'burnFrom',
-    },
-)
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"pause"`
- */
-export const useWriteSunodoTokenPause = /*#__PURE__*/ createUseWriteContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
-    functionName: 'pause',
-})
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"permit"`
- */
-export const useWriteSunodoTokenPermit = /*#__PURE__*/ createUseWriteContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
-    functionName: 'permit',
-})
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"setAuthority"`
- */
-export const useWriteSunodoTokenSetAuthority =
+export const useWriteTestNftRenounceOwnership =
     /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'setAuthority',
+        abi: testNftAbi,
+        address: testNftAddress,
+        functionName: 'renounceOwnership',
     })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"transfer"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"safeMint"`
  */
-export const useWriteSunodoTokenTransfer = /*#__PURE__*/ createUseWriteContract(
-    {
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'transfer',
-    },
-)
+export const useWriteTestNftSafeMint = /*#__PURE__*/ createUseWriteContract({
+    abi: testNftAbi,
+    address: testNftAddress,
+    functionName: 'safeMint',
+})
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"transferFrom"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"safeTransferFrom"`
  */
-export const useWriteSunodoTokenTransferFrom =
+export const useWriteTestNftSafeTransferFrom =
     /*#__PURE__*/ createUseWriteContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'transferFrom',
+        abi: testNftAbi,
+        address: testNftAddress,
+        functionName: 'safeTransferFrom',
     })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"unpause"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"setApprovalForAll"`
  */
-export const useWriteSunodoTokenUnpause = /*#__PURE__*/ createUseWriteContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
-    functionName: 'unpause',
+export const useWriteTestNftSetApprovalForAll =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: testNftAbi,
+        address: testNftAddress,
+        functionName: 'setApprovalForAll',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"transferFrom"`
+ */
+export const useWriteTestNftTransferFrom = /*#__PURE__*/ createUseWriteContract(
+    { abi: testNftAbi, address: testNftAddress, functionName: 'transferFrom' },
+)
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"transferOwnership"`
+ */
+export const useWriteTestNftTransferOwnership =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: testNftAbi,
+        address: testNftAddress,
+        functionName: 'transferOwnership',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testNftAbi}__
+ */
+export const useSimulateTestNft = /*#__PURE__*/ createUseSimulateContract({
+    abi: testNftAbi,
+    address: testNftAddress,
 })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoTokenAbi}__
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"approve"`
  */
-export const useSimulateSunodoToken = /*#__PURE__*/ createUseSimulateContract({
-    abi: sunodoTokenAbi,
-    address: sunodoTokenAddress,
-})
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"approve"`
- */
-export const useSimulateSunodoTokenApprove =
+export const useSimulateTestNftApprove =
     /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
+        abi: testNftAbi,
+        address: testNftAddress,
         functionName: 'approve',
     })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"burn"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"renounceOwnership"`
  */
-export const useSimulateSunodoTokenBurn =
+export const useSimulateTestNftRenounceOwnership =
     /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'burn',
+        abi: testNftAbi,
+        address: testNftAddress,
+        functionName: 'renounceOwnership',
     })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"burnFrom"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"safeMint"`
  */
-export const useSimulateSunodoTokenBurnFrom =
+export const useSimulateTestNftSafeMint =
     /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'burnFrom',
+        abi: testNftAbi,
+        address: testNftAddress,
+        functionName: 'safeMint',
     })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"pause"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"safeTransferFrom"`
  */
-export const useSimulateSunodoTokenPause =
+export const useSimulateTestNftSafeTransferFrom =
     /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'pause',
+        abi: testNftAbi,
+        address: testNftAddress,
+        functionName: 'safeTransferFrom',
     })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"permit"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"setApprovalForAll"`
  */
-export const useSimulateSunodoTokenPermit =
+export const useSimulateTestNftSetApprovalForAll =
     /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'permit',
+        abi: testNftAbi,
+        address: testNftAddress,
+        functionName: 'setApprovalForAll',
     })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"setAuthority"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"transferFrom"`
  */
-export const useSimulateSunodoTokenSetAuthority =
+export const useSimulateTestNftTransferFrom =
     /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'setAuthority',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"transfer"`
- */
-export const useSimulateSunodoTokenTransfer =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'transfer',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"transferFrom"`
- */
-export const useSimulateSunodoTokenTransferFrom =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
+        abi: testNftAbi,
+        address: testNftAddress,
         functionName: 'transferFrom',
     })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link sunodoTokenAbi}__ and `functionName` set to `"unpause"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testNftAbi}__ and `functionName` set to `"transferOwnership"`
  */
-export const useSimulateSunodoTokenUnpause =
+export const useSimulateTestNftTransferOwnership =
     /*#__PURE__*/ createUseSimulateContract({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        functionName: 'unpause',
+        abi: testNftAbi,
+        address: testNftAddress,
+        functionName: 'transferOwnership',
     })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoTokenAbi}__
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testNftAbi}__
  */
-export const useWatchSunodoTokenEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-    })
+export const useWatchTestNftEvent = /*#__PURE__*/ createUseWatchContractEvent({
+    abi: testNftAbi,
+    address: testNftAddress,
+})
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoTokenAbi}__ and `eventName` set to `"Approval"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testNftAbi}__ and `eventName` set to `"Approval"`
  */
-export const useWatchSunodoTokenApprovalEvent =
+export const useWatchTestNftApprovalEvent =
     /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
+        abi: testNftAbi,
+        address: testNftAddress,
         eventName: 'Approval',
     })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoTokenAbi}__ and `eventName` set to `"AuthorityUpdated"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testNftAbi}__ and `eventName` set to `"ApprovalForAll"`
  */
-export const useWatchSunodoTokenAuthorityUpdatedEvent =
+export const useWatchTestNftApprovalForAllEvent =
     /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        eventName: 'AuthorityUpdated',
+        abi: testNftAbi,
+        address: testNftAddress,
+        eventName: 'ApprovalForAll',
     })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoTokenAbi}__ and `eventName` set to `"EIP712DomainChanged"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testNftAbi}__ and `eventName` set to `"BatchMetadataUpdate"`
  */
-export const useWatchSunodoTokenEip712DomainChangedEvent =
+export const useWatchTestNftBatchMetadataUpdateEvent =
     /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        eventName: 'EIP712DomainChanged',
+        abi: testNftAbi,
+        address: testNftAddress,
+        eventName: 'BatchMetadataUpdate',
     })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoTokenAbi}__ and `eventName` set to `"Paused"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testNftAbi}__ and `eventName` set to `"MetadataUpdate"`
  */
-export const useWatchSunodoTokenPausedEvent =
+export const useWatchTestNftMetadataUpdateEvent =
     /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
-        eventName: 'Paused',
+        abi: testNftAbi,
+        address: testNftAddress,
+        eventName: 'MetadataUpdate',
     })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoTokenAbi}__ and `eventName` set to `"Transfer"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testNftAbi}__ and `eventName` set to `"OwnershipTransferred"`
  */
-export const useWatchSunodoTokenTransferEvent =
+export const useWatchTestNftOwnershipTransferredEvent =
     /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
+        abi: testNftAbi,
+        address: testNftAddress,
+        eventName: 'OwnershipTransferred',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testNftAbi}__ and `eventName` set to `"Transfer"`
+ */
+export const useWatchTestNftTransferEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: testNftAbi,
+        address: testNftAddress,
         eventName: 'Transfer',
     })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link sunodoTokenAbi}__ and `eventName` set to `"Unpaused"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testTokenAbi}__
  */
-export const useWatchSunodoTokenUnpausedEvent =
+export const useReadTestToken = /*#__PURE__*/ createUseReadContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"DOMAIN_SEPARATOR"`
+ */
+export const useReadTestTokenDomainSeparator =
+    /*#__PURE__*/ createUseReadContract({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        functionName: 'DOMAIN_SEPARATOR',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"allowance"`
+ */
+export const useReadTestTokenAllowance = /*#__PURE__*/ createUseReadContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'allowance',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"authority"`
+ */
+export const useReadTestTokenAuthority = /*#__PURE__*/ createUseReadContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'authority',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"balanceOf"`
+ */
+export const useReadTestTokenBalanceOf = /*#__PURE__*/ createUseReadContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'balanceOf',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"decimals"`
+ */
+export const useReadTestTokenDecimals = /*#__PURE__*/ createUseReadContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'decimals',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"eip712Domain"`
+ */
+export const useReadTestTokenEip712Domain = /*#__PURE__*/ createUseReadContract(
+    {
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        functionName: 'eip712Domain',
+    },
+)
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"isConsumingScheduledOp"`
+ */
+export const useReadTestTokenIsConsumingScheduledOp =
+    /*#__PURE__*/ createUseReadContract({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        functionName: 'isConsumingScheduledOp',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"name"`
+ */
+export const useReadTestTokenName = /*#__PURE__*/ createUseReadContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'name',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"nonces"`
+ */
+export const useReadTestTokenNonces = /*#__PURE__*/ createUseReadContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'nonces',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"paused"`
+ */
+export const useReadTestTokenPaused = /*#__PURE__*/ createUseReadContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'paused',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"symbol"`
+ */
+export const useReadTestTokenSymbol = /*#__PURE__*/ createUseReadContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'symbol',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"totalSupply"`
+ */
+export const useReadTestTokenTotalSupply = /*#__PURE__*/ createUseReadContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'totalSupply',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testTokenAbi}__
+ */
+export const useWriteTestToken = /*#__PURE__*/ createUseWriteContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"approve"`
+ */
+export const useWriteTestTokenApprove = /*#__PURE__*/ createUseWriteContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'approve',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"burn"`
+ */
+export const useWriteTestTokenBurn = /*#__PURE__*/ createUseWriteContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'burn',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"burnFrom"`
+ */
+export const useWriteTestTokenBurnFrom = /*#__PURE__*/ createUseWriteContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'burnFrom',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"pause"`
+ */
+export const useWriteTestTokenPause = /*#__PURE__*/ createUseWriteContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'pause',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"permit"`
+ */
+export const useWriteTestTokenPermit = /*#__PURE__*/ createUseWriteContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'permit',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"setAuthority"`
+ */
+export const useWriteTestTokenSetAuthority =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        functionName: 'setAuthority',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"transfer"`
+ */
+export const useWriteTestTokenTransfer = /*#__PURE__*/ createUseWriteContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'transfer',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"transferFrom"`
+ */
+export const useWriteTestTokenTransferFrom =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        functionName: 'transferFrom',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"unpause"`
+ */
+export const useWriteTestTokenUnpause = /*#__PURE__*/ createUseWriteContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+    functionName: 'unpause',
+})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testTokenAbi}__
+ */
+export const useSimulateTestToken = /*#__PURE__*/ createUseSimulateContract({
+    abi: testTokenAbi,
+    address: testTokenAddress,
+})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"approve"`
+ */
+export const useSimulateTestTokenApprove =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        functionName: 'approve',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"burn"`
+ */
+export const useSimulateTestTokenBurn = /*#__PURE__*/ createUseSimulateContract(
+    { abi: testTokenAbi, address: testTokenAddress, functionName: 'burn' },
+)
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"burnFrom"`
+ */
+export const useSimulateTestTokenBurnFrom =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        functionName: 'burnFrom',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"pause"`
+ */
+export const useSimulateTestTokenPause =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        functionName: 'pause',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"permit"`
+ */
+export const useSimulateTestTokenPermit =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        functionName: 'permit',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"setAuthority"`
+ */
+export const useSimulateTestTokenSetAuthority =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        functionName: 'setAuthority',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"transfer"`
+ */
+export const useSimulateTestTokenTransfer =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        functionName: 'transfer',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"transferFrom"`
+ */
+export const useSimulateTestTokenTransferFrom =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        functionName: 'transferFrom',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link testTokenAbi}__ and `functionName` set to `"unpause"`
+ */
+export const useSimulateTestTokenUnpause =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        functionName: 'unpause',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testTokenAbi}__
+ */
+export const useWatchTestTokenEvent = /*#__PURE__*/ createUseWatchContractEvent(
+    { abi: testTokenAbi, address: testTokenAddress },
+)
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testTokenAbi}__ and `eventName` set to `"Approval"`
+ */
+export const useWatchTestTokenApprovalEvent =
     /*#__PURE__*/ createUseWatchContractEvent({
-        abi: sunodoTokenAbi,
-        address: sunodoTokenAddress,
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        eventName: 'Approval',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testTokenAbi}__ and `eventName` set to `"AuthorityUpdated"`
+ */
+export const useWatchTestTokenAuthorityUpdatedEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        eventName: 'AuthorityUpdated',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testTokenAbi}__ and `eventName` set to `"EIP712DomainChanged"`
+ */
+export const useWatchTestTokenEip712DomainChangedEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        eventName: 'EIP712DomainChanged',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testTokenAbi}__ and `eventName` set to `"Paused"`
+ */
+export const useWatchTestTokenPausedEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        eventName: 'Paused',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testTokenAbi}__ and `eventName` set to `"Transfer"`
+ */
+export const useWatchTestTokenTransferEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: testTokenAbi,
+        address: testTokenAddress,
+        eventName: 'Transfer',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link testTokenAbi}__ and `eventName` set to `"Unpaused"`
+ */
+export const useWatchTestTokenUnpausedEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: testTokenAbi,
+        address: testTokenAddress,
         eventName: 'Unpaused',
     })
 

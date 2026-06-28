@@ -1,3 +1,5 @@
+"use client";
+
 import {
     Box,
     Container,
@@ -131,7 +133,7 @@ export function Discover() {
                             }}
                             radius="lg"
                         >
-                            <Grid gutter={"xl"}>
+                            <Grid gap={"xl"}>
                                 <GridCol
                                     span={{
                                         base: 12,

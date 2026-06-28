@@ -1,3 +1,5 @@
+"use client";
+
 import type { TextProps } from "@mantine/core";
 import {
     ActionIcon,

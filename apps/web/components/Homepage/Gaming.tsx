@@ -1,3 +1,5 @@
+"use client";
+
 import {
     Box,
     Container,
@@ -32,7 +34,7 @@ export function Gaming() {
                 <Card withBorder>
                     <Box>
                         <Grid
-                            gutter={{
+                            gap={{
                                 base: "lg",
                                 sm: "128",
                             }}
@@ -131,7 +133,7 @@ export function Gaming() {
                     <Card.Separator />
                     <Box>
                         <Grid
-                            gutter={{
+                            gap={{
                                 base: "lg",
                                 sm: "128",
                             }}

@@ -1,9 +1,9 @@
 import hardhatDeploy from "@sunodo/wagmi-plugin-hardhat-deploy";
-import { defineConfig } from "@wagmi/cli";
+import { type Config, defineConfig } from "@wagmi/cli";
 import { react } from "@wagmi/cli/plugins";
 import { erc20Abi } from "viem";
 
-export default defineConfig({
+const config = defineConfig({
     out: "src/contracts.ts",
     contracts: [
         {
@@ -16,3 +16,5 @@ export default defineConfig({
         react(),
     ],
 });
+
+export default config as Config;
