@@ -33,7 +33,7 @@ To build all apps and packages, run the following command:
 
 ```shell
 cd sunodo
-pnpm run build
+bun run build
 ```
 
 ## Develop
@@ -42,5 +42,5 @@ To develop all apps and packages, run the following command:
 
 ```shell
 cd sunodo
-pnpm run dev
+bun run dev
 ```

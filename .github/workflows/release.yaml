@@ -23,25 +23,25 @@ jobs:
               with:
                   fetch-depth: 0
 
-            - uses: pnpm/action-setup@v4
+            - uses: oven-sh/setup-bun@v2
             - name: Setup Node.js 20
               uses: actions/setup-node@v4
               with:
                   node-version: 20
-                  cache: "pnpm"
+                  registry-url: "https://registry.npmjs.org"
 
             - name: Install Foundry
               uses: foundry-rs/foundry-toolchain@v1
 
             - name: Install Dependencies
-              run: pnpm install
+              run: bun install
 
             - name: Create Release Pull Request
               id: changeset
               uses: changesets/action@v1
               with:
                   commit: "release: version packages"
-                  publish: pnpm run publish-packages
+                  publish: bun run publish-packages
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

@@ -30,23 +30,22 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v4
 
-            - uses: pnpm/action-setup@v4
+            - uses: oven-sh/setup-bun@v2
             - name: Setup Node.js 20
               uses: actions/setup-node@v4
               with:
                   node-version: 20
                   registry-url: "https://registry.npmjs.org"
-                  cache: "pnpm"
 
             - name: Install dependencies
-              run: pnpm install
+              run: bun install
 
             - name: Build
-              run: pnpm build --filter @sunodo/car-sync
+              run: bunx turbo run build --filter=@sunodo/car-sync
 
             - name: Publish
               if: ${{ inputs.release }}
               working-directory: ./packages/car-sync
-              run: pnpm publish --access public
+              run: bun publish --access public
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
