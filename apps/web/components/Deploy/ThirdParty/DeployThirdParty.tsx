@@ -7,7 +7,7 @@ type DeployThirdPartyProps = {
 
 const DeployThirdParty: FC<DeployThirdPartyProps> = () => {
     // future implementation here
-    return <></>;
+    return null;
 };
 
 export default DeployThirdParty;

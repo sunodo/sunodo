@@ -71,6 +71,6 @@ bun run codegen                 # wagmi generate -> regenerates src/contracts.ts
 
 ## Conventions
 
-- **Linting is Biome** (`biome.json`, recommended ruleset; formatter disabled there). **Formatting is Prettier** (`bun run format`). They are split: Biome lints, Prettier formats. Biome ignores `**/artifacts/**` and `**/dist/**`. A recent commit migrated linting from ESLint to Biome.
+- **Linting is Biome** (`biome.json`, recommended ruleset; formatter disabled there). **Formatting is Prettier** (`bun run format`). They are split: Biome lints, Prettier formats. Biome (v2) ignores `**/artifacts/**`, `**/dist/**`, and `**/*.svg` (static SVG assets — Biome 2.x lints `.svg` files by default, so they are excluded). Config is split: root `biome.json` is the base; `apps/web/biome.json` sets `"root": false` and `extends` it. A recent commit migrated linting from ESLint to Biome.
 - **Releases use Changesets.** Add a changeset for any package change (`bunx changeset`); merging to `main` triggers the release workflow which versions/publishes via the Changesets GitHub action. Publishing is `bun run publish-packages` (`changeset tag` + push tags). Private packages are still tagged/versioned (`privatePackages` config).
 - CI on PRs runs only `bun run lint` (`.github/workflows/lint.yaml`); contracts and car-sync have their own workflows.

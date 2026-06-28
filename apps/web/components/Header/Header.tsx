@@ -11,10 +11,11 @@ import { Logo } from "../Logo/Logo";
 import { Navigation } from "../Navigation/Navigation";
 import classes from "./Header.module.css";
 
+const pathsWithDarkHeader = ["/"];
+
 export function Header() {
     const [scroll] = useWindowScroll();
     const path = usePathname();
-    const pathsWithDarkHeader = ["/"];
 
     const isDarkHeader = useMemo(
         () => pathsWithDarkHeader.includes(path) && scroll.y === 0,

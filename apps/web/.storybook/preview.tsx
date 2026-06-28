@@ -1,6 +1,5 @@
 import { MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
-import React from "react";
 import { useDarkMode } from "storybook-dark-mode";
 import WalletProvider from "../providers/walletProvider";
 import { theme } from "../theme/theme";
