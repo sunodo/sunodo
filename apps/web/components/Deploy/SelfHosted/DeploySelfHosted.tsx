@@ -4,8 +4,10 @@ import {
     Button,
     CopyButton,
     Group,
+    Loader,
     NumberInput,
     ScrollArea,
+    SegmentedControl,
     SimpleGrid,
     Stack,
     Text,
@@ -14,7 +16,7 @@ import {
     Title,
     Tooltip,
 } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { type GetInputPropsReturnType, useForm } from "@mantine/form";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import {
     IconCheck,
@@ -44,14 +46,19 @@ import {
     optimismSepolia,
     sepolia,
 } from "viem/chains";
-import { useAccount, useWaitForTransactionReceipt } from "wagmi";
+import { useAccount, useBytecode, useWaitForTransactionReceipt } from "wagmi";
 
 import {
     dataAvailabilityAbi,
     inputBoxAddress,
+    useReadErc20Symbol,
     useReadSelfHostedApplicationFactoryCalculateAddresses,
+    useReadUsdWithdrawalOutputBuilderFactoryCalculateUsdWithdrawalOutputBuilderAddress,
     useSimulateSelfHostedApplicationFactoryDeployContracts,
+    useSimulateUsdWithdrawalOutputBuilderFactoryNewUsdWithdrawalOutputBuilder,
+    usdWithdrawalOutputBuilderFactoryAddress,
     useWriteSelfHostedApplicationFactoryDeployContracts,
+    useWriteUsdWithdrawalOutputBuilderFactoryNewUsdWithdrawalOutputBuilder,
 } from "../../../src/contracts";
 import MachineInstructions from "../MachineInstructions";
 import WalletInstructions from "./WalletInstructions";
@@ -81,6 +88,257 @@ const dataAvailability = encodeFunctionData({
     functionName: "InputBox",
     args: [inputBoxAddress],
 });
+
+// A fixed salt is fine here: USD withdrawal output builders are stateless, so a given
+// token always maps to the same builder address. This lets anyone reuse a builder that
+// was already deployed for that token instead of paying to deploy a duplicate.
+const USD_BUILDER_SALT = zeroHash;
+
+const hasCode = (code?: string) => !!code && code !== "0x";
+
+type WithdrawalOutputBuilderProps = {
+    disabled: boolean;
+    // input props for the manual-address field (an already-deployed builder)
+    inputProps: GetInputPropsReturnType;
+    // reports the resolved builder address back to the parent form
+    onChange: (value: string) => void;
+};
+
+// Lets the user either point at an existing withdrawal output builder or deploy one for
+// an ERC-20 token through the UsdWithdrawalOutputBuilderFactory. Either way the resolved
+// builder address is fed into the parent form's `withdrawalOutputBuilder` field.
+const WithdrawalOutputBuilder: FC<WithdrawalOutputBuilderProps> = ({
+    disabled,
+    inputProps,
+    onChange,
+}) => {
+    const [mode, setMode] = useState<"existing" | "usd">("existing");
+    const [token, setToken] = useState("");
+
+    const tokenAddress = isAddress(token) ? getAddress(token) : undefined;
+
+    // is the factory deployed on the connected chain? (supported testnets only)
+    const factoryCode = useBytecode({
+        address: usdWithdrawalOutputBuilderFactoryAddress,
+    });
+    const factoryAvailable = hasCode(factoryCode.data);
+
+    // token symbol, shown as a confirmation that the address is a real ERC-20
+    const symbol = useReadErc20Symbol({
+        address: tokenAddress,
+        query: { enabled: mode === "usd" && !!tokenAddress },
+    });
+
+    // deterministic address of the builder for this token
+    const computed =
+        useReadUsdWithdrawalOutputBuilderFactoryCalculateUsdWithdrawalOutputBuilderAddress(
+            {
+                args: tokenAddress
+                    ? [tokenAddress, USD_BUILDER_SALT]
+                    : undefined,
+                query: {
+                    enabled:
+                        mode === "usd" && !!tokenAddress && factoryAvailable,
+                },
+            },
+        );
+    const builderAddress = computed.data;
+
+    // has the builder for this token already been deployed?
+    const builderCode = useBytecode({
+        address: builderAddress,
+        query: { enabled: !!builderAddress },
+    });
+    const builderExists = hasCode(builderCode.data);
+
+    // simulate + execute the factory deployment (only when not already deployed)
+    const simulate =
+        useSimulateUsdWithdrawalOutputBuilderFactoryNewUsdWithdrawalOutputBuilder(
+            {
+                args: tokenAddress
+                    ? [tokenAddress, USD_BUILDER_SALT]
+                    : undefined,
+                query: {
+                    enabled:
+                        mode === "usd" &&
+                        !!tokenAddress &&
+                        factoryAvailable &&
+                        !!builderAddress &&
+                        !builderExists,
+                },
+            },
+        );
+    const execute =
+        useWriteUsdWithdrawalOutputBuilderFactoryNewUsdWithdrawalOutputBuilder();
+    const receipt = useWaitForTransactionReceipt({ hash: execute.data });
+
+    // refresh the builder bytecode once the deployment is mined
+    // biome-ignore lint/correctness/useExhaustiveDependencies: only react to mined tx
+    useEffect(() => {
+        if (receipt.isSuccess) {
+            builderCode.refetch();
+        }
+    }, [receipt.isSuccess]);
+
+    // feed the resolved builder address into the parent form. Only report it once the
+    // contract actually exists so the application never references a missing builder.
+    // biome-ignore lint/correctness/useExhaustiveDependencies: onChange identity is stable enough
+    useEffect(() => {
+        if (mode === "usd") {
+            onChange(builderExists && builderAddress ? builderAddress : "");
+        }
+    }, [mode, builderExists, builderAddress]);
+
+    const changeMode = (value: string) => {
+        // each mode manages the field itself; reset the resolved value on switch
+        setMode(value as "existing" | "usd");
+        onChange("");
+    };
+
+    return (
+        <Stack gap="xs">
+            <div>
+                <Text fw={500} size="sm">
+                    Withdrawal output builder
+                </Text>
+                <Text size="xs" c="dimmed">
+                    Contract that formats withdrawal vouchers. Provide an
+                    existing implementation, or deploy one for an ERC-20 token
+                    using the USD withdrawal output builder factory.
+                </Text>
+            </div>
+            <SegmentedControl
+                value={mode}
+                onChange={changeMode}
+                disabled={disabled}
+                data={[
+                    { label: "Existing address", value: "existing" },
+                    { label: "Deploy for ERC-20 token", value: "usd" },
+                ]}
+            />
+            {mode === "existing" ? (
+                <TextInput
+                    {...inputProps}
+                    placeholder={zeroAddress}
+                    disabled={disabled}
+                    size="md"
+                />
+            ) : (
+                <Stack gap="xs">
+                    {!factoryAvailable && (
+                        <Alert
+                            variant="light"
+                            color="yellow"
+                            icon={<IconExclamationCircle />}
+                        >
+                            The USD withdrawal output builder factory is not
+                            available on the connected network. It is deployed
+                            on supported testnets only.
+                        </Alert>
+                    )}
+                    <TextInput
+                        label="ERC-20 token address"
+                        description="The USD-like ERC-20 token the builder will handle"
+                        placeholder={zeroAddress}
+                        value={token}
+                        onChange={(event) =>
+                            setToken(event.currentTarget.value)
+                        }
+                        error={
+                            token && !tokenAddress ? "Invalid address" : null
+                        }
+                        disabled={disabled || !factoryAvailable}
+                        size="md"
+                        rightSection={
+                            symbol.isLoading ? <Loader size="xs" /> : null
+                        }
+                    />
+                    {mode === "usd" && tokenAddress && symbol.data && (
+                        <Text size="xs" c="dimmed">
+                            Detected token: {symbol.data}
+                        </Text>
+                    )}
+                    {tokenAddress && factoryAvailable && (
+                        <>
+                            <TextInput
+                                label="Builder address"
+                                description={
+                                    builderExists
+                                        ? "This builder is already deployed and will be used."
+                                        : "Deploy the builder to use this address."
+                                }
+                                value={builderAddress ?? ""}
+                                readOnly
+                                size="md"
+                                ff="mono"
+                            />
+                            {simulate.isError && (
+                                <ScrollArea>
+                                    <Alert
+                                        title={simulate.error?.name}
+                                        variant="light"
+                                        color="red"
+                                        icon={<IconExclamationCircle />}
+                                        ff="mono"
+                                    >
+                                        {simulate.error?.message}
+                                    </Alert>
+                                </ScrollArea>
+                            )}
+                            {execute.isError && (
+                                <ScrollArea>
+                                    <Alert
+                                        title={execute.error?.name}
+                                        variant="light"
+                                        color="red"
+                                        icon={<IconExclamationCircle />}
+                                        ff="mono"
+                                    >
+                                        {execute.error?.message}
+                                    </Alert>
+                                </ScrollArea>
+                            )}
+                            {builderExists ? (
+                                <Alert
+                                    variant="light"
+                                    color="green"
+                                    icon={<IconInfoCircle />}
+                                >
+                                    Builder ready. It will be used for this
+                                    application's withdrawals.
+                                </Alert>
+                            ) : (
+                                <Group>
+                                    <Button
+                                        variant="light"
+                                        disabled={
+                                            !simulate.data?.request || disabled
+                                        }
+                                        loading={
+                                            simulate.isLoading ||
+                                            execute.isPending ||
+                                            (execute.isSuccess &&
+                                                receipt.isLoading)
+                                        }
+                                        onClick={() => {
+                                            if (simulate.data) {
+                                                execute.writeContract(
+                                                    simulate.data.request,
+                                                );
+                                            }
+                                        }}
+                                    >
+                                        Deploy builder
+                                    </Button>
+                                </Group>
+                            )}
+                        </>
+                    )}
+                </Stack>
+            )}
+        </Stack>
+    );
+};
 
 type DeploySelfHostedProps = {
     authorityOwner?: string;
@@ -294,13 +552,6 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
                             disabled={deployed}
                             size="md"
                         />
-                        <TextInput
-                            {...form.getInputProps("withdrawalOutputBuilder")}
-                            label="Withdrawal output builder"
-                            placeholder={zeroAddress}
-                            disabled={deployed}
-                            size="md"
-                        />
                         <NumberInput
                             {...form.getInputProps("log2LeavesPerAccount")}
                             label="log2 leaves per account"
@@ -328,6 +579,15 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
                             size="md"
                         />
                     </SimpleGrid>
+                    <WithdrawalOutputBuilder
+                        disabled={deployed}
+                        inputProps={form.getInputProps(
+                            "withdrawalOutputBuilder",
+                        )}
+                        onChange={(value) =>
+                            form.setFieldValue("withdrawalOutputBuilder", value)
+                        }
+                    />
                 </Stack>
             </Timeline.Item>
             <Timeline.Item title="Deploy" pb="lg">

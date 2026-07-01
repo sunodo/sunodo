@@ -509,6 +509,103 @@ export const selfHostedApplicationFactoryConfig = {
 } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// usdWithdrawalOutputBuilderFactory
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const usdWithdrawalOutputBuilderFactoryAbi = [
+    {
+        type: 'constructor',
+        inputs: [
+            {
+                name: 'safeErc20Transfer',
+                internalType: 'contract ISafeERC20Transfer',
+                type: 'address',
+            },
+        ],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'token', internalType: 'contract IERC20', type: 'address' },
+            { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
+        ],
+        name: 'calculateUsdWithdrawalOutputBuilderAddress',
+        outputs: [
+            {
+                name: 'usdWithdrawalOutputBuilderAddress',
+                internalType: 'address',
+                type: 'address',
+            },
+        ],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [],
+        name: 'getSafeErc20Transfer',
+        outputs: [
+            {
+                name: 'safeErc20Transfer',
+                internalType: 'contract ISafeERC20Transfer',
+                type: 'address',
+            },
+        ],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'token', internalType: 'contract IERC20', type: 'address' },
+            { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
+        ],
+        name: 'newUsdWithdrawalOutputBuilder',
+        outputs: [
+            {
+                name: 'usdWithdrawalOutputBuilder',
+                internalType: 'contract IUsdWithdrawalOutputBuilder',
+                type: 'address',
+            },
+        ],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [],
+        name: 'version',
+        outputs: [
+            { name: 'major', internalType: 'uint64', type: 'uint64' },
+            { name: 'minor', internalType: 'uint64', type: 'uint64' },
+            { name: 'patch', internalType: 'uint64', type: 'uint64' },
+            { name: 'preRelease', internalType: 'string', type: 'string' },
+            { name: 'buildMetadata', internalType: 'string', type: 'string' },
+        ],
+        stateMutability: 'pure',
+    },
+    {
+        type: 'event',
+        anonymous: false,
+        inputs: [
+            {
+                name: 'usdWithdrawalOutputBuilder',
+                internalType: 'contract IUsdWithdrawalOutputBuilder',
+                type: 'address',
+                indexed: false,
+            },
+        ],
+        name: 'UsdWithdrawalOutputBuilderCreated',
+    },
+] as const
+
+export const usdWithdrawalOutputBuilderFactoryAddress =
+    '0xdB4EC04a2792A04cF7421f99A70F624681dd8e50' as const
+
+export const usdWithdrawalOutputBuilderFactoryConfig = {
+    address: usdWithdrawalOutputBuilderFactoryAddress,
+    abi: usdWithdrawalOutputBuilderFactoryAbi,
+} as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // React
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -887,4 +984,100 @@ export const useSimulateSelfHostedApplicationFactoryDeployContracts =
         abi: selfHostedApplicationFactoryAbi,
         address: selfHostedApplicationFactoryAddress,
         functionName: 'deployContracts',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link usdWithdrawalOutputBuilderFactoryAbi}__
+ */
+export const useReadUsdWithdrawalOutputBuilderFactory =
+    /*#__PURE__*/ createUseReadContract({
+        abi: usdWithdrawalOutputBuilderFactoryAbi,
+        address: usdWithdrawalOutputBuilderFactoryAddress,
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link usdWithdrawalOutputBuilderFactoryAbi}__ and `functionName` set to `"calculateUsdWithdrawalOutputBuilderAddress"`
+ */
+export const useReadUsdWithdrawalOutputBuilderFactoryCalculateUsdWithdrawalOutputBuilderAddress =
+    /*#__PURE__*/ createUseReadContract({
+        abi: usdWithdrawalOutputBuilderFactoryAbi,
+        address: usdWithdrawalOutputBuilderFactoryAddress,
+        functionName: 'calculateUsdWithdrawalOutputBuilderAddress',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link usdWithdrawalOutputBuilderFactoryAbi}__ and `functionName` set to `"getSafeErc20Transfer"`
+ */
+export const useReadUsdWithdrawalOutputBuilderFactoryGetSafeErc20Transfer =
+    /*#__PURE__*/ createUseReadContract({
+        abi: usdWithdrawalOutputBuilderFactoryAbi,
+        address: usdWithdrawalOutputBuilderFactoryAddress,
+        functionName: 'getSafeErc20Transfer',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link usdWithdrawalOutputBuilderFactoryAbi}__ and `functionName` set to `"version"`
+ */
+export const useReadUsdWithdrawalOutputBuilderFactoryVersion =
+    /*#__PURE__*/ createUseReadContract({
+        abi: usdWithdrawalOutputBuilderFactoryAbi,
+        address: usdWithdrawalOutputBuilderFactoryAddress,
+        functionName: 'version',
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link usdWithdrawalOutputBuilderFactoryAbi}__
+ */
+export const useWriteUsdWithdrawalOutputBuilderFactory =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: usdWithdrawalOutputBuilderFactoryAbi,
+        address: usdWithdrawalOutputBuilderFactoryAddress,
+    })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link usdWithdrawalOutputBuilderFactoryAbi}__ and `functionName` set to `"newUsdWithdrawalOutputBuilder"`
+ */
+export const useWriteUsdWithdrawalOutputBuilderFactoryNewUsdWithdrawalOutputBuilder =
+    /*#__PURE__*/ createUseWriteContract({
+        abi: usdWithdrawalOutputBuilderFactoryAbi,
+        address: usdWithdrawalOutputBuilderFactoryAddress,
+        functionName: 'newUsdWithdrawalOutputBuilder',
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link usdWithdrawalOutputBuilderFactoryAbi}__
+ */
+export const useSimulateUsdWithdrawalOutputBuilderFactory =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: usdWithdrawalOutputBuilderFactoryAbi,
+        address: usdWithdrawalOutputBuilderFactoryAddress,
+    })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link usdWithdrawalOutputBuilderFactoryAbi}__ and `functionName` set to `"newUsdWithdrawalOutputBuilder"`
+ */
+export const useSimulateUsdWithdrawalOutputBuilderFactoryNewUsdWithdrawalOutputBuilder =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: usdWithdrawalOutputBuilderFactoryAbi,
+        address: usdWithdrawalOutputBuilderFactoryAddress,
+        functionName: 'newUsdWithdrawalOutputBuilder',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link usdWithdrawalOutputBuilderFactoryAbi}__
+ */
+export const useWatchUsdWithdrawalOutputBuilderFactoryEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: usdWithdrawalOutputBuilderFactoryAbi,
+        address: usdWithdrawalOutputBuilderFactoryAddress,
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link usdWithdrawalOutputBuilderFactoryAbi}__ and `eventName` set to `"UsdWithdrawalOutputBuilderCreated"`
+ */
+export const useWatchUsdWithdrawalOutputBuilderFactoryUsdWithdrawalOutputBuilderCreatedEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: usdWithdrawalOutputBuilderFactoryAbi,
+        address: usdWithdrawalOutputBuilderFactoryAddress,
+        eventName: 'UsdWithdrawalOutputBuilderCreated',
     })
