@@ -96,6 +96,21 @@ const USD_BUILDER_SALT = zeroHash;
 
 const hasCode = (code?: string) => !!code && code !== "0x";
 
+const MAX_UINT64 = (1n << 64n) - 1n;
+
+// Parse a uint64 that may be entered as a decimal or a hexadecimal (0x-prefixed)
+// string. Returns null when the value is empty or out of the uint64 range.
+const parseUint64 = (value: string): bigint | null => {
+    const trimmed = value.trim();
+    if (!trimmed) return null;
+    try {
+        const parsed = BigInt(trimmed);
+        return parsed >= 0n && parsed <= MAX_UINT64 ? parsed : null;
+    } catch {
+        return null;
+    }
+};
+
 type WithdrawalOutputBuilderProps = {
     disabled: boolean;
     // input props for the manual-address field (an already-deployed builder)
@@ -151,7 +166,10 @@ const WithdrawalOutputBuilder: FC<WithdrawalOutputBuilderProps> = ({
     });
     const builderExists = hasCode(builderCode.data);
 
-    // simulate + execute the factory deployment (only when not already deployed)
+    // simulate + execute the factory deployment. Only enable the simulation once we
+    // have confirmed the builder is NOT already deployed: simulating (or deploying) an
+    // existing builder would revert with a CREATE2 collision. When it already exists we
+    // simply reuse it, so no deployment — and no error — is needed.
     const simulate =
         useSimulateUsdWithdrawalOutputBuilderFactoryNewUsdWithdrawalOutputBuilder(
             {
@@ -164,6 +182,7 @@ const WithdrawalOutputBuilder: FC<WithdrawalOutputBuilderProps> = ({
                         !!tokenAddress &&
                         factoryAvailable &&
                         !!builderAddress &&
+                        builderCode.isSuccess &&
                         !builderExists,
                 },
             },
@@ -272,32 +291,6 @@ const WithdrawalOutputBuilder: FC<WithdrawalOutputBuilderProps> = ({
                                 size="md"
                                 ff="mono"
                             />
-                            {simulate.isError && (
-                                <ScrollArea>
-                                    <Alert
-                                        title={simulate.error?.name}
-                                        variant="light"
-                                        color="red"
-                                        icon={<IconExclamationCircle />}
-                                        ff="mono"
-                                    >
-                                        {simulate.error?.message}
-                                    </Alert>
-                                </ScrollArea>
-                            )}
-                            {execute.isError && (
-                                <ScrollArea>
-                                    <Alert
-                                        title={execute.error?.name}
-                                        variant="light"
-                                        color="red"
-                                        icon={<IconExclamationCircle />}
-                                        ff="mono"
-                                    >
-                                        {execute.error?.message}
-                                    </Alert>
-                                </ScrollArea>
-                            )}
                             {builderExists ? (
                                 <Alert
                                     variant="light"
@@ -308,29 +301,58 @@ const WithdrawalOutputBuilder: FC<WithdrawalOutputBuilderProps> = ({
                                     application's withdrawals.
                                 </Alert>
                             ) : (
-                                <Group>
-                                    <Button
-                                        variant="light"
-                                        disabled={
-                                            !simulate.data?.request || disabled
-                                        }
-                                        loading={
-                                            simulate.isLoading ||
-                                            execute.isPending ||
-                                            (execute.isSuccess &&
-                                                receipt.isLoading)
-                                        }
-                                        onClick={() => {
-                                            if (simulate.data) {
-                                                execute.writeContract(
-                                                    simulate.data.request,
-                                                );
+                                <>
+                                    {simulate.isError && (
+                                        <ScrollArea>
+                                            <Alert
+                                                title={simulate.error?.name}
+                                                variant="light"
+                                                color="red"
+                                                icon={<IconExclamationCircle />}
+                                                ff="mono"
+                                            >
+                                                {simulate.error?.message}
+                                            </Alert>
+                                        </ScrollArea>
+                                    )}
+                                    {execute.isError && (
+                                        <ScrollArea>
+                                            <Alert
+                                                title={execute.error?.name}
+                                                variant="light"
+                                                color="red"
+                                                icon={<IconExclamationCircle />}
+                                                ff="mono"
+                                            >
+                                                {execute.error?.message}
+                                            </Alert>
+                                        </ScrollArea>
+                                    )}
+                                    <Group>
+                                        <Button
+                                            variant="light"
+                                            disabled={
+                                                !simulate.data?.request ||
+                                                disabled
                                             }
-                                        }}
-                                    >
-                                        Deploy builder
-                                    </Button>
-                                </Group>
+                                            loading={
+                                                simulate.isLoading ||
+                                                execute.isPending ||
+                                                (execute.isSuccess &&
+                                                    receipt.isLoading)
+                                            }
+                                            onClick={() => {
+                                                if (simulate.data) {
+                                                    execute.writeContract(
+                                                        simulate.data.request,
+                                                    );
+                                                }
+                                            }}
+                                        >
+                                            Deploy builder
+                                        </Button>
+                                    </Group>
+                                </>
                             )}
                         </>
                     )}
@@ -358,7 +380,7 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
             withdrawalOutputBuilder: "",
             log2LeavesPerAccount: 0,
             log2MaxNumOfAccounts: 0,
-            accountsDriveStartIndex: 0,
+            accountsDriveStartIndex: "0",
             salt: generatePrivateKey(),
         },
         validate: {
@@ -375,6 +397,8 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
                 !value || isAddress(value) ? null : "Invalid address",
             withdrawalOutputBuilder: (value) =>
                 !value || isAddress(value) ? null : "Invalid address",
+            accountsDriveStartIndex: (value) =>
+                !value || parseUint64(value) !== null ? null : "Invalid value",
         },
         validateInputOnChange: true,
         transformValues: (values) => ({
@@ -395,7 +419,8 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
                         : zeroAddress,
                 log2LeavesPerAccount: values.log2LeavesPerAccount,
                 log2MaxNumOfAccounts: values.log2MaxNumOfAccounts,
-                accountsDriveStartIndex: BigInt(values.accountsDriveStartIndex),
+                accountsDriveStartIndex:
+                    parseUint64(values.accountsDriveStartIndex) ?? 0n,
                 withdrawalOutputBuilder:
                     values.withdrawalOutputBuilder &&
                     isAddress(values.withdrawalOutputBuilder)
@@ -570,11 +595,10 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
                             disabled={deployed}
                             size="md"
                         />
-                        <NumberInput
+                        <TextInput
                             {...form.getInputProps("accountsDriveStartIndex")}
                             label="Accounts drive start index"
-                            min={0}
-                            allowDecimal={false}
+                            description="Decimal or hexadecimal (0x-prefixed)"
                             disabled={deployed}
                             size="md"
                         />
