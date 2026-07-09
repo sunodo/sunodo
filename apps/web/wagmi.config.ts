@@ -11,12 +11,6 @@ import { type Abi, type Address, erc20Abi } from "viem";
 // across every chain, so a single address from the devnet deployment applies everywhere.
 const { contracts } = devnet;
 
-// The USD withdrawal output builder factory is deployed at the same deterministic
-// address on all supported testnets. It is not part of the devnet deployment file,
-// so its address is hardcoded here.
-const usdWithdrawalOutputBuilderFactoryAddress =
-    "0xdB4EC04a2792A04cF7421f99A70F624681dd8e50" as Address;
-
 const config = defineConfig({
     out: "src/contracts.ts",
     contracts: [
@@ -27,7 +21,7 @@ const config = defineConfig({
         {
             name: "usdWithdrawalOutputBuilderFactory",
             abi: usdWithdrawalOutputBuilderFactory.abi as Abi,
-            address: usdWithdrawalOutputBuilderFactoryAddress,
+            address: contracts.UsdWithdrawalOutputBuilderFactory.address as Address,
         },
         {
             name: "selfHostedApplicationFactory",
