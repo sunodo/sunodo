@@ -1,11 +1,9 @@
 ---
-
 name: 🏗️ Technical Debt
 about: Template for proposing solutions to technical debts
-title: ''
+title: ""
 labels: refactor
-assignees: ''
-
+assignees: ""
 ---
 
 ## 📚 Context
