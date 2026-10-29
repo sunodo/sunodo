@@ -12,3 +12,5 @@ Breaking changes for library users:
 The CLI ignores an unhandled "ReadableStream is locked" rejection raised by `@helia/delegated-routing-v1-http-api-client` when provider lookups are aborted, which otherwise crashes downloads.
 
 Cached files are now verified against the import settings the expected CID implies: kubo's legacy defaults (`unixfs-v0-2015`) for CIDv0 content, and the importer defaults or the `unixfs-v1-2025` profile (also the `@helia/unixfs` defaults) for CIDv1. Previously, CIDv0 content and multi-chunk files added with Helia's defaults never matched and were downloaded again on every run.
+
+The package is now published from GitHub Actions with npm trusted publishing (OIDC), with provenance, and only includes the build output (`dist`), README and changelog.

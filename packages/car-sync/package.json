@@ -2,6 +2,11 @@
     "name": "@sunodo/car-sync",
     "version": "0.2.0",
     "license": "Apache-2.0",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/sunodo/sunodo.git",
+        "directory": "packages/car-sync"
+    },
     "dependencies": {
         "@commander-js/extra-typings": "^15.0.0",
         "@helia/unixfs": "^8.0.9",
@@ -22,10 +27,16 @@
         "typescript": "^6.0.3",
         "vitest": "^5.0.5"
     },
-    "bin": "dist/cli.js",
+    "bin": {
+        "car-sync": "dist/cli.js"
+    },
     "engines": {
         "node": ">=22.12.0"
     },
+    "files": [
+        "dist",
+        "CHANGELOG.md"
+    ],
     "main": "dist/index.js",
     "scripts": {
         "build": "run-s compile",

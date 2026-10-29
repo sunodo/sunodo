@@ -68,7 +68,9 @@
     "packages/car-sync": {
       "name": "@sunodo/car-sync",
       "version": "0.2.0",
-      "bin": "dist/cli.js",
+      "bin": {
+        "car-sync": "dist/cli.js",
+      },
       "dependencies": {
         "@commander-js/extra-typings": "^15.0.0",
         "@helia/unixfs": "^8.0.9",

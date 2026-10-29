@@ -6,8 +6,6 @@ on:
                 type: boolean
                 required: false
         secrets:
-            NPM_TOKEN:
-                required: true
             TURBO_TOKEN:
                 required: true
     pull_request:
@@ -19,6 +17,7 @@ concurrency:
     cancel-in-progress: true
 permissions:
     contents: read
+    id-token: write # npm trusted publishing (OIDC)
     packages: write
 jobs:
     build:
@@ -49,9 +48,13 @@ jobs:
               working-directory: ./packages/car-sync
               run: bunx vitest run
 
+            # trusted publishing requires npm >= 11.5.1
+            - name: Update npm
+              if: ${{ inputs.release }}
+              run: npm install -g npm@^11.5.1
+
+            # authenticates with OIDC (trusted publisher on npmjs), with provenance
             - name: Publish
               if: ${{ inputs.release }}
               working-directory: ./packages/car-sync
-              run: bun publish --access public
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+              run: npm publish --access public
