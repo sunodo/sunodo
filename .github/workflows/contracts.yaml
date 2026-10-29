@@ -46,8 +46,22 @@ jobs:
             - name: Install Dependencies
               run: bun install
 
+            - name: Install Solidity Dependencies
+              run: forge soldeer install
+              working-directory: packages/contracts
+
+            - name: Check formatting
+              run: forge fmt --check
+              working-directory: packages/contracts
+
             - name: Build
               run: bunx turbo run build --filter=@sunodo/contracts
+
+            - name: Test
+              run: forge test
+              working-directory: packages/contracts
+              env:
+                  FOUNDRY_PROFILE: ci
 
             - name: Publish package
               if: ${{ inputs.release }}

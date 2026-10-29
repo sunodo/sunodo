@@ -20,52 +20,31 @@ import {Vault} from "../payment/Vault.sol";
 abstract contract NodeProvider is INodeProvider, Vault {
     ENS public immutable ens;
 
-    constructor(
-        address _owner,
-        ENS _ens,
-        IERC20 _token,
-        address _payee,
-        uint256 _price
-    ) Vault(_owner, _token, _payee, _price) {
+    constructor(address _owner, ENS _ens, IERC20 _token, address _payee, uint256 _price)
+        Vault(_owner, _token, _payee, _price)
+    {
         ens = _ens;
     }
 
     function setName(string calldata name) external override onlyOwner {
-        IReverseRegistrar ensReverseRegistrar = IReverseRegistrar(
-            ens.owner(ADDR_REVERSE_NODE)
-        );
+        IReverseRegistrar ensReverseRegistrar = IReverseRegistrar(ens.owner(ADDR_REVERSE_NODE));
 
         // call the ENS reverse registrar to register name of address
         ensReverseRegistrar.setName(name);
     }
 }
 
-contract ReaderNodeProvider is
-    NodeProvider,
-    IReaderNodeProvider,
-    IMachineProtocol
-{
-    constructor(
-        address _owner,
-        ENS _ens,
-        IERC20 _token,
-        address _payee,
-        uint256 _price
-    ) NodeProvider(_owner, _ens, _token, _payee, _price) {}
+contract ReaderNodeProvider is NodeProvider, IReaderNodeProvider, IMachineProtocol {
+    constructor(address _owner, ENS _ens, IERC20 _token, address _payee, uint256 _price)
+        NodeProvider(_owner, _ens, _token, _payee, _price)
+    {}
 
-    function register(
-        ICartesiDApp application,
-        string calldata location
-    ) external {
+    function register(ICartesiDApp application, string calldata location) external {
         emit MachineLocation(address(application), location);
     }
 }
 
-contract ValidatorNodeProvider is
-    NodeProvider,
-    IMachineProtocol,
-    IValidatorNodeProvider
-{
+contract ValidatorNodeProvider is NodeProvider, IMachineProtocol, IValidatorNodeProvider {
     ICartesiDAppFactory public immutable factory;
     IConsensus public immutable consensus;
 
@@ -82,14 +61,8 @@ contract ValidatorNodeProvider is
         consensus = _consensus;
     }
 
-    function register(
-        ICartesiDApp application,
-        string calldata location
-    ) external {
-        require(
-            application.getConsensus() == consensus,
-            "ValidatorNodeProvider: wrong consensus"
-        );
+    function register(ICartesiDApp application, string calldata location) external {
+        require(application.getConsensus() == consensus, "ValidatorNodeProvider: wrong consensus");
         emit MachineLocation(address(application), location);
     }
 
@@ -102,12 +75,7 @@ contract ValidatorNodeProvider is
         bytes32 _salt
     ) external override whenNotPaused returns (CartesiDApp) {
         // delegate call to factory
-        CartesiDApp application = factory.newApplication(
-            consensus,
-            _owner,
-            _templateHash,
-            _salt
-        );
+        CartesiDApp application = factory.newApplication(consensus, _owner, _templateHash, _salt);
 
         // emit event with machine location
         emit MachineLocation(address(application), _location);
@@ -119,17 +87,11 @@ contract ValidatorNodeProvider is
     }
 
     /// @dev This function calculates the application deterministically
-    function calculateApplicationAddress(
-        address _owner,
-        bytes32 _templateHash,
-        bytes32 _salt
-    ) external view returns (address) {
-        return
-            factory.calculateApplicationAddress(
-                consensus,
-                _owner,
-                _templateHash,
-                _salt
-            );
+    function calculateApplicationAddress(address _owner, bytes32 _templateHash, bytes32 _salt)
+        external
+        view
+        returns (address)
+    {
+        return factory.calculateApplicationAddress(consensus, _owner, _templateHash, _salt);
     }
 }

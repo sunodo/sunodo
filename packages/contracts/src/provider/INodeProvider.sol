@@ -12,10 +12,7 @@ interface INodeProvider is IVault {
     /// @notice Register an application with the node provider
     /// @param application The application to be registered
     /// @param location The Cartesi machine snapshot location
-    function register(
-        ICartesiDApp application,
-        string calldata location
-    ) external;
+    function register(ICartesiDApp application, string calldata location) external;
 
     /// @notice Sets a name for the provider using ENS service
     /// @param _name The name of the provider
@@ -50,9 +47,8 @@ interface IValidatorNodeProvider is IReaderNodeProvider {
     /// @return The application address
     /// @dev Beware that only the `deploy` function with the `salt` parameter
     ///      is able to deterministically deploy an application.
-    function calculateApplicationAddress(
-        address _owner,
-        bytes32 _templateHash,
-        bytes32 _salt
-    ) external view returns (address);
+    function calculateApplicationAddress(address _owner, bytes32 _templateHash, bytes32 _salt)
+        external
+        view
+        returns (address);
 }

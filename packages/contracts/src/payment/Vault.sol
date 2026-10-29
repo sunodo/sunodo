@@ -38,18 +38,11 @@ contract Vault is IVault, IFinancialProtocol, Ownable, Pausable {
         return _time * price;
     }
 
-    function extendRunway(
-        ICartesiDApp _application,
-        uint256 _time
-    ) external override whenNotPaused returns (uint256) {
+    function extendRunway(ICartesiDApp _application, uint256 _time) external override whenNotPaused returns (uint256) {
         return _extendRunway(msg.sender, _application, _time);
     }
 
-    function _extendRunway(
-        address _msgSender,
-        ICartesiDApp _application,
-        uint256 _time
-    ) internal returns (uint256) {
+    function _extendRunway(address _msgSender, ICartesiDApp _application, uint256 _time) internal returns (uint256) {
         // calculate the token cost of the runway time
         uint256 _cost = cost(_time);
 

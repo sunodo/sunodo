@@ -24,53 +24,31 @@ contract Marketplace is IMarketplace {
     }
 
     /// @notice Create a new ERC20 based ValidatorNodeProvider using the specified token
-    function newValidatorNodeProvider(
-        IConsensus _consensus,
-        IERC20 _token,
-        address _payee,
-        uint256 _price
-    ) external returns (IValidatorNodeProvider) {
+    function newValidatorNodeProvider(IConsensus _consensus, IERC20 _token, address _payee, uint256 _price)
+        external
+        returns (IValidatorNodeProvider)
+    {
         address owner = msg.sender;
 
         // create factory using that token
-        ValidatorNodeProvider provider = new ValidatorNodeProvider(
-            owner,
-            ens,
-            _token,
-            _payee,
-            _price,
-            factory,
-            _consensus
-        );
+        ValidatorNodeProvider provider =
+            new ValidatorNodeProvider(owner, ens, _token, _payee, _price, factory, _consensus);
 
         // emit event
-        emit ValidatorNodeProviderCreated(
-            provider,
-            _consensus,
-            _token,
-            _payee,
-            _price
-        );
+        emit ValidatorNodeProviderCreated(provider, _consensus, _token, _payee, _price);
 
         return provider;
     }
 
     /// @notice Create a new ERC20 based ReaderNodeProvider using the specified token
-    function newReaderNodeProvider(
-        IERC20 _token,
-        address _payee,
-        uint256 _price
-    ) external returns (IReaderNodeProvider) {
+    function newReaderNodeProvider(IERC20 _token, address _payee, uint256 _price)
+        external
+        returns (IReaderNodeProvider)
+    {
         address owner = msg.sender;
 
         // create provider using that token
-        IReaderNodeProvider provider = new ReaderNodeProvider(
-            owner,
-            ens,
-            _token,
-            _payee,
-            _price
-        );
+        IReaderNodeProvider provider = new ReaderNodeProvider(owner, ens, _token, _payee, _price);
 
         // emit event
         emit ReaderNodeProviderCreated(provider, _token, _payee, _price);

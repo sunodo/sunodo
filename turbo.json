@@ -1,16 +1,6 @@
 {
     "$schema": "https://turbo.build/schema.json",
-    "globalEnv": [
-        "ALCHEMY_ID",
-        "INFURA_ID",
-        "MNEMONIC",
-        "NETWORK",
-        "NODE_ENV",
-        "PORT",
-        "PRIVATE_KEY",
-        "RPC_URL",
-        "TS_NODE_PROJECT"
-    ],
+    "globalEnv": ["NETWORK", "NODE_ENV", "PORT"],
     "tasks": {
         "build": {
             "dependsOn": ["^build"],
