@@ -16,11 +16,7 @@ interface IMarketplace {
     /// @param payee The address that will receive the payments
     /// @param price The price per second of application node execution
     event ValidatorNodeProviderCreated(
-        IValidatorNodeProvider provider,
-        IConsensus consensus,
-        IERC20 token,
-        address payee,
-        uint256 price
+        IValidatorNodeProvider provider, IConsensus consensus, IERC20 token, address payee, uint256 price
     );
 
     /// @notice A new provider was created
@@ -28,32 +24,20 @@ interface IMarketplace {
     /// @param token The token used for billing
     /// @param payee The address that will receive the payments
     /// @param price The price per second of application node execution
-    event ReaderNodeProviderCreated(
-        IReaderNodeProvider provider,
-        IERC20 token,
-        address payee,
-        uint256 price
-    );
+    event ReaderNodeProviderCreated(IReaderNodeProvider provider, IERC20 token, address payee, uint256 price);
 
     /// @notice Create a new ERC20 based ValidatorNodeProvider using the specified token
     /// @param consensus The consensus associated with the provider
     /// @param token The token used for billing
     /// @param payee The address that will receive the payments
     /// @param price The price per second of application node execution
-    function newValidatorNodeProvider(
-        IConsensus consensus,
-        IERC20 token,
-        address payee,
-        uint256 price
-    ) external returns (IValidatorNodeProvider);
+    function newValidatorNodeProvider(IConsensus consensus, IERC20 token, address payee, uint256 price)
+        external
+        returns (IValidatorNodeProvider);
 
     /// @notice Create a new ERC20 based ReaderNodeProvider using the specified token
     /// @param token The token used for billing
     /// @param payee The address that will receive the payments
     /// @param price The price per second of application node execution
-    function newReaderNodeProvider(
-        IERC20 token,
-        address payee,
-        uint256 price
-    ) external returns (IReaderNodeProvider);
+    function newReaderNodeProvider(IERC20 token, address payee, uint256 price) external returns (IReaderNodeProvider);
 }

@@ -1,0 +1,5 @@
+@cartesi/rollups/=dependencies/@cartesi-rollups-1.4.3/onchain/rollups/
+@cartesi/util/=dependencies/@cartesi-util-6.3.0/packages/contracts/
+@ensdomains/ens-contracts/=dependencies/@ensdomains-ens-contracts-1.1.4/
+@openzeppelin/contracts/=dependencies/@openzeppelin-contracts-4.9.3/
+forge-std/=dependencies/forge-std-1.17.0/src/

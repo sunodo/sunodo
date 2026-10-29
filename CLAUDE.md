@@ -12,7 +12,7 @@ Note: the README describes apps (`cli`, `sdk`, `devnet`) that no longer live in 
 
 - `apps/web` (`@sunodo/web`) — Next.js 16 (App Router, React 19) website + deploy UI. Mantine v9 for UI, wagmi/viem + RainbowKit for wallet/chain interaction, Storybook 10 for component dev. Deployed to Vercel at https://sunodo.io.
 - `apps/docs` (`@sunodo/docs`) — VitePress documentation site, deployed at https://docs.sunodo.io.
-- `packages/contracts` (`@sunodo/contracts`) — Solidity smart contracts for application deployment, built with **both Hardhat (primary, deploy + ABI export) and Foundry (tests)**.
+- `packages/contracts` (`@sunodo/contracts`) — Solidity smart contracts for application deployment, built with **Foundry** (Soldeer for Solidity dependencies).
 - `packages/car-sync` (`@sunodo/car-sync`) — library + CLI to download an IPFS CAR to the local filesystem. Built with tsup (ESM), tested with Vitest, CLI via commander.
 - `packages/tsconfig` — shared `tsconfig.json` bases (`base.json`, `nextjs.json`, `react-library.json`) consumed via `tsconfig: workspace:*`.
 
@@ -41,18 +41,20 @@ bunx vitest run src/foo.test.ts # a single test file
 bunx vitest run -t "name"       # tests matching a name
 ```
 
-### contracts (Hardhat + Foundry)
+### contracts (Foundry)
 
 ```shell
 cd packages/contracts
-bun run compile                 # hardhat compile
-bun run test                    # hardhat test (Mocha/chai via hardhat-viem)
-forge test                      # Foundry tests (test/foundry, solc 0.8.20, evm paris)
-bun run build                   # compile + tsc + export ABIs + docgen
-bun run deploy:<network>        # hardhat-deploy to a network (e.g. deploy:sepolia, deploy:base)
+forge soldeer install           # install Solidity deps into dependencies/ (gitignored)
+forge build                     # compile (solc 0.8.20, evm paris, optimizer off)
+forge test                      # run tests in test/ (*.t.sol)
+forge test --match-test <name>  # a single test
+forge fmt                       # format; CI runs forge fmt --check
+bun run build                   # forge build + export ABIs to export/artifacts
+bun run deploy:<network>        # forge script deploy (e.g. deploy:sepolia, deploy:base)
 ```
 
-Deployments use deterministic (CREATE2 singleton-factory) addresses; networks are arbitrum, base, optimism, mainnet + their sepolia testnets, plus `sepolia`. `deploy:testnet` / `deploy:mainnets` deploy to all of each tier. Deploy scripts live in `packages/contracts/deploy/`.
+Solidity deps are managed by **Soldeer** (`[dependencies]` in `foundry.toml`, pinned in `soldeer.lock`), not npm. `remappings.txt` is maintained by hand (soldeer remapping generation is off) because the git-sourced deps keep their sources in subdirectories. Deployment is `script/Deploy.s.sol`: CREATE2 through the standard deployer (`0x4e59…956C`), skipped if already deployed; RPC endpoints, Etherscan keys and the keystore account come from `.env` (see `.env.example`). Networks are arbitrum, base, optimism, mainnet + their sepolia testnets, plus `sepolia`; `deploy:testnet` / `deploy:mainnets` deploy to all of each tier. New deploy records go to `broadcast/` (commit them); `deployments/` and `export/abi/` are the historical hardhat-deploy records.
 
 ### web app
 
@@ -66,7 +68,7 @@ bun run codegen                 # wagmi generate -> regenerates src/contracts.ts
 ## Architecture notes
 
 - **Contract ABIs flow into the web app via codegen.** `apps/web/wagmi.config.ts` runs the wagmi CLI with the `rollupsContracts` plugin from `@cartesi/wagmi-plugin`, which downloads ABIs and deployment addresses from a rollups-contracts GitHub release (hash-verified, so codegen needs network access) and generates typed hooks/config into `src/contracts.ts`. Regenerate with `bun run codegen` after changing the plugin version or `include` list — do not hand-edit `src/contracts.ts`.
-- **Solidity contract domains** in `packages/contracts/contracts/`: `marketplace/`, `payment/` (Vault), `protocol/` (financial + machine protocol interfaces), `provider/` (NodeProvider). Interfaces are prefixed `I*.sol`.
+- **Solidity contract domains** in `packages/contracts/src/`: `marketplace/`, `payment/` (Vault), `protocol/` (financial + machine protocol interfaces), `provider/` (NodeProvider). Interfaces are prefixed `I*.sol`.
 - The Vercel build (`vercel.json`) just runs `bun install` + the Next build — it does **not** need Foundry/Anvil. The web app gets contract ABIs/addresses from codegen (committed into the generated `src/contracts.ts`) and the `cartesi` devnet chain from `@cartesi/client/chains`, and has no dependency on the `@sunodo/contracts` workspace.
 
 ## Conventions

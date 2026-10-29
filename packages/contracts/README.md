@@ -4,7 +4,7 @@ The [Cartesi Node](https://github.com/cartesi/rollups-node) provided by the Cart
 
 The goal of the smart contracts in this package is to support an incentivized and decentralized way of delegating the execution of Cartesi Nodes for applications to third-party service providers.
 
-Two protocols are defined to support this goal: [IMachineProtocol](contracts/protocol/IMachineProtocol.sol) and [IFinancialProtocol](contracts/protocol/IFinancialProtocol.sol).
+Two protocols are defined to support this goal: [IMachineProtocol](src/protocol/IMachineProtocol.sol) and [IFinancialProtocol](src/protocol/IFinancialProtocol.sol).
 
 ## Protocols
 
@@ -55,3 +55,27 @@ The `Vault` contract is responsible for the implementation of the `IFinancialPro
 ### `Marketplace`
 
 Service providers can use the `Marketplace` contract to register their services and developers can use it to find service providers for their applications. It emits two events: `ValidatorNodeProviderCreated` and `ReaderNodeProviderCreated`, so indexing solutions can be used to build a database of service providers and display them in a user-friendly way.
+
+## Development
+
+This is a [Foundry](https://getfoundry.sh) project. Solidity dependencies are managed by [Soldeer](https://soldeer.xyz), declared in the `[dependencies]` section of `foundry.toml`, pinned in `soldeer.lock`, and installed into `dependencies/`. Import paths are mapped in `remappings.txt`.
+
+```shell
+forge soldeer install   # install Solidity dependencies
+forge build             # compile
+forge test              # run tests
+forge fmt               # format sources
+bun run build           # compile and export ABIs to export/artifacts
+```
+
+### Deployment
+
+The `Marketplace` is deployed deterministically through the CREATE2 deployer by [script/Deploy.s.sol](script/Deploy.s.sol). Copy `.env.example` to `.env` and fill in the RPC endpoints, the Etherscan API key, and the name of a deployer keystore created with `cast wallet import`. Then run:
+
+```shell
+bun run deploy:<network>    # e.g. deploy:sepolia, deploy:base
+bun run deploy:testnet      # all testnets
+bun run deploy:mainnets     # all mainnets
+```
+
+Deployment records are written to `broadcast/Deploy.s.sol/<chainId>/` and should be committed. The `deployments/` and `export/abi/` directories hold the records of the deployments made with the previous Hardhat setup.

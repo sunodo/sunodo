@@ -31,8 +31,5 @@ interface IVault {
     /// @dev The user must approve the token transfer from the caller to the payee beforehand.
     /// @param _application The application
     /// @param _time The amount of time to extend the runway (will trigger transfer)
-    function extendRunway(
-        ICartesiDApp _application,
-        uint256 _time
-    ) external returns (uint256);
+    function extendRunway(ICartesiDApp _application, uint256 _time) external returns (uint256);
 }
