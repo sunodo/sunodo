@@ -2,14 +2,20 @@ import type { UnixFS } from "@helia/unixfs";
 import { MemoryBlockstore } from "blockstore-core/memory";
 import chalk from "chalk";
 import fs from "fs-extra";
-import type { RawNode, UnixFSEntry, UnixFSFile } from "ipfs-unixfs-exporter";
 import { importer } from "ipfs-unixfs-importer";
 import type { CID } from "multiformats/cid";
 import { once } from "node:events";
 import path from "node:path";
 
+export type CARFile = {
+    cid: CID;
+    // path of the file, starting with the CID of the root directory
+    path: string;
+    size: bigint;
+};
+
 export type FileProgress = {
-    file: UnixFSFile | RawNode;
+    file: CARFile;
     total: bigint;
     transferred: bigint;
     status: "cached" | "downloading" | "downloaded" | "error";
@@ -58,7 +64,8 @@ const link = (filename: string, cid: CID, output: string) => {
 };
 
 async function* download(
-    file: UnixFSFile | RawNode,
+    ipfs: UnixFS,
+    file: CARFile,
     output: string,
 ): AsyncGenerator<FileProgress, void> {
     // location of CID file
@@ -84,7 +91,7 @@ async function* download(
     let transferred = 0n;
     const total = file.size;
     try {
-        for await (const chunk of file.content()) {
+        for await (const chunk of ipfs.cat(file.cid)) {
             stream.write(chunk);
             transferred += BigInt(chunk.length);
 
@@ -100,46 +107,42 @@ async function* download(
 }
 
 async function* recursive(
-    entry: UnixFSEntry,
-): AsyncGenerator<UnixFSFile | RawNode> {
-    switch (entry.type) {
+    ipfs: UnixFS,
+    cid: CID,
+    filePath: string,
+): AsyncGenerator<CARFile> {
+    const stat = await ipfs.stat(cid);
+    switch (stat.type) {
         case "file":
         case "raw":
-            yield entry;
+            yield { cid, path: filePath, size: stat.size };
             break;
         case "directory":
-            for await (const child of entry.content()) {
-                yield* recursive(child);
+            for await (const child of ipfs.ls(cid)) {
+                yield* recursive(ipfs, child.cid, `${filePath}/${child.name}`);
             }
-            break;
-        case "object":
-        case "identity":
-            // do nothing
             break;
     }
 }
 
 export interface CARFS {
-    ls: (cid: CID) => AsyncGenerator<UnixFSFile | RawNode>;
-    save: (
-        file: UnixFSFile | RawNode,
-        output: string,
-    ) => AsyncGenerator<FileProgress>;
+    ls: (cid: CID) => AsyncGenerator<CARFile>;
+    save: (file: CARFile, output: string) => AsyncGenerator<FileProgress>;
 }
 
 export const carfs = (ipfs: UnixFS): CARFS => ({
-    ls: async function* (cid: CID): AsyncGenerator<UnixFSFile | RawNode> {
+    ls: async function* (cid: CID): AsyncGenerator<CARFile> {
         for await (const entry of ipfs.ls(cid)) {
-            yield* recursive(entry);
+            yield* recursive(ipfs, entry.cid, entry.path);
         }
     },
 
     save: async function* (
-        file: UnixFSFile | RawNode,
+        file: CARFile,
         output: string,
     ): AsyncGenerator<FileProgress> {
         // download entry to CID file (if doesn't exist yet)
-        yield* download(file, output);
+        yield* download(ipfs, file, output);
 
         // link path to CID file
         link(file.path, file.cid, output);
