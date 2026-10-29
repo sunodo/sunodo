@@ -8,7 +8,7 @@ import {
     lightTheme,
 } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
-import { cartesi } from "@cartesi/viem/chains";
+import { cartesi } from "@cartesi/client/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
     arbitrum,

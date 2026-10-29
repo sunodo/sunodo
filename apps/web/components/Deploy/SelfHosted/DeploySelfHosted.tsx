@@ -26,14 +26,7 @@ import {
 } from "@tabler/icons-react";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
-import {
-    encodeFunctionData,
-    getAddress,
-    isAddress,
-    isHash,
-    zeroAddress,
-    zeroHash,
-} from "viem";
+import { getAddress, isAddress, isHash, zeroAddress, zeroHash } from "viem";
 import { generatePrivateKey } from "viem/accounts";
 import {
     arbitrum,
@@ -49,7 +42,6 @@ import {
 import { useAccount, useBytecode, useWaitForTransactionReceipt } from "wagmi";
 
 import {
-    dataAvailabilityAbi,
     inputBoxAddress,
     useReadErc20Symbol,
     useReadSelfHostedApplicationFactoryCalculateAddresses,
@@ -80,14 +72,6 @@ const defaultEpochLength = (chainId?: number) =>
     (chainId && epochLengths[chainId]) || 7200;
 
 const DEFAULT_CLAIM_STAGING_PERIOD = 0;
-
-// The application reads its inputs from the canonical InputBox. The factory expects
-// this choice ABI-encoded as a call to DataAvailability.InputBox(address).
-const dataAvailability = encodeFunctionData({
-    abi: dataAvailabilityAbi,
-    functionName: "InputBox",
-    args: [inputBoxAddress],
-});
 
 // A fixed salt is fine here: USD withdrawal output builders are stateless, so a given
 // token always maps to the same builder address. This lets anyone reuse a builder that
@@ -446,25 +430,24 @@ const DeploySelfHosted: FC<DeploySelfHostedProps> = (props) => {
         form.setFieldValue("epochLength", defaultEpochLength(chainId));
     }, [chainId]);
 
-    // assume application owner is connected account (user can transfer ownership afterwards)
-    const applicationOwner = address;
-
-    // flag to enable/disable deployment based on all required fields being filled
+    // flag to enable/disable deployment based on a connected deployer account
+    // and all required fields being filled
     const enabled =
+        !!address &&
         authorityOwner !== zeroAddress &&
-        !!applicationOwner &&
         templateHash !== zeroHash &&
         epochLength > 0n &&
         !deployed;
 
-    // deploy arguments shared by calculate/simulate/write
+    // deploy arguments shared by calculate/simulate/write.
+    // The application reads its inputs from the canonical InputBox, and is
+    // ownerless: the factory renounces its ownership right after deployment.
     const args = [
         authorityOwner,
         epochLength,
         claimStagingPeriod,
-        applicationOwner ?? zeroAddress,
         templateHash,
-        dataAvailability,
+        inputBoxAddress,
         withdrawalConfig,
         salt,
     ] as const;

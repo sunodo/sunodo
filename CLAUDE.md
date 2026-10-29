@@ -65,9 +65,9 @@ bun run codegen                 # wagmi generate -> regenerates src/contracts.ts
 
 ## Architecture notes
 
-- **Contract ABIs flow into the web app via codegen.** `apps/web/wagmi.config.ts` runs the wagmi CLI with the hardhat-deploy plugin pointed at `node_modules/@cartesi/devnet/export/abi`, generating typed hooks/config into `src/contracts.ts`. Regenerate with `bun run codegen` after ABI changes — do not hand-edit `src/contracts.ts`.
+- **Contract ABIs flow into the web app via codegen.** `apps/web/wagmi.config.ts` runs the wagmi CLI with the `rollupsContracts` plugin from `@cartesi/wagmi-plugin`, which downloads ABIs and deployment addresses from a rollups-contracts GitHub release (hash-verified, so codegen needs network access) and generates typed hooks/config into `src/contracts.ts`. Regenerate with `bun run codegen` after changing the plugin version or `include` list — do not hand-edit `src/contracts.ts`.
 - **Solidity contract domains** in `packages/contracts/contracts/`: `marketplace/`, `payment/` (Vault), `protocol/` (financial + machine protocol interfaces), `provider/` (NodeProvider). Interfaces are prefixed `I*.sol`.
-- The Vercel build (`vercel.json`) just runs `bun install` + the Next build — it does **not** need Foundry/Anvil. The web app gets contract ABIs/addresses from the `@cartesi/rollups` and `@cartesi/devnet` npm packages (committed into the generated `src/contracts.ts`), and has no dependency on the `@sunodo/contracts` workspace.
+- The Vercel build (`vercel.json`) just runs `bun install` + the Next build — it does **not** need Foundry/Anvil. The web app gets contract ABIs/addresses from codegen (committed into the generated `src/contracts.ts`) and the `cartesi` devnet chain from `@cartesi/client/chains`, and has no dependency on the `@sunodo/contracts` workspace.
 
 ## Conventions
 
