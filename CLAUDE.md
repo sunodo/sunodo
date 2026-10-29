@@ -18,7 +18,7 @@ Note: the README describes apps (`cli`, `sdk`, `devnet`) that no longer live in 
 
 ## Commands
 
-Package manager is **bun** (enforced via `only-allow bun` preinstall; Node >= 20). Workspaces and the shared dependency catalog are declared in the root `package.json` `workspaces` field; `@biomejs/biome` is pinned in the catalog and referenced as `catalog:`. Tasks are orchestrated by Turborepo from the repo root.
+Package manager is **bun**, pinned via `packageManager` (`bun@1.4.4`; CI reads it through `setup-bun`'s `bun-version-file`) and enforced via `only-allow bun` preinstall. Node >= 24 (root `engines`; Changesets v3 requires `^22.11 || ^24 || >=26`). Workspaces and the shared dependency catalog are declared in the root `package.json` `workspaces` field; `@biomejs/biome` is pinned in the catalog and referenced as `catalog:`. Tasks are orchestrated by Turborepo from the repo root.
 
 ```shell
 bun install             # install all workspaces
@@ -72,5 +72,5 @@ bun run codegen                 # wagmi generate -> regenerates src/contracts.ts
 ## Conventions
 
 - **Linting is Biome** (`biome.json`, recommended ruleset; formatter disabled there). **Formatting is Prettier** (`bun run format`). They are split: Biome lints, Prettier formats. Biome (v2) ignores `**/artifacts/**`, `**/dist/**`, and `**/*.svg` (static SVG assets — Biome 2.x lints `.svg` files by default, so they are excluded). Config is split: root `biome.json` is the base; `apps/web/biome.json` sets `"root": false` and `extends` it. A recent commit migrated linting from ESLint to Biome.
-- **Releases use Changesets.** Add a changeset for any package change (`bunx changeset`); merging to `main` triggers the release workflow which versions/publishes via the Changesets GitHub action. Publishing is `bun run publish-packages` (`changeset tag` + push tags). Private packages are still tagged/versioned (`privatePackages` config).
+- **Releases use Changesets.** Add a changeset for any package change (`bunx changeset`); merging to `main` triggers the release workflow, which versions/publishes via `changesets/action@v2` (requires Changesets CLI v3). Publishing is `bun run publish-packages` (`changeset git-tag`); the action pushes the tags and creates GitHub releases from the `CHANGESETS_OUTPUT` file, and the `contracts`/`car-sync` workflows then `bun publish` to npm. Private packages are still tagged/versioned (`privatePackages` config).
 - CI on PRs runs only `bun run lint` (`.github/workflows/lint.yaml`); contracts and car-sync have their own workflows.
