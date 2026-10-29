@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 /// @title Marketplace interface
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.30;
 
-import {IConsensus} from "@cartesi/rollups/contracts/consensus/IConsensus.sol";
+import {IConsensus} from "@cartesi/rollups/src/consensus/IConsensus.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 import {IReaderNodeProvider, IValidatorNodeProvider} from "../provider/INodeProvider.sol";

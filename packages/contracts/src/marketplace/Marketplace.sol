@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 /// @title Marketplace
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.30;
 
-import {ICartesiDAppFactory} from "@cartesi/rollups/contracts/dapp/ICartesiDAppFactory.sol";
-import {IConsensus} from "@cartesi/rollups/contracts/consensus/IConsensus.sol";
+import {IConsensus} from "@cartesi/rollups/src/consensus/IConsensus.sol";
+import {IApplicationFactory} from "@cartesi/rollups/src/dapp/IApplicationFactory.sol";
+import {IInputBox} from "@cartesi/rollups/src/inputs/IInputBox.sol";
 import {ENS} from "@ensdomains/ens-contracts/contracts/registry/ENS.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
@@ -16,11 +17,13 @@ import {Vault} from "../payment/Vault.sol";
 /// @notice Factory for creating new ERC20 based providers
 contract Marketplace is IMarketplace {
     ENS public immutable ens;
-    ICartesiDAppFactory public immutable factory;
+    IApplicationFactory public immutable factory;
+    IInputBox public immutable inputBox;
 
-    constructor(ENS _ens, ICartesiDAppFactory _factory) {
+    constructor(ENS _ens, IApplicationFactory _factory, IInputBox _inputBox) {
         ens = _ens;
         factory = _factory;
+        inputBox = _inputBox;
     }
 
     /// @notice Create a new ERC20 based ValidatorNodeProvider using the specified token
@@ -32,7 +35,7 @@ contract Marketplace is IMarketplace {
 
         // create factory using that token
         ValidatorNodeProvider provider =
-            new ValidatorNodeProvider(owner, ens, _token, _payee, _price, factory, _consensus);
+            new ValidatorNodeProvider(owner, ens, _token, _payee, _price, factory, _consensus, inputBox);
 
         // emit event
         emit ValidatorNodeProviderCreated(provider, _consensus, _token, _payee, _price);

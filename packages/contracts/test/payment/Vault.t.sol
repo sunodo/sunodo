@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.30;
 
-import {ICartesiDApp} from "@cartesi/rollups/contracts/dapp/ICartesiDApp.sol";
+import {IApplication} from "@cartesi/rollups/src/dapp/IApplication.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {IERC20Errors} from "@openzeppelin/contracts/interfaces/draft-IERC6093.sol";
+import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
 import {Test} from "forge-std/Test.sol";
 
 import {Vault} from "../../src/payment/Vault.sol";
@@ -16,7 +19,7 @@ contract VaultTest is Test {
     address owner = makeAddr("owner");
     address payee = makeAddr("payee");
     address user = makeAddr("user");
-    ICartesiDApp application = ICartesiDApp(makeAddr("application"));
+    IApplication application = IApplication(makeAddr("application"));
 
     ERC20Mock token;
     Vault vault;
@@ -88,7 +91,9 @@ contract VaultTest is Test {
     function test_RevertWhen_ExtendRunwayWithoutAllowance() public {
         token.mint(user, vault.cost(100));
 
-        vm.expectRevert("ERC20: insufficient allowance");
+        vm.expectRevert(
+            abi.encodeWithSelector(IERC20Errors.ERC20InsufficientAllowance.selector, address(vault), 0, vault.cost(100))
+        );
         vm.prank(user);
         vault.extendRunway(application, 100);
     }
@@ -98,7 +103,7 @@ contract VaultTest is Test {
         vm.prank(owner);
         vault.pause();
 
-        vm.expectRevert("Pausable: paused");
+        vm.expectRevert(Pausable.EnforcedPause.selector);
         vm.prank(user);
         vault.extendRunway(application, 100);
     }
@@ -116,7 +121,7 @@ contract VaultTest is Test {
     }
 
     function test_RevertWhen_PauseNotOwner() public {
-        vm.expectRevert("Ownable: caller is not the owner");
+        vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, user));
         vm.prank(user);
         vault.pause();
     }
@@ -125,7 +130,7 @@ contract VaultTest is Test {
         vm.prank(owner);
         vault.pause();
 
-        vm.expectRevert("Ownable: caller is not the owner");
+        vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, user));
         vm.prank(user);
         vault.unpause();
     }

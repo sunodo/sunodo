@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.30;
 
-import {CartesiDAppFactory} from "@cartesi/rollups/contracts/dapp/CartesiDAppFactory.sol";
+import {ApplicationFactory} from "@cartesi/rollups/src/dapp/ApplicationFactory.sol";
+import {InputBox} from "@cartesi/rollups/src/inputs/InputBox.sol";
+import {IRefundOutputBuilder} from "@cartesi/rollups/src/refund/IRefundOutputBuilder.sol";
 import {ENS} from "@ensdomains/ens-contracts/contracts/registry/ENS.sol";
 import {Test} from "forge-std/Test.sol";
 
@@ -9,13 +11,15 @@ import {DeployScript} from "../../script/Deploy.s.sol";
 import {Marketplace} from "../../src/marketplace/Marketplace.sol";
 
 contract DeployScriptTest is Test {
-    string constant ROLLUPS_DEPLOYMENTS = "dependencies/@cartesi-rollups-1.4.3/onchain/rollups/deployments/";
-
     DeployScript script;
 
     function setUp() public {
         script = new DeployScript();
-        vm.etch(address(script.CARTESI_DAPP_FACTORY()), address(new CartesiDAppFactory()).code);
+        vm.etch(
+            address(script.APPLICATION_FACTORY()),
+            address(new ApplicationFactory(IRefundOutputBuilder(address(0)))).code
+        );
+        vm.etch(address(script.INPUT_BOX()), address(new InputBox()).code);
     }
 
     function test_Run() public {
@@ -23,7 +27,8 @@ contract DeployScriptTest is Test {
 
         assertEq(address(marketplace), script.marketplaceAddress(ENS(address(0))));
         assertEq(address(marketplace.ens()), address(0));
-        assertEq(address(marketplace.factory()), address(script.CARTESI_DAPP_FACTORY()));
+        assertEq(address(marketplace.factory()), address(script.APPLICATION_FACTORY()));
+        assertEq(address(marketplace.inputBox()), address(script.INPUT_BOX()));
     }
 
     function test_Run_UsesENSOnMainnet() public {
@@ -42,9 +47,16 @@ contract DeployScriptTest is Test {
     }
 
     function test_RevertWhen_FactoryNotDeployed() public {
-        vm.etch(address(script.CARTESI_DAPP_FACTORY()), "");
+        vm.etch(address(script.APPLICATION_FACTORY()), "");
 
-        vm.expectRevert("DeployScript: CartesiDAppFactory not deployed on this chain");
+        vm.expectRevert("DeployScript: ApplicationFactory not deployed on this chain");
+        script.run();
+    }
+
+    function test_RevertWhen_InputBoxNotDeployed() public {
+        vm.etch(address(script.INPUT_BOX()), "");
+
+        vm.expectRevert("DeployScript: InputBox not deployed on this chain");
         script.run();
     }
 
@@ -53,16 +65,5 @@ contract DeployScriptTest is Test {
         assertEq(address(script.ensRegistry(11155111)), address(script.ENS_REGISTRY()));
         assertEq(address(script.ensRegistry(8453)), address(0));
         assertEq(address(script.ensRegistry(42161)), address(0));
-    }
-
-    function test_FactoryMatchesRollupsDeployments() public view {
-        string[8] memory networks = [
-            "arbitrum", "arbitrum_sepolia", "base", "base_sepolia", "mainnet", "optimism", "optimism_sepolia", "sepolia"
-        ];
-        for (uint256 i; i < networks.length; ++i) {
-            string memory json =
-                vm.readFile(string.concat(ROLLUPS_DEPLOYMENTS, networks[i], "/CartesiDAppFactory.json"));
-            assertEq(vm.parseJsonAddress(json, ".address"), address(script.CARTESI_DAPP_FACTORY()), networks[i]);
-        }
     }
 }

@@ -1,18 +1,6 @@
 version = 2
 
 [[dependencies]]
-name = "@cartesi-rollups"
-version = "1.4.3"
-git = "https://github.com/cartesi/rollups-contracts.git"
-rev = "3eda360077fa91fdcf1402b8967628914599c0b0"
-
-[[dependencies]]
-name = "@cartesi-util"
-version = "6.3.0"
-git = "https://github.com/cartesi/solidity-util.git"
-rev = "7fdd7d7547da79fb99ff8fb6b2a2843d91fb8276"
-
-[[dependencies]]
 name = "@ensdomains-ens-contracts"
 version = "1.1.4"
 git = "https://github.com/ensdomains/ens-contracts.git"
@@ -20,10 +8,23 @@ rev = "160919f5612e52347f016a537c6278ecc0f2325a"
 
 [[dependencies]]
 name = "@openzeppelin-contracts"
-version = "4.9.3"
-url = "https://soldeer-revisions.s3.amazonaws.com/@openzeppelin-contracts/4_9_3_22-01-2024_13:13:53_contracts.zip"
-checksum = "95886307069cf73310b41396c49df51801a73f31f18f62e7d05adfc2031e7725"
-integrity = "6daa959732c1bceabda7f2823d1baa097b96509b48db78cb2e3ddd38bd4fd030"
+version = "5.2.0"
+url = "https://soldeer-revisions.s3.amazonaws.com/@openzeppelin-contracts/5_2_0_11-01-2025_09:30:20_contracts.zip"
+checksum = "6dbd0440446b2ed16ca25e9f1af08fc0c5c1e73e71fee86ae8a00daa774e3817"
+integrity = "4cb7f3777f67fdf4b7d0e2f94d2f93f198b2e5dce718b7062ac7c2c83e1183bd"
+
+[[dependencies]]
+name = "cartesi-machine-solidity-step"
+version = "0.15.0"
+git = "https://github.com/cartesi/machine-solidity-step.git"
+rev = "23765c8841103912755bb3d80952c2a8e1adf4d3"
+
+[[dependencies]]
+name = "cartesi-rollups-contracts"
+version = "3.0.0-alpha.10"
+url = "https://soldeer-revisions.s3.amazonaws.com/cartesi-rollups-contracts/3_0_0-alpha_10_31-08-2026_14:12:15_rollups-contracts.zip"
+checksum = "59f53310976c298e41488d2375a71d37627263ebf1287345fd95f3fd9263570f"
+integrity = "31c332603ca7fd27a4a849e8b126b0cf4c3fd784499f9d4935dce6b9565ac878"
 
 [[dependencies]]
 name = "forge-std"

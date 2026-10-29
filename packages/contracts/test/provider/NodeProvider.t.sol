@@ -1,16 +1,19 @@
 // SPDX-License-Identifier: Apache-2.0
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.30;
 
-import {Authority} from "@cartesi/rollups/contracts/consensus/authority/Authority.sol";
-import {CartesiDApp} from "@cartesi/rollups/contracts/dapp/CartesiDApp.sol";
-import {CartesiDAppFactory} from "@cartesi/rollups/contracts/dapp/CartesiDAppFactory.sol";
-import {ICartesiDApp} from "@cartesi/rollups/contracts/dapp/ICartesiDApp.sol";
+import {WithdrawalConfig} from "@cartesi/rollups/src/common/WithdrawalConfig.sol";
+import {Authority} from "@cartesi/rollups/src/consensus/authority/Authority.sol";
+import {ApplicationFactory} from "@cartesi/rollups/src/dapp/ApplicationFactory.sol";
+import {IApplication} from "@cartesi/rollups/src/dapp/IApplication.sol";
+import {InputBox} from "@cartesi/rollups/src/inputs/InputBox.sol";
+import {IRefundOutputBuilder} from "@cartesi/rollups/src/refund/IRefundOutputBuilder.sol";
 import {ENS} from "@ensdomains/ens-contracts/contracts/registry/ENS.sol";
-import {ADDR_REVERSE_NODE} from "@ensdomains/ens-contracts/contracts/reverseRegistrar/ReverseRegistrar.sol";
 import {IReverseRegistrar} from "@ensdomains/ens-contracts/contracts/reverseRegistrar/IReverseRegistrar.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
 import {Test} from "forge-std/Test.sol";
 
-import {ReaderNodeProvider, ValidatorNodeProvider} from "../../src/provider/NodeProvider.sol";
+import {ADDR_REVERSE_NODE, ReaderNodeProvider, ValidatorNodeProvider} from "../../src/provider/NodeProvider.sol";
 import {ERC20Mock} from "../mocks/ERC20Mock.sol";
 
 abstract contract NodeProviderTest is Test {
@@ -60,7 +63,7 @@ contract ReaderNodeProviderTest is NodeProviderTest {
     }
 
     function test_Register() public {
-        ICartesiDApp application = ICartesiDApp(makeAddr("application"));
+        IApplication application = IApplication(makeAddr("application"));
 
         vm.expectEmit(address(provider));
         emit MachineLocation(address(application), LOCATION);
@@ -77,7 +80,7 @@ contract ReaderNodeProviderTest is NodeProviderTest {
     }
 
     function test_RevertWhen_SetNameNotOwner() public {
-        vm.expectRevert("Ownable: caller is not the owner");
+        vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, user));
         vm.prank(user);
         provider.setName("provider.eth");
     }
@@ -87,18 +90,23 @@ contract ValidatorNodeProviderTest is NodeProviderTest {
     bytes32 constant TEMPLATE_HASH = keccak256("template");
     bytes32 constant SALT = keccak256("salt");
     uint256 constant RUNWAY = 1 days;
+    uint256 constant EPOCH_LENGTH = 720;
 
     address applicationOwner = makeAddr("applicationOwner");
+    WithdrawalConfig withdrawalConfig;
 
-    CartesiDAppFactory factory;
+    ApplicationFactory factory;
     Authority consensus;
+    InputBox inputBox;
     ValidatorNodeProvider provider;
 
     function setUp() public override {
         super.setUp();
-        factory = new CartesiDAppFactory();
-        consensus = new Authority(makeAddr("authority"));
-        provider = new ValidatorNodeProvider(owner, ens, token, payee, PRICE, factory, consensus);
+        factory = new ApplicationFactory(IRefundOutputBuilder(address(0)));
+        consensus = new Authority(makeAddr("authority"), EPOCH_LENGTH, 0);
+        inputBox = new InputBox();
+        withdrawalConfig.guardian = makeAddr("guardian");
+        provider = new ValidatorNodeProvider(owner, ens, token, payee, PRICE, factory, consensus, inputBox);
     }
 
     function _fund(address account, uint256 time) internal {
@@ -112,18 +120,21 @@ contract ValidatorNodeProviderTest is NodeProviderTest {
         assertEq(provider.owner(), owner);
         assertEq(address(provider.factory()), address(factory));
         assertEq(address(provider.consensus()), address(consensus));
+        assertEq(address(provider.inputBox()), address(inputBox));
     }
 
     function test_CalculateApplicationAddress() public view {
         assertEq(
-            provider.calculateApplicationAddress(applicationOwner, TEMPLATE_HASH, SALT),
-            factory.calculateApplicationAddress(consensus, applicationOwner, TEMPLATE_HASH, SALT)
+            provider.calculateApplicationAddress(applicationOwner, TEMPLATE_HASH, withdrawalConfig, SALT),
+            factory.calculateApplicationAddress(
+                consensus, applicationOwner, TEMPLATE_HASH, inputBox, withdrawalConfig, SALT
+            )
         );
     }
 
     function test_Deploy() public {
         _fund(user, RUNWAY);
-        address expected = provider.calculateApplicationAddress(applicationOwner, TEMPLATE_HASH, SALT);
+        address expected = provider.calculateApplicationAddress(applicationOwner, TEMPLATE_HASH, withdrawalConfig, SALT);
 
         vm.expectEmit(address(provider));
         emit MachineLocation(expected, LOCATION);
@@ -131,12 +142,15 @@ contract ValidatorNodeProviderTest is NodeProviderTest {
         emit FinancialRunway(expected, START + RUNWAY);
 
         vm.prank(user);
-        CartesiDApp application = provider.deploy(applicationOwner, TEMPLATE_HASH, LOCATION, RUNWAY, SALT);
+        IApplication application =
+            provider.deploy(applicationOwner, TEMPLATE_HASH, withdrawalConfig, LOCATION, RUNWAY, SALT);
 
         assertEq(address(application), expected);
         assertEq(application.owner(), applicationOwner);
         assertEq(application.getTemplateHash(), TEMPLATE_HASH);
-        assertEq(address(application.getConsensus()), address(consensus));
+        assertEq(address(application.getOutputsMerkleRootValidator()), address(consensus));
+        assertEq(address(application.getInputBox()), address(inputBox));
+        assertEq(application.getGuardian(), withdrawalConfig.guardian);
         assertEq(provider.runway(application), START + RUNWAY);
         assertEq(token.balanceOf(payee), provider.cost(RUNWAY));
     }
@@ -146,13 +160,14 @@ contract ValidatorNodeProviderTest is NodeProviderTest {
         vm.prank(owner);
         provider.pause();
 
-        vm.expectRevert("Pausable: paused");
+        vm.expectRevert(Pausable.EnforcedPause.selector);
         vm.prank(user);
-        provider.deploy(applicationOwner, TEMPLATE_HASH, LOCATION, RUNWAY, SALT);
+        provider.deploy(applicationOwner, TEMPLATE_HASH, withdrawalConfig, LOCATION, RUNWAY, SALT);
     }
 
     function test_Register() public {
-        CartesiDApp application = factory.newApplication(consensus, applicationOwner, TEMPLATE_HASH);
+        IApplication application =
+            factory.newApplication(consensus, applicationOwner, TEMPLATE_HASH, inputBox, withdrawalConfig);
 
         vm.expectEmit(address(provider));
         emit MachineLocation(address(application), LOCATION);
@@ -162,8 +177,9 @@ contract ValidatorNodeProviderTest is NodeProviderTest {
     }
 
     function test_RevertWhen_RegisterWithWrongConsensus() public {
-        Authority otherConsensus = new Authority(makeAddr("otherAuthority"));
-        CartesiDApp application = factory.newApplication(otherConsensus, applicationOwner, TEMPLATE_HASH);
+        Authority otherConsensus = new Authority(makeAddr("otherAuthority"), EPOCH_LENGTH, 0);
+        IApplication application =
+            factory.newApplication(otherConsensus, applicationOwner, TEMPLATE_HASH, inputBox, withdrawalConfig);
 
         vm.expectRevert("ValidatorNodeProvider: wrong consensus");
         provider.register(application, LOCATION);
