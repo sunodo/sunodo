@@ -45,6 +45,10 @@ jobs:
             - name: Build
               run: bunx turbo run build --filter=@sunodo/car-sync
 
+            - name: Test
+              working-directory: ./packages/car-sync
+              run: bunx vitest run
+
             - name: Publish
               if: ${{ inputs.release }}
               working-directory: ./packages/car-sync

@@ -11,6 +11,21 @@ import ora from "ora";
 // helia is causing MaxListenersExceededWarning, increase number here (default is 10)
 events.EventEmitter.defaultMaxListeners = 100;
 
+// @helia/delegated-routing-v1-http-api-client cancels the response body of aborted
+// provider lookups while it is still being read, which rejects with "ReadableStream
+// is locked" and nobody handles it. Ignore that rejection only, fail on any other.
+process.on("unhandledRejection", (reason) => {
+    if (
+        reason instanceof TypeError &&
+        "code" in reason &&
+        reason.code === "ERR_INVALID_STATE" &&
+        reason.message.includes("ReadableStream is locked")
+    ) {
+        return;
+    }
+    throw reason;
+});
+
 import { carfs, text } from "./index.js";
 
 program
