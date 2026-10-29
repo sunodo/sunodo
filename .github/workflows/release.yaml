@@ -16,7 +16,7 @@ jobs:
         runs-on: ubuntu-latest
         outputs:
             published: ${{ steps.changeset.outputs.published }}
-            publishedPackages: ${{ steps.changeset.outputs.publishedPackages }}
+            publishedPackages: ${{ steps.changeset.outputs.published-packages }}
         steps:
             - name: Checkout Repo
               uses: actions/checkout@v4
@@ -24,10 +24,12 @@ jobs:
                   fetch-depth: 0
 
             - uses: oven-sh/setup-bun@v2
-            - name: Setup Node.js 20
+              with:
+                  bun-version-file: package.json
+            - name: Setup Node.js 24
               uses: actions/setup-node@v4
               with:
-                  node-version: 20
+                  node-version: 24
                   registry-url: "https://registry.npmjs.org"
 
             - name: Install Foundry
@@ -38,12 +40,10 @@ jobs:
 
             - name: Create Release Pull Request
               id: changeset
-              uses: changesets/action@v1
+              uses: changesets/action@v2
               with:
-                  commit: "release: version packages"
-                  publish: bun run publish-packages
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  commit-message: "release: version packages"
+                  publish-script: bun run publish-packages
 
     packages_to_build:
         name: Get released packages

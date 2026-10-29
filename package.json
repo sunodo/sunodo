@@ -15,11 +15,11 @@
         "dev": "turbo run dev --parallel",
         "format": "prettier --write \"**/*.{cjs,css,json,md,mjs,ts,tsx}\"",
         "lint": "turbo run lint",
-        "publish-packages": "bunx changeset tag && git push --follow-tags",
+        "publish-packages": "changeset git-tag",
         "preinstall": "npx only-allow bun"
     },
     "devDependencies": {
-        "@changesets/cli": "^2.27.9",
+        "@changesets/cli": "^3.0.3",
         "globals": "^17",
         "prettier": "^3.5.3",
         "turbo": "^2.5.4"
@@ -27,5 +27,5 @@
     "engines": {
         "node": ">=24.0.0"
     },
-    "packageManager": "bun@1.3.12"
+    "packageManager": "bun@1.4.4"
 }
