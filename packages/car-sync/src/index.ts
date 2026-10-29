@@ -2,7 +2,7 @@ import type { UnixFS } from "@helia/unixfs";
 import { MemoryBlockstore } from "blockstore-core/memory";
 import chalk from "chalk";
 import fs from "fs-extra";
-import { importer } from "ipfs-unixfs-importer";
+import { type ImporterOptions, importer } from "ipfs-unixfs-importer";
 import type { CID } from "multiformats/cid";
 import { once } from "node:events";
 import path from "node:path";
@@ -43,18 +43,41 @@ export const text = (progress: FileProgress): string => {
     return `${text} ${chalk.dim(suffixText)}`;
 };
 
-const calculateCID = async (filename: string): Promise<CID | undefined> => {
+// Importer options that may have produced a file CID (see IPIP-499 profiles).
+// CIDv0 content comes from kubo's legacy defaults, CIDv1 content from the
+// importer defaults or the 2025 profile (1 MiB chunks, also the @helia/unixfs
+// defaults).
+const importerOptions = (cid: CID): ImporterOptions[] =>
+    cid.version === 0
+        ? [{ profile: "unixfs-v0-2015" }]
+        : [{}, { profile: "unixfs-v1-2025" }];
+
+const calculateCID = async (
+    filename: string,
+    options: ImporterOptions,
+): Promise<CID | undefined> => {
     const stream = fs.createReadStream(filename);
     const blockstore = new MemoryBlockstore();
     let firstCid: CID | undefined = undefined;
     for await (const { cid } of importer(
         [{ path: filename, content: stream }],
         blockstore,
+        options,
     )) {
         firstCid = firstCid || cid;
     }
     stream.close();
     return firstCid;
+};
+
+// check if a file content matches a CID
+const verify = async (filename: string, cid: CID): Promise<boolean> => {
+    for (const options of importerOptions(cid)) {
+        if (cid.equals(await calculateCID(filename, options))) {
+            return true;
+        }
+    }
+    return false;
 };
 
 const link = (filename: string, cid: CID, output: string) => {
@@ -73,8 +96,7 @@ async function* download(
 
     if (fs.existsSync(filename)) {
         // verify file integrity
-        const cid = await calculateCID(filename);
-        if (!file.cid.equals(cid)) {
+        if (!(await verify(filename, file.cid))) {
             // file is corrupted, delete it before continuing
             fs.rmSync(filename);
         } else {

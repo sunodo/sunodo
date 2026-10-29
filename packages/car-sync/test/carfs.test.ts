@@ -1,6 +1,8 @@
 import { globSource, unixfs } from "@helia/unixfs";
 import { MemoryBlockstore } from "blockstore-core/memory";
+import { type ImporterOptions, importer } from "ipfs-unixfs-importer";
 import type { CID } from "multiformats/cid";
+import { randomBytes } from "node:crypto";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -15,14 +17,20 @@ const dataFiles = (fs.readdirSync(DATA, { recursive: true }) as string[])
     .filter((f) => fs.statSync(path.join(DATA, f)).isFile())
     .sort();
 
-// import test/data into an in-memory blockstore, returning the root directory CID
-const importData = async () => {
+// import a directory into an in-memory blockstore, returning the root directory CID.
+// Without options it uses the @helia/unixfs defaults, otherwise the importer with
+// the given options (@helia/unixfs defaults would take precedence over a profile).
+const importData = async (dir = DATA, options?: ImporterOptions) => {
     const blockstore = new MemoryBlockstore();
     const ufs = unixfs({ blockstore });
+    const entries = options
+        ? importer(globSource(dir, "**/*"), blockstore, {
+              ...options,
+              wrapWithDirectory: true,
+          })
+        : ufs.addAll(globSource(dir, "**/*"), { wrapWithDirectory: true });
     let root: CID | undefined;
-    for await (const entry of ufs.addAll(globSource(DATA, "**/*"), {
-        wrapWithDirectory: true,
-    })) {
+    for await (const entry of entries) {
         root = entry.cid;
     }
     if (!root) throw new Error("nothing imported");
@@ -136,5 +144,42 @@ describe("carfs", () => {
         expect(fs.readFileSync(cidFile)).toEqual(
             fs.readFileSync(path.join(DATA, relative(first.file.path))),
         );
+    });
+});
+
+// content imported with @helia/unixfs or importer defaults, or a CID profile
+// (IPIP-499), including a 3 MB file that spans multiple chunks in every case
+describe.each<[string, ImporterOptions | undefined, number]>([
+    ["@helia/unixfs defaults", undefined, 1],
+    ["importer defaults", {}, 1],
+    ["unixfs-v0-2015 profile", { profile: "unixfs-v0-2015" }, 0],
+    ["unixfs-v1-2025 profile", { profile: "unixfs-v1-2025" }, 1],
+])("cache of content imported with %s", (_, options, cidVersion) => {
+    let source: string;
+    let output: string;
+
+    beforeEach(() => {
+        source = fs.mkdtempSync(path.join(os.tmpdir(), "car-sync-src-"));
+        output = fs.mkdtempSync(path.join(os.tmpdir(), "car-sync-"));
+        fs.cpSync(DATA, source, { recursive: true });
+        fs.writeFileSync(path.join(source, "large"), randomBytes(3_000_000));
+    });
+
+    afterEach(() => {
+        fs.rmSync(source, { recursive: true, force: true });
+        fs.rmSync(output, { recursive: true, force: true });
+    });
+
+    test("skips files already downloaded", async () => {
+        const { car, root } = await importData(source, options);
+        expect(root.version).toBe(cidVersion);
+        await sync(car, root, output);
+
+        const results = await sync(car, root, output);
+        expect(results).toHaveLength(dataFiles.length + 1);
+        for (const { file, status } of results) {
+            expect(file.cid.version).toBe(cidVersion);
+            expect(status).toBe("cached");
+        }
     });
 });
