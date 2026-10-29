@@ -1,148 +1,12 @@
 import {
+    createUseReadContract,
     createUseWriteContract,
     createUseSimulateContract,
-    createUseReadContract,
     createUseWatchContractEvent,
 } from 'wagmi/codegen'
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// dataAvailability
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-export const dataAvailabilityAbi = [
-    {
-        type: 'function',
-        inputs: [
-            {
-                name: 'inputBox',
-                internalType: 'contract IInputBox',
-                type: 'address',
-            },
-        ],
-        name: 'InputBox',
-        outputs: [],
-        stateMutability: 'nonpayable',
-    },
-    {
-        type: 'function',
-        inputs: [
-            {
-                name: 'inputBox',
-                internalType: 'contract IInputBox',
-                type: 'address',
-            },
-            { name: 'fromBlock', internalType: 'uint256', type: 'uint256' },
-            { name: 'namespaceId', internalType: 'uint32', type: 'uint32' },
-        ],
-        name: 'InputBoxAndEspresso',
-        outputs: [],
-        stateMutability: 'nonpayable',
-    },
-] as const
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// erc20
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-export const erc20Abi = [
-    {
-        type: 'event',
-        inputs: [
-            { name: 'owner', type: 'address', indexed: true },
-            { name: 'spender', type: 'address', indexed: true },
-            { name: 'value', type: 'uint256', indexed: false },
-        ],
-        name: 'Approval',
-    },
-    {
-        type: 'event',
-        inputs: [
-            { name: 'from', type: 'address', indexed: true },
-            { name: 'to', type: 'address', indexed: true },
-            { name: 'value', type: 'uint256', indexed: false },
-        ],
-        name: 'Transfer',
-    },
-    {
-        type: 'function',
-        inputs: [
-            { name: 'owner', type: 'address' },
-            { name: 'spender', type: 'address' },
-        ],
-        name: 'allowance',
-        outputs: [{ type: 'uint256' }],
-        stateMutability: 'view',
-    },
-    {
-        type: 'function',
-        inputs: [
-            { name: 'spender', type: 'address' },
-            { name: 'amount', type: 'uint256' },
-        ],
-        name: 'approve',
-        outputs: [{ type: 'bool' }],
-        stateMutability: 'nonpayable',
-    },
-    {
-        type: 'function',
-        inputs: [{ name: 'account', type: 'address' }],
-        name: 'balanceOf',
-        outputs: [{ type: 'uint256' }],
-        stateMutability: 'view',
-    },
-    {
-        type: 'function',
-        inputs: [],
-        name: 'decimals',
-        outputs: [{ type: 'uint8' }],
-        stateMutability: 'view',
-    },
-    {
-        type: 'function',
-        inputs: [],
-        name: 'name',
-        outputs: [{ type: 'string' }],
-        stateMutability: 'view',
-    },
-    {
-        type: 'function',
-        inputs: [],
-        name: 'symbol',
-        outputs: [{ type: 'string' }],
-        stateMutability: 'view',
-    },
-    {
-        type: 'function',
-        inputs: [],
-        name: 'totalSupply',
-        outputs: [{ type: 'uint256' }],
-        stateMutability: 'view',
-    },
-    {
-        type: 'function',
-        inputs: [
-            { name: 'recipient', type: 'address' },
-            { name: 'amount', type: 'uint256' },
-        ],
-        name: 'transfer',
-        outputs: [{ type: 'bool' }],
-        stateMutability: 'nonpayable',
-    },
-    {
-        type: 'function',
-        inputs: [
-            { name: 'sender', type: 'address' },
-            { name: 'recipient', type: 'address' },
-            { name: 'amount', type: 'uint256' },
-        ],
-        name: 'transferFrom',
-        outputs: [{ type: 'bool' }],
-        stateMutability: 'nonpayable',
-    },
-] as const
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// inputBox
+// InputBox
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export const inputBoxAbi = [
@@ -255,6 +119,13 @@ export const inputBoxAbi = [
     {
         type: 'error',
         inputs: [
+            { name: 'inputBox', internalType: 'address', type: 'address' },
+        ],
+        name: 'InputBoxNotDeployed',
+    },
+    {
+        type: 'error',
+        inputs: [
             { name: 'appContract', internalType: 'address', type: 'address' },
             { name: 'inputLength', internalType: 'uint256', type: 'uint256' },
             {
@@ -268,7 +139,7 @@ export const inputBoxAbi = [
 ] as const
 
 export const inputBoxAddress =
-    '0x346B3df038FE9f8380071eC6514D5a83aD143939' as const
+    '0xEbE9f4Dfc04ae10bBeE663859c3dc5A23f94eA3C' as const
 
 export const inputBoxConfig = {
     address: inputBoxAddress,
@@ -276,7 +147,7 @@ export const inputBoxConfig = {
 } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// selfHostedApplicationFactory
+// SelfHostedApplicationFactory
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export const selfHostedApplicationFactoryAbi = [
@@ -310,9 +181,12 @@ export const selfHostedApplicationFactoryAbi = [
                 internalType: 'uint256',
                 type: 'uint256',
             },
-            { name: 'appOwner', internalType: 'address', type: 'address' },
             { name: 'templateHash', internalType: 'bytes32', type: 'bytes32' },
-            { name: 'dataAvailability', internalType: 'bytes', type: 'bytes' },
+            {
+                name: 'inputBox',
+                internalType: 'contract IInputBox',
+                type: 'address',
+            },
             {
                 name: 'withdrawalConfig',
                 internalType: 'struct WithdrawalConfig',
@@ -368,9 +242,12 @@ export const selfHostedApplicationFactoryAbi = [
                 internalType: 'uint256',
                 type: 'uint256',
             },
-            { name: 'appOwner', internalType: 'address', type: 'address' },
             { name: 'templateHash', internalType: 'bytes32', type: 'bytes32' },
-            { name: 'dataAvailability', internalType: 'bytes', type: 'bytes' },
+            {
+                name: 'inputBox',
+                internalType: 'contract IInputBox',
+                type: 'address',
+            },
             {
                 name: 'withdrawalConfig',
                 internalType: 'struct WithdrawalConfig',
@@ -501,7 +378,7 @@ export const selfHostedApplicationFactoryAbi = [
 ] as const
 
 export const selfHostedApplicationFactoryAddress =
-    '0x6145C5996a71a379E030aEb0440df79D60833418' as const
+    '0x9e6866A965dC5f99f95EF6B0d8399dad18eEf98b' as const
 
 export const selfHostedApplicationFactoryConfig = {
     address: selfHostedApplicationFactoryAddress,
@@ -509,7 +386,7 @@ export const selfHostedApplicationFactoryConfig = {
 } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// usdWithdrawalOutputBuilderFactory
+// UsdWithdrawalOutputBuilderFactory
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export const usdWithdrawalOutputBuilderFactoryAbi = [
@@ -518,7 +395,7 @@ export const usdWithdrawalOutputBuilderFactoryAbi = [
         inputs: [
             {
                 name: 'safeErc20Transfer',
-                internalType: 'contract ISafeERC20Transfer',
+                internalType: 'contract ISafeErc20Transfer',
                 type: 'address',
             },
         ],
@@ -547,7 +424,7 @@ export const usdWithdrawalOutputBuilderFactoryAbi = [
         outputs: [
             {
                 name: 'safeErc20Transfer',
-                internalType: 'contract ISafeERC20Transfer',
+                internalType: 'contract ISafeErc20Transfer',
                 type: 'address',
             },
         ],
@@ -598,7 +475,7 @@ export const usdWithdrawalOutputBuilderFactoryAbi = [
 ] as const
 
 export const usdWithdrawalOutputBuilderFactoryAddress =
-    '0xdB4EC04a2792A04cF7421f99A70F624681dd8e50' as const
+    '0x60b8b3c0AecEb193755038fa9372FfE910E63e39' as const
 
 export const usdWithdrawalOutputBuilderFactoryConfig = {
     address: usdWithdrawalOutputBuilderFactoryAddress,
@@ -606,199 +483,109 @@ export const usdWithdrawalOutputBuilderFactoryConfig = {
 } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// React
+// erc20
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link dataAvailabilityAbi}__
- */
-export const useWriteDataAvailability = /*#__PURE__*/ createUseWriteContract({
-    abi: dataAvailabilityAbi,
-})
+export const erc20Abi = [
+    {
+        type: 'event',
+        inputs: [
+            { name: 'owner', type: 'address', indexed: true },
+            { name: 'spender', type: 'address', indexed: true },
+            { name: 'value', type: 'uint256', indexed: false },
+        ],
+        name: 'Approval',
+    },
+    {
+        type: 'event',
+        inputs: [
+            { name: 'from', type: 'address', indexed: true },
+            { name: 'to', type: 'address', indexed: true },
+            { name: 'value', type: 'uint256', indexed: false },
+        ],
+        name: 'Transfer',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'owner', type: 'address' },
+            { name: 'spender', type: 'address' },
+        ],
+        name: 'allowance',
+        outputs: [{ type: 'uint256' }],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'spender', type: 'address' },
+            { name: 'amount', type: 'uint256' },
+        ],
+        name: 'approve',
+        outputs: [{ type: 'bool' }],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [{ name: 'account', type: 'address' }],
+        name: 'balanceOf',
+        outputs: [{ type: 'uint256' }],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [],
+        name: 'decimals',
+        outputs: [{ type: 'uint8' }],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [],
+        name: 'name',
+        outputs: [{ type: 'string' }],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [],
+        name: 'symbol',
+        outputs: [{ type: 'string' }],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [],
+        name: 'totalSupply',
+        outputs: [{ type: 'uint256' }],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'recipient', type: 'address' },
+            { name: 'amount', type: 'uint256' },
+        ],
+        name: 'transfer',
+        outputs: [{ type: 'bool' }],
+        stateMutability: 'nonpayable',
+    },
+    {
+        type: 'function',
+        inputs: [
+            { name: 'sender', type: 'address' },
+            { name: 'recipient', type: 'address' },
+            { name: 'amount', type: 'uint256' },
+        ],
+        name: 'transferFrom',
+        outputs: [{ type: 'bool' }],
+        stateMutability: 'nonpayable',
+    },
+] as const
 
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link dataAvailabilityAbi}__ and `functionName` set to `"InputBox"`
- */
-export const useWriteDataAvailabilityInputBox =
-    /*#__PURE__*/ createUseWriteContract({
-        abi: dataAvailabilityAbi,
-        functionName: 'InputBox',
-    })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link dataAvailabilityAbi}__ and `functionName` set to `"InputBoxAndEspresso"`
- */
-export const useWriteDataAvailabilityInputBoxAndEspresso =
-    /*#__PURE__*/ createUseWriteContract({
-        abi: dataAvailabilityAbi,
-        functionName: 'InputBoxAndEspresso',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link dataAvailabilityAbi}__
- */
-export const useSimulateDataAvailability =
-    /*#__PURE__*/ createUseSimulateContract({ abi: dataAvailabilityAbi })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link dataAvailabilityAbi}__ and `functionName` set to `"InputBox"`
- */
-export const useSimulateDataAvailabilityInputBox =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: dataAvailabilityAbi,
-        functionName: 'InputBox',
-    })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link dataAvailabilityAbi}__ and `functionName` set to `"InputBoxAndEspresso"`
- */
-export const useSimulateDataAvailabilityInputBoxAndEspresso =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: dataAvailabilityAbi,
-        functionName: 'InputBoxAndEspresso',
-    })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__
- */
-export const useReadErc20 = /*#__PURE__*/ createUseReadContract({
-    abi: erc20Abi,
-})
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"allowance"`
- */
-export const useReadErc20Allowance = /*#__PURE__*/ createUseReadContract({
-    abi: erc20Abi,
-    functionName: 'allowance',
-})
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"balanceOf"`
- */
-export const useReadErc20BalanceOf = /*#__PURE__*/ createUseReadContract({
-    abi: erc20Abi,
-    functionName: 'balanceOf',
-})
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"decimals"`
- */
-export const useReadErc20Decimals = /*#__PURE__*/ createUseReadContract({
-    abi: erc20Abi,
-    functionName: 'decimals',
-})
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"name"`
- */
-export const useReadErc20Name = /*#__PURE__*/ createUseReadContract({
-    abi: erc20Abi,
-    functionName: 'name',
-})
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"symbol"`
- */
-export const useReadErc20Symbol = /*#__PURE__*/ createUseReadContract({
-    abi: erc20Abi,
-    functionName: 'symbol',
-})
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"totalSupply"`
- */
-export const useReadErc20TotalSupply = /*#__PURE__*/ createUseReadContract({
-    abi: erc20Abi,
-    functionName: 'totalSupply',
-})
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc20Abi}__
- */
-export const useWriteErc20 = /*#__PURE__*/ createUseWriteContract({
-    abi: erc20Abi,
-})
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"approve"`
- */
-export const useWriteErc20Approve = /*#__PURE__*/ createUseWriteContract({
-    abi: erc20Abi,
-    functionName: 'approve',
-})
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"transfer"`
- */
-export const useWriteErc20Transfer = /*#__PURE__*/ createUseWriteContract({
-    abi: erc20Abi,
-    functionName: 'transfer',
-})
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"transferFrom"`
- */
-export const useWriteErc20TransferFrom = /*#__PURE__*/ createUseWriteContract({
-    abi: erc20Abi,
-    functionName: 'transferFrom',
-})
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc20Abi}__
- */
-export const useSimulateErc20 = /*#__PURE__*/ createUseSimulateContract({
-    abi: erc20Abi,
-})
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"approve"`
- */
-export const useSimulateErc20Approve = /*#__PURE__*/ createUseSimulateContract({
-    abi: erc20Abi,
-    functionName: 'approve',
-})
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"transfer"`
- */
-export const useSimulateErc20Transfer = /*#__PURE__*/ createUseSimulateContract(
-    { abi: erc20Abi, functionName: 'transfer' },
-)
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"transferFrom"`
- */
-export const useSimulateErc20TransferFrom =
-    /*#__PURE__*/ createUseSimulateContract({
-        abi: erc20Abi,
-        functionName: 'transferFrom',
-    })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link erc20Abi}__
- */
-export const useWatchErc20Event = /*#__PURE__*/ createUseWatchContractEvent({
-    abi: erc20Abi,
-})
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link erc20Abi}__ and `eventName` set to `"Approval"`
- */
-export const useWatchErc20ApprovalEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({
-        abi: erc20Abi,
-        eventName: 'Approval',
-    })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link erc20Abi}__ and `eventName` set to `"Transfer"`
- */
-export const useWatchErc20TransferEvent =
-    /*#__PURE__*/ createUseWatchContractEvent({
-        abi: erc20Abi,
-        eventName: 'Transfer',
-    })
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// React
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link inputBoxAbi}__
@@ -1080,4 +867,146 @@ export const useWatchUsdWithdrawalOutputBuilderFactoryUsdWithdrawalOutputBuilder
         abi: usdWithdrawalOutputBuilderFactoryAbi,
         address: usdWithdrawalOutputBuilderFactoryAddress,
         eventName: 'UsdWithdrawalOutputBuilderCreated',
+    })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__
+ */
+export const useReadErc20 = /*#__PURE__*/ createUseReadContract({
+    abi: erc20Abi,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"allowance"`
+ */
+export const useReadErc20Allowance = /*#__PURE__*/ createUseReadContract({
+    abi: erc20Abi,
+    functionName: 'allowance',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"balanceOf"`
+ */
+export const useReadErc20BalanceOf = /*#__PURE__*/ createUseReadContract({
+    abi: erc20Abi,
+    functionName: 'balanceOf',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"decimals"`
+ */
+export const useReadErc20Decimals = /*#__PURE__*/ createUseReadContract({
+    abi: erc20Abi,
+    functionName: 'decimals',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"name"`
+ */
+export const useReadErc20Name = /*#__PURE__*/ createUseReadContract({
+    abi: erc20Abi,
+    functionName: 'name',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"symbol"`
+ */
+export const useReadErc20Symbol = /*#__PURE__*/ createUseReadContract({
+    abi: erc20Abi,
+    functionName: 'symbol',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"totalSupply"`
+ */
+export const useReadErc20TotalSupply = /*#__PURE__*/ createUseReadContract({
+    abi: erc20Abi,
+    functionName: 'totalSupply',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc20Abi}__
+ */
+export const useWriteErc20 = /*#__PURE__*/ createUseWriteContract({
+    abi: erc20Abi,
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"approve"`
+ */
+export const useWriteErc20Approve = /*#__PURE__*/ createUseWriteContract({
+    abi: erc20Abi,
+    functionName: 'approve',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"transfer"`
+ */
+export const useWriteErc20Transfer = /*#__PURE__*/ createUseWriteContract({
+    abi: erc20Abi,
+    functionName: 'transfer',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"transferFrom"`
+ */
+export const useWriteErc20TransferFrom = /*#__PURE__*/ createUseWriteContract({
+    abi: erc20Abi,
+    functionName: 'transferFrom',
+})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc20Abi}__
+ */
+export const useSimulateErc20 = /*#__PURE__*/ createUseSimulateContract({
+    abi: erc20Abi,
+})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"approve"`
+ */
+export const useSimulateErc20Approve = /*#__PURE__*/ createUseSimulateContract({
+    abi: erc20Abi,
+    functionName: 'approve',
+})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"transfer"`
+ */
+export const useSimulateErc20Transfer = /*#__PURE__*/ createUseSimulateContract(
+    { abi: erc20Abi, functionName: 'transfer' },
+)
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"transferFrom"`
+ */
+export const useSimulateErc20TransferFrom =
+    /*#__PURE__*/ createUseSimulateContract({
+        abi: erc20Abi,
+        functionName: 'transferFrom',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link erc20Abi}__
+ */
+export const useWatchErc20Event = /*#__PURE__*/ createUseWatchContractEvent({
+    abi: erc20Abi,
+})
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link erc20Abi}__ and `eventName` set to `"Approval"`
+ */
+export const useWatchErc20ApprovalEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: erc20Abi,
+        eventName: 'Approval',
+    })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link erc20Abi}__ and `eventName` set to `"Transfer"`
+ */
+export const useWatchErc20TransferEvent =
+    /*#__PURE__*/ createUseWatchContractEvent({
+        abi: erc20Abi,
+        eventName: 'Transfer',
     })
