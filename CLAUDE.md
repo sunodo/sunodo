@@ -46,7 +46,7 @@ bunx vitest run -t "name"       # tests matching a name
 ```shell
 cd packages/contracts
 forge soldeer install           # install Solidity deps into dependencies/ (gitignored)
-forge build                     # compile (solc 0.8.20, evm paris, optimizer off)
+forge build                     # compile (solc 0.8.30, evm prague, optimizer + via-IR)
 forge test                      # run tests in test/ (*.t.sol)
 forge test --match-test <name>  # a single test
 forge fmt                       # format; CI runs forge fmt --check
@@ -54,7 +54,7 @@ bun run build                   # forge build + export ABIs to export/artifacts
 bun run deploy:<network>        # forge script deploy (e.g. deploy:sepolia, deploy:base)
 ```
 
-Solidity deps are managed by **Soldeer** (`[dependencies]` in `foundry.toml`, pinned in `soldeer.lock`), not npm. `remappings.txt` is maintained by hand (soldeer remapping generation is off) because the git-sourced deps keep their sources in subdirectories. Deployment is `script/Deploy.s.sol`: CREATE2 through the standard deployer (`0x4e59…956C`), skipped if already deployed; RPC endpoints, Etherscan keys and the keystore account come from `.env` (see `.env.example`). Networks are arbitrum, base, optimism, mainnet + their sepolia testnets, plus `sepolia`; `deploy:testnet` / `deploy:mainnets` deploy to all of each tier. New deploy records go to `broadcast/` (commit them); `deployments/` and `export/abi/` are the historical hardhat-deploy records.
+Contracts build on **cartesi-rollups-contracts 3.0.0-alpha.10** (`Application`/`ApplicationFactory`/`InputBox`, OpenZeppelin 5.2); via-IR is required because tests compile its `Application`. Solidity deps are managed by **Soldeer** (`[dependencies]` in `foundry.toml`, pinned in `soldeer.lock`), not npm. `remappings.txt` is maintained by hand (soldeer remapping generation is off) because the git-sourced deps keep their sources in subdirectories. Deployment is `script/Deploy.s.sol`: CREATE2 through the standard deployer (`0x4e59…956C`), skipped if already deployed, wired to the canonical rollups v3 `ApplicationFactory`/`InputBox` (deployed on testnets only, so mainnet deploys revert); RPC endpoints, Etherscan keys and the keystore account come from `.env` (see `.env.example`). Networks are arbitrum, base, optimism, mainnet + their sepolia testnets, plus `sepolia`; `deploy:testnet` / `deploy:mainnets` deploy to all of each tier. New deploy records go to `broadcast/` (commit them); `deployments/` and `export/abi/` are the historical hardhat-deploy records.
 
 ### web app
 

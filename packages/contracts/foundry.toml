@@ -4,15 +4,13 @@ out = "out"
 test = "test"
 script = "script"
 libs = ["dependencies"]
-solc_version = "0.8.20"
-evm_version = "paris"
-# optimizer stays off, matching the compiler settings of the existing deployments
-optimizer = false
+# cartesi-rollups-contracts 3 requires solc ^0.8.30, targets prague, and only
+# compiles through the IR pipeline (tests deploy its ApplicationFactory)
+solc_version = "0.8.30"
+evm_version = "prague"
+optimizer = true
+via_ir = true
 ignored_warnings_from = ["dependencies"]
-# tests check the deploy script against the rollups deployment records
-fs_permissions = [
-    { access = "read", path = "./dependencies/@cartesi-rollups-1.4.3/onchain/rollups/deployments" },
-]
 
 [profile.default.fuzz]
 runs = 256
@@ -44,14 +42,14 @@ optimism_sepolia = { key = "${ETHERSCAN_API_KEY}", chain = "optimism-sepolia" }
 sepolia = { key = "${ETHERSCAN_API_KEY}", chain = "sepolia" }
 
 [dependencies]
-"@openzeppelin-contracts" = "4.9.3"
-forge-std = "1.17.0"
-"@cartesi-rollups" = { version = "1.4.3", git = "https://github.com/cartesi/rollups-contracts.git", tag = "v1.4.3" }
-"@cartesi-util" = { version = "6.3.0", git = "https://github.com/cartesi/solidity-util.git", tag = "v6.3.0" }
 "@ensdomains-ens-contracts" = { version = "1.1.4", git = "https://github.com/ensdomains/ens-contracts.git", tag = "v1.1.4" }
+"@openzeppelin-contracts" = "5.2.0"
+cartesi-machine-solidity-step = { version = "0.15.0", git = "https://github.com/cartesi/machine-solidity-step.git", tag = "v0.15.0" }
+cartesi-rollups-contracts = "3.0.0-alpha.10"
+forge-std = "1.17.0"
 
 [soldeer]
-# remappings.txt is maintained by hand: the git dependencies keep their
-# sources in subdirectories that soldeer's generated remappings would miss
+# remappings.txt is maintained by hand, to give dependencies stable import
+# prefixes (cartesi-rollups-contracts also needs the versioned prefixes it uses)
 remappings_generate = false
 recursive_deps = false

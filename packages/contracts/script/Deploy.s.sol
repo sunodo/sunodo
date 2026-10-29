@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 /// @title Deployment script
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.30;
 
-import {ICartesiDAppFactory} from "@cartesi/rollups/contracts/dapp/ICartesiDAppFactory.sol";
+import {IApplicationFactory} from "@cartesi/rollups/src/dapp/IApplicationFactory.sol";
+import {IInputBox} from "@cartesi/rollups/src/inputs/IInputBox.sol";
 import {ENS} from "@ensdomains/ens-contracts/contracts/registry/ENS.sol";
 import {Script, console} from "forge-std/Script.sol";
 
@@ -11,10 +12,14 @@ import {Marketplace} from "../src/marketplace/Marketplace.sol";
 /// @notice Deploys the Marketplace deterministically through the CREATE2 deployer
 /// @dev Usage: forge script script/Deploy.s.sol --rpc-url <network> --account <keystore> --broadcast --verify
 contract DeployScript is Script {
-    /// @notice The CartesiDAppFactory of @cartesi/rollups 1.4,
+    /// @notice The ApplicationFactory of cartesi-rollups-contracts 3.0.0-alpha.10,
     /// deployed at the same address on every supported network
-    ICartesiDAppFactory public constant CARTESI_DAPP_FACTORY =
-        ICartesiDAppFactory(0x7122cd1221C20892234186facfE8615e6743Ab02);
+    IApplicationFactory public constant APPLICATION_FACTORY =
+        IApplicationFactory(0x35Cd91f13141Bb6A6FC69E1eeDD241bbA1Ddd45F);
+
+    /// @notice The InputBox of cartesi-rollups-contracts 3.0.0-alpha.10,
+    /// deployed at the same address on every supported network
+    IInputBox public constant INPUT_BOX = IInputBox(0xEbE9f4Dfc04ae10bBeE663859c3dc5A23f94eA3C);
 
     /// @notice The ENS registry, deployed at the same address on mainnet and sepolia
     ENS public constant ENS_REGISTRY = ENS(0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e);
@@ -31,11 +36,12 @@ contract DeployScript is Script {
         }
 
         require(
-            address(CARTESI_DAPP_FACTORY).code.length > 0, "DeployScript: CartesiDAppFactory not deployed on this chain"
+            address(APPLICATION_FACTORY).code.length > 0, "DeployScript: ApplicationFactory not deployed on this chain"
         );
+        require(address(INPUT_BOX).code.length > 0, "DeployScript: InputBox not deployed on this chain");
 
         vm.startBroadcast();
-        Marketplace marketplace = new Marketplace{salt: SALT}(ens, CARTESI_DAPP_FACTORY);
+        Marketplace marketplace = new Marketplace{salt: SALT}(ens, APPLICATION_FACTORY, INPUT_BOX);
         vm.stopBroadcast();
 
         console.log("Marketplace deployed at", address(marketplace));
@@ -52,7 +58,8 @@ contract DeployScript is Script {
 
     /// @notice The address the Marketplace is deployed to for a given ENS registry
     function marketplaceAddress(ENS ens) public pure returns (address) {
-        bytes memory initCode = abi.encodePacked(type(Marketplace).creationCode, abi.encode(ens, CARTESI_DAPP_FACTORY));
+        bytes memory initCode =
+            abi.encodePacked(type(Marketplace).creationCode, abi.encode(ens, APPLICATION_FACTORY, INPUT_BOX));
         return vm.computeCreate2Address(SALT, keccak256(initCode));
     }
 }

@@ -44,9 +44,9 @@ Anyone can call the `register` function of the `ReaderNodeProvider` contract to 
 
 The `ValidatorNodeProvider` contract builds on top of the `ReaderNodeProvider` and adds the capability of deploying applications through the provider.
 
-A `ValidatorNodeProvider` is attached to an `IConsensus` and only accepts registrations of applications that has the same consensus as the one it is attached to.
+A `ValidatorNodeProvider` is attached to an `IConsensus` and only accepts registrations of applications whose outputs Merkle root validator is the consensus it is attached to.
 
-Developers can use the `ValidatorNodeProvider` to deploy their application by calling the `deploy` function while specifying who is the application owner, the hash of the Cartesi machine snapshot, and the location of the Cartesi machine snapshot. The `ValidatorNodeProvider` is already attached to a consensus, so the developer does not need to specify it.
+Developers can use the `ValidatorNodeProvider` to deploy their application by calling the `deploy` function while specifying who is the application owner, the hash of the Cartesi machine snapshot, the withdrawal configuration, and the location of the Cartesi machine snapshot. The `ValidatorNodeProvider` is already attached to a consensus and an input box, so the developer does not need to specify them.
 
 ### `Vault`
 
@@ -70,7 +70,7 @@ bun run build           # compile and export ABIs to export/artifacts
 
 ### Deployment
 
-The `Marketplace` is deployed deterministically through the CREATE2 deployer by [script/Deploy.s.sol](script/Deploy.s.sol). Copy `.env.example` to `.env` and fill in the RPC endpoints, the Etherscan API key, and the name of a deployer keystore created with `cast wallet import`. Then run:
+The contracts are built on [Cartesi Rollups](https://github.com/cartesi/rollups-contracts) 3.0.0-alpha.10. The `Marketplace` is deployed deterministically through the CREATE2 deployer by [script/Deploy.s.sol](script/Deploy.s.sol), wired to the canonical `ApplicationFactory` and `InputBox` of that release. These are currently deployed only on testnets, so the script refuses to deploy to mainnets. Copy `.env.example` to `.env` and fill in the RPC endpoints, the Etherscan API key, and the name of a deployer keystore created with `cast wallet import`. Then run:
 
 ```shell
 bun run deploy:<network>    # e.g. deploy:sepolia, deploy:base

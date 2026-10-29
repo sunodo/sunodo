@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.30;
 
-import {Authority} from "@cartesi/rollups/contracts/consensus/authority/Authority.sol";
-import {IConsensus} from "@cartesi/rollups/contracts/consensus/IConsensus.sol";
-import {CartesiDAppFactory} from "@cartesi/rollups/contracts/dapp/CartesiDAppFactory.sol";
+import {IConsensus} from "@cartesi/rollups/src/consensus/IConsensus.sol";
+import {Authority} from "@cartesi/rollups/src/consensus/authority/Authority.sol";
+import {ApplicationFactory} from "@cartesi/rollups/src/dapp/ApplicationFactory.sol";
+import {InputBox} from "@cartesi/rollups/src/inputs/InputBox.sol";
+import {IRefundOutputBuilder} from "@cartesi/rollups/src/refund/IRefundOutputBuilder.sol";
 import {ENS} from "@ensdomains/ens-contracts/contracts/registry/ENS.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {Test} from "forge-std/Test.sol";
@@ -26,16 +28,18 @@ contract MarketplaceTest is Test {
     address payee = makeAddr("payee");
     ENS ens = ENS(makeAddr("ens"));
 
-    CartesiDAppFactory factory;
+    ApplicationFactory factory;
     Authority consensus;
+    InputBox inputBox;
     ERC20Mock token;
     Marketplace marketplace;
 
     function setUp() public {
-        factory = new CartesiDAppFactory();
-        consensus = new Authority(makeAddr("authority"));
+        factory = new ApplicationFactory(IRefundOutputBuilder(address(0)));
+        consensus = new Authority(makeAddr("authority"), 720, 0);
+        inputBox = new InputBox();
         token = new ERC20Mock();
-        marketplace = new Marketplace(ens, factory);
+        marketplace = new Marketplace(ens, factory, inputBox);
     }
 
     function _nextProviderAddress() internal view returns (address) {
@@ -45,6 +49,7 @@ contract MarketplaceTest is Test {
     function test_Constructor() public view {
         assertEq(address(marketplace.ens()), address(ens));
         assertEq(address(marketplace.factory()), address(factory));
+        assertEq(address(marketplace.inputBox()), address(inputBox));
     }
 
     function test_NewValidatorNodeProvider() public {
@@ -65,6 +70,7 @@ contract MarketplaceTest is Test {
         assertEq(provider.price(), PRICE);
         assertEq(address(provider.factory()), address(factory));
         assertEq(address(provider.consensus()), address(consensus));
+        assertEq(address(provider.inputBox()), address(inputBox));
     }
 
     function test_NewReaderNodeProvider() public {
